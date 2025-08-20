@@ -8580,7 +8580,6 @@ sc/source/ui/inc/anyrefdg.hxx
 sc/source/ui/inc/areasave.hxx
 sc/source/ui/inc/areasdlg.hxx
 sc/source/ui/inc/asciiopt.hxx
-sc/source/ui/inc/autofmt.hxx
 sc/source/ui/inc/autostyl.hxx
 sc/source/ui/inc/cbutton.hxx
 sc/source/ui/inc/cellmergeoption.hxx
@@ -8685,7 +8684,6 @@ sc/source/ui/inc/rfindlst.hxx
 sc/source/ui/inc/scendlg.hxx
 sc/source/ui/inc/scui_def.hxx
 sc/source/ui/inc/scuiasciiopt.hxx
-sc/source/ui/inc/scuiautofmt.hxx
 sc/source/ui/inc/scuiimoptdlg.hxx
 sc/source/ui/inc/scuitphfedit.hxx
 sc/source/ui/inc/searchresults.hxx
@@ -8762,7 +8760,6 @@ sc/source/ui/miscdlgs/mtrindlg.cxx
 sc/source/ui/miscdlgs/optsolver.cxx
 sc/source/ui/miscdlgs/protectiondlg.cxx
 sc/source/ui/miscdlgs/redcom.cxx
-sc/source/ui/miscdlgs/scuiautofmt.cxx
 sc/source/ui/miscdlgs/sharedocdlg.cxx
 sc/source/ui/miscdlgs/simpref.cxx
 sc/source/ui/miscdlgs/solveroptions.cxx

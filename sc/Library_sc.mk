@@ -504,7 +504,6 @@ $(eval $(call gb_Library_add_exception_objects,sc,\
     sc/source/ui/formdlg/formula \
     sc/source/ui/miscdlgs/acredlin \
     sc/source/ui/miscdlgs/anyrefdg \
-    sc/source/ui/miscdlgs/autofmt \
     sc/source/ui/miscdlgs/conflictsdlg \
     sc/source/ui/miscdlgs/crnrdlg \
     sc/source/ui/miscdlgs/datastreamdlg \

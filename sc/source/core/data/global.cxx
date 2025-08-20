@@ -252,10 +252,6 @@ void ScGlobal::ClearAutoFormat()
     assert(!bThreadedGroupCalcInProgress);
     if (xAutoFormat)
     {
-        //  When modified via StarOne then only the SaveLater flag is set and no saving is done.
-        //  If the flag is set then save now.
-        if (xAutoFormat->IsSaveLater())
-            xAutoFormat->Save();
         xAutoFormat.reset();
     }
 }
@@ -271,11 +267,12 @@ ScAutoFormat* ScGlobal::GetOrCreateAutoFormat()
     if ( !xAutoFormat )
     {
         xAutoFormat.reset(new ScAutoFormat);
-        xAutoFormat->Load();
     }
 
     return xAutoFormat.get();
 }
+
+void ScGlobal::ResetAutoFormat() { xAutoFormat.reset(new ScAutoFormat); }
 
 LegacyFuncCollection* ScGlobal::GetLegacyFuncCollection()
 {

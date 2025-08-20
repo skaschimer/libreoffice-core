@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <editeng/borderline.hxx>
 #include <sal/config.h>
 #include <helper/qahelper.hxx>
 #include <sal/log.hxx>
@@ -719,7 +720,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf107572)
         u"TestModule"_ustr,
         uno::Any(
             u"Function Main\n"
-                     "  thisComponent.Sheets(0).getCellRangeByName(\"A1:F14\").autoformat(\"Default\")\n"
+                     "  thisComponent.Sheets(0).getCellRangeByName(\"A1:F14\").autoformat(\"Default Style\")\n"
                      "End Function\n"_ustr));
 
     // Without the fix in place, this test would have crashed
@@ -727,29 +728,20 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf107572)
 
     ScDocument* pDoc = getScDoc();
 
-    //Check the autoformat has been applied
-    for (SCCOL i = 0; i < 5; ++i)
+    SCCOL startCol = 0, endCol = 4;
+    SCROW startRow = 0, endRow = 12;
+
+    // Check autoformat has benn applied
+    for (SCCOL col = startCol; col <= endCol; ++col)
     {
-        const ScPatternAttr* pAttr = pDoc->GetPattern(i, 0, 0);
-        const SvxBrushItem& rBackground = pAttr->GetItem(ATTR_BACKGROUND);
-        const Color& rColor = rBackground.GetColor();
+        for (SCROW row = startRow; row <= endRow; ++row)
+        {
+            const ScPatternAttr* pAttr = pDoc->GetPattern(col, row, 0);
+            const SvxBoxItem& rBorder = pAttr->GetItem(ATTR_BORDER);
 
-        CPPUNIT_ASSERT_EQUAL(COL_BLUE, rColor);
-    }
-
-    for (SCROW i = 1; i < 13; ++i)
-    {
-        const ScPatternAttr* pAttr = pDoc->GetPattern(0, i, 0);
-        const SvxBrushItem& rBackground = pAttr->GetItem(ATTR_BACKGROUND);
-        const Color& rColor = rBackground.GetColor();
-
-        CPPUNIT_ASSERT_EQUAL(Color(0x4d, 0x4d, 0x4d), rColor);
-
-        const ScPatternAttr* pAttr2 = pDoc->GetPattern(5, i, 0);
-        const SvxBrushItem& rBackground2 = pAttr2->GetItem(ATTR_BACKGROUND);
-        const Color& rColor2 = rBackground2.GetColor();
-
-        CPPUNIT_ASSERT_EQUAL(COL_GRAY3, rColor2);
+            CPPUNIT_ASSERT_EQUAL(COL_BLACK, rBorder.GetTop()->GetColor());
+            CPPUNIT_ASSERT_EQUAL(COL_BLACK, rBorder.GetLeft()->GetColor());
+        }
     }
 }
 

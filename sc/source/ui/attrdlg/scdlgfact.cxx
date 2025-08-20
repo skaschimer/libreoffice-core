@@ -22,7 +22,6 @@
 #include "scdlgfact.hxx"
 
 #include <scuiasciiopt.hxx>
-#include <scuiautofmt.hxx>
 #include <corodlg.hxx>
 #include <dapidata.hxx>
 #include <dapitype.hxx>
@@ -137,26 +136,6 @@ public:
 VclPtr<AbstractScTextImportOptionsDlg> ScAbstractDialogFactory_Impl::CreateScTextImportOptionsDlg(weld::Window* pParent)
 {
     return VclPtr<AbstractScTextImportOptionsDlg_Impl>::Create(pParent);
-}
-
-namespace
-{
-class AbstractScAutoFormatDlg_Impl
-    : public vcl::AbstractDialogImpl_Sync<AbstractScAutoFormatDlg, ScAutoFormatDlg>
-{
-public:
-    using AbstractDialogImpl_BASE::AbstractDialogImpl_BASE;
-    sal_uInt16 GetIndex() const override { return m_pDlg->GetIndex(); }
-    OUString GetCurrFormatName() override { return m_pDlg->GetCurrFormatName(); }
-};
-}
-
-VclPtr<AbstractScAutoFormatDlg> ScAbstractDialogFactory_Impl::CreateScAutoFormatDlg(weld::Window* pParent,
-                                                                ScAutoFormat* pAutoFormat,
-                                                                const ScAutoFormatData* pSelFormatData,
-                                                                ScViewData& rViewData)
-{
-    return VclPtr<AbstractScAutoFormatDlg_Impl>::Create(pParent, pAutoFormat, pSelFormatData, rViewData);
 }
 
 namespace

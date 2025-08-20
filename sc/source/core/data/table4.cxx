@@ -17,6 +17,8 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svx/svxtableitems.hxx>
+#include <svx/TableAutoFmt.hxx>
 #include <scitems.hxx>
 #include <comphelper/string.hxx>
 #include <editeng/boxitem.hxx>
@@ -55,6 +57,8 @@
 #include <memory>
 #include <list>
 #include <string_view>
+
+using namespace Autoformat;
 
 #define D_MAX_LONG_  double(0x7fffffff)
 
@@ -2673,7 +2677,7 @@ void ScTable::AutoFormatArea(SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SC
                                 const ScPatternAttr& rAttr, sal_uInt16 nFormatNo)
 {
     ScAutoFormat& rFormat = *ScGlobal::GetOrCreateAutoFormat();
-    ScAutoFormatData* pData = rFormat.findByIndex(nFormatNo);
+    ScAutoFormatData* pData = rFormat.GetData(nFormatNo);
     if (pData)
     {
         ApplyPatternArea(nStartCol, nStartRow, nEndCol, nEndRow, rAttr);
@@ -2687,228 +2691,108 @@ void ScTable::AutoFormat( SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SCROW
         return;
 
     ScAutoFormat& rFormat = *ScGlobal::GetOrCreateAutoFormat();
-    ScAutoFormatData* pData = rFormat.findByIndex(nFormatNo);
+    const ScAutoFormatData* pData = rFormat.GetResolvedStyle(rFormat.GetData(nFormatNo));
     if (!pData)
         return;
 
-    std::unique_ptr<ScPatternAttr> pPatternAttrs[16];
-    for (sal_uInt8 i = 0; i < 16; ++i)
+    std::unique_ptr<ScPatternAttr> pPatternAttrs[ELEMENT_COUNT];
+    for (sal_uInt8 i = 0; i < ELEMENT_COUNT; ++i)
     {
         pPatternAttrs[i].reset(new ScPatternAttr(rDocument.getCellAttributeHelper()));
-        pData->FillToItemSet(i, pPatternAttrs[i]->GetItemSetWritable(), rDocument);
+        pData->FillToItemSet(i, pPatternAttrs[i]->GetItemSetWritable());
     }
 
-    // Important special case: when the whole rows are selected. Then applying autoformat to right
-    // column individually would create all columns. In this case, assume that right column isn't
-    // needed, to allow "to the end of row" format optimization (which doesn't create columns).
-    // Keep left column in this case, because it may be pre-formatted for categories. To enable the
-    // optimization, apply uniform format row by row where possible, not column by column.
+    // Reset cell autoformat before applying new one
+    DeleteArea(nStartCol, nStartRow, nEndCol, nEndRow, InsertDeleteFlags::ATTRIB);
 
-    const bool isWholeRows = nStartCol == 0 && nEndCol == rDocument.MaxCol();
+    AutoFormatArea(nStartCol, nStartRow, nEndCol, nEndRow, *pPatternAttrs[BACKGROUND], nFormatNo);
+    AutoFormatArea(nStartCol, nStartRow, nEndCol, nEndRow, *pPatternAttrs[BODY], nFormatNo);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Top row data indexes:
-    // 0 - left corner style
-    // 1 - odd columns style
-    // 2 - even column style
-    // 3 - right corner style
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    SCCOL startOffset = 1;
-    // Left top corner
-    if (pData->HasSameData(0, 1) && pData->HasSameData(0, 2))
-        startOffset = 0; // Left corner is same as the rest of the row
-    else
-        AutoFormatArea(nStartCol, nStartRow, nStartCol, nStartRow, *pPatternAttrs[0], nFormatNo);
-
-    SCCOL endOffset = 1;
-    // Right top corner: ignore when whole rows selected
-    if (isWholeRows || (pData->HasSameData(3, 1) && pData->HasSameData(3, 2)))
-        endOffset = 0; // Right corner is same as the rest of the row (most important case)
-    else
-        AutoFormatArea(nEndCol, nStartRow, nEndCol, nStartRow, *pPatternAttrs[3], nFormatNo);
-
-    // Top row
-    if (pData->HasSameData(1, 2))
-        AutoFormatArea(nStartCol + startOffset, nStartRow, nEndCol - endOffset, nStartRow, *pPatternAttrs[1], nFormatNo);
-    else
-    {
-        sal_uInt16 nIndex = 1;
-        for (SCCOL nCol = nStartCol + startOffset; nCol <= nEndCol - endOffset; nCol++)
-        {
-            AutoFormatArea(nCol, nStartRow, nCol, nStartRow, *pPatternAttrs[nIndex], nFormatNo);
-            if (nIndex == 1)
-                nIndex = 2;
-            else
-                nIndex = 1;
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Body data indexes:
-    // 4 - left column odd row style
-    // 8 - left column even row style
-    // 7 - right column odd row style
-    // 11 - right column even row style
-    // 5 - body odd column odd row style
-    // 6 - body even column odd row style
-    // 9 - body odd column even row style
-    // 10 - body even column even row style
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    startOffset = 1;
-    // Left column
-    if (pData->HasSameData(4, 5) && pData->HasSameData(4, 6) && pData->HasSameData(8, 9) && pData->HasSameData(8, 10))
-        startOffset = 0; // Left column is same as the lines of the body
-    else
-    {
-        if (pData->HasSameData(4, 8)) // even and odd rows are same
-            AutoFormatArea(nStartCol, nStartRow + 1, nStartCol, nEndRow - 1, *pPatternAttrs[4], nFormatNo);
-        else
-        {
-            sal_uInt16 nIndex = 4;
-            for (SCROW nRow = nStartRow + 1; nRow < nEndRow; nRow++)
-            {
-                AutoFormatArea(nStartCol, nRow, nStartCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
-                if (nIndex == 4)
-                    nIndex = 8;
-                else
-                    nIndex = 4;
-            }
-        }
-    }
-
-    endOffset = 1;
-    // Right column: ignore when whole rows selected
-    if (isWholeRows || (pData->HasSameData(7, 5) && pData->HasSameData(7, 6) && pData->HasSameData(11, 9) && pData->HasSameData(11, 10)))
-        endOffset = 0; // Right column is same as the lines of the body (most important case)
-    else
-    {
-        if (pData->HasSameData(7, 11)) // even and odd rows are same
-            AutoFormatArea(nEndCol, nStartRow + 1, nEndCol, nEndRow - 1, *pPatternAttrs[7], nFormatNo);
-        else
-        {
-            sal_uInt16 nIndex = 7;
-            for (SCROW nRow = nStartRow + 1; nRow < nEndRow; nRow++)
-            {
-                AutoFormatArea(nEndCol, nRow, nEndCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
-                if (nIndex == 7)
-                    nIndex = 11;
-                else
-                    nIndex = 7;
-            }
-        }
-    }
-
-    // Body
-    if (pData->HasSameData(5, 6) && pData->HasSameData(9, 10)) // Odd and even columns are same (most important case)
-    {
-        if (pData->HasSameData(5, 9)) // Everything is the same
-            AutoFormatArea(nStartCol + startOffset, nStartRow + 1, nEndCol - endOffset, nEndRow - 1, *pPatternAttrs[5], nFormatNo);
-        else // Odd and even rows differ
-        {
-            if (pProgress)
-                pProgress->SetState(1, nEndRow - nStartRow + 3); // account for elements outside the "Body" block
-            sal_uInt16 nIndex = 5;
-            for (SCROW nRow = nStartRow + 1; nRow < nEndRow; nRow++)
-            {
-                AutoFormatArea(nStartCol + startOffset, nRow, nEndCol - endOffset, nRow, *pPatternAttrs[nIndex], nFormatNo);
-                if (nIndex == 5)
-                    nIndex = 9;
-                else
-                    nIndex = 5;
-                if (pProgress)
-                    pProgress->SetStateOnPercent(nRow - nStartRow + 1);
-            }
-        }
-    }
-    else if (pData->HasSameData(5, 9) && pData->HasSameData(6, 10)) // odd and even rows are same
+    sal_uInt8 nIndex = ODD_COL;
+    if (pData->UseBandedColStyles())
     {
         if (pProgress)
-            pProgress->SetState(1, nEndCol - nStartCol + 3); // account for elements outside the "Body" block
-        sal_uInt16 nIndex = 5;
-        for (SCCOL nCol = nStartCol + startOffset; nCol <= nEndCol - endOffset; nCol++)
+            pProgress->SetState(1, nEndCol - nStartCol);
+
+        for (SCROW nCol = nStartCol; nCol <= nEndCol; nCol++)
         {
-            AutoFormatArea(nCol, nStartRow + 1, nCol, nEndRow - 1, *pPatternAttrs[nIndex], nFormatNo);
-            if (nIndex == 5)
-                nIndex = 6;
-            else
-                nIndex = 5;
+            AutoFormatArea(nCol, nStartRow, nCol, nEndRow, *pPatternAttrs[nIndex], nFormatNo);
+            nIndex = nIndex == ODD_COL ? EVEN_COL : ODD_COL;
+
             if (pProgress)
-                pProgress->SetStateOnPercent(nCol - nStartCol + 1);
+                pProgress->SetStateOnPercent(nCol - nStartCol);
         }
     }
-    else // Everything is different
+
+    if (pData->UseBandedRowStyles())
     {
+        nIndex = ODD_ROW;
         if (pProgress)
-            pProgress->SetState(1, nEndCol - nStartCol + 3); // account for elements outside the "Body" block
-        sal_uInt16 nIndex = 5;
-        for (SCCOL nCol = nStartCol + startOffset; nCol <= nEndCol - endOffset; nCol++)
+            pProgress->SetState(1, nEndRow - nStartRow);
+        for (SCROW nRow = nStartRow; nRow <= nEndRow; nRow++)
         {
-            for (SCROW nRow = nStartRow + 1; nRow < nEndRow; nRow++)
-            {
-                AutoFormatArea(nCol, nRow, nCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
-                if ((nIndex == 5) || (nIndex == 9))
-                {
-                    if (nIndex == 5)
-                        nIndex = 9;
-                    else
-                        nIndex = 5;
-                }
-                else
-                {
-                    if (nIndex == 6)
-                        nIndex = 10;
-                    else
-                        nIndex = 6;
-                }
-            } // for nRow
-            if ((nIndex == 5) || (nIndex == 9))
-                nIndex = 6;
-            else
-                nIndex = 5;
+            AutoFormatArea(nStartCol, nRow, nEndCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
+            nIndex = nIndex == ODD_ROW ? EVEN_ROW : ODD_ROW;
+
             if (pProgress)
-                pProgress->SetStateOnPercent(nCol - nStartCol + 1);
+                pProgress->SetStateOnPercent(nRow - nStartCol);
+        }
+    }
 
-        } // for nCol
-    } // if not all equal
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bottom row data indexes:
-    // 12 - left corner style
-    // 13 - odd columns style
-    // 14 - even column style
-    // 15 - right corner style
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    startOffset = 1;
-    // Left bottom corner
-    if (pData->HasSameData(12, 13) && pData->HasSameData(12, 14))
-        startOffset = 0;
-    else
-        AutoFormatArea(nStartCol, nEndRow, nStartCol, nEndRow, *pPatternAttrs[12], nFormatNo);
-
-    endOffset = 1;
-    // Right bottom corner: ignore when whole rows selected
-    if (isWholeRows || (pData->HasSameData(15, 13) && pData->HasSameData(15, 14)))
-        endOffset = 0;
-    else
-        AutoFormatArea(nEndCol, nEndRow, nEndCol, nEndRow, *pPatternAttrs[15], nFormatNo);
-
-    // Bottom row
-    if (pData->HasSameData(13, 14))
-        AutoFormatArea(nStartCol + startOffset, nEndRow, nEndCol - endOffset, nEndRow, *pPatternAttrs[13], nFormatNo);
-    else
+    if (pData->UseLastColStyles())
     {
-        sal_uInt16 nIndex = 13;
-        for (SCCOL nCol = nStartCol + startOffset; nCol <= nEndCol - endOffset; nCol++)
+        nIndex = LAST_COL;
+        for (SCROW nRow = nStartRow; nRow <= nEndRow; nRow++)
+        {
+            AutoFormatArea(nEndCol, nRow, nEndCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
+        }
+    }
+
+    if (pData->UseFirstColStyles())
+    {
+        nIndex = FIRST_COL;
+        for (SCROW nRow = nStartRow; nRow <= nEndRow; nRow++)
+        {
+            AutoFormatArea(nStartCol, nRow, nStartCol, nRow, *pPatternAttrs[nIndex], nFormatNo);
+        }
+    }
+
+    if (pData->UseLastRowStyles())
+    {
+        nIndex = LAST_ROW;
+        for (SCROW nCol = nStartCol; nCol <= nEndCol; nCol++)
         {
             AutoFormatArea(nCol, nEndRow, nCol, nEndRow, *pPatternAttrs[nIndex], nFormatNo);
-            if (nIndex == 13)
-                nIndex = 14;
-            else
-                nIndex = 13;
         }
+        nIndex = LAST_ROW_EVEN_COL;
+        for (SCROW nCol = nStartCol + 1; nCol <= nEndCol; nCol += 2)
+        {
+            AutoFormatArea(nCol, nEndRow, nCol, nEndRow, *pPatternAttrs[nIndex], nFormatNo);
+        }
+        nIndex = LAST_ROW_END_COL;
+        AutoFormatArea(nEndCol, nEndRow, nEndCol, nEndRow, *pPatternAttrs[nIndex], nFormatNo);
+        nIndex = LAST_ROW_START_COL;
+        AutoFormatArea(nStartCol, nEndRow, nStartCol, nEndRow, *pPatternAttrs[nIndex], nFormatNo);
+    }
+
+    if (pData->UseFirstRowStyles())
+    {
+        nIndex = FIRST_ROW;
+        for (SCROW nCol = nStartCol; nCol <= nEndCol; nCol++)
+        {
+            AutoFormatArea(nCol, nStartRow, nCol, nStartRow, *pPatternAttrs[nIndex], nFormatNo);
+        }
+
+        nIndex = FIRST_ROW_EVEN_COL;
+        for (SCROW nCol = nStartCol + 1; nCol <= nEndCol; nCol += 2)
+        {
+            AutoFormatArea(nCol, nStartRow, nCol, nStartRow, *pPatternAttrs[nIndex], nFormatNo);
+        }
+        nIndex = FIRST_ROW_END_COL;
+        AutoFormatArea(nEndCol, nStartRow, nEndCol, nStartRow, *pPatternAttrs[nIndex], nFormatNo);
+        nIndex = FIRST_ROW_START_COL;
+        AutoFormatArea(nStartCol, nStartRow, nStartCol, nStartRow, *pPatternAttrs[nIndex],
+                       nFormatNo);
     }
 }
 
@@ -2916,7 +2800,7 @@ void ScTable::GetAutoFormatAttr(SCCOL nCol, SCROW nRow, sal_uInt16 nIndex, ScAut
 {
     sal_uInt32 nFormatIndex = GetNumberFormat( nCol, nRow );
     ScNumFormatAbbrev   aNumFormat( nFormatIndex, *rDocument.GetFormatTable() );
-    rData.GetFromItemSet( nIndex, GetPattern( nCol, nRow )->GetItemSet(), aNumFormat );
+    rData.GetFromItemSet( nIndex, GetPattern( nCol, nRow )->GetItemSet());
 }
 
 #define LF_LEFT         1

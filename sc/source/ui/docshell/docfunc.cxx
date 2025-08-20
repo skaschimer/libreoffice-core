@@ -17,6 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svx/TableAutoFmt.hxx>
 #include <scitems.hxx>
 
 #include <comphelper/lok.hxx>
@@ -4326,7 +4327,7 @@ bool ScDocFunc::AutoFormat( const ScRange& rRange, const ScMarkData* pTabMark,
     {
         weld::WaitObject aWait( ScDocShell::GetActiveDialogParent() );
 
-        bool bSize = pAutoFormat->findByIndex(nFormatNo)->GetIncludeWidthHeight();
+        bool bSize = pAutoFormat->GetData(nFormatNo)->IsWidthHeight();
         if (sal_uInt64(nEndCol - nStartCol + 1) * sal_uInt64(nEndRow - nStartRow + 1) > AUTOFORMAT_WARN_SIZE)
         {
             std::unique_ptr<weld::MessageDialog> xQueryBox(Application::CreateMessageDialog(ScDocShell::GetActiveDialogParent(),
