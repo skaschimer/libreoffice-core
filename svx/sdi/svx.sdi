@@ -357,6 +357,21 @@ SfxVoidItem AutoFormat SID_AUTOFORMAT
     GroupId = SfxGroupId::Format;
 ]
 
+SfxVoidItem ResetAutoFormats SID_RESET_AUTOFORMATS
+(SfxStringItem aFormatName SID_AUTOFORMAT, SfxStringItem aOldName SID_RESET_AUTOFORMATS)
+[
+    AutoUpdate = FALSE,
+    FastCall = TRUE,
+    ReadOnlyDoc = FALSE,
+    Toggle = FALSE,
+    Container = FALSE,
+    RecordAbsolute = FALSE,
+
+    AccelConfig = FALSE,
+    MenuConfig = FALSE,
+    ToolBoxConfig = FALSE,
+    GroupId = SfxGroupId::Table;
+]
 
 
 SfxStringItem BackgroundImage SID_GALLERY_BG_BRUSH

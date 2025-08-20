@@ -152,6 +152,9 @@ $(eval $(call gb_UIConfig_add_uifiles,svx,\
 	svx/uiconfig/ui/xmlsecstatmenu \
 	svx/uiconfig/ui/xformspage \
 	svx/uiconfig/ui/zoommenu \
+	svx/uiconfig/ui/tableautofmtdlg \
+	svx/uiconfig/ui/tablestylesdlg \
+	svx/uiconfig/ui/stringinput \
 ))
 
 # vim: set noet sw=4 ts=4:

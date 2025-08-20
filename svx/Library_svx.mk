@@ -76,6 +76,7 @@ $(eval $(call gb_Library_use_libraries,svx,\
     vcl \
     xo \
     xmlscript \
+    sax \
 ))
 
 $(eval $(call gb_Library_use_externals,svx,\
@@ -183,6 +184,8 @@ $(eval $(call gb_Library_add_exception_objects,svx,\
     svx/source/dialog/txenctab \
     svx/source/dialog/weldeditview \
     svx/source/dialog/signaturelinehelper \
+    svx/source/dialog/TableAutoFmtDlg \
+    svx/source/dialog/TableStylesDlg \
     svx/source/engine3d/float3d \
     svx/source/fmcomp/dbaobjectex \
     svx/source/form/databaselocationinput \
@@ -265,6 +268,9 @@ $(eval $(call gb_Library_add_exception_objects,svx,\
     svx/source/table/tablertfexporter \
     svx/source/table/tablertfimporter \
 	svx/source/table/tablehtmlimporter \
+	svx/source/table/tableautofmt \
+	svx/source/table/tableautofmtpreview \
+	svx/source/table/tablestylesparser \
     svx/source/tbxctrls/bulletsnumbering \
     svx/source/tbxctrls/colrctrl \
     svx/source/tbxctrls/SvxColorChildWindow \
