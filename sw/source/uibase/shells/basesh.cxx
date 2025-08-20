@@ -17,6 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svx/dialmgr.hxx>
 #include <config_features.h>
 #include <config_fuzzers.h>
 
@@ -1177,7 +1178,7 @@ void SwBaseShell::Execute(SfxRequest &rReq)
                 {
                     OUString sAutoFormat = static_cast< const SfxStringItem* >(pItem)->GetValue();
 
-                    pAutoFormatTable.reset(new SwTableAutoFormatTable(SwModule::get()->GetAutoFormatTable()));
+                    pAutoFormatTable.reset(new SwTableAutoFormatTable);
 
                     for( sal_uInt16 i = 0, nCount = pAutoFormatTable->size(); i < nCount; i++ )
                     {
@@ -3179,20 +3180,25 @@ void SwBaseShell::InsertTable( SfxRequest& _rRequest )
             if ( pRows )
                 nRowsIn = pRows->GetValue();
             if ( pAuto )
-            {
                 aAutoNameIn = pAuto->GetValue();
-                if ( !aAutoNameIn.isEmpty() )
+
+            const SwTableAutoFormatTable& rTableTable = GetShell().GetDoc()->GetTableStyles();
+            if (!aAutoNameIn.isEmpty())
+            {
+                for (size_t n = 0; n < rTableTable.size(); ++n)
                 {
-                    const SwTableAutoFormatTable& rTableTable = SwModule::get()->GetAutoFormatTable();
-                    for (size_t n = 0; n < rTableTable.size(); ++n)
+                    if (rTableTable[n].GetName() == aAutoNameIn)
                     {
-                        if (rTableTable[n].GetName() == aAutoNameIn)
-                        {
-                            pTAFormatIn.reset(new SwTableAutoFormat(rTableTable[n]));
-                            break;
-                        }
+                        pTAFormatIn.reset(new SwTableAutoFormat(rTableTable[n]));
+                        break;
                     }
                 }
+            }
+            // Use Default Style if no autoformat is provided
+            else
+            {
+                aTableNameIn = SvxResId(STR_TABSTYLE_DEFAULT);
+                pTAFormatIn.reset(new SwTableAutoFormat(rTableTable[0]));
             }
 
             if ( pFlags )
@@ -3243,6 +3249,10 @@ void SwBaseShell::InsertTable( SfxRequest& _rRequest )
             _rRequest.AppendItem( SfxUInt16Item( SID_ATTR_TABLE_ROW, nRowsIn ) );
             _rRequest.AppendItem( SfxInt32Item( FN_PARAM_1, static_cast<sal_Int32>(aInsTableOptsIn.mnInsMode) ) );
             _rRequest.Done();
+
+            // Set Default Style name is no autoformat is provided
+            if (aAutoNameIn.isEmpty())
+                aAutoNameIn = SvxResId(STR_TABSTYLE_DEFAULT);
 
             InsertTableImpl( rSh, rTempView, UIName(aTableNameIn), nRowsIn, nColsIn, aInsTableOptsIn, TableStyleName(aAutoNameIn), pTAFormatIn );
 

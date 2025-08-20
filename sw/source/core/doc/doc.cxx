@@ -17,6 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svx/TableAutoFmt.hxx>
 #include <config_features.h>
 
 #include <doc.hxx>
@@ -1254,15 +1255,14 @@ void SwDoc::ForEachOverlineItem( const std::function<bool(const SvxOverlineItem&
             }
         }
     }
-    const auto& aTableTemplateMap = SwTableAutoFormat::GetTableTemplateMap();
     const SwTableAutoFormatTable& rTableStyles = GetTableStyles();
     for (size_t i=0; i < rTableStyles.size(); ++i)
     {
         const SwTableAutoFormat& rTableStyle = rTableStyles[i];
-        for (const sal_uInt32 nBoxIndex : aTableTemplateMap)
+        for (size_t j = 0; j < ELEMENT_COUNT; j++)
         {
-            const SwAutoFormatProps& rBoxProps = rTableStyle.GetBoxFormat(nBoxIndex).GetProps();
-            const SvxOverlineItem rOverlineItem = rBoxProps.GetOverline();
+            const SwBoxAutoFormat& rBoxFormat = *rTableStyle.GetField(j);
+            const SvxOverlineItem rOverlineItem = rBoxFormat.GetOverline();
             if (!rFunc(rOverlineItem))
                 return;
         }
@@ -1271,8 +1271,8 @@ void SwDoc::ForEachOverlineItem( const std::function<bool(const SvxOverlineItem&
     for (size_t i=0; i < rCellStyleTable.size(); ++i)
     {
         const SwCellStyleDescriptor aCellStyle = rCellStyleTable[i];
-        const SwAutoFormatProps& rBoxProps = aCellStyle.GetAutoFormat().GetProps();
-        const SvxOverlineItem rOverlineItem = rBoxProps.GetOverline();
+        const SwBoxAutoFormat& rBoxFormat = aCellStyle.GetAutoFormat();
+        const SvxOverlineItem rOverlineItem = rBoxFormat.GetOverline();
         if (!rFunc(rOverlineItem))
             return;
     }

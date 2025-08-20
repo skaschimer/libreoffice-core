@@ -580,8 +580,9 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     CPPUNIT_ASSERT(pXmlDoc);
 
     assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 3']", 5);
+    // 'DejaVu Sans' is by default exported because of table styles
     for (auto fontName :
-         { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+         { "DejaVu Sans Mono", "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
     {
         OString prefix = aStylesBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 3']");
@@ -600,7 +601,7 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     CPPUNIT_ASSERT(pXmlDoc);
 
     assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 3']", 5);
-    for (auto fontName : { "DejaVu Sans", "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    for (auto fontName : { "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
     {
         OString prefix = aContentBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 3']");

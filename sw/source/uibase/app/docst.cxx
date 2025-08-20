@@ -90,6 +90,7 @@
 #include <svl/ptitem.hxx>
 #include <editeng/sizeitem.hxx>
 #include <editeng/ulspitem.hxx>
+#include <svx/dialog/TableStylesDlg.hxx>
 
 using namespace ::com::sun::star;
 
@@ -926,6 +927,8 @@ void SwDocShell::Edit(
     if(!pStyle)
         return;
 
+    SwWrtShell* pCurrShell = pActShell ? pActShell : m_pWrtShell;
+
     // put dialogues together
     rtl::Reference< SwDocStyleSheet > xTmp( new SwDocStyleSheet( *static_cast<SwDocStyleSheet*>(pStyle) ) );
     if( SfxStyleFamily::Para == nFamily )
@@ -940,6 +943,37 @@ void SwDocShell::Edit(
     else if( SfxStyleFamily::Char == nFamily )
     {
         ::ConvertAttrCharToGen(xTmp->GetItemSet());
+    }
+    else if( SfxStyleFamily::Table == nFamily )
+    {
+        SwTableAutoFormatTable& rTableStyles = GetDoc()->GetTableStyles();
+        const OUString sOldName = rName.toString();
+        SwTableAutoFormat* pData = rTableStyles.FindAutoFormat(sOldName);
+        SwTableAutoFormat pOld(*pData);
+        if (pData)
+        {
+            if (!rParent.isEmpty())
+                pData->SetParent(rParent.toString());
+            bool bRTL = pCurrShell->IsCursorInTable() ? pCurrShell->IsTableRightToLeft()
+                                                      : AllSettings::GetLayoutRTL();
+            SvxTableStylesDlg aDlg(GetView()->GetFrameWeld(), bNew, rTableStyles, *pData, bRTL);
+            aDlg.getDialog()->set_modal(true);
+            if (aDlg.run() == RET_OK)
+            {
+                const OUString sNewName = pData->GetName().toString();
+                GetDoc()->ResetTableStyles(sNewName, sOldName);
+                m_xDoc->BroadcastStyleOperation(UIName(sNewName), nFamily,
+                                                SfxHintId::StyleSheetModified);
+            }
+            else
+            {
+                rTableStyles.ReleaseAutoFormat(sOldName);
+                if (!bNew)
+                    rTableStyles.InsertAutoFormat(&pOld);
+            }
+            aDlg.getDialog()->set_modal(false);
+        }
+        return;
     }
 
     if(SfxStyleFamily::Page == nFamily || SfxStyleFamily::Para == nFamily)
@@ -964,7 +998,6 @@ void SwDocShell::Edit(
         rSet.Put(SfxGrabBagItem(SID_ATTR_CHAR_GRABBAG, std::move(aGrabBagMap)));
     }
 
-    SwWrtShell* pCurrShell = pActShell ? pActShell : m_pWrtShell;
     if (nFamily == SfxStyleFamily::Frame)
     {
         SfxItemSet& rSet = xTmp->GetItemSet();

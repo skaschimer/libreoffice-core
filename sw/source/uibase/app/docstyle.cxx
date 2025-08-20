@@ -492,20 +492,19 @@ static const SwBoxAutoFormat* lcl_FindCellStyle(SwDoc& rDoc, const UIName& rName
 
     if (!pFormat)
     {
-        const auto& aTableTemplateMap = SwTableAutoFormat::GetTableTemplateMap();
         SwTableAutoFormatTable& rTableStyles = rDoc.GetTableStyles();
         for (size_t i=0; i < rTableStyles.size() && !pFormat; ++i)
         {
             const SwTableAutoFormat& rTableStyle = rTableStyles[i];
-            for (size_t nBoxFormat=0; nBoxFormat < aTableTemplateMap.size() && !pFormat; ++nBoxFormat)
+            for (size_t j = 0; j < ELEMENT_COUNT && !pFormat; ++j)
             {
-                    const sal_uInt32 nBoxIndex = aTableTemplateMap[nBoxFormat];
-                    const SwBoxAutoFormat& rBoxFormat = rTableStyle.GetBoxFormat(nBoxIndex);
-                    ProgName sBoxFormatName;
-                    SwStyleNameMapper::FillProgName(UIName(rTableStyle.GetName().toString()), sBoxFormatName, SwGetPoolIdFromName::TableStyle);
-                    OUString sTmp = sBoxFormatName.toString() + rTableStyle.GetTableTemplateCellSubName(rBoxFormat);
-                    if (rName == sTmp)
-                        pFormat = &rBoxFormat;
+                const SwBoxAutoFormat& rBoxFormat = *rTableStyle.GetField(j);
+                ProgName sBoxFormatName;
+                SwStyleNameMapper::FillProgName(UIName(rTableStyle.GetName().toString()),
+                                                sBoxFormatName, SwGetPoolIdFromName::TableStyle);
+                OUString sTmp = sBoxFormatName.toString() + "." + OUString::number(j + 1);
+                if (rName == sTmp)
+                    pFormat = &rBoxFormat;
             }
         }
     }
@@ -855,6 +854,17 @@ const OUString&  SwDocStyleSheet::GetParent() const
             pFormat = m_rDoc.FindFrameFormatByName( UIName(aName) );
             eGetType = SwGetPoolIdFromName::FrmFmt;
             break;
+
+        case SfxStyleFamily::Table:
+            {
+                SwTableAutoFormat* pTableFormat = m_rDoc.GetTableStyles().FindAutoFormat(aName);
+                if (pTableFormat)
+                {
+                    SwDocStyleSheet* pThis = const_cast<SwDocStyleSheet*>(this);
+                    pThis->aParent = pTableFormat->GetParent();
+                }
+                return aParent;
+            }
 
         case SfxStyleFamily::Page:
         case SfxStyleFamily::Pseudo:
@@ -3260,21 +3270,18 @@ SfxStyleSheetBase*  SwStyleSheetIterator::First()
     if( nSearchFamily == SfxStyleFamily::Cell ||
         nSearchFamily == SfxStyleFamily::All )
     {
-        const auto& aTableTemplateMap = SwTableAutoFormat::GetTableTemplateMap();
         if (rDoc.HasTableStyles())
         {
             const SwTableAutoFormatTable& rTableStyles = rDoc.GetTableStyles();
             for(size_t i = 0; i < rTableStyles.size(); ++i)
             {
                 const SwTableAutoFormat& rTableStyle = rTableStyles[i];
-                for(size_t nBoxFormat = 0; nBoxFormat < aTableTemplateMap.size(); ++nBoxFormat)
+                for (size_t j = 0; j < ELEMENT_COUNT; ++j)
                 {
-                    const sal_uInt32 nBoxIndex = aTableTemplateMap[nBoxFormat];
-                    const SwBoxAutoFormat& rBoxFormat = rTableStyle.GetBoxFormat(nBoxIndex);
                     ProgName sBoxFormatName;
                     SwStyleNameMapper::FillProgName(UIName(rTableStyle.GetName().toString()), sBoxFormatName, SwGetPoolIdFromName::TableStyle);
-                    m_aLst.Append( SfxStyleFamily::Cell,
-                        UIName(sBoxFormatName.toString() + rTableStyle.GetTableTemplateCellSubName(rBoxFormat)));
+                    m_aLst.Append(SfxStyleFamily::Cell, UIName(sBoxFormatName.toString() + "."
+                                                               + OUString::number(j + 1)));
                 }
             }
         }

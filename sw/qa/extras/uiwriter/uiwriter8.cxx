@@ -1311,11 +1311,14 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf131771)
 
     uno::Reference<text::XTextTable> xTextTable(xIndexAccess->getByIndex(0), uno::UNO_QUERY);
 
-    CPPUNIT_ASSERT_EQUAL(u""_ustr, getProperty<OUString>(xTextTable, u"TableTemplateName"_ustr));
-    uno::Reference<beans::XPropertySet> xTableProps(xTextTable, uno::UNO_QUERY_THROW);
-    xTableProps->setPropertyValue(u"TableTemplateName"_ustr, uno::Any(u"Default Style"_ustr));
-
+    // By default every table has 'Default Style' table style
     CPPUNIT_ASSERT_EQUAL(u"Default Style"_ustr,
+                         getProperty<OUString>(xTextTable, u"TableTemplateName"_ustr));
+
+    uno::Reference<beans::XPropertySet> xTableProps(xTextTable, uno::UNO_QUERY_THROW);
+    xTableProps->setPropertyValue(u"TableTemplateName"_ustr, uno::Any(u"Elegant"_ustr));
+
+    CPPUNIT_ASSERT_EQUAL(u"Elegant"_ustr,
                          getProperty<OUString>(xTextTable, u"TableTemplateName"_ustr));
 
     dispatchCommand(mxComponent, u".uno:SelectAll"_ustr, {});
@@ -1325,15 +1328,15 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf131771)
 
     CPPUNIT_ASSERT_EQUAL(sal_Int32(2), xIndexAccess->getCount());
 
-    CPPUNIT_ASSERT_EQUAL(u"Default Style"_ustr,
+    CPPUNIT_ASSERT_EQUAL(u"Elegant"_ustr,
                          getProperty<OUString>(xTextTable, u"TableTemplateName"_ustr));
 
     uno::Reference<text::XTextTable> xTextTable2(xIndexAccess->getByIndex(1), uno::UNO_QUERY);
 
     // Without the fix in place, this test would have failed with
-    // - Expected: Default Style
+    // - Expected: Elegant
     // - Actual  :
-    CPPUNIT_ASSERT_EQUAL(u"Default Style"_ustr,
+    CPPUNIT_ASSERT_EQUAL(u"Elegant"_ustr,
                          getProperty<OUString>(xTextTable2, u"TableTemplateName"_ustr));
 }
 

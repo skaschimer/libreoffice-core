@@ -208,11 +208,6 @@ void StyleList::CreateContextMenu()
     mxMenu->set_sensitive(u"show"_ustr, m_bCanShow);
 
     const SfxStyleFamilyItem* pItem = GetFamilyItem();
-    if (pItem && pItem->GetFamily() == SfxStyleFamily::Table) //tdf#101648, no ui for this yet
-    {
-        mxMenu->set_sensitive(u"edit"_ustr, false);
-        mxMenu->set_sensitive(u"new"_ustr, false);
-    }
     if (pItem && pItem->GetFamily() == SfxStyleFamily::Pseudo)
     {
         const OUString aTemplName(GetSelectedEntry());

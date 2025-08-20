@@ -62,10 +62,13 @@ IMPL_LINK(SwInsTableDlg, TextFilterHdl, OUString&, rTest, bool)
 }
 
 SwInsTableDlg::SwInsTableDlg(SwView& rView)
-    : SfxDialogController(rView.GetFrameWeld(), u"modules/swriter/ui/inserttable.ui"_ustr, u"InsertTableDialog"_ustr)
+    : SfxDialogController(rView.GetFrameWeld(), u"modules/swriter/ui/inserttable.ui"_ustr,
+                          u"InsertTableDialog"_ustr)
     , m_aTextFilter(u" .<>"_ustr)
     , m_pShell(&rView.GetWrtShell())
     , m_nEnteredValRepeatHeaderNF(-1)
+    , m_aWndPreview(rView.GetWrtShell().IsCursorInTable() ? rView.GetWrtShell().IsTableRightToLeft()
+                                                          : AllSettings::GetLayoutRTL())
     , m_xNameEdit(m_xBuilder->weld_entry(u"nameedit"_ustr))
     , m_xWarning(m_xBuilder->weld_label(u"lbwarning"_ustr))
     , m_xColSpinButton(m_xBuilder->weld_spin_button(u"colspin"_ustr))
@@ -128,17 +131,9 @@ SwInsTableDlg::SwInsTableDlg(SwView& rView)
 
 void SwInsTableDlg::InitAutoTableFormat()
 {
-    m_aWndPreview.DetectRTL(m_pShell);
-
     m_xLbFormat->connect_selection_changed(LINK(this, SwInsTableDlg, SelFormatHdl));
 
-    m_xTableTable.reset(new SwTableAutoFormatTable(SwModule::get()->GetAutoFormatTable()));
-
-    // Add "- none -" style autoformat table.
-    std::unique_ptr<SwTableAutoFormat> pNoneStyle(
-        new SwTableAutoFormat(TableStyleName(SwViewShell::GetShellRes()->aStrNone)));
-    pNoneStyle->DisableAll();
-    m_xTableTable->InsertAutoFormat(0, std::move(pNoneStyle));
+    m_xTableTable.reset(new SwTableAutoFormatTable);
 
     for (size_t i = 0; i < m_xTableTable->size(); i++)
     {
@@ -155,7 +150,7 @@ IMPL_LINK_NOARG(SwInsTableDlg, SelFormatHdl, weld::TreeView&, void)
     // Get index of selected item from the listbox
     int styleIdx = m_xLbFormat->get_selected_index();
     assert(styleIdx != -1 && "nothing selected");
-    m_aWndPreview.NotifyChange((*m_xTableTable)[styleIdx]);
+    m_aWndPreview.NotifyChange(m_xTableTable->GetResolvedStyle(m_xTableTable->GetData(styleIdx)));
 }
 
 IMPL_LINK_NOARG(SwInsTableDlg, OKHdl, weld::Button&, void)

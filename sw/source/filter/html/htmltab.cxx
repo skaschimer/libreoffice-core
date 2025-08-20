@@ -1488,18 +1488,13 @@ void HTMLTable::FixFrameFormat( SwTableBox *pBox,
                 TableStyleName(SwStyleNameMapper::GetUIName(SwPoolFormatId::TABLESTYLE_DEFAULT, ProgName()).toString()));
             if (pTableFormat)
             {
-                sal_uInt8 nPos = SwTableAutoFormat::CountPos(nCol, m_nCols, nRow, m_nRows);
                 const SfxItemSet& rAttrSet = pFrameFormat->GetAttrSet();
                 std::unique_ptr<SvxBoxItem> pOldBoxItem;
                 if (const SvxBoxItem* pBoxItem2 = rAttrSet.GetItemIfSet(RES_BOX))
                     pOldBoxItem.reset(pBoxItem2->Clone());
 
-                bool bSpansToEndV = m_nRows == 1 || (nRowSpan > 1 && nRow + nRowSpan == m_nRows);
-                bool bSpansToEndH = m_nCols == 1 || (nColSpan > 1 && nCol + nColSpan == m_nCols);
-                pTableFormat->UpdateToSet(nPos, bSpansToEndV, bSpansToEndH,
-                                          const_cast<SfxItemSet&>(rAttrSet),
-                                          SwTableAutoFormatUpdateFlags::Box,
-                                          pFrameFormat->GetDoc().GetNumberFormatter());
+                pTableFormat->UpdateToSet(const_cast<SfxItemSet&>(rAttrSet), nRow, nCol, m_nRows,
+                                          m_nCols, pFrameFormat->GetDoc().GetNumberFormatter());
                 if (pOldBoxItem)
                 {
                     const SvxBoxItem* pBoxItem2(rAttrSet.GetItem(RES_BOX));

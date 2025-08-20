@@ -17,6 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svx/dialog/TableAutoFmtDlg.hxx>
 #include <dbinsdlg.hxx>
 
 #include <float.h>
@@ -738,20 +739,15 @@ IMPL_LINK_NOARG(SwInsertDBColAutoPilot, TableFormatHdl, weld::Button&, void)
 
 IMPL_LINK_NOARG(SwInsertDBColAutoPilot, AutoFormatHdl, weld::Button&, void)
 {
-    SwAbstractDialogFactory& rFact = swui::GetFactory();
+    SwTableAutoFormatTable* pFormat(new SwTableAutoFormatTable);
+    SwWrtShell* rSh = m_rView.GetWrtShellPtr();
+    bool bRTL = rSh->IsCursorInTable() ? rSh->IsTableRightToLeft() : AllSettings::GetLayoutRTL();
 
-    VclPtr<AbstractSwAutoFormatDlg> pDlg(rFact.CreateSwAutoFormatDlg(m_xDialog.get(), m_rView.GetWrtShellPtr(), false, m_xTAutoFormat.get()));
-    pDlg->StartExecuteAsync(
-        [this, pDlg] (sal_Int32 nResult)->void
-        {
-            if (nResult == RET_OK)
-            {
-                pDlg->Apply();
-                m_xTAutoFormat = pDlg->FillAutoFormatOfIndex();
-            }
-            pDlg->disposeOnce();
-        }
-    );
+    SvxTableAutoFmtDlg aDlg(rSh->GetDoc()->GetTableStyles(), OUString(), m_xDialog.get(), true, bRTL);
+    if (aDlg.run() == RET_OK)
+    {
+        rSh->SetTableStyle(*pFormat->GetData(aDlg.GetIndex()));
+    }
 }
 
 IMPL_LINK(SwInsertDBColAutoPilot, TVSelectHdl, weld::TreeView&, rBox, void)

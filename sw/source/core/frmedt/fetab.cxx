@@ -1420,9 +1420,6 @@ bool SwFEShell::ResetTableStyle()
     // AutoFormat for the table/table selection
 bool SwFEShell::SetTableStyle(const SwTableAutoFormat& rStyle)
 {
-    // make sure SwDoc has the style
-    GetDoc()->GetTableStyles().AddAutoFormat(rStyle);
-
     SwTableNode *pTableNode = const_cast<SwTableNode*>(IsCursorInTable());
     if (!pTableNode)
         return false;

@@ -28,8 +28,8 @@
 #include <vcl/weld/TreeView.hxx>
 #include <vcl/weld/weld.hxx>
 
+#include <svx/dialog/TableAutoFmtPreview.hxx>
 #include "wrtsh.hxx"
-#include "autoformatpreview.hxx"
 #include <tblafmt.hxx>
 
 class SwTableAutoFormat;
@@ -68,7 +68,7 @@ class SwConvertTableDlg final : public SfxDialogController
     std::unique_ptr<weld::CheckButton> m_xBtnFont;
     std::unique_ptr<weld::CheckButton> m_xBtnPattern;
     std::unique_ptr<weld::CheckButton> m_xBtnAlignment;
-    AutoFormatPreview m_aWndPreview;
+    SvxAutoFmtPreview m_aWndPreview;
     std::unique_ptr<weld::CustomWeld> m_xWndPreview;
 
     void Init();
