@@ -5651,21 +5651,8 @@ void HTMLReader::SetupFilterOptions()
         m_aNamespace = aNamespace;
 }
 
-namespace
-{
-    class FontCacheGuard
-    {
-    public:
-        ~FontCacheGuard()
-        {
-            FlushFontCache();
-        }
-    };
-}
-
 bool TestImportHTML(SvStream &rStream)
 {
-    FontCacheGuard aFontCacheGuard;
     HTMLReader aReader;
     aReader.m_pStream = &rStream;
 

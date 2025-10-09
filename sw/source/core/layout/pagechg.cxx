@@ -1120,8 +1120,8 @@ void SwPageFrame::ComputeRegister(const SwTextFormatColl* pFormat, sal_uInt16& r
     else
     {
         SwViewShell *pSh = getRootFrame()->GetCurrShell();
-        SwFontAccess aFontAccess( pFormat, pSh );
-        SwFont aFnt( aFontAccess.Get()->GetFont() );
+        const SwFontObj& rFontAccess = pFormat->GetFontObj(pSh);
+        SwFont aFnt( rFontAccess.GetFont() );
 
         OutputDevice *pOut = nullptr;
         if(pSh)
