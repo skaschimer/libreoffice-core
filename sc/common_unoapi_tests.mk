@@ -36,6 +36,7 @@ $(eval $(call gb_CppunitTest_use_libraries,sc_$(1), \
     sal \
     salhelper \
     sc \
+    sfx \
     subsequenttest \
     test \
     unotest \
@@ -46,6 +47,7 @@ $(eval $(call gb_CppunitTest_use_libraries,sc_$(1), \
 
 $(eval $(call gb_CppunitTest_set_include,sc_$(1),\
     -I$(SRCDIR)/sc/inc \
+    -I$(SRCDIR)/sc/source/ui/inc \
     $$(INCLUDE) \
 ))
 
