@@ -24,7 +24,7 @@
 #include <vcl/weld/TreeView.hxx>
 #include <vcl/weld/weld.hxx>
 
-class SvxHyperlinkTabPageBase;
+class HyperlinkTabPageBase;
 
 //#                                                                      #
 //# Window-Class                                                         #
@@ -32,7 +32,7 @@ class SvxHyperlinkTabPageBase;
 class SvxHlinkDlgMarkWnd : public weld::GenericDialogController
 {
 private:
-    SvxHyperlinkTabPageBase* mpParent;
+    HyperlinkTabPageBase* mpParent;
 
     sal_uInt16          mnError;
 
@@ -40,6 +40,8 @@ private:
     std::unique_ptr<weld::Button> mxBtClose;
     std::unique_ptr<weld::TreeView> mxLbTree;
     std::unique_ptr<weld::Label> mxError;
+
+    OUString            maSelectedMark;
 
     void ErrorChanged();
 
@@ -56,7 +58,7 @@ protected:
     DECL_LINK( ClickCloseHdl_Impl, weld::Button&, void );
 
 public:
-    SvxHlinkDlgMarkWnd(weld::Window* pParentDialog, SvxHyperlinkTabPageBase *pParentPage);
+    SvxHlinkDlgMarkWnd(weld::Window* pParentDialog);
     virtual ~SvxHlinkDlgMarkWnd() override;
 
     void RestorePosSize();
@@ -64,6 +66,9 @@ public:
     bool SelectEntry(std::u16string_view aStrMark);
 
     sal_uInt16 SetError( sal_uInt16 nError);
+
+    // Get the selected mark after dialog closes (for standalone mode)
+    const OUString& GetSelectedMark() const { return maSelectedMark; }
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

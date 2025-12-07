@@ -52,7 +52,6 @@
 #include <cuitbxform.hxx>
 #include <optdict.hxx>
 #include <multipat.hxx>
-#include <cuihyperdlg.hxx>
 #include <cuifmsearch.hxx>
 #include <cuigrfflt.hxx>
 #include <cuitabarea.hxx>
@@ -94,6 +93,7 @@
 #include <tipofthedaydlg.hxx>
 #include <widgettestdlg.hxx>
 #include <uipickerdlg.hxx>
+#include <hyperlinkdlg.hxx>
 #include <DiagramDialog.hxx>
 #include <fileextcheckdlg.hxx>
 #include <TextColumnsPage.hxx>
@@ -896,22 +896,6 @@ VclPtr<AbstractSvxMultiPathDialog> AbstractDialogFactory_Impl::CreateSvxPathSele
     return VclPtr<AbstractSvxPathSelectDialog_Impl>::Create(pParent);
 }
 
-namespace
-{
-class AbstractSvxHpLinkDlg_Impl final
-    : public vcl::AbstractDialogImpl_Sync_Shared<AbstractSvxHpLinkDlg, SvxHpLinkDlg>
-{
-public:
-    using AbstractDialogImpl_BASE::AbstractDialogImpl_BASE;
-    std::shared_ptr<SfxDialogController> GetController() override { return m_pDlg; }
-    bool QueryClose() override { return m_pDlg->QueryClose(); }
-};
-}
-
-VclPtr<AbstractSvxHpLinkDlg> AbstractDialogFactory_Impl::CreateSvxHpLinkDlg(SfxChildWindow* pChild, SfxBindings* pBindings, weld::Window* pParent)
-{
-    return VclPtr<AbstractSvxHpLinkDlg_Impl>::Create(pBindings, pChild, pParent);
-}
 
 namespace
 {
@@ -1590,6 +1574,16 @@ VclPtr<VclAbstractDialog>
 AbstractDialogFactory_Impl::CreateUIPickerDialog(weld::Window* pParent)
 {
     return VclPtr<CuiAbstractController_Impl<UIPickerDialog>>::Create(pParent);
+}
+
+VclPtr<VclAbstractDialog>
+AbstractDialogFactory_Impl::CreateHyperlinkDialog(weld::Window* pParent,
+                                                  SfxChildWindow* pChildWindow)
+{
+    auto pDlg = std::make_shared<HyperlinkDialog>(pParent, pChildWindow);
+    if (pChildWindow)
+        pChildWindow->SetController(pDlg);
+    return VclPtr<CuiAbstractControllerAsync_Impl<HyperlinkDialog>>::Create(pDlg);
 }
 
 VclPtr<AbstractDiagramDialog>

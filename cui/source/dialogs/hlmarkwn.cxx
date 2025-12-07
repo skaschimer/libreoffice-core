@@ -41,7 +41,7 @@
 
 #include <strings.hrc>
 #include <hlmarkwn.hxx>
-#include <hltpbase.hxx>
+#include <hyperlinktabpagebase.hxx>
 #include <hlmarkwn_def.hxx>
 
 #include <stack>
@@ -66,17 +66,18 @@ struct TargetData
 
 }
 
-//*** Window-Class ***
-// Constructor / Destructor
-SvxHlinkDlgMarkWnd::SvxHlinkDlgMarkWnd(weld::Window* pParentDialog, SvxHyperlinkTabPageBase *pParentPage)
+
+// Constructor for new HyperlinkDialog
+SvxHlinkDlgMarkWnd::SvxHlinkDlgMarkWnd(weld::Window* pParentDialog)
     : GenericDialogController(pParentDialog, u"cui/ui/hyperlinkmarkdialog.ui"_ustr, u"HyperlinkMark"_ustr)
-    , mpParent(pParentPage)
+    , mpParent(nullptr)
     , mnError(LERR_NOERROR)
-    , mxBtApply(m_xBuilder->weld_button(u"ok"_ustr))
-    , mxBtClose(m_xBuilder->weld_button(u"close"_ustr))
-    , mxLbTree(m_xBuilder->weld_tree_view(u"TreeListBox"_ustr))
-    , mxError(m_xBuilder->weld_label(u"error"_ustr))
 {
+    mxBtApply = m_xBuilder->weld_button(u"ok"_ustr);
+    mxBtClose = m_xBuilder->weld_button(u"close"_ustr);
+    mxLbTree = m_xBuilder->weld_tree_view(u"TreeListBox"_ustr);
+    mxError = m_xBuilder->weld_label(u"error"_ustr);
+
     mxLbTree->set_size_request(mxLbTree->get_approximate_digit_width() * 25,
                                mxLbTree->get_height_rows(12));
     mxBtApply->connect_clicked( LINK ( this, SvxHlinkDlgMarkWnd, ClickApplyHdl_Impl ) );
@@ -481,7 +482,16 @@ IMPL_LINK_NOARG(SvxHlinkDlgMarkWnd, ClickApplyHdl_Impl, weld::Button&, void)
         TargetData* pData = weld::fromId<TargetData*>(mxLbTree->get_id(*xEntry));
         if (pData->bIsTarget)
         {
-            mpParent->SetMarkStr(pData->aUStrLinkname);
+            maSelectedMark = pData->aUStrLinkname;
+
+            if (mpParent)
+            {
+                mpParent->SetMarkStr(pData->aUStrLinkname);
+            }
+            else
+            {
+                m_xDialog->response(RET_OK);
+            }
         }
     }
 }
