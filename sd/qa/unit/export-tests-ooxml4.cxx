@@ -2011,6 +2011,18 @@ CPPUNIT_TEST_FIXTURE(SdOOXMLExportTest4, testParaAlignStartEnd)
     assertXPath(pDoc, "/p:sld/p:cSld/p:spTree/p:sp[2]/p:txBody/a:p[4]/a:pPr[@algn='l']", 1);
 }
 
+CPPUNIT_TEST_FIXTURE(SdOOXMLExportTest4, testTdf169559)
+{
+    createSdImpressDoc("pptx/tdf169524.pptx");
+    save(TestFilter::PPTX);
+
+    xmlDocUniquePtr pXmlDoc = parseExport(u"ppt/slideMasters/slideMaster1.xml"_ustr);
+    assertXPath(
+        pXmlDoc,
+        "/p:sldMaster/p:cSld/p:spTree/p:sp[2]/p:txBody/a:lstStyle/a:lvl1pPr/a:spcAft/a:spcPts",
+        "val", u"1701");
+}
+
 CPPUNIT_PLUGIN_IMPLEMENT();
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
