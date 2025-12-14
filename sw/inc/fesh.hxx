@@ -268,7 +268,7 @@ public:
     SW_DLLPUBLIC bool Copy( SwFEShell&, const Point& rSttPt, const Point& rInsPt,
                bool bIsMove = false, bool bSelectInsert = true );
 
-    void SelectFlyFrame( SwFlyFrame& rFrame );
+    SW_DLLPUBLIC void SelectFlyFrame(SwFlyFrame& rFrame);
 
     SW_DLLPUBLIC void UnfloatFlyFrame();
 

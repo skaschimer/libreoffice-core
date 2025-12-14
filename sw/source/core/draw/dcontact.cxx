@@ -1573,6 +1573,7 @@ void SwDrawContact::SwClientNotify(const SwModify& rMod, const SfxHint& rHint)
                  break;
             case sw::DrawFrameFormatHintId::POST_RESTORE_FLY_ANCHOR:
                 GetAnchoredObj(GetMaster())->MakeObjPos();
+                MoveObjToVisibleLayer(GetMaster());
                 break;
             default:
                 ;

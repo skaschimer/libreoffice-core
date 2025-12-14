@@ -75,6 +75,9 @@
 #include <frameformats.hxx>
 #include <textboxhelper.hxx>
 
+#include <sortedobjs.hxx>
+#include <cmdid.h>
+#include <sfx2/dispatch.hxx>
 
 using namespace ::com::sun::star;
 
@@ -276,10 +279,6 @@ void SwFEShell::SelectFlyFrame( SwFlyFrame& rFrame )
 
 void SwFEShell::UnfloatFlyFrame()
 {
-    GetIDocumentUndoRedo().StartUndo(SwUndoId::DELLAYFMT, nullptr);
-    comphelper::ScopeGuard g([this]
-                             { GetIDocumentUndoRedo().EndUndo(SwUndoId::DELLAYFMT, nullptr); });
-
     SwFlyFrame* pFly = GetSelectedFlyFrame();
     if (!pFly)
     {
@@ -298,6 +297,55 @@ void SwFEShell::UnfloatFlyFrame()
     if (!pFlyEnd)
     {
         return;
+    }
+
+    GetIDocumentUndoRedo().StartUndo(SwUndoId::UNFLOAT_FRAME_CONTENT, nullptr);
+    comphelper::ScopeGuard g(
+        [this]
+        {
+            GetIDocumentUndoRedo().EndUndo(SwUndoId::UNFLOAT_FRAME_CONTENT, nullptr);
+            EndAllAction();
+        });
+
+    StartAllAction();
+
+    // tdf#169651 Crash in: SwLayAction::FormatContent
+    // To avoid crash, dispatch FN_TOOL_ANCHOR_PARAGRAPH to change anchored objects that have an
+    // anchor id of FLY_AT_FLY to have an anchored id of FLY_AT_PARA before removing the containing
+    // fly frame.
+    if (pFly->GetDrawObjs())
+    {
+        for (size_t i = 0; pFly->GetDrawObjs() && i < pFly->GetDrawObjs()->size(); i++)
+        {
+            SwAnchoredObject* pAnchoredObj = (*pFly->GetDrawObjs())[i];
+            if (!pAnchoredObj)
+                continue;
+
+            const SwFrameFormat* pFrameFormat = pAnchoredObj->GetFrameFormat();
+            if (!pFrameFormat)
+                continue;
+
+            if (pFrameFormat->GetAnchor().GetAnchorId() != RndStdIds::FLY_AT_FLY)
+                continue;
+
+            // if (SwFlyFrame* pFlyFrame = pAnchoredObj->DynCastFlyFrame())
+            //     SelectFlyFrame(*pFlyFrame);
+            // else
+            SelectObj(Point(), 0, pAnchoredObj->DrawObj());
+
+            GetSfxViewShell()->GetDispatcher()->Execute(FN_TOOL_ANCHOR_PARAGRAPH,
+                                                        SfxCallMode::SYNCHRON);
+
+            // Check if anchor id changed.
+            if (pFrameFormat->GetAnchor().GetAnchorId() != RndStdIds::FLY_AT_PARA)
+                continue;
+
+            // The fly frame should now have one less draw object anchored to it. Anchored
+            // objects are stored sorted. The next anchored object in the sorted objects vector
+            // should now be at the current index. Adjust the index variable value by -1 so the
+            // next pass of the for loop will set it to the same index as this pass.
+            i--;
+        }
     }
 
     // Create an empty paragraph after the table, so the frame's SwNodes section is non-empty after
@@ -320,6 +368,17 @@ void SwFEShell::UnfloatFlyFrame()
     if (!pAnchor)
     {
         return;
+    }
+
+    // The anchor node could be a start node, indicating anchored to frame, move past it to the
+    // first content node. pFlyFormat->GetAnchor().GetAnchorId() == RndStdIds::FLY_AT_FLY
+    if (pAnchor->IsStartNode())
+    {
+        SwNodeIndex aIdx(*pAnchor);
+        pAnchor = SwNodes::GoNext(&aIdx);
+        assert(pAnchor);
+        if (!pAnchor)
+            return;
     }
 
     // Move the content outside of the text frame.

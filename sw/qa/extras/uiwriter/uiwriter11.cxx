@@ -30,6 +30,10 @@
 #include <ndtxt.hxx>
 #include <IDocumentLayoutAccess.hxx>
 #include <svx/svxids.hrc>
+#include <sortedobjs.hxx>
+#include <rootfrm.hxx>
+#include <anchoredobject.hxx>
+#include <flyfrm.hxx>
 
 namespace
 {
@@ -619,6 +623,27 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf165206DirSwitchPreservesAlignment)
                          getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
     CPPUNIT_ASSERT_EQUAL(short(0),
                          getProperty<short>(getRun(getParagraph(1), 1), u"ParaAdjust"_ustr));
+}
+
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf169651)
+{
+    // Given a document with a fly frame that has anchored FLY_AT_FLY, a shape object and a
+    // fly frame that itself has a shape object anchored FLY_AT_FLY:
+    createSwDoc("tdf169651.odt");
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    CPPUNIT_ASSERT(pWrtShell);
+
+    const SwSortedObjs* pAnchoredObjs
+        = pWrtShell->GetLayout()->GetLower()->GetLower()->GetLower()->GetDrawObjs();
+    CPPUNIT_ASSERT(pAnchoredObjs);
+    SwAnchoredObject* pAnchoredObj = (*pAnchoredObjs)[0];
+    SwFlyFrame* pFlyFrame = pAnchoredObj->DynCastFlyFrame();
+    CPPUNIT_ASSERT(pFlyFrame);
+
+    pWrtShell->SelectFlyFrame(*pFlyFrame);
+
+    // Without the patch this test would crash during the following
+    pWrtShell->UnfloatFlyFrame();
 }
 
 } // end of anonymous namespace
