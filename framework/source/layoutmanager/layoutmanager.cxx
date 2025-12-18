@@ -1957,6 +1957,24 @@ sal_Bool SAL_CALL LayoutManager::unlockWindow( const OUString& aName )
     return bResult;
 }
 
+bool LayoutManager::makeContextSensitive(std::u16string_view sName, bool bSensitive )
+{
+    bool bResult( false );
+    if ( o3tl::equalsIgnoreAsciiCase(getElementTypeFromResourceURL( sName ), UIRESOURCETYPE_TOOLBAR ))
+    {
+        SolarMutexClearableGuard aReadLock;
+        ToolbarLayoutManager*             pToolbarManager = m_xToolbarManager.get();
+        aReadLock.clear();
+        if ( pToolbarManager )
+        {
+            bResult = pToolbarManager->makeContextSensitive(sName, bSensitive );
+            if ( pToolbarManager->isLayoutDirty() )
+                doLayout();
+        }
+    }
+    return bResult;
+}
+
 void SAL_CALL LayoutManager::setElementSize( const OUString& aName, const awt::Size& aSize )
 {
     if ( !o3tl::equalsIgnoreAsciiCase(getElementTypeFromResourceURL( aName ), UIRESOURCETYPE_TOOLBAR ))

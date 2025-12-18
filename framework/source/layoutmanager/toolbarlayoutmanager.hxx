@@ -105,6 +105,7 @@ class ToolbarLayoutManager : public ::cppu::WeakImplHelper< css::awt::XDockableW
         bool floatToolbar( std::u16string_view rResourceURL );
         bool lockToolbar( std::u16string_view rResourceURL );
         bool unlockToolbar( std::u16string_view rResourceURL );
+        bool makeContextSensitive( std::u16string_view sResourceURL, bool bSensitive );
         void setToolbarPos( std::u16string_view rResourceURL, const css::awt::Point& aPos );
         void setToolbarSize( std::u16string_view rResourceURL, const css::awt::Size& aSize );
         void setToolbarPosSize( std::u16string_view rResourceURL, const css::awt::Point& aPos, const css::awt::Size& aSize );

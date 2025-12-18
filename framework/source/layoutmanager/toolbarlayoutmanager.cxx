@@ -1580,6 +1580,8 @@ void ToolbarLayoutManager::implts_writeWindowStateData( const UIElement& rElemen
             comphelper::makePropertyValue(WINDOWSTATE_PROPERTY_UINAME, rElementData.m_aUIName),
             comphelper::makePropertyValue(WINDOWSTATE_PROPERTY_LOCKED,
                                           rElementData.m_aDockedData.m_bLocked),
+            comphelper::makePropertyValue(WINDOWSTATE_PROPERTY_CONTEXT,
+                                          rElementData.m_bContextSensitive),
             comphelper::makePropertyValue(WINDOWSTATE_PROPERTY_STYLE,
                                           static_cast<sal_uInt16>(rElementData.m_nStyle))
         };
@@ -3981,6 +3983,27 @@ bool ToolbarLayoutManager::floatToolbar( std::u16string_view rResourceURL )
 
     return false;
 }
+
+bool ToolbarLayoutManager::makeContextSensitive( std::u16string_view rResourceURL, const bool bSensitive )
+{
+    UIElement aUIElement = implts_findToolbar( rResourceURL );
+    if ( !aUIElement.m_xUIElement.is() )
+        return false;
+
+    try
+    {
+        aUIElement.m_bContextSensitive = bSensitive;
+        implts_writeWindowStateData(aUIElement);
+
+        return true;
+    }
+    catch (const lang::DisposedException&)
+    {
+    }
+
+    return false;
+}
+
 
 bool ToolbarLayoutManager::lockToolbar( std::u16string_view rResourceURL )
 {

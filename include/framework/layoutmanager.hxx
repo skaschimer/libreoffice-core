@@ -112,6 +112,7 @@ public:
     virtual sal_Bool SAL_CALL floatWindow(const OUString& aName) override;
     virtual sal_Bool SAL_CALL lockWindow(const OUString& ResourceURL) override;
     virtual sal_Bool SAL_CALL unlockWindow(const OUString& ResourceURL) override;
+    bool makeContextSensitive(std::u16string_view sResourceURL, bool bSensitive);
     virtual void SAL_CALL setElementSize(const OUString& aName,
                                          const css::awt::Size& aSize) override;
     virtual void SAL_CALL setElementPos(const OUString& aName,
