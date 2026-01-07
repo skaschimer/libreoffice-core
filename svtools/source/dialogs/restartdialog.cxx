@@ -69,9 +69,6 @@ public:
         case svtools::RESTART_REASON_CALCULATION:
             reason_ = m_xBuilder->weld_widget(u"reason_calculation"_ustr);
             break;
-        case svtools::RESTART_REASON_UI_CHANGE:
-            reason_ = m_xBuilder->weld_widget(u"reason_uichange"_ustr);
-            break;
         default:
             assert(false); // this cannot happen
         }
