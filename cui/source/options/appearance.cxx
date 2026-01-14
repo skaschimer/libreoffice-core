@@ -351,10 +351,6 @@ IMPL_LINK_NOARG(SvxAppearanceTabPage, ColorValueChgHdl, ColorListBox&, void)
 
     ColorConfigValue aCurrentEntryColor = pColorConfig->GetColorValue(nEntry);
 
-    // restart only for the UI colors
-    if (nEntry >= WINDOWCOLOR)
-        m_bRestartRequired = true;
-
     // use nColor for caching the value of color in use. This avoids tedious refactoring which IMO
     // would use function calls to discriminate between colors. Those functions themself call some virtual functions
     // making the whole thing super slow (comparatively).
