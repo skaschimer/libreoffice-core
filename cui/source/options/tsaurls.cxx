@@ -11,6 +11,8 @@
 #include <svx/svxdlg.hxx>
 #include <comphelper/sequence.hxx>
 #include <comphelper/diagnose_ex.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include "tsaurls.hxx"
 

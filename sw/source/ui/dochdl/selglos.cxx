@@ -18,6 +18,8 @@
  */
 
 #include <selglos.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 SwSelGlossaryDlg::SwSelGlossaryDlg(weld::Window * pParent, std::u16string_view rShortName)
     : GenericDialogController(pParent, u"modules/swriter/ui/insertautotextdialog.ui"_ustr, u"InsertAutoTextDialog"_ustr)

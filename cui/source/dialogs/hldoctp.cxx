@@ -21,6 +21,7 @@
 #include <osl/file.hxx>
 #include <sfx2/filedlghelper.hxx>
 #include <com/sun/star/ui/dialogs/TemplateDescription.hpp>
+#include <vcl/weld/Builder.hxx>
 
 #include <hldoctp.hxx>
 #include <hlmarkwn_def.hxx>

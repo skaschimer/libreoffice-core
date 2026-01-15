@@ -52,6 +52,7 @@
 #include <doc.hxx>
 #include <svl/cjkoptions.hxx>
 #include <svl/eitem.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace ::com::sun::star;
 

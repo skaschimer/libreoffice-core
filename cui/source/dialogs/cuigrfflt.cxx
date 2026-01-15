@@ -27,7 +27,9 @@
 #include <vcl/bitmap/BitmapColorQuantizationFilter.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <osl/diagnose.h>
+#include <tools/fldunit.hxx>
 #include <cuigrfflt.hxx>
 
 CuiGraphicPreviewWindow::CuiGraphicPreviewWindow()

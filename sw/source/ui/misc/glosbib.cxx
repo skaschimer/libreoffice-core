@@ -19,6 +19,8 @@
 
 #include <tools/urlobj.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <unotools/transliterationwrapper.hxx>
 #include <unotools/tempfile.hxx>

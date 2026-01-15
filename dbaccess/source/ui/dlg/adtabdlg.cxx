@@ -31,6 +31,7 @@
 #include <imageprovider.hxx>
 #include <comphelper/containermultiplexer.hxx>
 #include <cppuhelper/basemutex.hxx>
+#include <vcl/weld/Builder.hxx>
 
 // slot ids
 using namespace dbaui;

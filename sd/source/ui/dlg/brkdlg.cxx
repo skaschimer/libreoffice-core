@@ -23,6 +23,7 @@
 #include <svx/svdetc.hxx>
 #include <vcl/scheduler.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 
 #include <sdresid.hxx>

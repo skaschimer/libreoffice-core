@@ -16,6 +16,7 @@
 #include <sfx2/bindings.hxx>
 #include <sfx2/dispatch.hxx>
 #include <sfx2/objsh.hxx>
+#include <tools/fldunit.hxx>
 #include <vcl/svapp.hxx>
 #include <sfx2/watermarkitem.hxx>
 #include <svtools/ctrltool.hxx>

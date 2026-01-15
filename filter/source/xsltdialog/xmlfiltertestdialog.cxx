@@ -40,6 +40,8 @@
 #include <comphelper/oslfile2streamwrap.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <sfx2/filedlghelper.hxx>
 #include <osl/file.hxx>
 #include <unotools/tempfile.hxx>

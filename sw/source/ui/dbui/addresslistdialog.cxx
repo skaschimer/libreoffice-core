@@ -29,6 +29,7 @@
 #include <dbconfig.hxx>
 #include <unotools/tempfile.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <tools/urlobj.hxx>
 #include <comphelper/processfactory.hxx>
 #include <comphelper/types.hxx>

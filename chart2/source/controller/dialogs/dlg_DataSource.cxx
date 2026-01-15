@@ -27,6 +27,8 @@
 #include "tp_RangeChooser.hxx"
 #include "tp_DataSource.hxx"
 
+#include <vcl/weld/Builder.hxx>
+
 using namespace ::chart;
 
 namespace chart

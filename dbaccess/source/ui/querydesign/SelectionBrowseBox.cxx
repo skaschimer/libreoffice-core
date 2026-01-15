@@ -50,6 +50,7 @@
 #include <vcl/commandevent.hxx>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <o3tl/string_view.hxx>
 

@@ -12,6 +12,7 @@
 #include <rtl/ustrbuf.hxx>
 #include <utility>
 #include <vcl/font/FeatureParser.hxx>
+#include <vcl/vclenum.hxx>
 #include <FontFeatures.hxx>
 #include <unordered_set>
 

@@ -25,6 +25,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/syswin.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <unotools/historyoptions.hxx>
 #include <unotools/moduleoptions.hxx>

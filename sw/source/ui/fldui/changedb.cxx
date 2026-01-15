@@ -26,6 +26,7 @@
 #include <comphelper/sequence.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <o3tl/string_view.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <view.hxx>
 #include <wrtsh.hxx>

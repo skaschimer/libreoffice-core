@@ -39,6 +39,7 @@
 #include <osl/diagnose.h>
 
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/TaskStopwatch.hxx>

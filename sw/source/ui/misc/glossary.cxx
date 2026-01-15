@@ -23,6 +23,7 @@
 #include <vcl/event.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/transfer.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svl/stritem.hxx>
 #include <svl/macitem.hxx>

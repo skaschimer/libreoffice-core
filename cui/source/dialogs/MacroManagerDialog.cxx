@@ -37,6 +37,8 @@
 #include <unotools/viewoptions.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <dlgname.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>

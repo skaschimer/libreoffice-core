@@ -21,6 +21,8 @@
 #include <drawdoc.hxx>
 #include <sdpage.hxx>
 #include <osl/diagnose.h>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace ::sd;
 

@@ -29,6 +29,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <vcl/image.hxx>
 #include <vcl/transfer.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <colrctrl.hxx>
 

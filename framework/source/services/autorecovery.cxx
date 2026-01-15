@@ -85,6 +85,7 @@
 #include <vcl/evntpost.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/timer.hxx>
+#include <vcl/vclenum.hxx>
 #include <unotools/pathoptions.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <unotools/tempfile.hxx>

@@ -8,6 +8,7 @@
  */
 
 #include <svx/GenericDropDownFieldDialog.hxx>
+#include <vcl/weld/Builder.hxx>
 
 GenericDropDownFieldDialog::GenericDropDownFieldDialog(weld::Widget* pParent,
                                                        const OUString& rTitle)

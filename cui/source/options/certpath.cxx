@@ -12,6 +12,8 @@
 #include <osl/security.hxx>
 #include <sfx2/filedlghelper.hxx>
 #include <comphelper/diagnose_ex.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include "certpath.hxx"
 
 #include <com/sun/star/xml/crypto/NSSInitializer.hpp>

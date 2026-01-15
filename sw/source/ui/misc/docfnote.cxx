@@ -37,6 +37,7 @@
 #include <memory>
 
 #include <vcl/tabs.hrc>
+#include <vcl/weld/Builder.hxx>
 
 SwFootNoteOptionDlg::SwFootNoteOptionDlg(weld::Window *pParent, SwWrtShell &rS)
     : SfxTabDialogController(pParent, u"modules/swriter/ui/footendnotedialog.ui"_ustr, u"FootEndnoteDialog"_ustr)

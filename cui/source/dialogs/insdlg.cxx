@@ -45,6 +45,7 @@
 #include <utility>
 #include <vcl/dibtools.hxx>
 #include <vcl/image.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
 #include <comphelper/classids.hxx>

@@ -45,6 +45,8 @@
 #include <vcl/svapp.hxx>
 #include <vcl/outdev.hxx>
 #include <vcl/graph.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <basegfx/matrix/b2dhommatrix.hxx>
 #include "exportdialog.hxx"

@@ -27,6 +27,8 @@
 #include <sal/log.hxx>
 #include <i18nlangtag/languagetag.hxx>
 #include <tools/debug.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <utility>
 
 #define HYPH_POS_CHAR       '='

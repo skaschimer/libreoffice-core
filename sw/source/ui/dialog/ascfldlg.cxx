@@ -43,6 +43,7 @@
 #include <IDocumentDeviceAccess.hxx>
 
 #include <vcl/metric.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace ::com::sun::star;
 

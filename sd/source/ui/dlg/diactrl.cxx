@@ -21,6 +21,7 @@
 
 #include <comphelper/propertyvalue.hxx>
 #include <utility>
+#include <tools/fldunit.hxx>
 #include <vcl/fieldvalues.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>

@@ -20,6 +20,8 @@
 #include <strings.hrc>
 #include "openlocked.hxx"
 #include <officecfg/Office/Common.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weldutils.hxx>
 
 using namespace vcl;

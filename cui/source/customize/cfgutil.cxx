@@ -53,6 +53,7 @@
 #include <vcl/commandinfoprovider.hxx>
 #include <vcl/help.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <sfx2/sidebar/ResourceManager.hxx>
 #include <sfx2/sidebar/Context.hxx>

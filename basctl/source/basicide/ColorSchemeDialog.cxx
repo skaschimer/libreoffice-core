@@ -21,6 +21,7 @@
 #include <iderdll.hxx>
 #include <iderid.hxx>
 #include <ColorSchemeDialog.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include "baside2.hxx"
 #include <BasicColorConfig.hxx>

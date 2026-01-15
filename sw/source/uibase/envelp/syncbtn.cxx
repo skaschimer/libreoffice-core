@@ -20,6 +20,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/dispatch.hxx>
 #include <vcl/windowstate.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <cmdid.h>
 #include <swmodule.hxx>

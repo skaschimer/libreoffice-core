@@ -12,6 +12,9 @@
 #include <vcl/dllapi.h>
 #include <vcl/weld/ItemView.hxx>
 
+enum class SelectionMode;
+enum class TxtAlign;
+
 namespace weld
 {
 enum class ColumnToggleType

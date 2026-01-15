@@ -46,6 +46,7 @@
 #include <svx/txenctab.hxx>
 #include <unotools/filteroptions_settings.hxx>
 #include <unotools/viewoptions.hxx>
+#include <vcl/windowstate.hxx>
 
 //! TODO make dynamic
 const SCSIZE ASCIIDLG_MAXROWS                = MAXROWCOUNT;

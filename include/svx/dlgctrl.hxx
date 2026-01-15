@@ -19,6 +19,7 @@
 #ifndef INCLUDED_SVX_DLGCTRL_HXX
 #define INCLUDED_SVX_DLGCTRL_HXX
 
+#include <comphelper/OAccessible.hxx>
 #include <sfx2/tabdlg.hxx>
 #include <svx/svxdllapi.h>
 #include <svx/rectenum.hxx>

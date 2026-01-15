@@ -25,7 +25,9 @@
 #include <osl/file.hxx>
 #include <cppuhelper/exc_hlp.hxx>
 #include <utility>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <cppuhelper/implbase.hxx>
 
 #include <com/sun/star/beans/NamedValue.hpp>

@@ -27,6 +27,7 @@
 #include <osl/time.h>
 #include <sfx2/tabdlg.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <unotools/useroptions.hxx>
 

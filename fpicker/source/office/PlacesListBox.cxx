@@ -9,6 +9,7 @@
 
 #include "PlacesListBox.hxx"
 #include <svtools/PlaceEditDialog.hxx>
+#include <vcl/vclenum.hxx>
 
 #include <bitmaps.hlst>
 

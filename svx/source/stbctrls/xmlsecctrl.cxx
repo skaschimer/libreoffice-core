@@ -25,6 +25,7 @@
 #include <vcl/event.hxx>
 #include <vcl/status.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <sfx2/signaturestate.hxx>
 #include <sfx2/module.hxx>

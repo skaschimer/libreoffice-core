@@ -19,6 +19,7 @@
 
 #include <memory>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <rtl/ustring.hxx>
 #include <tools/lineend.hxx>
 #include <svtools/unitconv.hxx>

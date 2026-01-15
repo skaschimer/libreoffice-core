@@ -47,6 +47,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/salgtype.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/TextView.hxx>
 #include <vcl/weld/customweld.hxx>
 #include <vcl/weld/weld.hxx>

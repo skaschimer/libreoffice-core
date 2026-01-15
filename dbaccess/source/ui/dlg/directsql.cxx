@@ -28,6 +28,8 @@
 #include <rtl/ustring.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <com/sun/star/sdbc/SQLException.hpp>
 #include <com/sun/star/sdbc/XRow.hpp>

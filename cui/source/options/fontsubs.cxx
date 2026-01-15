@@ -22,6 +22,8 @@
 #include <officecfg/Office/Common.hxx>
 #include <svtools/ctrltool.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <svtools/fontsubstconfig.hxx>
 #include "fontsubs.hxx"
 #include <helpids.h>

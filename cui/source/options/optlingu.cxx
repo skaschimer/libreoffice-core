@@ -19,6 +19,8 @@
 
 #include <utility>
 #include <vcl/settings.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/SpinButton.hxx>
 #include <vcl/weld/weld.hxx>
 #include <i18nlangtag/languagetag.hxx>

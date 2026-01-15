@@ -16,6 +16,8 @@
 #include <osl/file.hxx>
 #include <sal/log.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <unotools/viewoptions.hxx>
 #include <o3tl/string_view.hxx>

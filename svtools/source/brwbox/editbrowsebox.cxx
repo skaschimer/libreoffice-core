@@ -25,6 +25,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/window.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <bitmaps.hlst>
 

@@ -8,6 +8,8 @@
  */
 
 #include "authfallbackdlg.hxx"
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 AuthFallbackDlg::AuthFallbackDlg(weld::Window* pParent, const OUString& instructions,
                                  const OUString& url)

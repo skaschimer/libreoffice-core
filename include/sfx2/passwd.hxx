@@ -25,6 +25,8 @@
 #include <vcl/weld/weld.hxx>
 #include <o3tl/typed_flags_set.hxx>
 
+#include <optional>
+
 // defines ---------------------------------------------------------------
 
 enum class SfxShowExtras

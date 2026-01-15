@@ -30,6 +30,7 @@
 #include <vcl/sound.hxx>
 #include <vcl/wintypes.hxx>
 #include <vcl/stdtext.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <basic/sbx.hxx>
 #include <svl/zforlist.hxx>

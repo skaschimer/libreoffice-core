@@ -27,6 +27,7 @@
 #include <svx/strings.hrc>
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/vectorgraphicdata.hxx>
 #include <vcl/weld/weld.hxx>
 

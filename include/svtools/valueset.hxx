@@ -20,8 +20,10 @@
 #pragma once
 
 #include <svtools/svtdllapi.h>
+#include <tools/color.hxx>
 #include <vcl/wintypes.hxx>
 #include <vcl/image.hxx>
+#include <vcl/vclptr.hxx>
 #include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/customweld.hxx>
 #include <rtl/ref.hxx>

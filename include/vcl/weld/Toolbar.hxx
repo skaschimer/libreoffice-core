@@ -12,6 +12,11 @@
 #include <vcl/dllapi.h>
 #include <vcl/weld/weld.hxx>
 
+namespace vcl
+{
+enum class ImageType;
+}
+
 namespace weld
 {
 class VCL_DLLPUBLIC Toolbar : virtual public Widget

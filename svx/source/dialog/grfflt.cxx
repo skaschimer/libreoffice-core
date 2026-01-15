@@ -23,6 +23,7 @@
 #include <vcl/bitmap/BitmapSobelGreyFilter.hxx>
 #include <vcl/bitmap/BitmapPopArtFilter.hxx>
 #include <vcl/GraphicObject.hxx>
+#include <vcl/vclenum.hxx>
 
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/viewsh.hxx>

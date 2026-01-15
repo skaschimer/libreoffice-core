@@ -20,6 +20,7 @@
 #include <hintids.hxx>
 #include <o3tl/untaint.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svl/stritem.hxx>
 #include <svl/intitem.hxx>

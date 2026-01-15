@@ -18,6 +18,7 @@
  */
 
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <osl/diagnose.h>
 #include <bitmaps.hlst>
 

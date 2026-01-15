@@ -42,6 +42,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/specialchars.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace dbaui;
 

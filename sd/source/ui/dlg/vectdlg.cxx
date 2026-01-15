@@ -25,6 +25,7 @@
 #include <vcl/bitmap/Vectorizer.hxx>
 #include <vcl/metaact.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <DrawDocShell.hxx>
 #include <vectdlg.hxx>

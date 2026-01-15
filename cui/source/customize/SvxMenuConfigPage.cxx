@@ -21,9 +21,11 @@
 #include <sal/log.hxx>
 
 #include <dlgname.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/commandevent.hxx>
+#include <vcl/vclenum.hxx>
 
 #include <strings.hrc>
 #include <helpids.h>

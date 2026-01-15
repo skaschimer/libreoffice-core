@@ -10,6 +10,7 @@
 #pragma once
 
 #include <vcl/dllapi.h>
+#include <vcl/font.hxx>
 #include <vcl/weld/ComboBox.hxx>
 #include <vcl/weld/Entry.hxx>
 #include <vcl/weld/TreeView.hxx>

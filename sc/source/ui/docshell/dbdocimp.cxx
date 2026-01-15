@@ -21,6 +21,7 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/types.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/dataaccessdescriptor.hxx>
 #include <sfx2/viewfrm.hxx>

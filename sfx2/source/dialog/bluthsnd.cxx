@@ -15,6 +15,7 @@
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/strings.hrc>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 
 #if defined(LINUX) || defined(MACOSX)

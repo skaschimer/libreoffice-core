@@ -24,6 +24,7 @@
 
 #include <osl/diagnose.h>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <sfx2/app.hxx>
 #include <sfx2/bindings.hxx>

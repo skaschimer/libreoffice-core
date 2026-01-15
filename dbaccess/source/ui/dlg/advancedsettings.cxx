@@ -31,6 +31,7 @@
 #include <svl/eitem.hxx>
 #include <svl/intitem.hxx>
 #include <svl/stritem.hxx>
+#include <vcl/weld/Builder.hxx>
 
 namespace dbaui
 {

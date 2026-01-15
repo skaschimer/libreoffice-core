@@ -18,6 +18,7 @@
  */
 
 #include <svtools/querydelete.hxx>
+#include <vcl/weld/Builder.hxx>
 
 namespace svtools
 {

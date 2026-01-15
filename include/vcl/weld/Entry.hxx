@@ -12,6 +12,8 @@
 #include <vcl/dllapi.h>
 #include <vcl/weld/TextWidget.hxx>
 
+enum class TxtAlign;
+
 namespace weld
 {
 class VCL_DLLPUBLIC Entry : virtual public TextWidget

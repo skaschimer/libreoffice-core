@@ -46,6 +46,7 @@
 #include <svtools/ctrltool.hxx>
 #include <sfx2/objsh.hxx>
 #include <sfx2/viewsh.hxx>
+#include <tools/fldunit.hxx>
 #include <tools/debug.hxx>
 #include <tools/urlobj.hxx>
 #include <comphelper/diagnose_ex.hxx>

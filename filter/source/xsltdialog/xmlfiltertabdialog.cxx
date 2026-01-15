@@ -23,6 +23,7 @@
 #include <comphelper/fileurl.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <osl/file.hxx>
 

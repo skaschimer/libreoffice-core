@@ -11,20 +11,15 @@
 
 #include <basegfx/range/b2irange.hxx>
 #include <rtl/ustring.hxx>
-#include <tools/color.hxx>
-#include <tools/date.hxx>
 #include <tools/gen.hxx>
 #include <tools/link.hxx>
 #include <vcl/dllapi.h>
 #include <utility>
-#include <vcl/vclenum.hxx>
-#include <vcl/font.hxx>
-#include <vcl/vclptr.hxx>
-#include <vcl/windowstate.hxx>
 
 #include <com/sun/star/accessibility/XAccessibleRelationSet.hpp>
 
 #include <assert.h>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -48,9 +43,17 @@ namespace comphelper
 {
 class OAccessible;
 }
+namespace rtl
+{
+template <class reference_type> class Reference;
+}
 typedef css::uno::Reference<css::accessibility::XAccessibleRelationSet> a11yrelationset;
 enum class PointerStyle;
+enum class ScrollType;
+enum class VclSizeGroupMode;
+class Color;
 class CommandEvent;
+class Date;
 class Formatter;
 class InputContext;
 class KeyEvent;
@@ -65,7 +68,11 @@ namespace vcl
 {
 class ILibreOfficeKitNotifier;
 typedef OutputDevice RenderContext;
+class Font;
+enum class WindowDataMask;
 }
+template <class reference_type> class VclPtr;
+
 namespace tools
 {
 class JsonWriter;

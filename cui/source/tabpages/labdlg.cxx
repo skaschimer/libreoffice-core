@@ -34,6 +34,7 @@
 #include <bitmaps.hlst>
 
 #include <vcl/tabs.hrc>
+#include <vcl/weld/Builder.hxx>
 
 // define ----------------------------------------------------------------
 

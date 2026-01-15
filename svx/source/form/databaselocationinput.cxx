@@ -36,6 +36,7 @@
 #include <unotools/confignode.hxx>
 #include <unotools/ucbhelper.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 
 namespace svx

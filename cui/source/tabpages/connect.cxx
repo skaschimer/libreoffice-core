@@ -31,6 +31,7 @@
 #include <svx/sxenditm.hxx>
 #include <svtools/unitconv.hxx>
 #include <tools/debug.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <connect.hxx>
 

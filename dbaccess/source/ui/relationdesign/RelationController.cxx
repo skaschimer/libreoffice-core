@@ -24,6 +24,7 @@
 #include <strings.hrc>
 #include <strings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <browserids.hxx>
 #include <comphelper/types.hxx>

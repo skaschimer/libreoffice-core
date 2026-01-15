@@ -46,6 +46,7 @@
 #include <vcl/event.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <svl/itemset.hxx>
 

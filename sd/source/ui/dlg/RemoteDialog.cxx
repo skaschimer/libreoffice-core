@@ -10,6 +10,8 @@
 #include "RemoteDialog.hxx"
 #include <RemoteServer.hxx>
 
+#include <vcl/vclenum.hxx>
+
 using namespace ::sd;
 
 RemoteDialog::RemoteDialog(weld::Window* pWindow)

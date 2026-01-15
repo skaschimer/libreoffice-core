@@ -23,6 +23,7 @@
 #include <svl/lngmisc.hxx>
 #include <vcl/event.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <svtools/langtab.hxx>
 #include <i18nlangtag/languagetag.hxx>
 #include <comphelper/string.hxx>

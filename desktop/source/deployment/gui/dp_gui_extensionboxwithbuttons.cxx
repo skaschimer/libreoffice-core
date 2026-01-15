@@ -30,6 +30,7 @@
 #include <sal/log.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <memory>
 #include <utility>

@@ -17,6 +17,8 @@
 #include <unotools/streamwrap.hxx>
 #include <utility>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #if ENABLE_ZXING
 #if __has_include(<Version.h>)

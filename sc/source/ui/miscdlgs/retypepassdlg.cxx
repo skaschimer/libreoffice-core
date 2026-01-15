@@ -18,6 +18,7 @@
  */
 
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <strings.hrc>
 #include <retypepassdlg.hxx>
 #include <scresid.hxx>

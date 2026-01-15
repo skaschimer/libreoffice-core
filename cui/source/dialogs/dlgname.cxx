@@ -20,6 +20,7 @@
 #include <dlgname.hxx>
 
 #include <comphelper/string.hxx>
+#include <vcl/weld/Builder.hxx>
 
 /*************************************************************************
 |*

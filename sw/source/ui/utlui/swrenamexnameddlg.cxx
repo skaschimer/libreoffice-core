@@ -18,6 +18,8 @@
  */
 
 #include <osl/diagnose.h>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <swrenamexnameddlg.hxx>
 

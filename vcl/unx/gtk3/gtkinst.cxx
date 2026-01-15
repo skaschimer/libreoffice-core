@@ -16,6 +16,7 @@
 #include <string_view>
 
 #include <dndhelper.hxx>
+#include <tools/date.hxx>
 #include <o3tl/test_info.hxx>
 #include <osl/process.h>
 #include <osl/file.hxx>
@@ -37,6 +38,7 @@
 #include <vcl/transfer.hxx>
 #include <vcl/toolkit/floatwin.hxx>
 #include <vcl/weld/DrawingArea.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
 #include <vcl/weld/Paned.hxx>

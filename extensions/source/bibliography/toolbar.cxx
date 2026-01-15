@@ -37,6 +37,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/mnemonic.hxx>
 #include <vcl/event.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <bitmaps.hlst>
 

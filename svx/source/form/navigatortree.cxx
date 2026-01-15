@@ -55,6 +55,7 @@
 #include <svx/svxids.hrc>
 #include <bitmaps.hlst>
 #include <vcl/commandevent.hxx>
+#include <vcl/weld/Builder.hxx>
 
 namespace svxform
 {

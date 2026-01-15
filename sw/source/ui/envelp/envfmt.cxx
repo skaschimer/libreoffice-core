@@ -24,6 +24,7 @@
 #include <editeng/lrspitem.hxx>
 #include <svtools/unitconv.hxx>
 #include <svx/drawitem.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <o3tl/string_view.hxx>
 #include <osl/diagnose.h>
 

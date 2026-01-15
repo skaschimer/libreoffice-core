@@ -27,6 +27,7 @@
 #include <vcl/help.hxx>
 #include <vcl/vclevent.hxx>
 #include <vcl/window.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/ImageTree.hxx>
 
 #include <com/sun/star/frame/XDispatch.hpp>

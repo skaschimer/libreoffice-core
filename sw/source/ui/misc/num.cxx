@@ -40,6 +40,7 @@
 #include <osl/diagnose.h>
 
 #include <vcl/tabs.hrc>
+#include <vcl/weld/Builder.hxx>
 
 static bool bLastRelative = false;
 

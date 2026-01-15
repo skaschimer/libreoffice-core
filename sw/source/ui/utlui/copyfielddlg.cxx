@@ -19,6 +19,8 @@
 
 #include <copyfielddlg.hxx>
 #include <comphelper/string.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace ::com::sun::star;
 

@@ -25,6 +25,7 @@
 #include <o3tl/test_info.hxx>
 #include <o3tl/untaint.hxx>
 #include <officecfg/Office/Common.hxx>
+#include <tools/fldunit.hxx>
 #include <tools/stream.hxx>
 #include <vcl/event.hxx>
 #include <vcl/rendercontext/AntialiasingFlags.hxx>

@@ -21,6 +21,7 @@
 #include "lockfailed.hxx"
 #include <unotools/resmgr.hxx>
 #include <vcl/stdtext.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/wintypes.hxx>
 

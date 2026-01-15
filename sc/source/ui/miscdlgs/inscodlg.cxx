@@ -21,6 +21,8 @@
 
 #include <inscodlg.hxx>
 #include <officecfg/Office/Common.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 InsertDeleteFlags ScInsertContentsDlg::nPreviousChecks = InsertDeleteFlags::NONE;
 ScPasteFunc  ScInsertContentsDlg::nPreviousFormulaChecks = ScPasteFunc::NONE;

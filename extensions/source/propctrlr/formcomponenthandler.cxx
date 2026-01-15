@@ -98,6 +98,7 @@
 #include <svx/numinf.hxx>
 #include <svx/svxdlg.hxx>
 #include <svx/svxids.hrc>
+#include <tools/fldunit.hxx>
 #include <tools/debug.hxx>
 #include <vcl/ColorDialog.hxx>
 #include <vcl/graph.hxx>

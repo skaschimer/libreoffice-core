@@ -23,6 +23,7 @@
 
 #include <tools/color.hxx>
 #include <vcl/event.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <officecfg/Office/Common.hxx>
 

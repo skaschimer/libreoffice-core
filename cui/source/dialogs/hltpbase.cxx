@@ -29,6 +29,7 @@
 #include <sot/formats.hxx>
 #include <sfx2/sfxsids.hrc>
 #include <svl/macitem.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <cuihyperdlg.hxx>
 #include <hltpbase.hxx>
 #include <macroass.hxx>

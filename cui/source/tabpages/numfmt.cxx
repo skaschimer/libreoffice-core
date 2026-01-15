@@ -25,6 +25,7 @@
 #include <svl/intitem.hxx>
 #include <sfx2/objsh.hxx>
 #include <vcl/outdev.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <i18nlangtag/lang.h>
 #include <svx/svxids.hrc>
 #include <svtools/colorcfg.hxx>

@@ -40,6 +40,7 @@
 #include <com/sun/star/inspection/XObjectInspectorUI.hpp>
 #include <com/sun/star/inspection/PropertyLineElement.hpp>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <tools/debug.hxx>
 #include <sal/macros.h>

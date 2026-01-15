@@ -22,6 +22,8 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/xmlsechelper.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <osl/file.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <tools/datetime.hxx>

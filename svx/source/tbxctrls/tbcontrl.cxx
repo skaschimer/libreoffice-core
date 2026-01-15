@@ -22,6 +22,7 @@
 #include <comphelper/configurationlistener.hxx>
 #include <comphelper/propertysequence.hxx>
 #include <comphelper/propertyvalue.hxx>
+#include <comphelper/OAccessible.hxx>
 #include <tools/color.hxx>
 #include <svl/numformat.hxx>
 #include <svl/poolitem.hxx>

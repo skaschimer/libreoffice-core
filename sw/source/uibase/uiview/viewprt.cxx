@@ -25,6 +25,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/stdtext.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <sfx2/printer.hxx>
 #include <editeng/paperinf.hxx>

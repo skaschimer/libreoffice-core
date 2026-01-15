@@ -18,6 +18,7 @@
 #include <comphelper/processfactory.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <vcl/commandinfoprovider.hxx>
+#include <vcl/weld/Builder.hxx>
 
 std::unique_ptr<SfxTabPage> ToolbarTabPage::Create(weld::Container* pPage,
                                                    weld::DialogController* pController,

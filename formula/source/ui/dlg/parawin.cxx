@@ -19,6 +19,7 @@
 
 #include <comphelper/string.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <sal/log.hxx>
 
 #include "parawin.hxx"

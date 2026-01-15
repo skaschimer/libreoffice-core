@@ -42,6 +42,7 @@
 #include <comphelper/diagnose_ex.hxx>
 #include <utility>
 #include <vcl/mnemonic.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <svl/style.hxx>
 #include <svl/zformat.hxx>
 #include <sfx2/htmlmode.hxx>

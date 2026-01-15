@@ -24,6 +24,7 @@
 #include <cassert>
 #include <sal/log.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 /**********************************************************************
 |

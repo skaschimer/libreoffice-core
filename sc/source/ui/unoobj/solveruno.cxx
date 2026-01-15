@@ -10,6 +10,7 @@
 
 #include <rtl/math.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <solveruno.hxx>
 #include <docsh.hxx>
 #include <docfunc.hxx>

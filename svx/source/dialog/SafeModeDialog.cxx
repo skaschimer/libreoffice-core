@@ -12,6 +12,8 @@
 #include <osl/file.hxx>
 #include <sfx2/safemode.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <comphelper/processfactory.hxx>
 #include <unotools/ZipPackageHelper.hxx>

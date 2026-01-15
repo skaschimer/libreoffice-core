@@ -43,6 +43,7 @@
 #include <svx/svdopath.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <osl/diagnose.h>
 #include "dlgunit.hxx"
 #include <memory>

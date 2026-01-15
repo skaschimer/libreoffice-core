@@ -28,6 +28,7 @@
 #include <com/sun/star/uno/Exception.hpp>
 #include <utility>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <tools/urlobj.hxx>
 #include <unotools/pathoptions.hxx>

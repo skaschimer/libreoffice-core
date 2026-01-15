@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <tools/date.hxx>
 #include <svtools/svtdllapi.h>
 #include <svtools/toolbarmenu.hxx>
 #include <editeng/borderline.hxx>

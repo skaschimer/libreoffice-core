@@ -22,6 +22,7 @@
 #include <ChartModel.hxx>
 
 #include <com/sun/star/awt/XWindow.hpp>
+#include <vcl/weld/Builder.hxx>
 #include <utility>
 
 using namespace ::com::sun::star;

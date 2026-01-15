@@ -21,6 +21,7 @@
 #include "addresssettings.hxx"
 #include "abspilot.hxx"
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <com/sun/star/sdbc/XDriver.hpp>
 #include <com/sun/star/sdbc/DriverManager.hpp>

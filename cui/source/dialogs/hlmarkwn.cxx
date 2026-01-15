@@ -22,6 +22,9 @@
 #include <comphelper/propertyvalue.hxx>
 #include <unotools/viewoptions.hxx>
 #include <vcl/graph.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/windowstate.hxx>
+#include <vcl/weld/Builder.hxx>
 
 // UNO-Stuff
 #include <comphelper/processfactory.hxx>

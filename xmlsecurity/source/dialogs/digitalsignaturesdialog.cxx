@@ -53,6 +53,7 @@
 #include <utility>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <sfx2/viewsh.hxx>
 #include <svl/cryptosign.hxx>
 

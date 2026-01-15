@@ -21,6 +21,7 @@
 
 #include <sfx2/viewfrm.hxx>
 #include <unotools/moduleoptions.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <hlmailtp.hxx>
 

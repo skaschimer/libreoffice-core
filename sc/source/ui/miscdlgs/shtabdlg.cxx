@@ -20,6 +20,8 @@
 #undef SC_DLLIMPLEMENTATION
 
 #include <shtabdlg.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 ScShowTabDlg::ScShowTabDlg(weld::Window* pParent)
     : GenericDialogController(pParent, u"modules/scalc/ui/showsheetdialog.ui"_ustr,

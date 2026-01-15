@@ -51,12 +51,15 @@
 #include <rtl/ref.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
+#include <sal/log.hxx>
 #include <sal/types.h>
 #include <salhelper/thread.hxx>
 #include <tools/gen.hxx>
 #include <tools/link.hxx>
 #include <unotools/configmgr.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <comphelper/processfactory.hxx>
 #include <comphelper/propertyvalue.hxx>

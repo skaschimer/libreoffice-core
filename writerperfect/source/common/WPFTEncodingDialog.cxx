@@ -26,6 +26,8 @@
 #include <WPFTEncodingDialog.hxx>
 
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 namespace writerperfect
 {

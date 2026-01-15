@@ -23,6 +23,7 @@
 #include <com/sun/star/sdbc/XConnection.hpp>
 #include <com/sun/star/uno/Sequence.hxx>
 #include <com/sun/star/uno/XComponentContext.hpp>
+#include <vcl/vclptr.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/Toolbar.hxx>
 #include <vcl/weld/TreeView.hxx>

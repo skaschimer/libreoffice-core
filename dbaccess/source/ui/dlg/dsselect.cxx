@@ -18,6 +18,8 @@
  */
 
 #include "dsselect.hxx"
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 namespace dbaui
 {

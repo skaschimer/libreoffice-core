@@ -21,6 +21,7 @@
 #include "commonpagesdbp.hxx"
 #include <tools/debug.hxx>
 #include <comphelper/diagnose_ex.hxx>
+#include <vcl/weld/Builder.hxx>
 #include "optiongrouplayouter.hxx"
 #include <helpids.h>
 #include <o3tl/safeint.hxx>

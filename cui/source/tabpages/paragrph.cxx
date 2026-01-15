@@ -23,6 +23,7 @@
 #include <sfx2/objsh.hxx>
 #include <vcl/mnemonic.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <svx/flagsdef.hxx>
 #include <svx/svxids.hrc>
 #include <svx/sdtaitm.hxx>

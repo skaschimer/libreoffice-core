@@ -22,6 +22,7 @@
 #include <vcl/commandevent.hxx>
 #include <vcl/image.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 
 SvxPresetListBox::SvxPresetListBox(std::unique_ptr<weld::ScrolledWindow> pWindow)
     : ValueSet(std::move(pWindow))

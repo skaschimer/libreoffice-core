@@ -27,6 +27,7 @@
 #include "mgetempl.hxx"
 
 #include <vcl/tabs.hrc>
+#include <vcl/vclenum.hxx>
 
 /*  [Description]
 

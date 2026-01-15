@@ -16,6 +16,7 @@
 #include <svtools/svtresid.hxx>
 #include <svtools/strings.hrc>
 #include <svtools/place.hxx>
+#include <vcl/vclenum.hxx>
 
 #include "ServerDetailsControls.hxx"
 

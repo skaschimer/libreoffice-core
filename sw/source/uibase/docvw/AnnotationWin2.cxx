@@ -63,6 +63,7 @@
 #include <vcl/ptrstyle.hxx>
 #include <vcl/uitest/logger.hxx>
 #include <vcl/uitest/eventdescription.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <svx/postattr.hxx>
 

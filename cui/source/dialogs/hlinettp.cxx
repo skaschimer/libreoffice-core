@@ -18,6 +18,7 @@
  */
 
 #include <o3tl/string_view.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <hlinettp.hxx>
 #include <hlmarkwn_def.hxx>

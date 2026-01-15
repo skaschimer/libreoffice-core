@@ -37,6 +37,7 @@
 #include <utility>
 #include <vcl/weld/weld.hxx>
 #include <vcl/stdtext.hxx>
+#include <vcl/vclenum.hxx>
 #include <strings.hrc>
 #include <osl/file.hxx>
 #include <comphelper/DirectoryHelper.hxx>

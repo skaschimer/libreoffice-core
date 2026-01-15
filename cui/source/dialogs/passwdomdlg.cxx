@@ -20,6 +20,8 @@
 #include <sfx2/objsh.hxx>
 #include <svl/PasswordHelper.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <passwdomdlg.hxx>
 #include <strings.hrc>

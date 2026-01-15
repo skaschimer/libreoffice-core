@@ -20,6 +20,8 @@
 #include <sfx2/opengrf.hxx>
 #include <sax/tools/converter.hxx>
 #include <i18nlangtag/languagetag.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include "EPUBExportFilter.hxx"
 

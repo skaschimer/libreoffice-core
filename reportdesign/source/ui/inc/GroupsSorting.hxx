@@ -25,6 +25,8 @@
 #include <comphelper/propmultiplex.hxx>
 #include <cppuhelper/basemutex.hxx>
 #include <rtl/ref.hxx>
+#include <vcl/vclptr.hxx>
+#include <vcl/weld/ComboBox.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/SpinButton.hxx>
 #include <vcl/weld/Toolbar.hxx>

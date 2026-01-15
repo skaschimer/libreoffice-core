@@ -21,6 +21,7 @@
 #include <vcl/graph.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <vcl/EnumContext.hxx>
+#include <vcl/weld/Builder.hxx>
 
 std::unique_ptr<SfxTabPage> UITabPage::Create(weld::Container* pPage,
                                               weld::DialogController* pController,

@@ -28,6 +28,8 @@
 #include <unotools/pathoptions.hxx>
 #include <ucbhelper/content.hxx>
 #include <svl/filenotation.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <rtl/strbuf.hxx>
 #include <utility>
 

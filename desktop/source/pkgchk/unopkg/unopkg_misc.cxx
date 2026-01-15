@@ -24,6 +24,7 @@
 #include <config_folders.h>
 
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <rtl/bootstrap.hxx>
 #include <rtl/ustrbuf.hxx>

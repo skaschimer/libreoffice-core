@@ -17,6 +17,8 @@
 #include <fmtpdsc.hxx>
 #include <pagedesc.hxx>
 
+#include <vcl/weld/Builder.hxx>
+
 namespace
 {
     bool lcl_GetPageDesc(SwWrtShell& rSh, sal_uInt16 &rPageNo, std::unique_ptr<const SwFormatPageDesc>* ppPageFormatDesc)

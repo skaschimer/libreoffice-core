@@ -12,6 +12,8 @@
 #include <docmodel/theme/Theme.hxx>
 #include <svx/ColorSets.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <comphelper/lok.hxx>
 #include <vcl/virdev.hxx>
 

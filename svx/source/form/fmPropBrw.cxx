@@ -61,6 +61,7 @@
 #include <unotools/confignode.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <toolkit/controls/unocontrolcontainer.hxx>

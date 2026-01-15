@@ -28,6 +28,8 @@
 #include <scresid.hxx>
 #include <compiler.hxx>
 
+#include <vcl/weld/Builder.hxx>
+
 ScNamePasteDlg::ScNamePasteDlg(weld::Window* pParent, ScDocShell* pShell)
     : GenericDialogController(pParent, u"modules/scalc/ui/insertname.ui"_ustr,
                               u"InsertNameDialog"_ustr)

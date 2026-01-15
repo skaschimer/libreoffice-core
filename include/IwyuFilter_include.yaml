@@ -354,6 +354,12 @@ excludelist:
     - com/sun/star/frame/XTerminateListener.hpp
     - com/sun/star/datatransfer/dnd/XDragGestureListener.hpp
     - com/sun/star/datatransfer/dnd/XDropTargetListener.hpp
+    include/vcl/weld/customweld.hxx:
+    # FIXME some compilers (GCC, MSVC) fail to build with fw declaring this, while Clang does not
+    - comphelper/OAccessible.hxx
+    include/vcl/weld/weldutils.hxx:
+    # base class has to be a complete type
+    - com/sun/star/frame/XStatusListener.hpp
     include/vcl/vectorgraphicdata.hxx:
     # TODO Needed on Android NDK 27 for some reason
     - com/sun/star/graphic/XPrimitive2D.hpp

@@ -12,6 +12,7 @@
 #include <IMark.hxx>
 #include <xmloff/odffields.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <strings.hrc>
 #include <swtypes.hxx>
 

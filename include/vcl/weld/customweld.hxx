@@ -10,14 +10,17 @@
 #pragma once
 
 #include <comphelper/OAccessible.hxx>
-#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/DrawingArea.hxx>
+#include <rtl/ref.hxx>
+#include <vcl/uitest/factory.hxx>
 #include <vcl/weld/weld.hxx>
 
 class InputContext;
 
 namespace weld
 {
+class Builder;
+
 class VCL_DLLPUBLIC CustomWidgetController
 {
 private:

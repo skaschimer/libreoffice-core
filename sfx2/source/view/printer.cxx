@@ -24,6 +24,8 @@
 #include <sfx2/printer.hxx>
 #include <sfx2/viewsh.hxx>
 #include <sfx2/tabdlg.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include "prnmon.hxx"
 
 // class SfxPrinter ------------------------------------------------------

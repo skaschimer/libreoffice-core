@@ -34,6 +34,7 @@
 #include <svx/bmpmask.hxx>
 #include <svx/strings.hrc>
 #include <svx/svxids.hrc>
+#include <tools/fldunit.hxx>
 #include <memory>
 #include <helpids.h>
 

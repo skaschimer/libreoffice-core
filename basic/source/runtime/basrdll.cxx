@@ -22,6 +22,7 @@
 
 #include <unotools/resmgr.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <tools/debug.hxx>
 #include <vcl/weld/weld.hxx>
 

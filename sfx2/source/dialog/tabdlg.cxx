@@ -29,7 +29,9 @@
 #include <sfx2/viewsh.hxx>
 #include <unotools/viewoptions.hxx>
 #include <utility>
+#include <vcl/vclenum.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <sal/log.hxx>
 #include <tools/debug.hxx>
 #include <comphelper/lok.hxx>

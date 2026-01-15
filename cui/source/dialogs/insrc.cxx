@@ -20,6 +20,7 @@
 #include <dialmgr.hxx>
 #include <strings.hrc>
 #include <insrc.hxx>
+#include <vcl/weld/Builder.hxx>
 
 bool SvxInsRowColDlg::isInsertBefore() const
 {

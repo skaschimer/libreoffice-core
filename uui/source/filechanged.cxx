@@ -21,6 +21,7 @@
 #include <unotools/resmgr.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/wintypes.hxx>
 #include "filechanged.hxx"
 

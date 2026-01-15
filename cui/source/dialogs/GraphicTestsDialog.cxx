@@ -12,9 +12,11 @@
 #include <comphelper/DirectoryHelper.hxx>
 #include <osl/file.hxx>
 #include <svx/FileExportedDialog.hxx>
+#include <tools/color.hxx>
 #include <unotools/ZipPackageHelper.hxx>
 #include <GraphicsTestsDialog.hxx>
 #include <vcl/test/GraphicsRenderTests.hxx>
+#include <vcl/vclenum.hxx>
 #include <svl/svlresid.hxx>
 #include <svl/svl.hrc>
 #include <vcl/svapp.hxx>

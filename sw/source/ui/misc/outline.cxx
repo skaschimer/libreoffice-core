@@ -22,6 +22,7 @@
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <sfx2/tabdlg.hxx>
 #include <editeng/brushitem.hxx>
 #include <unotools/configmgr.hxx>

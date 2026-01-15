@@ -27,6 +27,7 @@
 #include <UITools.hxx>
 #include <objectnamecheck.hxx>
 #include <comphelper/diagnose_ex.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace dbaui;
 using namespace dbtools;

@@ -40,6 +40,7 @@
 #include <vcl/event.hxx>
 #include <vcl/menu.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Entry.hxx>
 #include <rtl/ustring.hxx>
 #include <swabstdlg.hxx>
 #include <sfx2/zoomitem.hxx>

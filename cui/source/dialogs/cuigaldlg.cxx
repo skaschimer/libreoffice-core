@@ -28,6 +28,8 @@
 #include <vcl/errinf.hxx>
 #include <ucbhelper/content.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 #include <avmedia/mediawindow.hxx>
 #include <unotools/pathoptions.hxx>

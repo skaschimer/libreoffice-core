@@ -30,6 +30,7 @@
 #include <rtl/ustrbuf.hxx>
 #include <sfx2/viewsh.hxx>
 #include <svl/cryptosign.hxx>
+#include <vcl/vclenum.hxx>
 
 #include <com/sun/star/security/NoPasswordException.hpp>
 #include <com/sun/star/security/CertificateCharacters.hpp>

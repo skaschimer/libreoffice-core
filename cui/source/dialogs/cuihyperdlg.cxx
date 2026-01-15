@@ -31,6 +31,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <svl/eitem.hxx>
 #include <svx/svxids.hrc>
+#include <vcl/weld/Builder.hxx>
 #include <dialmgr.hxx>
 #include <strings.hrc>
 #include <vector>

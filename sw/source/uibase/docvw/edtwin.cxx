@@ -33,6 +33,8 @@
 
 #include <comphelper/scopeguard.hxx>
 #include <comphelper/string.hxx>
+#include <comphelper/OAccessible.hxx>
+
 #include <i18npool/breakiterator.hxx>
 #include <vcl/dialoghelper.hxx>
 #include <vcl/inputctx.hxx>

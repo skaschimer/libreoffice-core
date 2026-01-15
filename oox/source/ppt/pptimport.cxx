@@ -30,6 +30,7 @@
 #include <comphelper/propertysequence.hxx>
 #include <comphelper/scopeguard.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svtools/sfxecode.hxx>
 #include <svtools/ehdl.hxx>

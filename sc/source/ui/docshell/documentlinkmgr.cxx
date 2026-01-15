@@ -30,6 +30,7 @@
 #include <o3tl/deleter.hxx>
 #include <svx/svdoole2.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 
 #include <memory>

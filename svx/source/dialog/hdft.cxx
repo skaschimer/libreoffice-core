@@ -49,6 +49,8 @@
 #include <svx/xdef.hxx>
 #include <svx/xfillit0.hxx>
 #include <svx/unobrushitemhelper.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 using namespace com::sun::star;
 

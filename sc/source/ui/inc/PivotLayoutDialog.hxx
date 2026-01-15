@@ -18,6 +18,8 @@
 #include "PivotLayoutTreeListData.hxx"
 #include "PivotLayoutTreeListLabel.hxx"
 
+#include <vcl/weld/Builder.hxx>
+
 class ScItemValue final
 {
 public:

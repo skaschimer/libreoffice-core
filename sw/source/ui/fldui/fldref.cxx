@@ -40,6 +40,7 @@
 #include <o3tl/safeint.hxx>
 #include <o3tl/string_view.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Builder.hxx>
 
 
 static sal_uInt16 nFieldDlgFormatSel = 0;

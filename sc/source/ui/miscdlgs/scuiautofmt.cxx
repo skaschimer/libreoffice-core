@@ -20,10 +20,12 @@
 #undef SC_DLLIMPLEMENTATION
 
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
 #include <vcl/weld/weld.hxx>
 #include <sfx2/strings.hrc>
 #include <sfx2/sfxresid.hxx>
 #include <o3tl/string_view.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <strings.hrc>
 #include <global.hxx>
 #include <globstr.hrc>

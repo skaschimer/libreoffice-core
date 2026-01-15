@@ -22,6 +22,8 @@
 #include <svl/numformat.hxx>
 #include <utility>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/weld.hxx>
 
 #include <scresid.hxx>

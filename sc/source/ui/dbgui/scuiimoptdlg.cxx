@@ -31,6 +31,8 @@
 #include <o3tl/string_view.hxx>
 #include <utility>
 #include <vcl/svapp.hxx>
+#include <vcl/vclenum.hxx>
+#include <vcl/weld/Builder.hxx>
 
 // ScDelimiterTable
 

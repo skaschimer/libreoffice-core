@@ -19,6 +19,7 @@
 
 #include <osl/file.hxx>
 #include <svx/linkwarn.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <officecfg/Office/Common.hxx>
 
 SvxLinkWarningDialog::SvxLinkWarningDialog(weld::Widget* pParent, const OUString& _rFileName)
