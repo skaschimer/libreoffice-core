@@ -21,7 +21,6 @@
 #include <config_feature_desktop.h>
 
 #include <properties.h>
-#include <services/layoutmanager.hxx>
 #include "helpers.hxx"
 
 #include <framework/sfxhelperfunctions.hxx>
@@ -52,6 +51,7 @@
 
 #include <comphelper/lok.hxx>
 #include <comphelper/propertyvalue.hxx>
+#include <framework/layoutmanager.hxx>
 #include <vcl/status.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/vclevent.hxx>

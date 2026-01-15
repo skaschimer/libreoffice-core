@@ -26,8 +26,8 @@
 
 #include <uiconfiguration/globalsettings.hxx>
 #include <framework/addonsoptions.hxx>
-#include <uielement/uielement.hxx>
-#include <services/layoutmanager.hxx>
+#include <framework/layoutmanager.hxx>
+#include <framework/uielement.hxx>
 
 #include <com/sun/star/ui/XUIConfigurationManager.hpp>
 #include <com/sun/star/awt/XWindowListener.hpp>

@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include <uielement/uielement.hxx>
-
 #include <com/sun/star/lang/XServiceInfo.hpp>
 #include <com/sun/star/frame/XLayoutManager2.hpp>
 #include <com/sun/star/ui/XUIConfigurationManager.hpp>
@@ -39,6 +37,8 @@
 #include <cppuhelper/supportsservice.hxx>
 #include <comphelper/propertycontainer.hxx>
 #include <comphelper/uno3.hxx>
+#include <framework/fwkdllapi.h>
+#include <framework/uielement.hxx>
 #include <tools/gen.hxx>
 #include <vcl/timer.hxx>
 #include <vcl/vclevent.hxx>
@@ -59,10 +59,10 @@ typedef ::cppu::WeakImplHelper<css::lang::XServiceInfo, css::frame::XLayoutManag
     LayoutManager_Base;
 typedef ::comphelper::OPropertyContainer LayoutManager_PBase;
 
-class LayoutManager final : public LayoutManager_Base,
-                            private cppu::BaseMutex,
-                            public ::cppu::OBroadcastHelper,
-                            public LayoutManager_PBase
+class FWK_DLLPUBLIC LayoutManager final : public LayoutManager_Base,
+                                          private cppu::BaseMutex,
+                                          public ::cppu::OBroadcastHelper,
+                                          public LayoutManager_PBase
 {
 public:
     LayoutManager(const css::uno::Reference<css::uno::XComponentContext>& xContext);

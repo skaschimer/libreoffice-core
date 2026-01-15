@@ -4128,7 +4128,6 @@ framework/inc/uielement/toolbarmodemenucontroller.hxx
 framework/inc/uielement/toolbarsmenucontroller.hxx
 framework/inc/uielement/toolbarwrapper.hxx
 framework/inc/uielement/uicommanddescription.hxx
-framework/inc/uielement/uielement.hxx
 framework/inc/uielement/uielementtypenames.hxx
 framework/inc/uifactory/configurationaccessfactorymanager.hxx
 framework/inc/uifactory/factoryconfiguration.hxx
@@ -5065,6 +5064,7 @@ include/framework/imutex.hxx
 include/framework/sfxhelperfunctions.hxx
 include/framework/titlehelper.hxx
 include/framework/transactionmanager.hxx
+include/framework/uielement.hxx
 include/framework/undomanagerhelper.hxx
 include/helpcompiler/HelpIndexer.hxx
 include/helpcompiler/HelpSearch.hxx

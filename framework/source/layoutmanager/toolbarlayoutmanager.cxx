@@ -21,7 +21,6 @@
 #include <uiconfiguration/windowstateproperties.hxx>
 #include <uielement/addonstoolbarwrapper.hxx>
 #include "helpers.hxx"
-#include <services/layoutmanager.hxx>
 #include <strings.hrc>
 #include <classes/fwkresid.hxx>
 
@@ -35,6 +34,7 @@
 
 #include <comphelper/propertyvalue.hxx>
 #include <cppuhelper/queryinterface.hxx>
+#include <framework/layoutmanager.hxx>
 #include <o3tl/string_view.hxx>
 #include <unotools/cmdoptions.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
