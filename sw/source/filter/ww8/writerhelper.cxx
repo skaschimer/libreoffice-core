@@ -508,7 +508,7 @@ namespace sw
         ww8::Frames GetFramesInNode(const ww8::Frames &rFrames, const SwNode &rNode)
         {
             ww8::Frames aRet;
-            std::copy_if(rFrames.begin(), rFrames.end(),
+            std::ranges::copy_if(rFrames,
                 std::back_inserter(aRet), anchoredto(rNode));
             return aRet;
         }
