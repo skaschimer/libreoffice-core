@@ -43,7 +43,7 @@ public:
     virtual void SAL_CALL run() override
     {
         osl::Thread::wait( std::chrono::seconds(mnSeconds) );
-        fprintf(stderr, "ERROR: WatchDog timer thread expired, failing the test!\n");
+        SAL_WARN("vcl", "WatchDog timer thread expired, failing the test!");
         fflush(stderr);
         CPPUNIT_ASSERT_MESSAGE("watchdog triggered", false);
     }
