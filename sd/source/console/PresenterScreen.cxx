@@ -35,6 +35,7 @@
 #include <com/sun/star/document/XEventBroadcaster.hpp>
 #include <cppuhelper/compbase.hxx>
 #include <cppuhelper/supportsservice.hxx>
+#include <officecfg/Office/Impress.hxx>
 #include <officecfg/Office/PresenterScreen.hxx>
 
 #include <utility>
@@ -211,7 +212,7 @@ void SAL_CALL PresenterScreenListener::notifyEvent( const css::document::EventOb
     if ( Event.EventName == "OnStartPresentation" )
     {
         mpPresenterScreen = new PresenterScreen(mxComponentContext, mxModel);
-        if(PresenterScreen::isPresenterScreenEnabled(mxComponentContext))
+        if ( officecfg::Office::Impress::Misc::Start::EnablePresenterScreen::get() )
             mpPresenterScreen->InitializePresenterScreen();
     }
     else if ( Event.EventName == "OnEndPresentation" )
@@ -271,18 +272,6 @@ PresenterScreen::PresenterScreen (
 
 PresenterScreen::~PresenterScreen()
 {
-}
-
-bool PresenterScreen::isPresenterScreenEnabled(const css::uno::Reference<css::uno::XComponentContext>& rxContext)
-{
-        bool dEnablePresenterScreen=true;
-        PresenterConfigurationAccess aConfiguration (
-            rxContext,
-            u"/org.openoffice.Office.Impress/"_ustr,
-            PresenterConfigurationAccess::READ_ONLY);
-        aConfiguration.GetConfigurationNode(u"Misc/Start/EnablePresenterScreen"_ustr)
-            >>= dEnablePresenterScreen;
-        return dEnablePresenterScreen;
 }
 
 bool PresenterScreen::isPresenterScreenFullScreen(const css::uno::Reference<css::uno::XComponentContext>& rxContext)

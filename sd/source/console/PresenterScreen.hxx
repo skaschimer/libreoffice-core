@@ -107,8 +107,6 @@ public:
 
     virtual void SAL_CALL disposing() override;
 
-    static bool isPresenterScreenEnabled(
-        const css::uno::Reference<css::uno::XComponentContext>& rxContext);
     static bool isPresenterScreenFullScreen(
         const css::uno::Reference<css::uno::XComponentContext>& rxContext);
 
