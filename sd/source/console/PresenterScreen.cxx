@@ -35,6 +35,7 @@
 #include <com/sun/star/document/XEventBroadcaster.hpp>
 #include <cppuhelper/compbase.hxx>
 #include <cppuhelper/supportsservice.hxx>
+#include <officecfg/Office/PresenterScreen.hxx>
 
 #include <utility>
 #include <vcl/svapp.hxx>
@@ -504,18 +505,11 @@ sal_Int32 PresenterScreen::GetPresenterScreenNumber (
             // is set or when the presenter screen will be shown as
             // non-full screen window
             Reference<XComponentContext> xContext (mxContextWeak);
-            PresenterConfigurationAccess aConfiguration (
-                xContext,
-                u"/org.openoffice.Office.PresenterScreen/"_ustr,
-                PresenterConfigurationAccess::READ_ONLY);
-            bool bStartAlways (false);
+            bool bStartAlways = officecfg::Office::PresenterScreen::Presenter::StartAlways::get().value_or(
+                false);
             bool bPresenterScreenFullScreen = isPresenterScreenFullScreen(xContext);
-            if (aConfiguration.GetConfigurationNode(
-                u"Presenter/StartAlways"_ustr) >>= bStartAlways)
-            {
-                if (bStartAlways || !bPresenterScreenFullScreen)
-                    return GetPresenterScreenFromScreen(nScreenNumber);
-            }
+            if (bStartAlways || !bPresenterScreenFullScreen)
+                return GetPresenterScreenFromScreen(nScreenNumber);
             return -1;
         }
     }
