@@ -184,15 +184,6 @@ std::shared_ptr<PresenterBitmapContainer::BitmapDescriptor> PresenterBitmapConta
         }
         catch (Exception&)
         {}
-    if (PresenterConfigurationAccess::GetProperty(rxProperties, u"ButtonDownFileName"_ustr) >>= sFileName)
-        try
-        {
-            pBitmap->SetBitmap(
-                BitmapDescriptor::ButtonDown,
-                sd::presenter::PresenterHelper::loadBitmap(sFileName, rxCanvas));
-        }
-        catch (Exception&)
-        {}
     if (PresenterConfigurationAccess::GetProperty(rxProperties, u"DisabledFileName"_ustr) >>= sFileName)
         try
         {
@@ -274,7 +265,6 @@ PresenterBitmapContainer::BitmapDescriptor::BitmapDescriptor (
     meVerticalTexturingMode = rpDefault->meVerticalTexturingMode;
     mxNormalBitmap = rpDefault->mxNormalBitmap;
     mxMouseOverBitmap = rpDefault->mxMouseOverBitmap;
-    mxButtonDownBitmap = rpDefault->mxButtonDownBitmap;
     mxDisabledBitmap = rpDefault->mxDisabledBitmap;
     mxMaskBitmap = rpDefault->mxMaskBitmap;
 }
@@ -297,12 +287,6 @@ css::uno::Reference<css::rendering::XBitmap> const &
         case MouseOver:
             if (mxMouseOverBitmap.is())
                 return mxMouseOverBitmap;
-            else
-                return mxNormalBitmap;
-
-        case ButtonDown:
-            if (mxButtonDownBitmap.is())
-                return mxButtonDownBitmap;
             else
                 return mxNormalBitmap;
 
@@ -336,10 +320,6 @@ void PresenterBitmapContainer::BitmapDescriptor::SetBitmap (
 
         case MouseOver:
             mxMouseOverBitmap = rxBitmap;
-            break;
-
-        case ButtonDown:
-            mxButtonDownBitmap = rxBitmap;
             break;
 
         case Disabled:
