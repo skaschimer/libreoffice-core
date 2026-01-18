@@ -62,8 +62,6 @@ public:
         sal_Int32 mnHeight;
         sal_Int32 mnXOffset;
         sal_Int32 mnYOffset;
-        sal_Int32 mnXHotSpot;
-        sal_Int32 mnYHotSpot;
         css::util::Color maReplacementColor;
         enum TexturingMode { Once, Repeat, Stretch };
         TexturingMode meHorizontalTexturingMode;

@@ -215,9 +215,6 @@ std::shared_ptr<PresenterBitmapContainer::BitmapDescriptor> PresenterBitmapConta
     PresenterConfigurationAccess::GetProperty(rxProperties, u"XOffset"_ustr) >>= pBitmap->mnXOffset;
     PresenterConfigurationAccess::GetProperty(rxProperties, u"YOffset"_ustr) >>= pBitmap->mnYOffset;
 
-    PresenterConfigurationAccess::GetProperty(rxProperties, u"XHotSpot"_ustr) >>= pBitmap->mnXHotSpot;
-    PresenterConfigurationAccess::GetProperty(rxProperties, u"YHotSpot"_ustr) >>= pBitmap->mnYHotSpot;
-
     PresenterConfigurationAccess::GetProperty(rxProperties, u"ReplacementColor"_ustr) >>= pBitmap->maReplacementColor;
 
     OUString sTexturingMode;
@@ -249,8 +246,6 @@ PresenterBitmapContainer::BitmapDescriptor::BitmapDescriptor()
       mnHeight(0),
       mnXOffset(0),
       mnYOffset(0),
-      mnXHotSpot(0),
-      mnYHotSpot(0),
       maReplacementColor(0x00000000),
       meHorizontalTexturingMode(Once),
       meVerticalTexturingMode(Once)
@@ -263,8 +258,6 @@ PresenterBitmapContainer::BitmapDescriptor::BitmapDescriptor (
       mnHeight(0),
       mnXOffset(0),
       mnYOffset(0),
-      mnXHotSpot(0),
-      mnYHotSpot(0),
       maReplacementColor(0x00000000),
       meHorizontalTexturingMode(Once),
       meVerticalTexturingMode(Once)
@@ -276,8 +269,6 @@ PresenterBitmapContainer::BitmapDescriptor::BitmapDescriptor (
     mnHeight = rpDefault->mnHeight;
     mnXOffset = rpDefault->mnXOffset;
     mnYOffset = rpDefault->mnYOffset;
-    mnXHotSpot = rpDefault->mnXHotSpot;
-    mnYHotSpot = rpDefault->mnYHotSpot;
     maReplacementColor = rpDefault->maReplacementColor;
     meHorizontalTexturingMode = rpDefault->meHorizontalTexturingMode;
     meVerticalTexturingMode = rpDefault->meVerticalTexturingMode;

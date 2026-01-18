@@ -1319,35 +1319,6 @@
               </node>
             </node>
           </node>
-          <node oor:name="PaneStyle_4" oor:op="replace">
-            <prop oor:name="StyleName">
-              <value>ActiveBottomCalloutPaneStyle</value>
-            </prop>
-            <prop oor:name="ParentStyle">
-              <value>ActivePaneStyle</value>
-            </prop>
-            <node oor:name="OuterBorderSize">
-              <prop oor:name="Bottom">
-                <value>52</value>
-              </prop>
-            </node>
-            <node oor:name="BorderBitmapList">
-              <node oor:name="BottomCallout" oor:op="replace">
-                <prop oor:name="NormalFileName">
-                  <value>bitmaps/BorderActiveBottomCallout.png</value>
-                </prop>
-                <prop oor:name="YOffset">
-                  <value>-6</value>
-                </prop>
-                <prop oor:name="XHotSpot">
-                  <value>49</value>
-                </prop>
-                <prop oor:name="YHotSpot">
-                  <value>41</value>
-                </prop>
-              </node>
-            </node>
-          </node>
         </node>
         <node oor:name="ViewStyles">
           <node oor:name="ViewStyle_1" oor:op="replace">
