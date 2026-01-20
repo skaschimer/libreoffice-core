@@ -193,15 +193,6 @@ std::shared_ptr<PresenterBitmapContainer::BitmapDescriptor> PresenterBitmapConta
         }
         catch (Exception&)
         {}
-    if (PresenterConfigurationAccess::GetProperty(rxProperties, u"MaskFileName"_ustr) >>= sFileName)
-        try
-        {
-            pBitmap->SetBitmap(
-                BitmapDescriptor::Mask,
-                sd::presenter::PresenterHelper::loadBitmap(sFileName, rxCanvas));
-        }
-        catch (Exception&)
-        {}
 
     PresenterConfigurationAccess::GetProperty(rxProperties, u"XOffset"_ustr) >>= pBitmap->mnXOffset;
     PresenterConfigurationAccess::GetProperty(rxProperties, u"YOffset"_ustr) >>= pBitmap->mnYOffset;
@@ -266,7 +257,6 @@ PresenterBitmapContainer::BitmapDescriptor::BitmapDescriptor (
     mxNormalBitmap = rpDefault->mxNormalBitmap;
     mxMouseOverBitmap = rpDefault->mxMouseOverBitmap;
     mxDisabledBitmap = rpDefault->mxDisabledBitmap;
-    mxMaskBitmap = rpDefault->mxMaskBitmap;
 }
 
 const css::uno::Reference<css::rendering::XBitmap>&
@@ -295,9 +285,6 @@ css::uno::Reference<css::rendering::XBitmap> const &
                 return mxDisabledBitmap;
             else
                 return mxNormalBitmap;
-
-        case Mask:
-            return mxMaskBitmap;
     }
 }
 
@@ -324,10 +311,6 @@ void PresenterBitmapContainer::BitmapDescriptor::SetBitmap (
 
         case Disabled:
             mxDisabledBitmap = rxBitmap;
-            break;
-
-        case Mask:
-            mxMaskBitmap = rxBitmap;
             break;
     }
 }
