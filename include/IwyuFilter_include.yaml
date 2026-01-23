@@ -123,6 +123,9 @@ excludelist:
     include/ucbhelper/commandenvironment.hxx:
     # base class has to be a complete type
     - com/sun/star/ucb/XCommandEnvironment.hpp
+    include/ucbhelper/contentidentifier.hxx:
+    # base class has to be a complete type
+    - com/sun/star/ucb/XContentIdentifier.hpp
     include/ucbhelper/interceptedinteraction.hxx:
     # base class has to be a complete type
     - com/sun/star/task/XInteractionHandler.hpp
@@ -134,6 +137,33 @@ excludelist:
     include/ucbhelper/propertyvalueset.hxx:
     # needed in --fwdecl mode
     - namespace ucbhelper_impl { struct PropertyValue; }
+    # base class has to be a complete type
+    - com/sun/star/sdbc/XColumnLocate.hpp
+    - com/sun/star/sdbc/XRow.hpp
+    include/ucbhelper/providerhelper.hxx:
+    # base class has to be a complete type
+    - com/sun/star/ucb/XContentProvider.hpp
+    - com/sun/star/lang/XServiceInfo.hpp
+    include/ucbhelper/resultset.hxx:
+    # base class has to be a complete type
+    - com/sun/star/lang/XServiceInfo.hpp
+    - com/sun/star/lang/XComponent.hpp
+    - com/sun/star/ucb/XContentAccess.hpp
+    - com/sun/star/sdbc/XResultSet.hpp
+    - com/sun/star/sdbc/XResultSetMetaDataSupplier.hpp
+    - com/sun/star/sdbc/XRow.hpp
+    - com/sun/star/sdbc/XCloseable.hpp
+    - com/sun/star/beans/XPropertySet.hpp
+    include/ucbhelper/resultsetmetadata.hxx:
+    # base class has to be a complete type
+    - com/sun/star/sdbc/XResultSetMetaData.hpp
+    include/ucbhelper/resultsethelper.hxx:
+    # base class has to be a complete type
+    - com/sun/star/lang/XServiceInfo.hpp
+    - com/sun/star/ucb/XDynamicResultSet.hpp
+    include/ucbhelper/interactionrequest.hxx:
+    # base class has to be a complete type
+    - com/sun/star/task/XInteractionRequest.hpp
     include/comphelper/accessiblekeybindinghelper.hxx:
     # base class has to be a complete type
     - com/sun/star/accessibility/XAccessibleKeyBinding.hpp
