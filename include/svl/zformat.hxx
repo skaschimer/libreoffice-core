@@ -32,6 +32,8 @@ namespace com::sun::star::i18n { struct NativeNumberXmlAttributes2; }
 
 class Color;
 class CalendarWrapper;
+class LocaleDataWrapper;
+enum class DateOrder;
 
 class SvNFLanguageData;
 

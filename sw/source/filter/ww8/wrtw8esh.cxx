@@ -90,6 +90,7 @@
 #include <o3tl/enumarray.hxx>
 #include <sfx2/docfile.hxx>
 #include <tools/UnitConversion.hxx>
+#include <tools/urlobj.hxx>
 
 #include <algorithm>
 

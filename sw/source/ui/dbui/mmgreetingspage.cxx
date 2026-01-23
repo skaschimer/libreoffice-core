@@ -27,6 +27,7 @@
 #include <com/sun/star/sdbcx/XColumnsSupplier.hpp>
 #include <com/sun/star/container/XNameAccess.hpp>
 #include <comphelper/diagnose_ex.hxx>
+#include <tools/mapunit.hxx>
 #include <swmodule.hxx>
 #include <view.hxx>
 

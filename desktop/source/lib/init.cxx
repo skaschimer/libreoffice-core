@@ -174,6 +174,7 @@
 #include <tools/debug.hxx>
 #include <tools/fract.hxx>
 #include <tools/json_writer.hxx>
+#include <tools/urlobj.hxx>
 #include <svtools/ctrltool.hxx>
 #include <svtools/langtab.hxx>
 #include <vcl/fontcharmap.hxx>

@@ -48,6 +48,7 @@
 #include <sfx2/progress.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <unotools/fontdefs.hxx>
 #include <utility>
 #include <vcl/image.hxx>

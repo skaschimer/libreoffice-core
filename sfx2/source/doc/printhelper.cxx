@@ -36,6 +36,7 @@
 #include <unotools/tempfile.hxx>
 #include <osl/file.hxx>
 #include <osl/thread.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/urlobj.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <ucbhelper/content.hxx>

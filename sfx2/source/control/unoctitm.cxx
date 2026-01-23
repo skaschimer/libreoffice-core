@@ -20,6 +20,7 @@
 #include <config_java.h>
 
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <svl/eitem.hxx>
 #include <svl/intitem.hxx>
 #include <svl/itempool.hxx>

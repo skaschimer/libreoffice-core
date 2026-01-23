@@ -51,6 +51,7 @@
 #include <svl/eitem.hxx>
 #include <svl/whiter.hxx>
 #include <svl/undo.hxx>
+#include <tools/urlobj.hxx>
 #include <vcl/help.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/weld/weld.hxx>

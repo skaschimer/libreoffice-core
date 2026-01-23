@@ -32,6 +32,7 @@
 #include <svl/eitem.hxx>
 #include <svl/stritem.hxx>
 #include <svl/PasswordHelper.hxx>
+#include <tools/urlobj.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <sfx2/bindings.hxx>
 #include <sfx2/docfile.hxx>

@@ -18,6 +18,7 @@
  */
 #include <tbzoomsliderctrl.hxx>
 #include <i18nutil/unicode.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/svapp.hxx>
 
 #include <comphelper/propertyvalue.hxx>

@@ -24,6 +24,7 @@
 #include <cstddef>
 
 #include <o3tl/deleter.hxx>
+#include <rtl/ref.hxx>
 #include <tools/fldunit.hxx>
 #include <svl/ctloptions.hxx>
 #include <svl/lstner.hxx>

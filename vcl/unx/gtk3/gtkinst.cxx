@@ -31,6 +31,7 @@
 #include <headless/svpvd.hxx>
 #include <headless/svpbmp.hxx>
 #include <utility>
+#include <unotools/localedatawrapper.hxx>
 #include <vcl/builder.hxx>
 #include <vcl/inputtypes.hxx>
 #include <vcl/specialchars.hxx>

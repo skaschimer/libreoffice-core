@@ -22,6 +22,7 @@
 #include <memory>
 #include <vector>
 #include <editeng/numitem.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/font.hxx>
 
 class SfxItemSet;

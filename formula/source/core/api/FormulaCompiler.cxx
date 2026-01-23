@@ -29,6 +29,7 @@
 
 #include <svl/zforlist.hxx>
 #include <unotools/charclass.hxx>
+#include <unotools/localedatawrapper.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>
 #include <comphelper/lok.hxx>

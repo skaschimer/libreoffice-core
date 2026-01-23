@@ -39,6 +39,7 @@
 #include <tools/debug.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <tools/helpers.hxx>
+#include <tools/urlobj.hxx>
 #include <rtl/uri.hxx>
 
 #include <unotools/useroptions.hxx>

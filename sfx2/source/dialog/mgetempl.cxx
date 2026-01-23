@@ -28,6 +28,7 @@
 #include <svl/intitem.hxx>
 #include <svl/style.hxx>
 #include <osl/diagnose.h>
+#include <tools/mapunit.hxx>
 
 #include <sfx2/styfitem.hxx>
 #include <sfx2/styledlg.hxx>

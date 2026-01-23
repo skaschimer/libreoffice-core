@@ -19,20 +19,31 @@
 #pragma once
 
 #include <svl/svldllapi.h>
-#include <com/sun/star/i18n/XNumberFormatCode.hpp>
-#include <com/sun/star/uno/XComponentContext.hpp>
 #include <i18nlangtag/lang.h>
 #include <svl/ondemand.hxx>
 #include <svl/zforlist.hxx>
-#include <unotools/charclass.hxx>
 
 #include <functional>
 #include <map>
 
 class Color;
+class CharClass;
 class ImpSvNumberformatScan;
 class ImpSvNumberInputScan;
 class SvNumberFormatter;
+
+namespace com::sun::star::i18n
+{
+class XNumberFormatCode;
+}
+namespace com::sun::star::i18n
+{
+struct NumberFormatCode;
+}
+namespace com::sun::star::uno
+{
+class XComponentContext;
+}
 
 class SVL_DLLPUBLIC SvNFLanguageData
 {

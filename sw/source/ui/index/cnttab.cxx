@@ -38,6 +38,7 @@
 #include <com/sun/star/ui/dialogs/XFilePicker3.hpp>
 #include <svtools/indexentryres.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
+#include <tools/urlobj.hxx>
 #include <column.hxx>
 #include <fmtfsize.hxx>
 #include <authfld.hxx>

@@ -24,6 +24,7 @@
 #include <tools/stream.hxx>
 #include <sfx2/docfile.hxx>
 #include <svl/itemiter.hxx>
+#include <tools/urlobj.hxx>
 
 #include <swtypes.hxx>
 #include <utility>

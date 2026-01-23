@@ -21,6 +21,7 @@
 #include <comphelper/fileformat.h>
 #include <comphelper/processfactory.hxx>
 #include <officecfg/Office/Common.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/urlobj.hxx>
 #include <editeng/frmdiritem.hxx>
 #include <editeng/langitem.hxx>

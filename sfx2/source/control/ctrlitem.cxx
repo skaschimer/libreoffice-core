@@ -19,6 +19,7 @@
 
 #include <sal/log.hxx>
 #include <svl/itempool.hxx>
+#include <tools/mapunit.hxx>
 
 #include <sfx2/ctrlitem.hxx>
 #include <sfx2/bindings.hxx>

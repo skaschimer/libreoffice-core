@@ -27,6 +27,7 @@
 #include <sfx2/linkmgr.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <sot/exchange.hxx>
+#include <tools/urlobj.hxx>
 #include <osl/diagnose.h>
 #include <o3tl/string_view.hxx>
 #include <fmtinfmt.hxx>

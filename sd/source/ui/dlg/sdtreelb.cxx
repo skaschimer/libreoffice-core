@@ -25,6 +25,7 @@
 #include <svx/svditer.hxx>
 #include <sfx2/docfile.hxx>
 #include <svx/svdoole2.hxx>
+#include <tools/urlobj.hxx>
 #include <vcl/svapp.hxx>
 #include <cusshow.hxx>
 

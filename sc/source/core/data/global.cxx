@@ -37,6 +37,7 @@
 #include <svl/stritem.hxx>
 #include <svl/zforlist.hxx>
 #include <svl/zformat.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/keycodes.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/settings.hxx>

@@ -67,6 +67,7 @@
 #include <svtools/soerr.hxx>
 #include <sfx2/ipclient.hxx>
 #include <tools/debug.hxx>
+#include <tools/urlobj.hxx>
 
 using namespace com::sun::star;
 

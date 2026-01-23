@@ -25,6 +25,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/docfile.hxx>
 #include <sfx2/docfilt.hxx>
+#include <tools/urlobj.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/event.hxx>
 #include <sot/filelist.hxx>

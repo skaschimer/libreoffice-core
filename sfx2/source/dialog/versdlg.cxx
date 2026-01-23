@@ -26,6 +26,7 @@
 
 #include <officecfg/Office/Common.hxx>
 #include <unotools/localedatawrapper.hxx>
+#include <rtl/ustrbuf.hxx>
 #include <svl/intitem.hxx>
 #include <svl/stritem.hxx>
 #include <svl/itemset.hxx>

@@ -28,6 +28,7 @@
 #include <svl/eitem.hxx>
 #include <svl/itemset.hxx>
 #include <sfx2/dispatch.hxx>
+#include <tools/mapunit.hxx>
 
 #include <svx/colorbox.hxx>
 #include <svx/dialmgr.hxx>

@@ -38,6 +38,7 @@
 #include <SwAppletImpl.hxx>
 #include <ndindex.hxx>
 
+#include <tools/mapunit.hxx>
 #include <osl/diagnose.h>
 #include <sot/exchange.hxx>
 #include <svl/urihelper.hxx>

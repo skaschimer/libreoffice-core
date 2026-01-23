@@ -62,6 +62,7 @@
 #include <sot/formats.hxx>
 #include <svl/asiancfg.hxx>
 #include <svl/voiditem.hxx>
+#include <tools/mapunit.hxx>
 #include <i18nutil/unicode.hxx>
 #include <i18nutil/scriptchangescanner.hxx>
 #include <i18nutil/guessparadirection.hxx>

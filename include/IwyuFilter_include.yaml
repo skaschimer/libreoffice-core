@@ -302,6 +302,9 @@ excludelist:
     - com/sun/star/lang/XInitialization.hpp
     - com/sun/star/lang/XServiceInfo.hpp
     - com/sun/star/xml/sax/XFastParser.hpp
+    include/svl/lstner.hxx:
+    # Full type is needed within std::map
+    - sal/backtrace.hxx
     include/svl/numuno.hxx:
     # base class has to be a complete type
     - com/sun/star/lang/XUnoTunnel.hpp

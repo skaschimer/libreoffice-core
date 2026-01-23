@@ -36,6 +36,7 @@
 #include <hintids.hxx>
 #include <sfx2/docfile.hxx>
 #include <sfx2/sfxsids.hrc>
+#include <tools/urlobj.hxx>
 #include <IDocumentStylePoolAccess.hxx>
 #include <fmtinfmt.hxx>
 #include <frmatr.hxx>

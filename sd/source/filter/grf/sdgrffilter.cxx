@@ -27,6 +27,7 @@
 #include <sfx2/docfilt.hxx>
 #include <sfx2/sfxuno.hxx>
 #include <svx/svdograf.hxx>
+#include <tools/urlobj.hxx>
 
 #include <strings.hrc>
 #include <DrawViewShell.hxx>

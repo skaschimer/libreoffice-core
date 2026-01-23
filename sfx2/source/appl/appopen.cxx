@@ -58,6 +58,7 @@
 #include <preventduplicateinteraction.hxx>
 #include <svtools/ehdl.hxx>
 #include <tools/debug.hxx>
+#include <tools/urlobj.hxx>
 #include <unotools/pathoptions.hxx>
 #include <unotools/securityoptions.hxx>
 #include <unotools/moduleoptions.hxx>

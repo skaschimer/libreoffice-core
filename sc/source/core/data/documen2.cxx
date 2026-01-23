@@ -31,6 +31,7 @@
 #include <svl/asiancfg.hxx>
 #include <vcl/virdev.hxx>
 #include <svl/sharedstringpool.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/urlobj.hxx>
 #include <rtl/crc.h>
 #include <basic/basmgr.hxx>

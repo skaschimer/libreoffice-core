@@ -30,6 +30,7 @@
 #include <o3tl/safeint.hxx>
 #include <o3tl/string_view.hxx>
 #include <svx/svxids.hrc>
+#include <tools/mapunit.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <unotools/resmgr.hxx>
 #include <svx/xmlexchg.hxx>

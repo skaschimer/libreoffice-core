@@ -63,6 +63,7 @@
 #include <vcl/commandevent.hxx>
 #include <vcl/svapp.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/multisel.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/help.hxx>

@@ -19,17 +19,19 @@
 #ifndef INCLUDED_SVL_ITEMPROP_HXX
 #define INCLUDED_SVL_ITEMPROP_HXX
 
-#include <com/sun/star/beans/XPropertySetInfo.hpp>
-#include <com/sun/star/beans/PropertyState.hpp>
 #include <comphelper/propertysetinfo.hxx>
 #include <cppuhelper/implbase.hxx>
 #include <rtl/ref.hxx>
-#include <svl/itemset.hxx>
 #include <svl/svldllapi.h>
 #include <o3tl/sorted_vector.hxx>
 #include <span>
 #include <string_view>
 #include <utility>
+
+class SfxItemSet;
+
+namespace com::sun::star::beans { class XPropertySetInfo; }
+namespace com::sun::star::beans { enum class PropertyState; }
 
 // values from com/sun/star/beans/PropertyAttribute
 #define PROPERTY_NONE 0

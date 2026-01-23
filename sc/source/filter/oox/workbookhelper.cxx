@@ -39,6 +39,7 @@
 #include <oox/helper/propertyset.hxx>
 #include <oox/ole/vbaproject.hxx>
 #include <oox/token/properties.hxx>
+#include <tools/mapunit.hxx>
 #include <addressconverter.hxx>
 #include <connectionsbuffer.hxx>
 #include <defnamesbuffer.hxx>

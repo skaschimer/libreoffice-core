@@ -28,6 +28,7 @@
 #include <xmloff/xmlictxt.hxx>
 #include <xmloff/xmlmetai.hxx>
 #include <sfx2/objsh.hxx>
+#include <tools/mapunit.hxx>
 #include <unotools/streamwrap.hxx>
 #include <unotools/tempfile.hxx>
 #include <xmloff/xmlscripti.hxx>

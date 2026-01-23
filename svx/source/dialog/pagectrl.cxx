@@ -25,6 +25,7 @@
 #include <vcl/themecolors.hxx>
 #include <tools/color.hxx>
 #include <tools/fract.hxx>
+#include <tools/mapunit.hxx>
 #include <svx/pageitem.hxx>
 #include <svx/pagectrl.hxx>
 #include <algorithm>

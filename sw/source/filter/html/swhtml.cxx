@@ -30,6 +30,7 @@
 #include <comphelper/string.hxx>
 #include <o3tl/safeint.hxx>
 #include <rtl/ustrbuf.hxx>
+#include <tools/urlobj.hxx>
 #include <svx/svxids.hrc>
 #include <svx/svdotext.hxx>
 #if OSL_DEBUG_LEVEL > 0

@@ -18,6 +18,7 @@
  */
 
 #include <fuinsfil.hxx>
+#include <rtl/ustrbuf.hxx>
 #include <vcl/svapp.hxx>
 #include <sfx2/progress.hxx>
 #include <editeng/outliner.hxx>

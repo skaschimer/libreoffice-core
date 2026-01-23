@@ -46,6 +46,7 @@
 #include <libxml/xmlwriter.h>
 #include <sal/log.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <o3tl/safeint.hxx>
 #include <o3tl/string_view.hxx>
 #include <osl/diagnose.h>

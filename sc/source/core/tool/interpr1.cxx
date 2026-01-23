@@ -30,6 +30,7 @@
 #include <svl/numformat.hxx>
 #include <svl/zforlist.hxx>
 #include <svl/zformat.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/urlobj.hxx>
 #include <unotools/charclass.hxx>
 #include <sfx2/docfile.hxx>

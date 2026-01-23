@@ -33,6 +33,7 @@
 #include <utility>
 #include <vcl/outdev.hxx>
 #include <comphelper/errcode.hxx>
+#include <comphelper/lok.hxx>
 #include <tools/link.hxx>
 #include <editeng/editengdllapi.h>
 #include <editeng/svxfont.hxx>

@@ -24,6 +24,8 @@
 #include <msgpool.hxx>
 #include <dbdata.hxx>
 
+#include <tools/mapunit.hxx>
+
 static ItemInfoPackage& getItemInfoPackageScMessage()
 {
     class ItemInfoPackageScMessage : public ItemInfoPackage

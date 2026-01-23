@@ -20,6 +20,7 @@
 #define INCLUDED_EDITENG_FHGTITEM_HXX
 
 #include <svl/poolitem.hxx>
+#include <tools/mapunit.hxx>
 #include <editeng/editengdllapi.h>
 
 // class SvxFontHeightItem -----------------------------------------------

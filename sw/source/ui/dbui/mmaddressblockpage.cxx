@@ -23,6 +23,7 @@
 #include "addresslistdialog.hxx"
 #include <editeng/eeitem.hxx>
 #include <o3tl/safeint.hxx>
+#include <tools/mapunit.hxx>
 #include <svl/grabbagitem.hxx>
 #include <svl/itemset.hxx>
 #include <utility>

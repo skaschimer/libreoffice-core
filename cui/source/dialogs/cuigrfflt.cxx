@@ -29,6 +29,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <osl/diagnose.h>
+#include <tools/mapunit.hxx>
 #include <tools/fldunit.hxx>
 #include <cuigrfflt.hxx>
 

@@ -21,6 +21,7 @@
 #include <osl/diagnose.h>
 #include <tools/date.hxx>
 #include <tools/time.hxx>
+#include <tools/urlobj.hxx>
 #include <svl/fstathelper.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <sfx2/docfile.hxx>

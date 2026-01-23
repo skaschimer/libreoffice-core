@@ -23,6 +23,7 @@
 #include <comphelper/base64.hxx>
 #include <comphelper/graphicmimetype.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/animate/Animation.hxx>
 #include <vcl/animate/AnimationFrame.hxx>
 #include <vcl/gfxlink.hxx>
@@ -31,6 +32,7 @@
 #include <sfx2/docfile.hxx>
 #include <svx/svdpntv.hxx>
 #include <svx/xoutbmp.hxx>
+#include <tools/urlobj.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <vcl/cvtgrf.hxx>
 #include <vcl/gdimtf.hxx>

@@ -29,6 +29,7 @@
 #include <officecfg/Office/Common.hxx>
 #include <rtl/ustring.hxx>
 #include <sal/log.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/event.hxx>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
