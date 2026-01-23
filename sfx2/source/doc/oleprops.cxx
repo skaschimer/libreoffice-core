@@ -27,6 +27,8 @@
 #include <sal/log.hxx>
 #include <utility>
 
+#include <com/sun/star/uno/Sequence.hxx>
+
 
 #define STREAM_BUFFER_SIZE 2048
 

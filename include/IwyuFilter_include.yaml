@@ -305,6 +305,9 @@ excludelist:
     include/tools/simdsupport.hxx:
     # Needed for CPU intrinsics detection to work
     - emmintrin.h
+    include/tools/XmlWriter.hxx:
+    # Not to be confused with std <concepts>
+    - o3tl/concepts.hxx
     include/unotest/bootstrapfixturebase.hxx:
     # These are used in virtually all test files, too much work to move them everywhere
     - cppunit/TestAssert.h

@@ -57,6 +57,8 @@
 
 #include <o3tl/cppunittraitshelper.hxx>
 #include <tools/datetimeutils.hxx>
+#include <tools/datetime.hxx>
+#include <tools/time.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <oox/drawingml/drawingmltypes.hxx>
 #include <unotools/streamwrap.hxx>

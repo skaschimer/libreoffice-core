@@ -24,6 +24,7 @@
 #include <vcl/metaactiontypes.hxx>
 #include <rtl/crc.h>
 #include <tools/solar.h>
+#include <tools/stream.hxx>
 #include <tools/vcompat.hxx>
 
 #include <osl/thread.h>
