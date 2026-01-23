@@ -37,6 +37,7 @@
 #endif
 #include "ttcr.hxx"
 #include <i18nlangtag/applelangid.hxx>
+#include <i18nlangtag/languagetag.hxx>
 #include <rtl/crc.h>
 #include <rtl/ustring.hxx>
 #include <rtl/ustrbuf.hxx>
