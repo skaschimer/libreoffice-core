@@ -29,6 +29,7 @@
 #include <o3tl/any.hxx>
 #include <o3tl/safeint.hxx>
 #include <osl/file.hxx>
+#include <tools/globname.hxx>
 #include <tools/solar.h>
 #include <sal/log.hxx>
 #include <rtl/math.hxx>

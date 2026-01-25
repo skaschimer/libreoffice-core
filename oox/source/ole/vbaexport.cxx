@@ -32,6 +32,7 @@
 #include <comphelper/random.hxx>
 #include <comphelper/xmltools.hxx>
 #include <utility>
+#include <rtl/ref.hxx>
 #include <rtl/tencinfo.h>
 #include <osl/thread.h>
 

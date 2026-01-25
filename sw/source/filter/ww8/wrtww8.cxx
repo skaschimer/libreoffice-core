@@ -103,6 +103,7 @@
 #include <sfx2/docfile.hxx>
 #include <sfx2/frame.hxx>
 #include <svl/stritem.hxx>
+#include <tools/globname.hxx>
 #include <unotools/tempfile.hxx>
 #include <filter/msfilter/mscodec.hxx>
 #include <filter/msfilter/svxmsbas.hxx>

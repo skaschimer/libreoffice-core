@@ -23,6 +23,8 @@
 #include <comphelper/types.hxx>
 #include <o3tl/safeint.hxx>
 #include <tools/datetime.hxx>
+#include <tools/globname.hxx>
+#include <rtl/ref.hxx>
 #include <rtl/tencinfo.h>
 #include <sal/log.hxx>
 #include <utility>

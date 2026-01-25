@@ -13,7 +13,10 @@
 #include <osl/diagnose.h>
 #include <svtools/rtfkeywd.hxx>
 #include <rtl/character.hxx>
+#include <rtl/ref.hxx>
+#include <tools/globname.hxx>
 #include <tools/stream.hxx>
+#include <sot/formats.hxx>
 #include <sot/storage.hxx>
 #include <o3tl/numeric.hxx>
 

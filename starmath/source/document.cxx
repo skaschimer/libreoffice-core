@@ -53,6 +53,7 @@
 #include <vcl/mapmod.hxx>
 #include <vcl/rendercontext/DrawModeFlags.hxx>
 #include <vcl/virdev.hxx>
+#include <tools/globname.hxx>
 #include <tools/mapunit.hxx>
 #include <vcl/settings.hxx>
 

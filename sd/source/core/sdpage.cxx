@@ -64,6 +64,7 @@
 #include <rtl/ustring.hxx>
 #include <sal/log.hxx>
 #include <tools/debug.hxx>
+#include <tools/globname.hxx>
 #include <o3tl/enumarray.hxx>
 #include <o3tl/safeint.hxx>
 #include <o3tl/sorted_vector.hxx>

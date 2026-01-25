@@ -42,6 +42,7 @@
 #include <com/sun/star/frame/XModel.hpp>
 
 #include <sfx2/objsh.hxx>
+#include <tools/globname.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <comphelper/configuration.hxx>
