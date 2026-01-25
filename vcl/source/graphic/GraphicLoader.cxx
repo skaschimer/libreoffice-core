@@ -11,6 +11,7 @@
 #include <vcl/GraphicLoader.hxx>
 
 #include <com/sun/star/awt/XWindow.hpp>
+#include <tools/stream.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <vcl/graph.hxx>
 #include <vcl/graphicfilter.hxx>

@@ -15,6 +15,7 @@
 
 #include <comphelper/seqstream.hxx>
 #include <comphelper/string.hxx>
+#include <tools/stream.hxx>
 
 #include <com/sun/star/graphic/SvgTools.hpp>
 #include <com/sun/star/graphic/XPrimitive2D.hpp>

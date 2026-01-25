@@ -16,6 +16,7 @@
 #include <com/sun/star/lang/XMultiServiceFactory.hpp>
 
 #include <sfx2/filedlghelper.hxx>
+#include <tools/stream.hxx>
 #include <tools/urlobj.hxx>
 
 #include <unotools/ucbstreamhelper.hxx>

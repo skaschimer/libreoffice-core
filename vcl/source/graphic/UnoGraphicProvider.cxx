@@ -26,6 +26,7 @@
 #include <imagerepository.hxx>
 #include <tools/fract.hxx>
 #include <tools/mapunit.hxx>
+#include <tools/stream.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <vcl/graphic/BitmapHelper.hxx>
 #include <vcl/graphicfilter.hxx>

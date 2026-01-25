@@ -35,6 +35,7 @@
 #include <com/sun/star/i18n/CalendarFieldIndex.hpp>
 #include <com/sun/star/i18n/CalendarDisplayIndex.hpp>
 #include <com/sun/star/i18n/CalendarDisplayCode.hpp>
+#include <com/sun/star/i18n/Calendar2.hpp>
 #include <com/sun/star/i18n/AmPmValue.hpp>
 #include <com/sun/star/i18n/NativeNumberMode.hpp>
 #include <com/sun/star/i18n/NativeNumberXmlAttributes2.hpp>

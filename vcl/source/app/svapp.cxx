@@ -20,6 +20,7 @@
 #include <config_features.h>
 #include <config_version.h>
 
+#include <i18nlangtag/languagetag.hxx>
 #include <osl/diagnose.h>
 #include <osl/file.hxx>
 #include <osl/thread.hxx>

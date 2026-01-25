@@ -101,6 +101,7 @@
 #include <utility>
 #include <xmloff/odffields.hxx>
 #include <rtl/uri.hxx>
+#include <tools/stream.hxx>
 #include <tools/UnitConversion.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <unotools/streamwrap.hxx>

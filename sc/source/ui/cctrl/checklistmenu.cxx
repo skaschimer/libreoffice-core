@@ -36,6 +36,8 @@
 #include <tools/json_writer.hxx>
 #include <svl/numformat.hxx>
 
+#include <com/sun/star/i18n/Calendar2.hpp>
+
 #include <document.hxx>
 #include <viewdata.hxx>
 

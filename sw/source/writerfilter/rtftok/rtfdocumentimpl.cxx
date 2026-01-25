@@ -46,6 +46,7 @@
 #include <rtl/tencinfo.h>
 #include <sal/log.hxx>
 #include <tools/mapunit.hxx>
+#include <tools/stream.hxx>
 #include <osl/diagnose.h>
 #include <oox/helper/graphichelper.hxx>
 #include <vcl/wmfexternal.hxx>

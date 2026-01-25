@@ -30,6 +30,9 @@
 
 #include <sax/tools/converter.hxx>
 
+#include <com/sun/star/i18n/Calendar2.hpp>
+#include <com/sun/star/i18n/NativeNumberXmlAttributes.hpp>
+
 #include <utility>
 #include <xmloff/xmlement.hxx>
 #include <xmloff/xmlnumfi.hxx>

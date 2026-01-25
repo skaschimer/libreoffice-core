@@ -324,6 +324,7 @@ excludelist:
     - com/sun/star/ucb/XProgressHandler.hpp
     include/unotools/streamwrap.hxx:
     # base class has to be a complete type
+    - com/sun/star/io/XInputStream.hpp
     - com/sun/star/io/XOutputStream.hpp
     - com/sun/star/io/XStream.hpp
     - com/sun/star/io/XTruncate.hpp

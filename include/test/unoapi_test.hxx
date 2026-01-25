@@ -17,6 +17,7 @@
 #include <rtl/ref.hxx>
 #include <test/bootstrapfixture.hxx>
 #include <test/testinteractionhandler.hxx>
+#include <tools/stream.hxx>
 #include <unotest/macros_test.hxx>
 #include <com/sun/star/lang/XComponent.hpp>
 #include <unotools/tempfile.hxx>

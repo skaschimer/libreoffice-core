@@ -13,6 +13,7 @@
 
 #include <vcl/mtfxmldump.hxx>
 #include <sal/log.hxx>
+#include <tools/stream.hxx>
 #include <test/cppunitasserthelper.hxx>
 
 #include <libxml/xpathInternals.h>

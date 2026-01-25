@@ -30,6 +30,9 @@
 #include <vcl/svapp.hxx>
 #include <vcl/transfer.hxx>
 #include <vcl/window.hxx>
+
+#include <com/sun/star/i18n/Calendar2.hpp>
+
 #include <utility>
 
 void ImpEditEngine::SetStyleSheetPool( SfxStyleSheetPool* pSPool )

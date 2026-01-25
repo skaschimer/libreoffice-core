@@ -63,6 +63,7 @@
 #include <unocrsrhelper.hxx>
 #include <textcontentcontrol.hxx>
 #include <EnhancedPDFExportHelper.hxx>
+#include <com/sun/star/i18n/UnicodeScript.hpp>
 #include <com/sun/star/rdf/Statement.hpp>
 #include <com/sun/star/rdf/URI.hpp>
 #include <com/sun/star/rdf/URIs.hpp>

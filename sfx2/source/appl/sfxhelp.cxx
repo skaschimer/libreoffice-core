@@ -47,6 +47,7 @@
 #include <com/sun/star/frame/ModuleManager.hpp>
 #include <unotools/configmgr.hxx>
 #include <unotools/moduleoptions.hxx>
+#include <tools/stream.hxx>
 #include <tools/urlobj.hxx>
 #include <ucbhelper/content.hxx>
 #include <unotools/pathoptions.hxx>

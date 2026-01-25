@@ -36,6 +36,7 @@
 #include <unotools/mediadescriptor.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <tools/debug.hxx>
+#include <tools/stream.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <tools/zcodec.hxx>

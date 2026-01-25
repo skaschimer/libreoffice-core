@@ -39,6 +39,7 @@
 
 #include <com/sun/star/i18n/XCharacterClassification.hpp>
 #include <com/sun/star/i18n/CalendarFieldIndex.hdl>
+#include <com/sun/star/i18n/Calendar2.hpp>
 
 #include <unotools/localedatawrapper.hxx>
 #include <unotools/calendarwrapper.hxx>

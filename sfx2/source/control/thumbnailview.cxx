@@ -30,6 +30,7 @@
 #include <rtl/ustring.hxx>
 #include <sal/log.hxx>
 #include <svtools/optionsdrawinglayer.hxx>
+#include <tools/stream.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <vcl/svapp.hxx>
