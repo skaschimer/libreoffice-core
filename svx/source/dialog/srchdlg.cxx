@@ -63,6 +63,7 @@
 #include "srchctrl.hxx"
 #include <svx/dialmgr.hxx>
 #include <editeng/brushitem.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/resary.hxx>
 #include <svx/svxdlg.hxx>
 #include <vcl/toolbox.hxx>

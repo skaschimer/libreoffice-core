@@ -47,6 +47,7 @@
 #include <tools/color.hxx>
 #include <tools/fract.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/event.hxx>
 #include <vcl/dockwin.hxx>
 #include <vcl/pdfextoutdevdata.hxx>

@@ -37,6 +37,7 @@
 #include <com/sun/star/lang/XSingleServiceFactory.hpp>
 #include <com/sun/star/util/VetoException.hpp>
 #include <tools/debug.hxx>
+#include <tools/fldunit.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <vcl/svapp.hxx>

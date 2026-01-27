@@ -24,6 +24,7 @@
 #include <comphelper/propertyvalue.hxx>
 #include <comphelper/OAccessible.hxx>
 #include <tools/color.hxx>
+#include <tools/fldunit.hxx>
 #include <svl/numformat.hxx>
 #include <svl/poolitem.hxx>
 #include <svl/itemset.hxx>

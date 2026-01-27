@@ -52,6 +52,7 @@
 
 #include <BaseCoordinateSystem.hxx>
 
+#include <com/sun/star/awt/XVclWindowPeer.hpp>
 #include <com/sun/star/frame/XController2.hpp>
 #include <com/sun/star/util/CloseVetoException.hpp>
 #include <com/sun/star/frame/LayoutManagerEvents.hpp>

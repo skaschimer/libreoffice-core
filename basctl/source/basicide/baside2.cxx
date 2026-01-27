@@ -60,6 +60,7 @@
 #include <svl/whiter.hxx>
 #include <svx/svxids.hrc>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 #include <unotools/securityoptions.hxx>
 #include <utility>
 #include <vcl/locktoplevels.hxx>

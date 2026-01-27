@@ -27,6 +27,7 @@
 #include <vcl/rendercontext/AntialiasingFlags.hxx>
 
 #include <tools/fract.hxx>
+#include <tools/mapunit.hxx>
 
 #include <com/sun/star/awt/XDevice.hpp>
 #include <com/sun/star/awt/XToolkit.hpp>

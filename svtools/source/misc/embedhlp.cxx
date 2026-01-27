@@ -41,6 +41,7 @@
 #include <com/sun/star/chart2/XChartTypeContainer.hpp>
 #include <com/sun/star/chart2/XChartType.hpp>
 #include <tools/globname.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/stream.hxx>
 #include <comphelper/classids.hxx>
 #include <com/sun/star/util/CloseVetoException.hpp>

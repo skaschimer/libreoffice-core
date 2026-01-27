@@ -391,6 +391,13 @@ excludelist:
     - com/sun/star/frame/XTerminateListener.hpp
     - com/sun/star/datatransfer/dnd/XDragGestureListener.hpp
     - com/sun/star/datatransfer/dnd/XDropTargetListener.hpp
+    include/toolkit/awt/vclxfont.hxx:
+    # base class has to be a complete type
+    - com/sun/star/awt/XFont2.hpp
+    include/toolkit/awt/vclxdevice.hxx:
+    # base class has to be a complete type
+    - com/sun/star/awt/XDevice.hpp
+    - com/sun/star/awt/XUnitConversion.hpp
     include/vcl/weld/customweld.hxx:
     # FIXME some compilers (GCC, MSVC) fail to build with fw declaring this, while Clang does not
     - comphelper/OAccessible.hxx
@@ -400,32 +407,18 @@ excludelist:
     include/vcl/vectorgraphicdata.hxx:
     # TODO Needed on Android NDK 27 for some reason
     - com/sun/star/graphic/XPrimitive2D.hpp
-    include/toolkit/awt/vclxwindow.hxx:
-    # base class has to be a complete type
-    - com/sun/star/awt/XWindow2.hpp
-    - com/sun/star/awt/XVclWindowPeer.hpp
-    - com/sun/star/awt/XLayoutConstrains.hpp
-    - com/sun/star/awt/XView.hpp
-    - com/sun/star/beans/XPropertySetInfo.hpp
-    - com/sun/star/awt/XDockableWindow.hpp
-    - com/sun/star/awt/XStyleSettingsSupplier.hpp
     include/toolkit/awt/vclxwindows.hxx:
     # base class has to be a complete type
-    - com/sun/star/awt/XListBox.hpp
-    - com/sun/star/awt/XToggleButton.hpp
-    - com/sun/star/awt/XComboBox.hpp
-    - com/sun/star/awt/XItemListListener.hpp
-    include/toolkit/controls/unocontrol.hxx:
-    # base class has to be a complete type
-    - com/sun/star/awt/XControl.hpp
-    - com/sun/star/awt/XWindow2.hpp
-    - com/sun/star/awt/XView.hpp
-    - com/sun/star/beans/XPropertiesChangeListener.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
-    - com/sun/star/awt/XUnitConversion.hpp
-    - com/sun/star/awt/XStyleSettingsSupplier.hpp
-    - com/sun/star/accessibility/XAccessible.hpp
-    - com/sun/star/util/XModeChangeBroadcaster.hpp
+    - com/sun/star/awt/XTextArea.hpp
+    - com/sun/star/awt/XTextComponent.hpp
+    - com/sun/star/awt/XNumericField.hpp
+    - com/sun/star/awt/XScrollBar.hpp
+    - com/sun/star/awt/XTextEditField.hpp
+    - com/sun/star/awt/XSpinField.hpp
+    - com/sun/star/awt/XFixedHyperlink.hpp
+    - com/sun/star/awt/XFixedText.hpp
+    - com/sun/star/awt/XRadioButton.hpp
+    - com/sun/star/awt/XCheckBox.hpp
     include/toolkit/controls/unocontrolmodel.hxx:
     # base class has to be a complete type
     - com/sun/star/awt/XControlModel.hpp
@@ -434,17 +427,6 @@ excludelist:
     - com/sun/star/beans/XPropertyState.hpp
     - com/sun/star/io/XPersistObject.hpp
     - com/sun/star/util/XCloneable.hpp
-    include/toolkit/controls/unocontrols.hxx:
-    # base class has to be a complete type
-    - com/sun/star/awt/XTextComponent.hpp
-    - com/sun/star/awt/XTextListener.hpp
-    - com/sun/star/awt/XTextLayoutConstrains.hpp
-    - com/sun/star/awt/XButton.hpp
-    - com/sun/star/awt/XToggleButton.hpp
-    - com/sun/star/awt/XRadioButton.hpp
-    - com/sun/star/awt/XCheckBox.hpp
-    - com/sun/star/awt/XListBox.hpp
-    - com/sun/star/awt/XItemList.hpp
     include/toolkit/helper/macros.hxx:
     # Needed for macros
     - comphelper/diagnose_ex.hxx

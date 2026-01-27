@@ -28,6 +28,7 @@
 #include <com/sun/star/awt/XVclWindowPeer.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
 #include <toolkit/helper/vclunohelper.hxx>
+#include <tools/mapunit.hxx>
 #include <vcl/window.hxx>
 #include <vcl/wrkwin.hxx>
 

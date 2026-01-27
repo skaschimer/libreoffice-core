@@ -61,6 +61,7 @@
 #include <toolkit/helper/vclunohelper.hxx>
 #include <tools/debug.hxx>
 #include <tools/fract.hxx>
+#include <tools/mapunit.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/rendercontext/SystemTextColorFlags.hxx>
 #include <vcl/settings.hxx>

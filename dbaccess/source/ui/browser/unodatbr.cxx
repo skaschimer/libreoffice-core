@@ -84,6 +84,7 @@
 #include <comphelper/diagnose_ex.hxx>
 #include <osl/diagnose.h>
 #include <sal/log.hxx>
+#include <tools/mapunit.hxx>
 #include <tools/multisel.hxx>
 #include <tools/urlobj.hxx>
 #include <unotools/confignode.hxx>
