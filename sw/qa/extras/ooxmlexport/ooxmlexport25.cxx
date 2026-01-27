@@ -184,6 +184,20 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf170438_dropdown)
     assertXPath(pXmlDoc, "//w:listItem[1]", "value", u""); // value may be empty
 }
 
+CPPUNIT_TEST_FIXTURE(Test, testTdf170516_drawingBeforePlainText)
+{
+    createSwDoc("tdf170516_drawingBeforePlainText.docx");
+
+    saveAndReload(TestFilter::DOCX);
+
+    xmlDocUniquePtr pXmlDoc = parseExport(u"word/document.xml"_ustr);
+    assertXPath(pXmlDoc, "//w:sdt", 1); // only one sdt
+    assertXPath(pXmlDoc, "//w:tc/w:p/w:sdt", 1); // and it is inside a cell
+
+    assertXPath(pXmlDoc, "//mc:AlternateContent", 1); // only one drawing
+    assertXPath(pXmlDoc, "//w:tc/w:p/w:r/mc:AlternateContent", 1); // and it is not inside the sdt
+}
+
 CPPUNIT_TEST_FIXTURE(Test, testTdf170389_manyTabstops)
 {
     createSwDoc("tdf170389_manyTabstops.odt");
