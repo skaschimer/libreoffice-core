@@ -599,8 +599,8 @@ void TextObjectBar::Execute(SfxRequest& rReq)
                     case SID_ATTR_PARA_ADJUST_CENTER:  eAdjst = SvxAdjust::Center;  eAnchor = SDRTEXTHORZADJUST_CENTER;  goto SET_ADJUST;
                     case SID_ATTR_PARA_ADJUST_RIGHT:  eAdjst = SvxAdjust::Right;  eAnchor = SDRTEXTHORZADJUST_RIGHT;  goto SET_ADJUST;
                     case SID_ATTR_PARA_ADJUST_BLOCK:  eAdjst = SvxAdjust::Block;  eAnchor = SDRTEXTHORZADJUST_BLOCK;  goto SET_ADJUST;
-                    case SID_ATTR_PARA_ADJUST_START:  eAdjst = SvxAdjust::Block;  eAnchor = SDRTEXTHORZADJUST_LEFT;  goto SET_ADJUST;
-                    case SID_ATTR_PARA_ADJUST_END:  eAdjst = SvxAdjust::Block;  eAnchor = SDRTEXTHORZADJUST_RIGHT;  goto SET_ADJUST;
+                    case SID_ATTR_PARA_ADJUST_START:  eAdjst = SvxAdjust::ParaStart;  eAnchor = SDRTEXTHORZADJUST_LEFT;  goto SET_ADJUST;
+                    case SID_ATTR_PARA_ADJUST_END:  eAdjst = SvxAdjust::ParaEnd;  eAnchor = SDRTEXTHORZADJUST_RIGHT;  goto SET_ADJUST;
 SET_ADJUST:
                     {
                         aNewAttr.Put(SvxAdjustItem(eAdjst, EE_PARA_JUST));

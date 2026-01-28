@@ -1562,7 +1562,7 @@ CPPUNIT_TEST_FIXTURE(SdUiImpressTest, testTdf164855)
         = pTableObject->getText(0)->GetOutlinerParaObject()->GetTextObject();
     const SfxItemSet& rParaAttribs = rEdit.GetParaAttribs(0);
     auto pAdjust = rParaAttribs.GetItem(EE_PARA_JUST);
-    CPPUNIT_ASSERT_EQUAL(SvxAdjust::Left, pAdjust->GetAdjust());
+    CPPUNIT_ASSERT_EQUAL(SvxAdjust::ParaStart, pAdjust->GetAdjust());
 
     // Without the fix in place, this test would have crashed here
     dispatchCommand(mxComponent, u".uno:RightPara"_ustr, {});

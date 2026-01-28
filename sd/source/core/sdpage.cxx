@@ -549,11 +549,11 @@ SdrObject* SdPage::CreatePresObj(PresObjKind eObjKind, bool bVertical, const ::t
             aTempAttr.Put( SvxFontHeightItem( 493, 100, EE_CHAR_FONTHEIGHT_CTL ) );
             aTempAttr.Put( SvxFontHeightItem( 493, 100, EE_CHAR_FONTHEIGHT_CJK ) );
 
-            SvxAdjust eH = SvxAdjust::Left;
+            SvxAdjust eH = SvxAdjust::ParaStart;
 
             if( (eObjKind == PresObjKind::DateTime) && (mePageKind != PageKind::Standard ) )
             {
-                eH = SvxAdjust::Right;
+                eH = SvxAdjust::ParaEnd;
             }
             else if( (eObjKind == PresObjKind::Footer) && (mePageKind == PageKind::Standard ) )
             {
@@ -561,10 +561,10 @@ SdrObject* SdPage::CreatePresObj(PresObjKind eObjKind, bool bVertical, const ::t
             }
             else if( eObjKind == PresObjKind::SlideNumber )
             {
-                eH = SvxAdjust::Right;
+                eH = SvxAdjust::ParaEnd;
             }
 
-            if( eH != SvxAdjust::Left )
+            if( eH != SvxAdjust::ParaStart )
                 aTempAttr.Put(SvxAdjustItem(eH, EE_PARA_JUST ));
 
             pSdrObj->SetMergedItemSet(aTempAttr);

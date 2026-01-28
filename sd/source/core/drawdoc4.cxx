@@ -1200,9 +1200,6 @@ void SdDrawDocument::SetTextDefaults() const
 
     SvxNumBulletItem aNumBulletItem( std::move(aNumRule), EE_PARA_NUMBULLET );
     m_pItemPool->SetUserDefaultItem( aNumBulletItem );
-
-    // tdf#169035: Continue using left-alignment as the default
-    m_pItemPool->SetUserDefaultItem(SvxAdjustItem(SvxAdjust::Left, EE_PARA_JUST));
 }
 
 css::text::WritingMode SdDrawDocument::GetDefaultWritingMode() const
@@ -1246,11 +1243,7 @@ void SdDrawDocument::SetDefaultWritingMode(css::text::WritingMode eMode )
     SvxFrameDirectionItem aModeItem( nVal, EE_PARA_WRITINGDIR );
     m_pItemPool->SetUserDefaultItem( aModeItem );
 
-    SvxAdjustItem aAdjust( SvxAdjust::Left, EE_PARA_JUST );
-
-    if( eMode == css::text::WritingMode_RL_TB )
-        aAdjust.SetAdjust( SvxAdjust::Right );
-
+    SvxAdjustItem aAdjust( SvxAdjust::ParaStart, EE_PARA_JUST );
     m_pItemPool->SetUserDefaultItem( aAdjust );
 }
 
