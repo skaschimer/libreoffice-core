@@ -200,7 +200,7 @@ bool Diagram::checkMinimalDataDoms() const
     return true;
 }
 
-void Diagram::tryToCreateMissingDataDoms(oox::core::XmlFilterBase& rFB, const uno::Reference<drawing::XShape>& rXRootShape)
+void Diagram::tryToCreateMissingDataDoms(oox::core::XmlFilterBase& rFB)
 {
     // internal testing: allow to force to always recreate
     static bool bForceAlwaysReCreate(false);
@@ -225,7 +225,7 @@ void Diagram::tryToCreateMissingDataDoms(oox::core::XmlFilterBase& rFB, const un
         if (xOutput)
         {
             sax_fastparser::FSHelperPtr aFS = std::make_shared<sax_fastparser::FastSerializerHelper>(xOutput, true);
-            getData()->writeDiagramData(rFB, aFS, rXRootShape);
+            getData()->writeDiagramData(rFB, aFS);
             xOutput->flush();
 
             // this call is *important*, without it xDocBuilder->parse below fails and some strange
