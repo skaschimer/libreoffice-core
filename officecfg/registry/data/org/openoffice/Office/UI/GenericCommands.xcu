@@ -3312,7 +3312,10 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       </node>
       <node oor:name=".uno:AddDirect" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">~New</value>
+          <value xml:lang="en-US">~New Document</value>
+        </prop>
+        <prop oor:name="ContextLabel" oor:type="xs:string">
+          <value xml:lang="en-US">New</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -3568,11 +3571,8 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
         </prop>
       </node>
       <node oor:name=".uno:StyleNewByExample" oor:op="replace">
-        <prop oor:name="ContextLabel" oor:type="xs:string">
-          <value xml:lang="en-US">~New Style from Selection</value>
-        </prop>
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">New</value>
+          <value xml:lang="en-US">New Style from Selection</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
