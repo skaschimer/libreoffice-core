@@ -1249,6 +1249,20 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf115159)
     assertXPath(pDoc, "/x:workbook/x:definedNames/x:definedName", 1);
 }
 
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf170201_empty_values_in_array_formulas)
+{
+    createScDoc("xlsx/tdf170201.xlsx");
+
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pDoc = parseExport(u"xl/workbook.xml"_ustr);
+    CPPUNIT_ASSERT(pDoc);
+
+    // Without the fix in place, this test would have failed with
+    // - Expected: {1,#N/A,3}
+    // - Actual  : {1,,3}
+    assertXPathContent(pDoc, "/x:workbook/x:definedNames/x:definedName", u"{1,#N/A,3}");
+}
+
 CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf112567)
 {
     // Set the system locale to Hungarian (a language with different range separator)
