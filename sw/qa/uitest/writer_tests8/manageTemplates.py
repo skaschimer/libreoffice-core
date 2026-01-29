@@ -22,7 +22,7 @@ class ManageTemplates(UITestCase):
                 xTemplateView.executeAction("SELECT", mkPropertyValues({"POS": "1"}))
                 print(get_state_as_dict(xTemplateView))
                 self.assertEqual("1", get_state_as_dict(xTemplateView)["SelectedIndex"])
-                self.assertTrue(get_state_as_dict(xTemplateView)["SelectedItemTitle"].startswith("Modern business letter"))
+                aName = get_state_as_dict(xTemplateView)["SelectedItemTitle"]
 
                 # tdf#170399: Without the fix in place, this test would have crashed here
                 xTemplateView.executeAction("EDIT", tuple())
@@ -34,7 +34,7 @@ class ManageTemplates(UITestCase):
             raise
 
         document = self.ui_test.get_component()
-        self.assertTrue(document.Title.startswith("Modern_business_letter"))
+        self.assertEqual(aName.replace(" ", "_").replace("-", "_") + ".ott", document.Title)
         self.ui_test.close_doc()
 
 # vim: set shiftwidth=4 softtabstop=4 expandtab:
