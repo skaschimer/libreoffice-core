@@ -119,31 +119,31 @@ published service DatabaseRange
 
     /** specifies the name of the table style.
 
-        @since LibreOffice 26.2
+        @since LibreOffice 26.8
      */
     [optional, property] string TableStyleName;
 
     /** specifies that the first and second row colors are different.
 
-        @since LibreOffice 26.2
+        @since LibreOffice 26.8
      */
     [optional, property] boolean UseRowStripes;
 
     /** specifies that the first and second col colors are different.
 
-        @since LibreOffice 26.2
+        @since LibreOffice 26.8
      */
     [optional, property] boolean UseColStripes;
 
     /** specifies that the first col has different format or not.
 
-        @since LibreOffice 26.2
+        @since LibreOffice 26.8
      */
     [optional, property] boolean UseFirstColumnFormatting;
 
     /** specifies that the last col has different format or not.
 
-        @since LibreOffice 26.2
+        @since LibreOffice 26.8
      */
     [optional, property] boolean UseLastColumnFormatting;
 };
