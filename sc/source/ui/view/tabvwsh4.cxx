@@ -2274,7 +2274,7 @@ void ScTabViewShell::FillFieldData( ScHeaderFieldData& rData )
     const INetURLObject& rURLObj = pDocShell->GetMedium()->GetURLObject();
 
     // The doc names (long and short) are meant to be printed. They should be in human readable
-    // format, not with an URL encoding.
+    // format, not with a URL encoding.
     rData.aLongDocName  = rURLObj.GetMainURL(INetURLObject::DecodeMechanism::WithCharset);
     if ( !rData.aLongDocName.isEmpty() )
         rData.aShortDocName = rURLObj.GetLastName(INetURLObject::DecodeMechanism::WithCharset);

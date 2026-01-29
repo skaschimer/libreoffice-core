@@ -14,7 +14,7 @@ class Tdf166756(UITestCase):
 
     def test_tdf166756_edit_header_and_footer(self):
         # Test that the filename is correctly displayed in the edit header and footer dialog
-        # even if the filename contains special chars that are encoded in an URL
+        # even if the filename contains special chars that are encoded in a URL
         # This test does not cover actual printing or print preview
         fileName="tdf166756_[1].ods"
         fileURL = get_url_for_data_file(fileName)

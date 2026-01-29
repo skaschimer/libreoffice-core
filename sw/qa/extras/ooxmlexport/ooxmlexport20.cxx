@@ -1231,7 +1231,7 @@ DECLARE_OOXMLEXPORT_TEST(testTdf160827, "tdf160827.docx")
 
 CPPUNIT_TEST_FIXTURE(Test, testTdf159110)
 {
-    // Given a text with an URL with multiple spaces
+    // Given a text with a URL with multiple spaces
     createSwDoc("multi_space_url.fodt");
     saveAndReload(TestFilter::DOCX);
 

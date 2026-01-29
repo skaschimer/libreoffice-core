@@ -3522,7 +3522,7 @@ void ScGridWindow::Command( const CommandEvent& rCEvt )
         // tdf#127341 the formerly used GetEditUrl(aPosPixel) additionally
         // to bSpellError activated EditMode here for right-click on URL
         // which prevents the regular context-menu from appearing. Since this
-        // is more expected than the context-menu for editing an URL, I removed
+        // is more expected than the context-menu for editing a URL, I removed
         // this. If this was wanted and can be argued it might be re-activated.
         // For now, reduce to spelling errors - as the original comment above
         // suggests.

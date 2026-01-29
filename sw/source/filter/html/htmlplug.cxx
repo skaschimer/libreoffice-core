@@ -610,7 +610,7 @@ bool SwHTMLParser::InsertEmbed()
 
             if (!xInStream.is())
             {
-                // Object data is neither OLE2 in RTF, nor an image. Then map this to an URL that
+                // Object data is neither OLE2 in RTF, nor an image. Then map this to a URL that
                 // will be set on the inner image.
                 m_aEmbedURL = aEmbedURL;
                 // Signal success, so the outer object won't fall back to the image handler.

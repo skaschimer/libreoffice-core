@@ -198,7 +198,7 @@ CPPUNIT_TEST_FIXTURE(SdImportTest, testDocumentLayout)
 
             if (nUpdateMe == i) // index was wrong here
             {
-                // had to adapt this, std::ofstream annot write to an URL but needs a
+                // had to adapt this, std::ofstream annot write to a URL but needs a
                 // filesystem path. Seems as if no one had to adapt any of the cases
                 // for some years :-/
                 OUString sTempFilePath;
