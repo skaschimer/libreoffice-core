@@ -534,8 +534,8 @@ ODFGEN_TARBALL := libodfgen-0.1.$(ODFGEN_VERSION_MICRO).tar.xz
 # three static lines
 # so that git cherry-pick
 # will not run into conflicts
-ODFVALIDATOR_SHA256SUM := d55495ab3a86544650587de2a72180ddf8bfc6376d14ddfa923992dbc86a06e0
-ODFVALIDATOR_JAR := odfvalidator-0.9.0-RC2-SNAPSHOT-jar-with-dependencies-2726ab578664434a545f8379a01a9faffac0ae73.jar
+ODFVALIDATOR_SHA256SUM := 8822b63ab10a18aa3cbb68b388281b61d35341d356b5b8f09e3c67872d48b0b4
+ODFVALIDATOR_JAR := odfvalidator-0.9.0-jar-with-dependencies.jar
 # three static lines
 # so that git cherry-pick
 # will not run into conflicts
