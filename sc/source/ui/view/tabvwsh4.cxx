@@ -78,6 +78,7 @@
 #include <preview.hxx>
 #include <documentlinkmgr.hxx>
 #include <gridwin.hxx>
+#include <cellsuno.hxx>
 
 #include <com/sun/star/document/XDocumentProperties.hpp>
 #include <com/sun/star/configuration/theDefaultProvider.hpp>
@@ -1860,7 +1861,7 @@ static bool lcl_CheckInArray(std::vector<uno::Sequence<uno::Any>>& nUniqueRecord
     return false;
 }
 
-uno::Reference<css::sheet::XSpreadsheet> ScTabViewShell::GetRangeWithSheet(css::table::CellRangeAddress& rRangeData, bool& bHasData, bool bHasUnoArguments)
+rtl::Reference<ScTableSheetObj> ScTabViewShell::GetRangeWithSheet(css::table::CellRangeAddress& rRangeData, bool& bHasData, bool bHasUnoArguments)
 {
     // get spreadsheet document model & controller
     uno::Reference<frame::XModel> xModel(GetViewData().GetDocShell()->GetModel());
@@ -1869,7 +1870,7 @@ uno::Reference<css::sheet::XSpreadsheet> ScTabViewShell::GetRangeWithSheet(css::
     // spreadsheet's extension of com.sun.star.frame.Controller service
     ScTabViewObj* pSpreadsheetDocument = dynamic_cast<ScTabViewObj*>(xController.get());
     assert(pSpreadsheetDocument);
-    uno::Reference<sheet::XSpreadsheet> ActiveSheet = pSpreadsheetDocument->getActiveSheet();
+    rtl::Reference<ScTableSheetObj> ActiveSheet = pSpreadsheetDocument->getActiveScSheet();
 
     if (!bHasUnoArguments)
     {
@@ -1924,7 +1925,7 @@ void ScTabViewShell::ExtendSingleSelection(css::table::CellRangeAddress& rRangeD
 }
 
 /* bool bRemove == false ==> highlight duplicate rows */
-void ScTabViewShell::HandleDuplicateRecords(const css::uno::Reference<css::sheet::XSpreadsheet>& ActiveSheet,
+void ScTabViewShell::HandleDuplicateRecords(const rtl::Reference<ScTableSheetObj>& ActiveSheet,
                                 const css::table::CellRangeAddress& aRange, bool bRemove,
                                 bool bIncludesHeaders, bool bDuplicateRows,
                                 const std::vector<int>& rSelectedEntries)
@@ -1936,13 +1937,10 @@ void ScTabViewShell::HandleDuplicateRecords(const css::uno::Reference<css::sheet
     }
 
     uno::Reference<frame::XModel> xModel(GetViewData().GetDocShell()->GetModel());
-    uno::Reference<sheet::XSheetCellRange> xSheetRange(
-            ActiveSheet->getCellRangeByPosition(aRange.StartColumn, aRange.StartRow, aRange.EndColumn, aRange.EndRow),
-            uno::UNO_QUERY);
+    rtl::Reference<ScCellRangeObj> xSheetRange(
+            ActiveSheet->getScCellRangeByPosition(aRange.StartColumn, aRange.StartRow, aRange.EndColumn, aRange.EndRow));
 
-
-    uno::Reference<sheet::XCellRangeData> xCellRangeData(xSheetRange, uno::UNO_QUERY);
-    uno::Sequence<uno::Sequence<uno::Any>> aDataArray = xCellRangeData->getDataArray();
+    uno::Sequence<uno::Sequence<uno::Any>> aDataArray = xSheetRange->getDataArray();
 
     uno::Reference< document::XUndoManagerSupplier > xUndoManager( xModel, uno::UNO_QUERY );
     uno::Reference<document::XActionLockable> xLockable(xModel, uno::UNO_QUERY);
