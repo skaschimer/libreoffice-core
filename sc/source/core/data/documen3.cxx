@@ -1605,7 +1605,7 @@ void ScDocument::GetFilterEntries(
     ScDBData* pDBData = pDBCollection->GetDBAtCursor(nCol, nRow, nTab, ScDBDataPortion::AREA);  //!??
     if (!pDBData)
         return;
-    // Do not extand DBArea automatically in case of Table Styles with Total row
+    // Do not extend DBArea automatically in case of Table Styles with Total row
     if (!pDBData->HasTotals() || !pDBData->GetTableStyleInfo())
     {
         pDBData->ExtendBackColorArea(*this);

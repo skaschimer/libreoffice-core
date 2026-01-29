@@ -24,7 +24,7 @@ bool ScTableStyle::HasFontAttrSet(ScPatternAttr* pPattern)
 {
     // TODO: maybe different pPatterns can have different font attributes, and
     // now we only check if any font attribute is set on a pattern.
-    // e.g.: mpFirstRowStripePattern only has ATTR_FONT_WEIGHT set and we will retirn that one,
+    // e.g.: mpFirstRowStripePattern only has ATTR_FONT_WEIGHT set and we will return that one,
     // but mpTablePattern also can have ATTR_FONT_COLOR set (need to merge them and return that
     // one for custom styles, but now it is enough for the ooxml default styles).
     for (sal_Int16 nWhich = ATTR_FONT; nWhich <= ATTR_FONT_RELIEF; nWhich++)
