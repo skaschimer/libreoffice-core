@@ -321,6 +321,21 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testTextDirectionXLSX)
                 u"2"); //RTL
 }
 
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf170189_empty_font_name)
+{
+    createScDoc("xls/tdf170189.xls");
+
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pDoc = parseExport(u"xl/styles.xml"_ustr);
+    CPPUNIT_ASSERT(pDoc);
+
+    // Without the fix in place, this test would have failed with
+    // - Expected: 4
+    // - Actual  : 5
+    assertXPath(pDoc, "/x:styleSheet/x:fonts", "count", u"4");
+    assertXPath(pDoc, "/x:styleSheet/x:cellXfs", "count", u"3");
+}
+
 CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf121260)
 {
     createScDoc("ods/tdf121260.ods");
