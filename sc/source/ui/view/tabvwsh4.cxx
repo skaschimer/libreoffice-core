@@ -1953,7 +1953,6 @@ void ScTabViewShell::HandleDuplicateRecordsHighlight(const rtl::Reference<ScTabl
     uno::Reference< document::XUndoManagerSupplier > xUndoManager( xModel, uno::UNO_QUERY );
     uno::Reference<document::XActionLockable> xLockable(xModel, uno::UNO_QUERY);
 
-    uno::Reference<sheet::XCalculatable> xCalculatable(xModel, uno::UNO_QUERY);
     ScDocument& rDoc = GetViewData().GetDocShell()->GetDocument();
 
     comphelper::ScopeGuard aUndoContextGuard(
