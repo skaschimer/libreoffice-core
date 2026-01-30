@@ -160,8 +160,6 @@ void test::BootstrapFixture::validate(const OUString& rPath, std::u16string_view
         eFormat = test::ODF;
     else if (rFilter == u"draw8")
         eFormat = test::ODF;
-    else if (rFilter == u"OpenDocument Text Flat XML")
-        eFormat = test::ODF;
     else if (rFilter == u"MS Word 97")
         eFormat = test::MSBINARY;
     else if (rFilter == u"MS Excel 97")
