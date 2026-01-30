@@ -316,6 +316,9 @@ protected:
     /// True when exporting presentation placeholder shape.
     bool mbPlaceholder;
 
+    /// True when DiagramReplacementVisualization is exported
+    bool mbDiagaramExport;
+
     bool mbEmbedFonts = false;
 
     bool GetProperty( const css::uno::Reference< css::beans::XPropertySet >& rXPropSet, const OUString& aName );
@@ -375,6 +378,10 @@ public:
     DocumentType GetDocumentType() const { return meDocumentType; }
     /// The application-specific text exporter callback, if there is one.
     DMLTextExport* GetTextExport() { return mpTextExport; }
+
+    /// get/set mbDiagaramExport
+    void setDiagaramExport(bool bNew) { mbDiagaramExport = bNew; }
+    bool isDiagaramExport() const { return mbDiagaramExport;}
 
     void SetBackgroundDark(bool bIsDark) { mbIsBackgroundDark = bIsDark; }
     /// If bRelPathToMedia is true add "../" to image folder path while adding the image relationship
