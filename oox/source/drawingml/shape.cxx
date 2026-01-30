@@ -409,7 +409,7 @@ void Shape::addShape(
             if ( xShapes.is() )
                 addChildren( rFilterBase, *this, pTheme, xShapes, pShapeMap, aMatrix );
 
-            if (mbWordprocessingCanvas && !mbWPGChild)
+            if (isInWordprocessingCanvas() && !isWPGChild())
             {
                 // This is a drawing canvas. In case the canvas has no fill and no stroke, Word does
                 // not render shadow or glow, even if it is set for the canvas. Thus we disable shadow
@@ -559,13 +559,13 @@ void Shape::applyShapeReference( const Shape& rReferencedShape, bool bUseText )
     mpTablePropertiesPtr = rReferencedShape.mpTablePropertiesPtr ? std::make_shared<table::TableProperties>( *rReferencedShape.mpTablePropertiesPtr ) : nullptr;
     mpShapeRefEffectPropPtr = std::make_shared<EffectProperties>( rReferencedShape.getActualEffectProperties(nullptr) );
     mpMasterTextListStyle = std::make_shared<TextListStyle>( *rReferencedShape.mpMasterTextListStyle );
-    maSize = rReferencedShape.maSize;
-    maPosition = rReferencedShape.maPosition;
-    mnRotation = rReferencedShape.mnRotation;
-    mbFlipH = rReferencedShape.mbFlipH;
-    mbFlipV = rReferencedShape.mbFlipV;
-    mbHidden = rReferencedShape.mbHidden;
-    mbLocked = rReferencedShape.mbLocked;
+    setSize(rReferencedShape.maSize);
+    setPosition(rReferencedShape.maPosition);
+    setRotation(rReferencedShape.getRotation());
+    setFlipH(rReferencedShape.getFlipH());
+    setFlipV(rReferencedShape.getFlipV());
+    setHidden(rReferencedShape.getHidden());
+    setLocked(rReferencedShape.getLocked());
 }
 
 namespace {
@@ -1039,7 +1039,7 @@ Reference< XShape > const & Shape::createAndInsert(
     Color aExtrusionColor;
     Scene3DHelper aScene3DHelper;
     bool bHas3DEffect = aScene3DHelper.setExtrusionProperties(
-        mp3DPropertiesPtr, mnRotation, getCustomShapeProperties()->getExtrusionPropertyMap(),
+        mp3DPropertiesPtr, getRotation(), getCustomShapeProperties()->getExtrusionPropertyMap(),
         fShapeRotateInclCamera, aExtrusionColor, bBlockExtrusion);
     // Currently the other places use unit 1/60000deg and MSO shape rotate orientation.
     sal_Int32 nShapeRotateInclCamera = -basegfx::rad2deg<60000>(fShapeRotateInclCamera);
@@ -1070,24 +1070,24 @@ Reference< XShape > const & Shape::createAndInsert(
         mpGraphicPropertiesPtr->mbIsCustomShape = true;
         mpGraphicPropertiesPtr->mbIsExtruded = bIs3DGraphic;
     }
-    bool bUseRotationTransform = ( !mbWps ||
+    bool bUseRotationTransform = !getWps() ||
             aServiceName == "com.sun.star.drawing.LineShape" ||
             aServiceName == "com.sun.star.drawing.GroupShape" ||
-            mbFlipH ||
-            mbFlipV );
+            getFlipH() ||
+            getFlipV();
 
     basegfx::B2DHomMatrix aTransformation; // will be cumulative transformation of this object
 
     // Special for SmartArt import. Rotate diagram's shape around object's center before sizing.
-    if (bUseRotationTransform && mnDiagramRotation != 0)
+    if (bUseRotationTransform && getDiagramRotation() != 0)
     {
         aTransformation.translate(-0.5, -0.5);
-        aTransformation.rotate(basegfx::deg2rad<60000>(mnDiagramRotation));
+        aTransformation.rotate(basegfx::deg2rad<60000>(getDiagramRotation()));
         aTransformation.translate(0.5, 0.5);
     }
 
     bool bLineShape = aServiceName == "com.sun.star.drawing.LineShape";
-    bool bTopWriterLine = !pParentGroupShape && mbWps && bLineShape;
+    bool bTopWriterLine = !pParentGroupShape && getWps() && bLineShape;
     // Build object matrix from shape size and position; corresponds to MSO ext and off
     // Only LineShape and ConnectorShape may have zero width or height.
     if (bLineShape || aServiceName == "com.sun.star.drawing.ConnectorShape")
@@ -1106,8 +1106,8 @@ Reference< XShape > const & Shape::createAndInsert(
 
     // Evaluate object flip. Other shapes than custom shapes have no attribute for flip but use
     // negative scale. Flip in MSO is at object center.
-    if (!bIsCustomShape && (mbFlipH || mbFlipV))
-        lcl_mirrorAtCenter(aTransformation, mbFlipH, mbFlipV);
+    if (!bIsCustomShape && (getFlipH() || getFlipV()))
+        lcl_mirrorAtCenter(aTransformation, getFlipH(), getFlipV());
 
     // Evaluate parent flip.
     // A CustomShape has mirror not as negative scale, but as attributes.
@@ -1121,17 +1121,17 @@ Reference< XShape > const & Shape::createAndInsert(
         if (bIsCustomShape)
         {
             lcl_mirrorAtCenter(aTransformation, aParentScale.getX() < 0, aParentScale.getY() < 0);
-            if(aParentScale.getX() < 0)
-                mbFlipH = !mbFlipH;
-            if(aParentScale.getY() < 0)
-                mbFlipV = !mbFlipV;
+            if (aParentScale.getX() < 0)
+                setFlipH(!getFlipH());
+            if (aParentScale.getY() < 0)
+                setFlipV(!getFlipV());
         }
     }
 
     if (maPosition.X != 0 || maPosition.Y != 0)
     {
         // if global position is used, add it to transformation
-        if (mbWps && pParentGroupShape == nullptr)
+        if (getWps() && pParentGroupShape == nullptr)
             aTransformation.translate(
                 o3tl::convert(maPosition.X, o3tl::Length::mm100, o3tl::Length::emu),
                 o3tl::convert(maPosition.Y, o3tl::Length::mm100, o3tl::Length::emu));
@@ -1170,7 +1170,7 @@ Reference< XShape > const & Shape::createAndInsert(
         {
             // It depends on the object rotation angle whether scaling is applied to switched
             // width and height. MSO acts strange in that case (as of May 2021).
-            const sal_Int32 nDeg(mnRotation / 60000);
+            const sal_Int32 nDeg(getRotation() / 60000);
             const bool bNeedsMSOWidthHeightToggle
                 = (nDeg >= 45 && nDeg < 135) || (nDeg >= 225 && nDeg < 315);
             if (bNeedsMSOWidthHeightToggle)
@@ -1211,7 +1211,7 @@ Reference< XShape > const & Shape::createAndInsert(
     }
 
     // OOXML flips shapes before rotating them, so the rotation needs to be inverted
-    if( bIsCustomShape && mbFlipH != mbFlipV )
+    if (bIsCustomShape && getFlipH() != getFlipV())
     {
         basegfx::B2DVector aScale, aTranslate;
         double fRotate, fShearX;
@@ -1410,7 +1410,7 @@ Reference< XShape > const & Shape::createAndInsert(
         if (aServiceName != "com.sun.star.text.TextFrame")
             rxShapes->add( mxShape );
 
-        if ( mbHidden || mbHiddenMasterShape )
+        if (getHidden() || getHiddenMasterShape())
         {
             SAL_INFO("oox.drawingml", "Shape::createAndInsert: invisible shape with id='" << msId << "'");
             xSet->setPropertyValue( u"Visible"_ustr, Any( false ) );
@@ -1418,7 +1418,7 @@ Reference< XShape > const & Shape::createAndInsert(
             xSet->setPropertyValue( u"Printable"_ustr, Any( false ) );
         }
 
-        if (mbLocked)
+        if (getLocked())
         {
             xSet->setPropertyValue(u"MoveProtect"_ustr, Any(true));
             xSet->setPropertyValue(u"SizeProtect"_ustr, Any(true));
@@ -1480,7 +1480,7 @@ Reference< XShape > const & Shape::createAndInsert(
 
         // dmapper needs the original rotation angle for calculating square wrap. This angle is not
         // available as property there, so store it in InteropGrabBag.
-        putPropertyToGrabBag(u"mso-rotation-angle"_ustr, Any(mnRotation));
+        putPropertyToGrabBag(u"mso-rotation-angle"_ustr, Any(getRotation()));
 
         if( pTheme )
         {
@@ -1649,7 +1649,7 @@ Reference< XShape > const & Shape::createAndInsert(
             aServiceName == "com.sun.star.drawing.GraphicObjectShape" ||
             aServiceName == "com.sun.star.drawing.OLE2Shape")
         {
-            mpGraphicPropertiesPtr->pushToPropMap( aShapeProps, rGraphicHelper, mbFlipH, mbFlipV );
+            mpGraphicPropertiesPtr->pushToPropMap(aShapeProps, rGraphicHelper, getFlipH(), getFlipV());
         }
         if ( mpTablePropertiesPtr && aServiceName == "com.sun.star.drawing.TableShape" )
         {
@@ -1665,11 +1665,12 @@ Reference< XShape > const & Shape::createAndInsert(
         if ((getFillProperties().moFillType.has_value() && getFillProperties().moFillType.value() == XML_grpFill) ||
             aFillProperties.maFillColor.isPlaceHolder() )
             getFillProperties().assignUsed(aFillProperties);
-        if(!bIsCroppedGraphic && !bIs3DGraphic)
-            aFillProperties.pushToPropMap(aShapeProps, rGraphicHelper, mnRotation, nFillPhClr,
+        if (!bIsCroppedGraphic && !bIs3DGraphic)
+        {
+            aFillProperties.pushToPropMap(aShapeProps, rGraphicHelper, getRotation(), nFillPhClr,
                                           css::awt::Size(aShapeRectHmm.Width, aShapeRectHmm.Height),
-                                          nFillPhClrTheme, mbFlipH, mbFlipV, bIsCustomShape);
-
+                                          nFillPhClrTheme, getFlipH(), getFlipV(), bIsCustomShape);
+        }
         LineProperties aLineProperties = getActualLineProperties(pTheme);
         aLineProperties.pushToPropMap( aShapeProps, rGraphicHelper, nLinePhClr, nLinePhClrTheme);
         EffectProperties aEffectProperties = getActualEffectProperties(pTheme);
@@ -1789,14 +1790,14 @@ Reference< XShape > const & Shape::createAndInsert(
                     }
                     aShapeProps.erase(PROP_LineColor);
                 }
-                if(mnRotation)
+                if (getRotation())
                 {
                     uno::Reference<beans::XPropertySet> xPropertySet(mxShape, uno::UNO_QUERY);
                     static constexpr OUString aGrabBagPropName = u"FrameInteropGrabBag"_ustr;
                     uno::Sequence<beans::PropertyValue> aGrabBag;
                     xPropertySet->getPropertyValue(aGrabBagPropName) >>= aGrabBag;
                     beans::PropertyValue aPair(comphelper::makePropertyValue(u"mso-rotation-angle"_ustr,
-                                                                             mnRotation));
+                                                                             getRotation()));
                     if (aGrabBag.hasElements())
                     {
                         sal_Int32 nLength = aGrabBag.getLength();
@@ -1860,7 +1861,7 @@ Reference< XShape > const & Shape::createAndInsert(
                 }
 
             }
-            else if (mbTextBox)
+            else if (getIsTextBox())
             {
                 // This introduces a TextBox in a shape in Writer. ToDo: Can we restrict it to cases
                 // where the TextBox edit engine is really needed? tdf#82627
@@ -1912,7 +1913,7 @@ Reference< XShape > const & Shape::createAndInsert(
                 }
             }
 
-            if (mbLockedCanvas)
+            if (getLockedCanvas())
             {
                 putPropertyToGrabBag( u"LockedCanvas"_ustr, Any( true ) );
                 if (aServiceName == "com.sun.star.drawing.LineShape")
@@ -1923,7 +1924,7 @@ Reference< XShape > const & Shape::createAndInsert(
                 }
             }
 
-            if (mbWordprocessingCanvas)
+            if (isInWordprocessingCanvas())
             {
                 putPropertyToGrabBag(u"WordprocessingCanvas"_ustr, Any(true));
             }
@@ -2066,12 +2067,12 @@ Reference< XShape > const & Shape::createAndInsert(
                                       Any( mpGraphicPropertiesPtr->maBlipProps.maEffect.getEffect() ) );
         }
 
-        else if( mbLockedCanvas )
+        else if (getLockedCanvas())
         {
             //If we have aServiceName as "com.sun.star.drawing.GroupShape" and lockedCanvas
             putPropertyToGrabBag( u"LockedCanvas"_ustr, Any( true ) );
         }
-        else if (mbWordprocessingCanvas)
+        else if (isInWordprocessingCanvas())
         {
             putPropertyToGrabBag(u"WordprocessingCanvas"_ustr, Any(true));
             putPropertyToGrabBag(u"mso-edit-as"_ustr, Any(u"canvas"_ustr)); // for export VML Fallback
@@ -2080,7 +2081,7 @@ Reference< XShape > const & Shape::createAndInsert(
         // These can have a custom geometry, so position should be set here,
         // after creation but before custom shape handling, using the position
         // we got from the caller.
-        if (mbWps && aServiceName == "com.sun.star.drawing.LineShape" && !pParentGroupShape)
+        if (getWps() && aServiceName == "com.sun.star.drawing.LineShape" && !pParentGroupShape)
             mxShape->setPosition(maPosition);
 
         SdrObject* pShape = SdrObject::getSdrObjectFromXShape(mxShape);
@@ -2121,9 +2122,9 @@ Reference< XShape > const & Shape::createAndInsert(
 
         if( bIsCustomShape )
         {
-            if ( mbFlipH )
+            if (getFlipH())
                 mpCustomShapePropertiesPtr->setMirroredX( true );
-            if ( mbFlipV )
+            if (getFlipV())
                 mpCustomShapePropertiesPtr->setMirroredY( true );
             if( getTextBody() )
             {
@@ -2133,7 +2134,7 @@ Reference< XShape > const & Shape::createAndInsert(
                 // TextPreRotateAngle. Text rotates inside the text area. Might be used for diagram layout 'upr' and 'grav'.
                 sal_Int32 nTextPreRotateAngle = static_cast< sal_Int32 >( getTextBody()->getTextProperties().moTextPreRotation.value_or( 0 ) );
 
-                nTextPreRotateAngle -= mnDiagramRotation; // Use of mnDiagramRotation is unclear. It seems to be always 0 here.
+                nTextPreRotateAngle -= getDiagramRotation(); // Use of mnDiagramRotation is unclear. It seems to be always 0 here.
 
                 // TextRotateAngle. The text area rotates.
                 sal_Int32 nTextAreaRotateAngle = getTextBody()->getTextProperties().moTextAreaRotation.value_or(0);
@@ -2143,10 +2144,10 @@ Reference< XShape > const & Shape::createAndInsert(
                     // in MS Office. To simulate this behaviour, we rotate the text area into the
                     // opposite direction of the shape rotation by as much as the shape was rotated
                     // and so compensate the shape rotation, which is added in rendering.
-                    nTextAreaRotateAngle = -mnRotation;
+                    nTextAreaRotateAngle = -getRotation();
                     // If 45° <= shape rotation < 135° or 225° <= shape rotation < 315°,
                     // then MS Office adds an additional 90° rotation to the text area.
-                    const sal_Int32 nDeg(mnRotation / 60000);
+                    const sal_Int32 nDeg(getRotation() / 60000);
                     if ((nDeg >= 45 && nDeg < 135) || (nDeg >= 225 && nDeg < 315))
                     {
                         nTextAreaRotateAngle += 5400000;
@@ -2275,7 +2276,7 @@ Reference< XShape > const & Shape::createAndInsert(
             // empty, then we format the existing text of the outliner shape here.
             PushMasterTextListStyleToMasterShapeParagraphs(*mpMasterTextListStyle, mxShape);
         }
-        else if (mbTextBox)
+        else if (getIsTextBox())
         {
             // No drawingML text, but WPS text is expected: save the theme
             // character color on the shape, then.
@@ -2620,7 +2621,7 @@ void Shape::finalizeXShape( XmlFilterBase& rFilter, const Reference< XShapes >& 
                 sal_Int32 nLastSlash = mxChartShapeInfo->maFragmentPath.lastIndexOf('/');
                 const sal_Unicode *pFPath = mxChartShapeInfo->maFragmentPath.getStr();
                 OUString sStylePath(pFPath, nLastSlash + 1);
-                OUString sFullPath(pFPath);
+                const OUString sFullPath(pFPath);
                 sStylePath += u"style"_ustr;
                 OUString sChartFName(sFullPath.copy(nLastSlash + 1, sFullPath.getLength() - nLastSlash - 1));
                 OUString sTail;

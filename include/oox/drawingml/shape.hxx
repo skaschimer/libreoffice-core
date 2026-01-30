@@ -155,8 +155,11 @@ public:
 
     void                            setRotation( sal_Int32 nRotation ) { mnRotation = nRotation; }
     sal_Int32                       getRotation() const { return mnRotation; }
+    sal_Int32 getDiagramRotation() const { return mnDiagramRotation; }
     void                            setDiagramRotation( sal_Int32 nRotation ) { mnDiagramRotation = nRotation; }
     void                            setFlip( bool bFlipH, bool bFlipV ) { mbFlipH = bFlipH; mbFlipV = bFlipV; }
+    void                            setFlipH(bool bFlipH) { mbFlipH = bFlipH;}
+    void                            setFlipV(bool bFlipV) { mbFlipV = bFlipV;}
     bool                            getFlipH() const { return mbFlipH; }
     bool                            getFlipV() const { return mbFlipV; }
     void                            addChild( const ShapePtr& rChildPtr ) { maChildren.push_back( rChildPtr ); }
@@ -175,13 +178,18 @@ public:
     void                            setFLocksText(bool bFLocksText) { mbFLocksText = bFLocksText; }
     void                            setFPublished(bool bFPublished) { mbFPublished = bFPublished; }
     void                            setTitle(const OUString& rTitle) { msTitle = rTitle; }
+    bool getHidden() const { return mbHidden; }
     void                            setHidden( bool bHidden ) { mbHidden = bHidden; }
+    bool getHiddenMasterShape() const { return mbHiddenMasterShape; }
     void                            setHiddenMasterShape( bool bHiddenMasterShape ) { mbHiddenMasterShape = bHiddenMasterShape; }
+    bool getLocked() const { return mbLocked; }
     void                            setLocked( bool bLocked ) { mbLocked = bLocked; }
     void                            setSubType( sal_Int32 nSubType ) { mnSubType = nSubType; }
     sal_Int32                       getSubType() const { return mnSubType; }
     void                            setSubTypeIndex( sal_Int32 nSubTypeIndex ) { moSubTypeIndex = nSubTypeIndex; }
     const std::optional< sal_Int32 >& getSubTypeIndex() const { return moSubTypeIndex; }
+
+    bool getIsTextBox() const { return mbTextBox; }
 
     // setDefaults has to be called if styles are imported (OfficeXML is not storing properties having the default value)
     SAL_DLLPRIVATE void             setDefaults(bool bHeight);
