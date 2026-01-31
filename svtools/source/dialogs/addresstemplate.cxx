@@ -531,6 +531,7 @@ void AssignmentPersistentData::ImplCommit()
             SvtResId(STR_FIELD_PAGER),
             SvtResId(STR_FIELD_FAX),
             SvtResId(STR_FIELD_EMAIL),
+            SvtResId(STR_FIELD_GENDER),
             SvtResId(STR_FIELD_URL),
             SvtResId(STR_FIELD_TITLE ),
             SvtResId(STR_FIELD_POSITION),
