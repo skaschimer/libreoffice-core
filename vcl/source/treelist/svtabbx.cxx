@@ -579,19 +579,16 @@ SvTreeListEntry* SvHeaderTabListBox::InsertEntryToColumn(
     return pEntry;
 }
 
-sal_uInt32 SvHeaderTabListBox::Insert(
-    SvTreeListEntry* pEnt, SvTreeListEntry* pPar, sal_uInt32 nPos )
+void SvHeaderTabListBox::Insert(SvTreeListEntry* pEnt, SvTreeListEntry* pPar, sal_uInt32 nPos)
 {
-    sal_uInt32 n = SvTabListBox::Insert( pEnt, pPar, nPos );
+    SvTabListBox::Insert(pEnt, pPar, nPos);
     RecalculateAccessibleChildren();
-    return n;
 }
 
-sal_uInt32 SvHeaderTabListBox::Insert( SvTreeListEntry* pEntry, sal_uInt32 nRootPos )
+void SvHeaderTabListBox::Insert(SvTreeListEntry* pEntry, sal_uInt32 nRootPos)
 {
-    sal_uInt32 nPos = SvTabListBox::Insert( pEntry, nRootPos );
+    SvTabListBox::Insert(pEntry, nRootPos);
     RecalculateAccessibleChildren();
-    return nPos;
 }
 
 void SvHeaderTabListBox::DumpAsPropertyTree(tools::JsonWriter& rJsonWriter)

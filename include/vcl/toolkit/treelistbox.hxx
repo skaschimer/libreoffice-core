@@ -300,8 +300,9 @@ protected:
     // Invalidate children on enable/disable
     virtual void StateChanged( StateChangedType eType ) override;
 
-    virtual sal_uInt32 Insert( SvTreeListEntry* pEnt,SvTreeListEntry* pPar,sal_uInt32 nPos=TREELIST_APPEND);
-    virtual sal_uInt32 Insert( SvTreeListEntry* pEntry,sal_uInt32 nRootPos = TREELIST_APPEND );
+    virtual void Insert(SvTreeListEntry* pEnt, SvTreeListEntry* pPar,
+                        sal_uInt32 nPos = TREELIST_APPEND);
+    virtual void Insert(SvTreeListEntry* pEntry, sal_uInt32 nRootPos = TREELIST_APPEND);
 
     // In-place editing
     std::unique_ptr<SvInplaceEdit2>  pEdCtrl;

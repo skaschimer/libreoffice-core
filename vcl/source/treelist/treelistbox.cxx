@@ -444,16 +444,14 @@ IMPL_LINK( SvTreeListBox, CloneHdl_Impl, SvTreeListEntry*, pEntry, SvTreeListEnt
     return CloneEntry(pEntry);
 }
 
-sal_uInt32 SvTreeListBox::Insert( SvTreeListEntry* pEntry, SvTreeListEntry* pParent, sal_uInt32 nPos )
+void SvTreeListBox::Insert(SvTreeListEntry* pEntry, SvTreeListEntry* pParent, sal_uInt32 nPos)
 {
-    sal_uInt32 nInsPos = pModel->Insert( pEntry, pParent, nPos );
-    return nInsPos;
+    pModel->Insert(pEntry, pParent, nPos);
 }
 
-sal_uInt32 SvTreeListBox::Insert( SvTreeListEntry* pEntry,sal_uInt32 nRootPos )
+void SvTreeListBox::Insert(SvTreeListEntry* pEntry, sal_uInt32 nRootPos)
 {
-    sal_uInt32 nInsPos = pModel->Insert( pEntry, nRootPos );
-    return nInsPos;
+    pModel->Insert(pEntry, nRootPos);
 }
 
 bool SvTreeListBox::ExpandingHdl()
