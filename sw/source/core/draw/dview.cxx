@@ -1009,8 +1009,8 @@ void SwDrawView::DeleteMarked()
             if (pObject->getChildrenOfSdrObject())
             {
                 auto pChildTextBoxes = SwTextBoxHelper::CollectTextBoxes(pObject, pFormat);
-                for (auto& rChildTextBox : pChildTextBoxes)
-                    aTextBoxesToDelete.push_back(rChildTextBox);
+                aTextBoxesToDelete.insert(aTextBoxesToDelete.end(), pChildTextBoxes.begin(),
+                                          pChildTextBoxes.end());
             }
             else if (SwFrameFormat* pTextBox
                      = SwTextBoxHelper::getOtherTextBoxFormat(pFormat, RES_DRAWFRMFMT))

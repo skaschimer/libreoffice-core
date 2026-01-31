@@ -1657,8 +1657,7 @@ std::vector<SwFrameFormat*> SwTextBoxHelper::CollectTextBoxes(const SdrObject* p
         for (const rtl::Reference<SdrObject>& pObj : *pChildren)
         {
             auto pChildTextBoxes = CollectTextBoxes(pObj.get(), pFormat);
-            for (auto& rChildTextBox : pChildTextBoxes)
-                vRet.push_back(rChildTextBox);
+            vRet.insert(vRet.end(), pChildTextBoxes.begin(), pChildTextBoxes.end());
         }
     }
     else
