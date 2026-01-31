@@ -78,7 +78,7 @@ class ScAcceptChgDlg final : public SfxModelessDialogController
     bool                    bUseColor:1;
 
     SvxTPFilter* pTPFilter;
-    SvxRedlinTable* pTheView; // #i48648 now SvHeaderTabListBox
+    SvxRedlinTable* pTheView;
 
     std::unique_ptr<weld::Container> m_xContentArea;
     std::unique_ptr<weld::Menu> m_xPopup, m_xSortMenu;

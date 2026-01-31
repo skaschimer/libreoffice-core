@@ -82,7 +82,7 @@ class SW_DLLPUBLIC SwRedlineAcceptDlg final : public SfxListener
     std::unique_ptr<SvxAcceptChgCtr> m_xTabPagesCTRL;
     std::unique_ptr<weld::Menu> m_xPopup, m_xSortMenu;
     SvxTPView& m_rTPView;
-    SvxRedlinTable* m_pTable; // PB 2006/02/02 #i48648 now SvHeaderTabListBox
+    SvxRedlinTable* m_pTable;
 
     bool m_bInitialSelect = true;
 
