@@ -193,29 +193,28 @@ SwRedlineAcceptDlg::SwRedlineAcceptDlg(std::shared_ptr<weld::Window> xParent, we
     , m_xTabPagesCTRL(new SvxAcceptChgCtr(pContentArea))
     , m_xPopup(pBuilder->weld_menu(u"writermenu"_ustr))
     , m_xSortMenu(pBuilder->weld_menu(u"writersortmenu"_ustr))
+    , m_rTPView(m_xTabPagesCTRL->GetViewPage())
 {
-    m_pTPView = m_xTabPagesCTRL->GetViewPage();
-
-    m_pTable = m_pTPView->GetTableControl();
+    m_pTable = m_rTPView.GetTableControl();
     m_pTable->SetWriterView();
 
-    m_pTPView->GetSortByComboBoxControl()->set_active(4);
+    m_rTPView.GetSortByComboBoxControl()->set_active(4);
 
-    m_pTPView->SetSortByComboBoxChangedHdl(
+    m_rTPView.SetSortByComboBoxChangedHdl(
         LINK(this, SwRedlineAcceptDlg, SortByComboBoxChangedHdl));
 
-    m_pTPView->SetAcceptClickHdl(LINK(this, SwRedlineAcceptDlg, AcceptHdl));
-    m_pTPView->SetAcceptAllClickHdl(LINK(this, SwRedlineAcceptDlg, AcceptAllHdl));
-    m_pTPView->SetRejectClickHdl(LINK(this, SwRedlineAcceptDlg, RejectHdl));
-    m_pTPView->SetRejectAllClickHdl(LINK(this, SwRedlineAcceptDlg, RejectAllHdl));
-    m_pTPView->SetUndoClickHdl(LINK(this, SwRedlineAcceptDlg, UndoHdl));
+    m_rTPView.SetAcceptClickHdl(LINK(this, SwRedlineAcceptDlg, AcceptHdl));
+    m_rTPView.SetAcceptAllClickHdl(LINK(this, SwRedlineAcceptDlg, AcceptAllHdl));
+    m_rTPView.SetRejectClickHdl(LINK(this, SwRedlineAcceptDlg, RejectHdl));
+    m_rTPView.SetRejectAllClickHdl(LINK(this, SwRedlineAcceptDlg, RejectAllHdl));
+    m_rTPView.SetUndoClickHdl(LINK(this, SwRedlineAcceptDlg, UndoHdl));
     //tdf#89227 default to disabled, and only enable if possible to accept/reject
-    m_pTPView->EnableAccept(false);
-    m_pTPView->EnableReject(false);
-    m_pTPView->EnableClearFormat(false);
-    m_pTPView->EnableAcceptAll(false);
-    m_pTPView->EnableRejectAll(false);
-    m_pTPView->EnableClearFormatAll(false);
+    m_rTPView.EnableAccept(false);
+    m_rTPView.EnableReject(false);
+    m_rTPView.EnableClearFormat(false);
+    m_rTPView.EnableAcceptAll(false);
+    m_rTPView.EnableRejectAll(false);
+    m_rTPView.EnableClearFormatAll(false);
 
     m_xTabPagesCTRL->GetFilterPage()->SetReadyHdl(LINK(this, SwRedlineAcceptDlg, FilterChangedHdl));
 
@@ -229,8 +228,8 @@ SwRedlineAcceptDlg::SwRedlineAcceptDlg(std::shared_ptr<weld::Window> xParent, we
     {
         pActLB->append_text(m_sFormatCollSet);
         pActLB->append_text(m_sAutoFormat);
-        m_pTPView->ShowUndo();
-        m_pTPView->DisableUndo();     // no UNDO events yet
+        m_rTPView.ShowUndo();
+        m_rTPView.DisableUndo();     // no UNDO events yet
     }
 
     pActLB->set_active(0);
@@ -395,13 +394,12 @@ void SwRedlineAcceptDlg::EnableControls(const SwView* pView)
         return false;
     });
 
-    m_pTPView->EnableAccept( bEnable && pSelectedEntry );
-    m_pTPView->EnableReject( bEnable && pSelectedEntry );
-    m_pTPView->EnableClearFormat( bEnable && !bIsNotFormated && pSelectedEntry );
-    m_pTPView->EnableAcceptAll( bEnable );
-    m_pTPView->EnableRejectAll( bEnable );
-    m_pTPView->EnableClearFormatAll( bEnable &&
-                                m_bOnlyFormatedRedlines );
+    m_rTPView.EnableAccept(bEnable && pSelectedEntry);
+    m_rTPView.EnableReject(bEnable && pSelectedEntry);
+    m_rTPView.EnableClearFormat(bEnable && !bIsNotFormated && pSelectedEntry);
+    m_rTPView.EnableAcceptAll(bEnable);
+    m_rTPView.EnableRejectAll(bEnable);
+    m_rTPView.EnableClearFormatAll(bEnable && m_bOnlyFormatedRedlines);
 }
 
 const OUString & SwRedlineAcceptDlg::GetActionImage(const SwRangeRedline& rRedln, sal_uInt16 nStack,
@@ -463,12 +461,12 @@ void SwRedlineAcceptDlg::Activate()
     SwView *pView = ::GetActiveView();
     if (!pView) // can happen when switching to another app
     {
-        m_pTPView->EnableAccept(false);
-        m_pTPView->EnableReject(false);
-        m_pTPView->EnableClearFormat(false);
-        m_pTPView->EnableAcceptAll(false);
-        m_pTPView->EnableRejectAll(false);
-        m_pTPView->EnableClearFormatAll(false);
+        m_rTPView.EnableAccept(false);
+        m_rTPView.EnableReject(false);
+        m_rTPView.EnableClearFormat(false);
+        m_rTPView.EnableAcceptAll(false);
+        m_rTPView.EnableRejectAll(false);
+        m_rTPView.EnableClearFormatAll(false);
         return; // had the focus previously
     }
 
@@ -476,12 +474,12 @@ void SwRedlineAcceptDlg::Activate()
 
     if (pView->GetDocShell()->IsReadOnly())
     {
-        m_pTPView->EnableAccept(false);
-        m_pTPView->EnableReject(false);
-        m_pTPView->EnableClearFormat(false);
-        m_pTPView->EnableAcceptAll(false);
-        m_pTPView->EnableRejectAll(false);
-        m_pTPView->EnableClearFormatAll(false);
+        m_rTPView.EnableAccept(false);
+        m_rTPView.EnableReject(false);
+        m_rTPView.EnableClearFormat(false);
+        m_rTPView.EnableAcceptAll(false);
+        m_rTPView.EnableRejectAll(false);
+        m_rTPView.EnableClearFormatAll(false);
         // note: enabling is done in EnableControls below
     }
 
@@ -1221,7 +1219,7 @@ void SwRedlineAcceptDlg::CallAcceptReject( bool bSelect, bool bAccept )
         rTreeView.set_cursor(nPos);
         SelectHdl(rTreeView);
     }
-    m_pTPView->EnableUndo();
+    m_rTPView.EnableUndo();
 }
 
 SwRedlineTable::size_type SwRedlineAcceptDlg::GetRedlinePos(const weld::TreeIter& rEntry)
@@ -1245,7 +1243,7 @@ IMPL_LINK_NOARG(SwRedlineAcceptDlg, SortByComboBoxChangedHdl, SvxTPView*, void)
     if (!pView)
         return;
     SwWait aWait(*pView->GetDocShell(), false);
-    auto nSortMode = m_pTPView->GetSortByComboBoxControl()->get_active();
+    auto nSortMode = m_rTPView.GetSortByComboBoxControl()->get_active();
     if (nSortMode == 4)
         nSortMode = -1;
     m_pTable->HeaderBarClick(nSortMode);
@@ -1280,7 +1278,7 @@ IMPL_LINK_NOARG(SwRedlineAcceptDlg, UndoHdl, SvxTPView*, void)
         pView->GetViewFrame().GetDispatcher()->
                     Execute(SID_UNDO, SfxCallMode::SYNCHRON);
         const SfxPoolItemHolder aResult(pView->GetSlotState(SID_UNDO));
-        m_pTPView->EnableUndo(aResult.is());
+        m_rTPView.EnableUndo(aResult.is());
     }
 
     Activate();
@@ -1506,7 +1504,7 @@ IMPL_LINK(SwRedlineAcceptDlg, CommandHdl, const CommandEvent&, rCEvt, bool)
         if (nSortMode == 4 && nColumn == 4)
             return true;  // we already have it
 
-        m_pTPView->GetSortByComboBoxControl()->set_active(nSortMode);
+        m_rTPView.GetSortByComboBoxControl()->set_active(nSortMode);
 
         if (nSortMode == 4)
             nSortMode = -1; // unsorted / sorted by position

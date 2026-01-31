@@ -349,7 +349,7 @@ public:
     void            ShowFilterPage();
 
     SvxTPFilter*    GetFilterPage() { return m_xTPFilter.get(); }
-    SvxTPView*      GetViewPage() { return m_xTPView.get(); }
+    SvxTPView& GetViewPage() { return *m_xTPView; }
 };
 
 #endif // INCLUDED_SVX_CTREDLIN_HXX

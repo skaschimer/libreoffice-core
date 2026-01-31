@@ -99,30 +99,30 @@ ScAcceptChgDlg::ScAcceptChgDlg(SfxBindings* pB, SfxChildWindow* pCW, weld::Windo
     , m_xContentArea(m_xDialog->weld_content_area())
     , m_xPopup(m_xBuilder->weld_menu(u"calcmenu"_ustr))
     , m_xSortMenu(m_xBuilder->weld_menu(u"calcsortmenu"_ustr))
+    , m_xAcceptChgCtr(new SvxAcceptChgCtr(m_xContentArea.get()))
+    , m_rTPView(m_xAcceptChgCtr->GetViewPage())
 {
-    m_xAcceptChgCtr.reset(new SvxAcceptChgCtr(m_xContentArea.get()));
     nAcceptCount=0;
     nRejectCount=0;
     aReOpenIdle.SetInvokeHandler(LINK( this, ScAcceptChgDlg, ReOpenTimerHdl ));
 
     pTPFilter = m_xAcceptChgCtr->GetFilterPage();
-    pTPView = m_xAcceptChgCtr->GetViewPage();
 
     // tdf#136062 Don't use "Reject/Clear formatting" instead of "Reject" buttons in Calc
-    pTPView->EnableClearFormat(false);
-    pTPView->EnableClearFormatAll(false);
+    m_rTPView.EnableClearFormat(false);
+    m_rTPView.EnableClearFormatAll(false);
 
-    pTheView = pTPView->GetTableControl();
+    pTheView = m_rTPView.GetTableControl();
     pTheView->SetCalcView();
     aSelectionIdle.SetInvokeHandler(LINK( this, ScAcceptChgDlg, UpdateSelectionHdl ));
 
     pTPFilter->SetReadyHdl(LINK( this, ScAcceptChgDlg, FilterHandle ));
     pTPFilter->SetRefHdl(LINK( this, ScAcceptChgDlg, RefHandle ));
     pTPFilter->HideRange(false);
-    pTPView->SetRejectClickHdl( LINK( this, ScAcceptChgDlg,RejectHandle));
-    pTPView->SetAcceptClickHdl( LINK(this, ScAcceptChgDlg, AcceptHandle));
-    pTPView->SetRejectAllClickHdl( LINK( this, ScAcceptChgDlg,RejectAllHandle));
-    pTPView->SetAcceptAllClickHdl( LINK(this, ScAcceptChgDlg, AcceptAllHandle));
+    m_rTPView.SetRejectClickHdl(LINK(this, ScAcceptChgDlg, RejectHandle));
+    m_rTPView.SetAcceptClickHdl(LINK(this, ScAcceptChgDlg, AcceptHandle));
+    m_rTPView.SetRejectAllClickHdl(LINK(this, ScAcceptChgDlg, RejectAllHandle));
+    m_rTPView.SetAcceptAllClickHdl(LINK(this, ScAcceptChgDlg, AcceptAllHandle));
 
     weld::TreeView& rTreeView = pTheView->GetWidget();
     rTreeView.connect_expanding(LINK(this, ScAcceptChgDlg, ExpandingHandle));
@@ -774,10 +774,10 @@ void ScAcceptChgDlg::UpdateView()
     if( bTheFlag && (!pDoc->IsDocEditable() || pChanges->IsProtected()) )
         bTheFlag=false;
 
-    pTPView->EnableAccept(bTheFlag);
-    pTPView->EnableAcceptAll(bTheFlag);
-    pTPView->EnableReject(bTheFlag);
-    pTPView->EnableRejectAll(bTheFlag);
+    m_rTPView.EnableAccept(bTheFlag);
+    m_rTPView.EnableAcceptAll(bTheFlag);
+    m_rTPView.EnableReject(bTheFlag);
+    m_rTPView.EnableRejectAll(bTheFlag);
 
     if (nAcceptCount>0)
         rTreeView.insert(nullptr, -1, &aStrAllAccepted, nullptr, nullptr, nullptr, true, nullptr);
@@ -1361,10 +1361,10 @@ void ScAcceptChgDlg::AppendChanges(const ScChangeTrack* pChanges,sal_uLong nStar
     if( bTheFlag && (!pDoc->IsDocEditable() || pChanges->IsProtected()) )
         bTheFlag=false;
 
-    pTPView->EnableAccept(bTheFlag);
-    pTPView->EnableAcceptAll(bTheFlag);
-    pTPView->EnableReject(bTheFlag);
-    pTPView->EnableRejectAll(bTheFlag);
+    m_rTPView.EnableAccept(bTheFlag);
+    m_rTPView.EnableAcceptAll(bTheFlag);
+    m_rTPView.EnableReject(bTheFlag);
+    m_rTPView.EnableRejectAll(bTheFlag);
 
     rTreeView.thaw();
     m_xDialog->set_busy_cursor(false);
@@ -1570,8 +1570,8 @@ IMPL_LINK_NOARG(ScAcceptChgDlg, UpdateSelectionHdl, Timer *, void)
 
     ScChangeTrack* pChanges = pDoc->GetChangeTrack();
     bool bEnable = pDoc->IsDocEditable() && pChanges && !pChanges->IsProtected();
-    pTPView->EnableAccept( bAcceptFlag && bEnable );
-    pTPView->EnableReject( bRejectFlag && bEnable );
+    m_rTPView.EnableAccept(bAcceptFlag && bEnable);
+    m_rTPView.EnableReject(bRejectFlag && bEnable);
 }
 
 IMPL_LINK(ScAcceptChgDlg, CommandHdl, const CommandEvent&, rCEvt, bool)
