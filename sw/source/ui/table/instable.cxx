@@ -162,7 +162,9 @@ IMPL_LINK_NOARG(SwInsTableDlg, OKHdl, weld::Button&, void)
 {
     int styleIdx = m_xLbFormat->get_selected_index();
     assert(styleIdx != -1 && "nothing selected");
-    m_pShell->SetTableStyle((*m_xTableTable)[styleIdx]);
+    // The value 0 is used for the "None" style
+    if (styleIdx > 0)
+        m_pShell->SetTableStyle((*m_xTableTable)[styleIdx]);
 
     if( m_xTAutoFormat )
         *m_xTAutoFormat = (*m_xTableTable)[styleIdx];
