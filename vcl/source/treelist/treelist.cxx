@@ -759,7 +759,7 @@ SvTreeListEntry* SvTreeList::NextSelected( const SvListView* pView, SvTreeListEn
     return pEntry;
 }
 
-sal_uInt32 SvTreeList::Insert( SvTreeListEntry* pEntry,SvTreeListEntry* pParent,sal_uInt32 nPos )
+void SvTreeList::Insert(SvTreeListEntry* pEntry, SvTreeListEntry* pParent, sal_uInt32 nPos)
 {
     assert(pEntry && "Entry?");
 
@@ -789,8 +789,7 @@ sal_uInt32 SvTreeList::Insert( SvTreeListEntry* pEntry,SvTreeListEntry* pParent,
     else
         pEntry->nListPos = rList.size()-1;
 
-    Broadcast( SvListAction::INSERTED, pEntry );
-    return nPos; // pEntry->nListPos;
+    Broadcast(SvListAction::INSERTED, pEntry);
 }
 
 sal_uInt32 SvTreeList::GetAbsPos( const SvTreeListEntry* pEntry) const
