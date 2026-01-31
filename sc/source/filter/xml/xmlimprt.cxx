@@ -639,7 +639,7 @@ void ScXMLImport::SetChangeTrackingViewSettings(const css::uno::Sequence<css::be
         else if (sName == "ShowChangesByDatetimeMode")
         {
             if (rChangeProp.Value >>= nTemp16)
-                aViewSettings.SetTheDateMode(static_cast<SvxRedlinDateMode>(nTemp16));
+                aViewSettings.SetTheDateMode(static_cast<SvxRedlineDateMode>(nTemp16));
         }
         else if (sName == "ShowChangesByDatetimeFirstDatetime")
         {

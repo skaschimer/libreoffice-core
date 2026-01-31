@@ -332,7 +332,7 @@ ScConflictsDlg::ScConflictsDlg(weld::Window* pParent, ScViewData& rViewData, ScD
     , m_xBtnKeepOther(m_xBuilder->weld_button(u"keepother"_ustr))
     , m_xBtnKeepAllMine(m_xBuilder->weld_button(u"keepallmine"_ustr))
     , m_xBtnKeepAllOthers(m_xBuilder->weld_button(u"keepallothers"_ustr))
-    , m_xLbConflicts(new SvxRedlinTable(m_xBuilder->weld_tree_view(u"container"_ustr), nullptr,
+    , m_xLbConflicts(new SvxRedlineTable(m_xBuilder->weld_tree_view(u"container"_ustr), nullptr,
                                         nullptr))
 {
 
@@ -454,7 +454,7 @@ IMPL_LINK_NOARG(ScConflictsDlg, UpdateSelectionHdl, Timer *, void)
     rTreeView.selected_foreach([&rTreeView, &aActions](weld::TreeIter& rEntry){
         if (rTreeView.get_iter_depth(rEntry))
         {
-            RedlinData* pUserData = weld::fromId<RedlinData*>(rTreeView.get_id(rEntry));
+            RedlineData* pUserData = weld::fromId<RedlineData*>(rTreeView.get_id(rEntry));
             if  (pUserData)
             {
                 ScChangeAction* pAction = static_cast< ScChangeAction* >( pUserData->pData );
@@ -484,7 +484,7 @@ IMPL_LINK_NOARG(ScConflictsDlg, UpdateSelectionHdl, Timer *, void)
 void ScConflictsDlg::SetConflictAction(const weld::TreeIter& rRootEntry, ScConflictAction eConflictAction)
 {
     weld::TreeView& rTreeView = m_xLbConflicts->GetWidget();
-    RedlinData* pUserData = weld::fromId<RedlinData*>(rTreeView.get_id(rRootEntry));
+    RedlineData* pUserData = weld::fromId<RedlineData*>(rTreeView.get_id(rRootEntry));
     ScConflictsListEntry* pConflictEntry = static_cast< ScConflictsListEntry* >( pUserData ? pUserData->pData : nullptr );
     if ( pConflictEntry )
     {
@@ -565,7 +565,7 @@ void ScConflictsDlg::UpdateView()
     {
         if (rConflictEntry.meConflictAction == SC_CONFLICT_ACTION_NONE)
         {
-            std::unique_ptr<RedlinData> pRootUserData(new RedlinData());
+            std::unique_ptr<RedlineData> pRootUserData(new RedlineData());
             pRootUserData->pData = static_cast<void*>(&rConflictEntry);
             OUString sString(GetConflictString(rConflictEntry));
             OUString sId(weld::toId(pRootUserData.release()));
@@ -611,7 +611,7 @@ void ScConflictsDlg::UpdateView()
                             }
                         }
 
-                        std::unique_ptr<RedlinData> pUserData(new RedlinData());
+                        std::unique_ptr<RedlineData> pUserData(new RedlineData());
                         pUserData->pData = static_cast< void* >( pAction );
                         OUString aId(weld::toId(pUserData.release()));
                         rTreeView.insert(xRootEntry.get(), -1, nullptr, &aId, nullptr, nullptr, false, xEntry.get());

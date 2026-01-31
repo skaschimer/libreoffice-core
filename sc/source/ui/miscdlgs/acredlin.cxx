@@ -43,7 +43,7 @@
 #define RD_SPECIAL_VISCONTENT   2
 
 
-ScRedlinData::ScRedlinData()
+ScRedlineData::ScRedlineData()
 {
     nInfo=RD_SPECIAL_NONE;
     nActionNo=0;
@@ -56,7 +56,7 @@ ScRedlinData::ScRedlinData()
     nRow=SCROW_MAX;
 }
 
-ScRedlinData::~ScRedlinData()
+ScRedlineData::~ScRedlineData()
 {
     nInfo=RD_SPECIAL_NONE;
     nActionNo=0;
@@ -272,7 +272,7 @@ void ScAcceptChgDlg::ClearView()
     rTreeView.all_foreach(
         [&rTreeView](weld::TreeIter& rEntry)
         {
-            ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rEntry));
+            ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rEntry));
             delete pEntryData;
             return false;
         });
@@ -370,7 +370,7 @@ std::unique_ptr<weld::TreeIter> ScAcceptChgDlg::AppendChangeAction(
     OUString aDate;
     OUString aDesc;
 
-    std::unique_ptr<ScRedlinData> pNewData(new ScRedlinData);
+    std::unique_ptr<ScRedlineData> pNewData(new ScRedlineData);
     pNewData->pData=const_cast<ScChangeAction *>(pScChangeAction);
     pNewData->nActionNo=pScChangeAction->GetActionNumber();
     pNewData->bIsAcceptable=pScChangeAction->IsClickable();
@@ -534,7 +534,7 @@ std::unique_ptr<weld::TreeIter> ScAcceptChgDlg::AppendFilteredAction(
         OUString aActionString;
         OUString aDesc;
 
-        std::unique_ptr<ScRedlinData> pNewData(new ScRedlinData);
+        std::unique_ptr<ScRedlineData> pNewData(new ScRedlineData);
         pNewData->pData=const_cast<ScChangeAction *>(pScChangeAction);
         pNewData->nActionNo=pScChangeAction->GetActionNumber();
         pNewData->bIsAcceptable=pScChangeAction->IsClickable();
@@ -678,7 +678,7 @@ std::unique_ptr<weld::TreeIter> ScAcceptChgDlg::InsertChangeActionContent(const 
         aComment += " (" + aDesc + ")";
     }
 
-    std::unique_ptr<ScRedlinData> pNewData(new ScRedlinData);
+    std::unique_ptr<ScRedlineData> pNewData(new ScRedlineData);
     pNewData->nInfo=nSpecial;
     pNewData->pData=const_cast<ScChangeActionContent *>(pScChangeAction);
     pNewData->nActionNo=pScChangeAction->GetActionNumber();
@@ -855,7 +855,7 @@ IMPL_LINK( ScAcceptChgDlg, RejectHandle, SvxTPView*, pRef, void )
     {
         weld::TreeView& rTreeView = pTheView->GetWidget();
         rTreeView.selected_foreach([this, pChanges, &rTreeView](weld::TreeIter& rEntry){
-            ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rEntry));
+            ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rEntry));
             if (pEntryData)
             {
                 ScChangeAction* pScChangeAction= static_cast<ScChangeAction*>(pEntryData->pData);
@@ -888,7 +888,7 @@ IMPL_LINK( ScAcceptChgDlg, AcceptHandle, SvxTPView*, pRef, void )
     {
         weld::TreeView& rTreeView = pTheView->GetWidget();
         rTreeView.selected_foreach([pChanges, &rTreeView](weld::TreeIter& rEntry) {
-            ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rEntry));
+            ScRedlineData *pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rEntry));
             if (pEntryData)
             {
                 ScChangeAction* pScChangeAction=
@@ -1023,7 +1023,7 @@ void ScAcceptChgDlg::GetDependents(const ScChangeAction* pScChangeAction,
     std::unique_ptr<weld::TreeIter> xParent(rTreeView.make_iterator(&rEntry));
     if (rTreeView.iter_parent(*xParent))
     {
-        ScRedlinData *pParentData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xParent));
+        ScRedlineData* pParentData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xParent));
         ScChangeAction* pParentAction=static_cast<ScChangeAction*>(pParentData->pData);
 
         if(pParentAction!=pScChangeAction)
@@ -1042,7 +1042,7 @@ bool ScAcceptChgDlg::InsertContentChildren(ScChangeActionMap* pActionMap, const 
 {
     bool bTheTestFlag = true;
     weld::TreeView& rTreeView = pTheView->GetWidget();
-    ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rParent));
+    ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rParent));
     const ScChangeAction* pScChangeAction = static_cast<ScChangeAction*>(pEntryData->pData);
     bool bParentInserted = false;
     // If the parent is a MatrixOrigin then place it in the right order before
@@ -1071,7 +1071,7 @@ bool ScAcceptChgDlg::InsertContentChildren(ScChangeActionMap* pActionMap, const 
     if (xOriginal)
     {
         bTheTestFlag=false;
-        ScRedlinData *pParentData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xOriginal));
+        ScRedlineData* pParentData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xOriginal));
         pParentData->pData=const_cast<ScChangeAction *>(pScChangeAction);
         pParentData->nActionNo=pScChangeAction->GetActionNumber();
         pParentData->bIsAcceptable=pScChangeAction->IsRejectable(); // select old value
@@ -1101,7 +1101,7 @@ bool ScAcceptChgDlg::InsertContentChildren(ScChangeActionMap* pActionMap, const 
         if (xEntry)
         {
             bTheTestFlag=false;
-            ScRedlinData *pParentData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+            ScRedlineData* pParentData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
             pParentData->pData=const_cast<ScChangeAction *>(pScChangeAction);
             pParentData->nActionNo=pScChangeAction->GetActionNumber();
             pParentData->bIsAcceptable=pScChangeAction->IsClickable();
@@ -1156,7 +1156,7 @@ bool ScAcceptChgDlg::InsertChildren(ScChangeActionMap* pActionMap, const weld::T
             bTheTestFlag=false;
 
             weld::TreeView& rTreeView = pTheView->GetWidget();
-            ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+            ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
             pEntryData->bIsRejectable=false;
             pEntryData->bIsAcceptable=false;
             pEntryData->bDisabled=true;
@@ -1186,7 +1186,7 @@ bool ScAcceptChgDlg::InsertDeletedChildren(const ScChangeAction* pScChangeAction
         if (xEntry)
         {
             weld::TreeView& rTreeView = pTheView->GetWidget();
-            ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+            ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
             pEntryData->bIsRejectable=false;
             pEntryData->bIsAcceptable=false;
             pEntryData->bDisabled=true;
@@ -1247,7 +1247,7 @@ IMPL_LINK(ScAcceptChgDlg, ExpandingHandle, const weld::TreeIter&, rEntry, bool)
         m_xDialog->set_busy_cursor(true);
         ScChangeActionMap aActionMap;
         weld::TreeView& rTreeView = pTheView->GetWidget();
-        ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rEntry));
+        ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rEntry));
         if (!rTreeView.iter_has_child(rEntry))
         {
             bool bTheTestFlag = true;
@@ -1374,9 +1374,9 @@ void ScAcceptChgDlg::RemoveEntries(sal_uLong nStartAction,sal_uLong nEndAction)
 {
     weld::TreeView& rTreeView = pTheView->GetWidget();
 
-    ScRedlinData *pEntryData=nullptr;
+    ScRedlineData* pEntryData = nullptr;
     if (std::unique_ptr<weld::TreeIter> xEntry = rTreeView.get_cursor())
-        pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+        pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
 
     std::unique_ptr<weld::TreeIter> xEntry = rTreeView.make_iterator();
     if (!rTreeView.get_iter_first(*xEntry))
@@ -1394,7 +1394,7 @@ void ScAcceptChgDlg::RemoveEntries(sal_uLong nStartAction,sal_uLong nEndAction)
     do
     {
         OUString sId(rTreeView.get_id(*xEntry));
-        pEntryData = weld::fromId<ScRedlinData*>(sId);
+        pEntryData = weld::fromId<ScRedlineData*>(sId);
         if (pEntryData)
         {
             nAction = pEntryData->nActionNo;
@@ -1431,7 +1431,7 @@ void ScAcceptChgDlg::UpdateEntries(const ScChangeTrack* pChgTrack, sal_uLong nSt
     while (bEntry)
     {
         bool bRemove = false;
-        ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+        ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
         if (pEntryData)
         {
             ScChangeAction* pScChangeAction=
@@ -1535,7 +1535,7 @@ IMPL_LINK_NOARG(ScAcceptChgDlg, UpdateSelectionHdl, Timer *, void)
     weld::TreeView& rTreeView = pTheView->GetWidget();
     std::vector<const ScChangeAction*> aActions;
     rTreeView.selected_foreach([&rTreeView, &bAcceptFlag, &bRejectFlag, &aActions](weld::TreeIter& rEntry){
-        ScRedlinData* pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rEntry));
+        ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rEntry));
         if (pEntryData)
         {
             bRejectFlag &= pEntryData->bIsRejectable;
@@ -1592,7 +1592,7 @@ IMPL_LINK(ScAcceptChgDlg, CommandHdl, const CommandEvent&, rCEvt, bool)
 
     if (pDoc->IsDocEditable() && xEntry)
     {
-        ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+        ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
         if (pEntryData)
         {
             ScChangeAction* pScChangeAction = static_cast<ScChangeAction*>(pEntryData->pData);
@@ -1609,7 +1609,7 @@ IMPL_LINK(ScAcceptChgDlg, CommandHdl, const CommandEvent&, rCEvt, bool)
         {
             if (xEntry)
             {
-                ScRedlinData *pEntryData = weld::fromId<ScRedlinData*>(rTreeView.get_id(*xEntry));
+                ScRedlineData* pEntryData = weld::fromId<ScRedlineData*>(rTreeView.get_id(*xEntry));
                 if (pEntryData)
                 {
                     ScChangeAction* pScChangeAction = static_cast<ScChangeAction*>(pEntryData->pData);
@@ -1733,8 +1733,8 @@ int ScAcceptChgDlg::ColCompareHdl(const weld::TreeIter& rLeft, const weld::TreeI
 
     if (CALC_DATE == nSortCol)
     {
-        RedlinData *pLeftData = weld::fromId<RedlinData*>(rTreeView.get_id(rLeft));
-        RedlinData *pRightData = weld::fromId<RedlinData*>(rTreeView.get_id(rRight));
+        RedlineData* pLeftData = weld::fromId<RedlineData*>(rTreeView.get_id(rLeft));
+        RedlineData* pRightData = weld::fromId<RedlineData*>(rTreeView.get_id(rRight));
         if (pLeftData && pRightData)
         {
             if(pLeftData->aDateTime < pRightData->aDateTime)
@@ -1746,8 +1746,8 @@ int ScAcceptChgDlg::ColCompareHdl(const weld::TreeIter& rLeft, const weld::TreeI
     }
     else if (CALC_POS == nSortCol)
     {
-        ScRedlinData *pLeftData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rLeft));
-        ScRedlinData *pRightData = weld::fromId<ScRedlinData*>(rTreeView.get_id(rRight));
+        ScRedlineData* pLeftData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rLeft));
+        ScRedlineData* pRightData = weld::fromId<ScRedlineData*>(rTreeView.get_id(rRight));
         if (pLeftData && pRightData)
         {
             nCompare = 1;

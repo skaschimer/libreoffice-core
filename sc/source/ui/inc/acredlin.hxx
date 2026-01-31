@@ -31,11 +31,11 @@ class ScDocument;
 
 struct SfxChildWinInfo;
 
-class ScRedlinData : public RedlinData
+class ScRedlineData : public RedlineData
 {
 public:
-                    ScRedlinData();
-                    virtual ~ScRedlinData() override;
+    ScRedlineData();
+    virtual ~ScRedlineData() override;
     sal_uLong       nActionNo;
     sal_uLong       nInfo;
     SCTAB           nTable;
@@ -78,7 +78,7 @@ class ScAcceptChgDlg final : public SfxModelessDialogController
     bool                    bUseColor:1;
 
     SvxTPFilter* pTPFilter;
-    SvxRedlinTable* pTheView;
+    SvxRedlineTable* pTheView;
 
     std::unique_ptr<weld::Container> m_xContentArea;
     std::unique_ptr<weld::Menu> m_xPopup, m_xSortMenu;

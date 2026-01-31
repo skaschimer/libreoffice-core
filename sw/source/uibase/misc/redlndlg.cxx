@@ -141,7 +141,7 @@ const SwRedlineData* lcl_get_selected_redlinedata(const weld::TreeView& rTreeVie
 {
     if (std::unique_ptr<weld::TreeIter> xEntry = rTreeView.get_selected())
     {
-        RedlinData* pRedlinData = weld::fromId<RedlinData*>(rTreeView.get_id(*xEntry));
+        RedlineData* pRedlinData = weld::fromId<RedlineData*>(rTreeView.get_id(*xEntry));
         if (rTreeView.get_iter_depth(*xEntry))
             return static_cast<SwRedlineDataChild*>(pRedlinData->pData)->pChild;
         else
@@ -160,7 +160,7 @@ void lcl_reselect(weld::TreeView& rTreeView, const SwRedlineData* pSelectedEntry
     rTreeView.all_foreach(
         [&rTreeView, &pSelectedEntryRedlineData](weld::TreeIter& rIter)
         {
-            RedlinData* pRedlinData = weld::fromId<RedlinData*>(rTreeView.get_id(rIter));
+            RedlineData* pRedlinData = weld::fromId<RedlineData*>(rTreeView.get_id(rIter));
             const SwRedlineData* pRedlineData;
             if (rTreeView.get_iter_depth(rIter))
                 pRedlineData = static_cast<SwRedlineDataChild*>(pRedlinData->pData)->pChild;
@@ -297,7 +297,7 @@ void SwRedlineAcceptDlg::Init(SwRedlineTable::size_type nStart)
     else
     {
         rTreeView.clear();
-        m_RedlinData.clear();
+        m_RedlineData.clear();
         m_RedlineChildren.clear();
         m_RedlineParents.erase(m_RedlineParents.begin() + nStart, m_RedlineParents.end());
     }
@@ -615,7 +615,7 @@ void SwRedlineAcceptDlg::Notify(SfxBroadcaster& /*rBC*/, const SfxHint& rHint)
 
         weld::TreeView& rTreeView = m_pTable->GetWidget();
         rTreeView.all_foreach([&rTreeView, &rRedlineData](weld::TreeIter& rIter) {
-            RedlinData* pRedlinData = weld::fromId<RedlinData*>(rTreeView.get_id(rIter));
+            RedlineData* pRedlinData = weld::fromId<RedlineData*>(rTreeView.get_id(rIter));
             const SwRedlineData* pRedlineData;
             if (rTreeView.get_iter_depth(rIter))
                 pRedlineData = static_cast<SwRedlineDataChild*>(pRedlinData->pData)->pChild;
@@ -769,7 +769,7 @@ void SwRedlineAcceptDlg::InsertChildren(SwRedlineDataParent *pParent, const SwRa
 
         if (bValidChild)
         {
-            std::unique_ptr<RedlinData> pData(new RedlinData);
+            std::unique_ptr<RedlineData> pData(new RedlineData);
             pData->pData = pRedlineChild;
             pData->bDisabled = true;
 
@@ -784,7 +784,7 @@ void SwRedlineAcceptDlg::InsertChildren(SwRedlineDataParent *pParent, const SwRa
             OUString sId(weld::toId(pData.get()));
             rTreeView.insert(pParent->xTLBParent.get(), -1, nullptr, &sId, nullptr, nullptr,
                              false, xChild.get());
-            m_RedlinData.push_back(std::move(pData));
+            m_RedlineData.push_back(std::move(pData));
 
             rTreeView.set_image(*xChild, sImage, -1);
             rTreeView.set_text(*xChild, sAuthor, 1);
@@ -1034,7 +1034,7 @@ void SwRedlineAcceptDlg::InsertParents(SwRedlineTable::size_type nStart, SwRedli
         m_RedlineParents.insert(m_RedlineParents.begin() + i,
                 std::unique_ptr<SwRedlineDataParent>(pRedlineParent));
 
-        std::unique_ptr<RedlinData> pData(new RedlinData);
+        std::unique_ptr<RedlineData> pData(new RedlineData);
         pData->pData = pRedlineParent;
         pData->bDisabled = false;
 
@@ -1068,7 +1068,7 @@ void SwRedlineAcceptDlg::InsertParents(SwRedlineTable::size_type nStart, SwRedli
             rTreeView.insert(pParent->xTLBParent.get(), -1, nullptr, &sId, nullptr, nullptr, false, xParent.get());
         }
 
-        m_RedlinData.push_back(std::move(pData));
+        m_RedlineData.push_back(std::move(pData));
 
         rTreeView.set_image(*xParent, sImage, -1);
         rTreeView.set_text(*xParent, sAuthor, 1);
@@ -1112,7 +1112,7 @@ void SwRedlineAcceptDlg::CallAcceptReject( bool bSelect, bool bAccept )
             if (bSelect && nPos == -1)
                 nPos = rTreeView.get_iter_index_in_parent(rEntry);
 
-            RedlinData *pData = weld::fromId<RedlinData*>(rTreeView.get_id(rEntry));
+            RedlineData* pData = weld::fromId<RedlineData*>(rTreeView.get_id(rEntry));
 
             if (!pData->bDisabled)
                 aRedlines.emplace_back(rTreeView.make_iterator(&rEntry));
@@ -1142,7 +1142,7 @@ void SwRedlineAcceptDlg::CallAcceptReject( bool bSelect, bool bAccept )
     if ( bMoreRedlines && aRedlines.size() == 1 )
     {
         std::unique_ptr<weld::TreeIter> xChild(rTreeView.make_iterator( &*aRedlines[0] ));
-        RedlinData *pData = weld::fromId<RedlinData*>(rTreeView.get_id(*xChild));
+        RedlineData* pData = weld::fromId<RedlineData*>(rTreeView.get_id(*xChild));
         if ( pData->bDisabled )
             bMoreRedlines = false;
     }
@@ -1185,7 +1185,7 @@ void SwRedlineAcceptDlg::CallAcceptReject( bool bSelect, bool bAccept )
         std::unique_ptr<weld::TreeIter> xChild(rTreeView.make_iterator( &*rRedLine ));
         if ( rTreeView.iter_children(*xChild) )
         {
-            RedlinData *pData = weld::fromId<RedlinData*>(rTreeView.get_id(*xChild));
+            RedlineData* pData = weld::fromId<RedlineData*>(rTreeView.get_id(*xChild));
             // disabled for redline stack, but not for redlines of table rows
             if ( !pData->bDisabled )
             {
@@ -1233,7 +1233,7 @@ SwRedlineTable::size_type SwRedlineAcceptDlg::GetRedlinePos(const weld::TreeIter
         return SwRedlineTable::npos;
 
     weld::TreeView& rTreeView = m_pTable->GetWidget();
-    return pSh->FindRedlineOfData( *static_cast<SwRedlineDataParent*>(weld::fromId<RedlinData*>(
+    return pSh->FindRedlineOfData( *static_cast<SwRedlineDataParent*>(weld::fromId<RedlineData*>(
                                     rTreeView.get_id(rEntry))->pData)->pData );
 }
 
@@ -1350,7 +1350,7 @@ IMPL_LINK_NOARG(SwRedlineAcceptDlg, GotoHdl, Timer *, void)
                 std::unique_ptr<weld::TreeIter> xChild(rTreeView.make_iterator( &*xActEntry ));
                 if ( rTreeView.iter_children(*xChild) )
                 {
-                    RedlinData *pData = reinterpret_cast<RedlinData*>(rTreeView.get_id(*xChild).toInt64());
+                    RedlineData *pData = reinterpret_cast<RedlineData*>(rTreeView.get_id(*xChild).toInt64());
                     // disabled for redline stack, but not for redlines of table rows
                     if ( !pData->bDisabled )
                     {
