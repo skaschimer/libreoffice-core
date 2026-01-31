@@ -108,7 +108,7 @@ class UNLESS_MERGELIBS_MORE(VCL_DLLPUBLIC) SvTreeList final
 
     // rPos is not changed for SortModeNone
     SAL_DLLPRIVATE void GetInsertionPos(
-                            SvTreeListEntry const * pEntry,
+                            const SvTreeListEntry& rEntry,
                             SvTreeListEntry* pParent,
                             sal_uInt32& rPos
                         );
