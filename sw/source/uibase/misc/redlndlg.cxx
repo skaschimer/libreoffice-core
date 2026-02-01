@@ -1053,7 +1053,8 @@ void SwRedlineAcceptDlg::InsertParents(SwRedlineTable::size_type nStart, SwRedli
 
         if ( !bChange || aTableParents.back() == i )
         {
-            rTreeView.insert(nullptr, i - nSkipRedlines, nullptr, &sId, nullptr, nullptr, false, xParent.get());
+            const int nPos = std::min(int(i - nSkipRedlines), rTreeView.n_children());
+            rTreeView.insert(nullptr, nPos, nullptr, &sId, nullptr, nullptr, false, xParent.get());
             // before this was a tracked table change with more than a single redline
             if ( nSkipRedline > 0 )
             {
