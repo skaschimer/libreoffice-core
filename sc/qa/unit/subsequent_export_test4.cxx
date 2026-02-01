@@ -37,6 +37,7 @@
 #include <comphelper/scopeguard.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <formula/grammar.hxx>
+#include <test/commontesttools.hxx>
 #include <tools/fldunit.hxx>
 #include <tools/UnitConversion.hxx>
 #include <svl/numformat.hxx>
@@ -1241,16 +1242,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf142264ManyChartsToXLSX)
 {
     // The cache size for the test should be small enough, to make sure that some charts get
     // unloaded in the process, and then loaded on demand properly (default is currently 200)
-    comphelper::ScopeGuard g([]() {
-        std::shared_ptr<comphelper::ConfigurationChanges> pBatch(
-            comphelper::ConfigurationChanges::create());
-        officecfg::Office::Common::Cache::DrawingEngine::OLE_Objects::set(200, pBatch);
-        return pBatch->commit();
-    });
-    std::shared_ptr<comphelper::ConfigurationChanges> pBatch(
-        comphelper::ConfigurationChanges::create());
-    officecfg::Office::Common::Cache::DrawingEngine::OLE_Objects::set(20, pBatch);
-    pBatch->commit();
+    ScopedConfigValue<officecfg::Office::Common::Cache::DrawingEngine::OLE_Objects> aCfg(20);
 
     createScDoc("ods/many_charts.ods");
     saveAndReload(TestFilter::XLSX);
@@ -2036,10 +2028,9 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testChangesAuthorDate)
 {
     createScDoc("ods/change-tracking.ods");
 
-    auto pBatch(comphelper::ConfigurationChanges::create());
     // Remove all personal info
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(true, pBatch);
-    pBatch->commit();
+    ScopedConfigValue<officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving>
+        aCfg(true);
 
     save(TestFilter::ODS);
     xmlDocUniquePtr pXmlDoc = parseExport(u"content.xml"_ustr);
@@ -2055,20 +2046,15 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testChangesAuthorDate)
                        "table:tracked-changes/table:cell-content-change[1]/office:change-info/"
                        "dc:date",
                        u"1970-01-01T12:00:00");
-
-    // Reset config change
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(false, pBatch);
-    pBatch->commit();
 }
 
 CPPUNIT_TEST_FIXTURE(ScExportTest4, testChangesAuthorDateXLSX)
 {
     createScDoc("xlsx/change-tracking.xlsx");
 
-    auto pBatch(comphelper::ConfigurationChanges::create());
     // Remove all personal info
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(true, pBatch);
-    pBatch->commit();
+    ScopedConfigValue<officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving>
+        aCfg(true);
 
     save(TestFilter::XLSX);
     xmlDocUniquePtr pXmlDoc = parseExport(u"xl/revisions/revisionHeaders.xml"_ustr);
@@ -2076,10 +2062,6 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testChangesAuthorDateXLSX)
 
     assertXPath(pXmlDoc, "/x:headers/x:header[1]", "userName", u"Author1");
     assertXPath(pXmlDoc, "/x:headers/x:header[1]", "dateTime", u"1970-01-01T12:00:00.000000000Z");
-
-    // Reset config change
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(false, pBatch);
-    pBatch->commit();
 }
 
 CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf163554)
@@ -2106,20 +2088,15 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testNotesAuthor)
 {
     createScDoc("xlsx/cell-note.xlsx");
 
-    auto pBatch(comphelper::ConfigurationChanges::create());
     // Remove all personal info
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(true, pBatch);
-    pBatch->commit();
+    ScopedConfigValue<officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving>
+        aCfg(true);
 
     save(TestFilter::XLSX);
     xmlDocUniquePtr pXmlDoc = parseExport(u"xl/comments1.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
     assertXPathContent(pXmlDoc, "/x:comments/x:authors/x:author", u"Author1");
-
-    // Reset config change
-    officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving::set(false, pBatch);
-    pBatch->commit();
 }
 
 CPPUNIT_TEST_FIXTURE(ScExportTest4, testSheetProtections)
