@@ -12,6 +12,7 @@
 #include "sdmodeltestbase.hxx"
 #include <sdpage.hxx>
 
+#include <comphelper/scopeguard.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <comphelper/sequence.hxx>
 #include <editeng/editobj.hxx>
@@ -1486,7 +1487,7 @@ CPPUNIT_TEST_FIXTURE(SdExportTest, testPageWithTransparentBackground)
 CPPUNIT_TEST_FIXTURE(SdExportTest, testTextRotation)
 {
     // Save behavior depends on whether ODF strict or extended is used.
-    Resetter resetter([]() { SetODFDefaultVersion(SvtSaveOptions::ODFVER_LATEST); });
+    comphelper::ScopeGuard g([]() { SetODFDefaultVersion(SvtSaveOptions::ODFVER_LATEST); });
 
     // The contained shape has a text rotation vert="vert" which corresponds to
     // loext:writing-mode="tb-rl90" in the graphic-properties of the style of the shape in ODF 1.3
