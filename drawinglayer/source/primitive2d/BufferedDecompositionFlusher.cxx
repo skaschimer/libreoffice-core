@@ -171,7 +171,7 @@ void SAL_CALL BufferedDecompositionFlusher::run()
         }
         // There is a very very small window where, if :
         // This-thread: we create a strong reference from a weak reference inside the loop
-        // Another-thread: releases the second last strong reference to the the object
+        // Another-thread: releases the second last strong reference to the object
         // This-thread: we clear the reference, which triggers object destruction, which tries to call back
         //  into BufferedDecompositionFlusher and then deadlocks because the mutex is already acquired.
         aDelayRelease.clear();
