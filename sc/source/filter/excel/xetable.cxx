@@ -2067,7 +2067,7 @@ void XclExpRow::Finalize( const ScfUInt16Vec& rColXFIndexes, ScfUInt16Vec& aXFIn
                 aXFIndexes[ i ] = EXC_XF_NOTFOUND;
         }
         // They can differ only up to maxNonDefault, in the rest they are the same.
-        for( size_t i = maxStartAllDefault; i < aXFIndexes.size(); ++i )
+        for( size_t i = maxStartAllDefault, cnt = aXFIndexes.size(); i < cnt; ++i )
             aXFIndexes[ i ] = EXC_XF_NOTFOUND;
         maxStartAllNotFound = maxStartAllDefault;
     }
