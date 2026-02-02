@@ -2385,6 +2385,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf157816)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf157816.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -2787,6 +2788,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf157816Link)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"LinkWithFly.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3178,6 +3180,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf142806)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"LinkPages.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);

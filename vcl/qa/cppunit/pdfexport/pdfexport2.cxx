@@ -1473,6 +1473,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf139736)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf139736-1.odt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -1779,6 +1780,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf149140)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"TableTH_test_LibreOfficeWriter7.3.3_HeaderRow-HeadersInTopRow.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -1839,6 +1841,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testNestedSection)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"nestedsection.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -2976,6 +2979,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf154982)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf154982.odt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3386,6 +3390,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf135192)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf135192-1.fodp");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3518,6 +3523,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf154955)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"grouped-shape.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3653,6 +3659,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf155190)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf155190.odt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3743,6 +3750,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testMediaShapeAnnot)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"vid.odt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3883,6 +3891,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFlyFrameHyperlinkAnnot)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"image-hyperlink-alttext.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -4019,6 +4028,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFormControlAnnot)
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"formcontrol.fodt");
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    validate(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
