@@ -21,6 +21,8 @@
 #include <vcl/pdf/PDFAnnotationSubType.hxx>
 #include <vcl/pdf/PDFFormFieldType.hxx>
 #include <vcl/pdf/PDFPageObjectType.hxx>
+#include <officecfg/Office/Common.hxx>
+#include <test/commontesttools.hxx>
 
 #include <IDocumentLayoutAccess.hxx>
 #include <rootfrm.hxx>
@@ -208,7 +210,7 @@ CPPUNIT_TEST_FIXTURE(Test, testCheckedCheckboxContentControlPDF)
     if (!pPDFium)
         return;
 
-    SwExportFormFieldsGuard g;
+    ScopedConfigValue<officecfg::Office::Common::Filter::PDF::Export::ExportFormFields> aCfg(true);
     // Given a file with a checked checkbox content control:
     createSwDoc();
     SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
@@ -244,7 +246,7 @@ CPPUNIT_TEST_FIXTURE(Test, testContentControlPDFFontColor)
     if (!pPDFium)
         return;
 
-    SwExportFormFieldsGuard g;
+    ScopedConfigValue<officecfg::Office::Common::Filter::PDF::Export::ExportFormFields> aCfg(true);
     // Given a document with a custom orange font color and a content control:
     createSwDoc();
     SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
@@ -277,7 +279,7 @@ CPPUNIT_TEST_FIXTURE(Test, testContentControlPDFDropDownText)
     if (!pPDFium)
         return;
 
-    SwExportFormFieldsGuard g;
+    ScopedConfigValue<officecfg::Office::Common::Filter::PDF::Export::ExportFormFields> aCfg(true);
     // Given a document with a dropdown: custom default text and 3 items:
     createSwDoc();
     uno::Reference<lang::XMultiServiceFactory> xMSF(mxComponent, uno::UNO_QUERY);
