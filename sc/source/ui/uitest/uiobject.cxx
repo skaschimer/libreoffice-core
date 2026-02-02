@@ -142,14 +142,14 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     if (rAction == "SELECT")
     {
         bool bExtend = false;
-        if (rParameters.find(u"EXTEND"_ustr) != rParameters.end())
+        if ( rParameters.contains(u"EXTEND"_ustr) )
         {
             auto itr = rParameters.find(u"EXTEND"_ustr);
             if (itr->second.equalsIgnoreAsciiCase("true") || itr->second == "1")
                 bExtend = true;
         }
 
-        if (rParameters.find(u"CELL"_ustr) != rParameters.end())
+        if ( rParameters.contains(u"CELL"_ustr) )
         {
             auto itr = rParameters.find(u"CELL"_ustr);
             const OUString& rStr = itr->second;
@@ -158,7 +158,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
             pFunc->MarkRange(ScRange(aAddr), true, bExtend);
             mxGridWindow->CursorChanged();
         }
-        else if (rParameters.find(u"RANGE"_ustr) != rParameters.end())
+        else if ( rParameters.contains(u"RANGE"_ustr) )
         {
             auto itr = rParameters.find(u"RANGE"_ustr);
             const OUString rStr = itr->second;
@@ -167,7 +167,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
             pFunc->MarkRange(aRange, true, bExtend);
             mxGridWindow->CursorChanged();
         }
-        else if (rParameters.find(u"TABLE"_ustr) != rParameters.end())
+        else if ( rParameters.contains(u"TABLE"_ustr) )
         {
             auto itr = rParameters.find(u"TABLE"_ustr);
             const OUString rStr = itr->second;
@@ -184,7 +184,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
                 }
             }
         }
-        else if (rParameters.find(u"OBJECT"_ustr) != rParameters.end())
+        else if ( rParameters.contains(u"OBJECT"_ustr) )
         {
             auto itr = rParameters.find(u"OBJECT"_ustr);
             const OUString rStr = itr->second;
@@ -199,7 +199,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     }
     else if (rAction == "DESELECT")
     {
-        if (rParameters.find(u"OBJECT"_ustr) != rParameters.end())
+        if ( rParameters.contains(u"OBJECT"_ustr) )
         {
             ScDrawView* pDrawView = getDrawView();
             pDrawView->UnmarkAll();
@@ -232,7 +232,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     }
     else if (rAction == "LAUNCH")
     {
-        if ( rParameters.find(u"AUTOFILTER"_ustr) != rParameters.end())
+        if ( rParameters.contains(u"AUTOFILTER"_ustr) )
         {
             auto itrCol = rParameters.find(u"COL"_ustr);
             if (itrCol == rParameters.end())
@@ -251,7 +251,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
             SCCOL nCol = itrCol->second.toUInt32();
             mxGridWindow->LaunchAutoFilterMenu(nCol, nRow);
         }
-        else if ( rParameters.find(u"PIVOTTABLE"_ustr) != rParameters.end())
+        else if ( rParameters.contains(u"PIVOTTABLE"_ustr) )
         {
             auto itrCol = rParameters.find(u"COL"_ustr);
             if (itrCol == rParameters.end())
@@ -270,7 +270,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
             SCCOL nCol = itrCol->second.toUInt32();
             mxGridWindow->LaunchDPFieldMenu(nCol, nRow);
         }
-        else if ( rParameters.find(u"SELECTMENU"_ustr) != rParameters.end())
+        else if ( rParameters.contains(u"SELECTMENU"_ustr) )
         {
             auto itrCol = rParameters.find(u"COL"_ustr);
             if (itrCol == rParameters.end())
@@ -292,19 +292,19 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     }
     else if (rAction == "COMMENT")
     {
-        if ( rParameters.find(u"OPEN"_ustr) != rParameters.end() )
+        if ( rParameters.contains(u"OPEN"_ustr) )
         {
             ScViewFunc* pViewFunc = getViewFunc();
             pViewFunc->EditNote();
         }
-        else if ( rParameters.find(u"CLOSE"_ustr) != rParameters.end() )
+        else if ( rParameters.contains(u"CLOSE"_ustr) )
         {
             FuDraw* pDraw = dynamic_cast<FuDraw*>(getViewFunc()->GetDrawFuncPtr());
             assert(pDraw);
             ScViewData& rViewData = mxGridWindow->getViewData();
             rViewData.GetDispatcher().Execute( pDraw->GetSlotID() , SfxCallMode::SLOT | SfxCallMode::RECORD );
         }
-        else if ( rParameters.find(u"SETTEXT"_ustr) != rParameters.end() )
+        else if ( rParameters.contains(u"SETTEXT"_ustr) )
         {
             auto itr = rParameters.find(u"SETTEXT"_ustr);
             const OUString rStr = itr->second;
@@ -328,7 +328,7 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     }
     else if (rAction == "SET")
     {
-        if (rParameters.find(u"ZOOM"_ustr) != rParameters.end())
+        if ( rParameters.contains(u"ZOOM"_ustr) )
         {
             auto itr = rParameters.find(u"ZOOM"_ustr);
             OUString aVal = itr->second;
