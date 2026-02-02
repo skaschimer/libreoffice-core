@@ -1642,7 +1642,7 @@ bool canInsertCellsByPivot(const ScRange& rRange, const ScMarkData& rMarkData, I
         }
         case INS_CELLSDOWN:
         {
-            auto bIntersects = std::any_of(rMarkData.begin(), rMarkData.end(), [&pDPs, &aRange](const SCTAB& rTab) {
+            auto bIntersects = std::ranges::any_of(rMarkData, [&pDPs, &aRange](const SCTAB& rTab) {
                 return pDPs->IntersectsTableByColumns(aRange.aStart.Col(), aRange.aEnd.Col(), aRange.aStart.Row(), rTab); });
             if (bIntersects)
                 // This column range cuts through at least one pivot table.  Not good.
@@ -1677,7 +1677,7 @@ bool canInsertCellsByPivot(const ScRange& rRange, const ScMarkData& rMarkData, I
         }
         case INS_CELLSRIGHT:
         {
-            auto bIntersects = std::any_of(rMarkData.begin(), rMarkData.end(), [&pDPs, &aRange](const SCTAB& rTab) {
+            auto bIntersects = std::ranges::any_of(rMarkData, [&pDPs, &aRange](const SCTAB& rTab) {
                 return pDPs->IntersectsTableByRows(aRange.aStart.Col(), aRange.aStart.Row(), aRange.aEnd.Row(), rTab); });
             if (bIntersects)
                 // This column range cuts through at least one pivot table.  Not good.
@@ -1737,7 +1737,7 @@ bool canDeleteCellsByPivot(const ScRange& rRange, const ScMarkData& rMarkData, D
         }
         case DelCellCmd::CellsUp:
         {
-            auto bIntersects = std::any_of(rMarkData.begin(), rMarkData.end(), [&pDPs, &aRange](const SCTAB& rTab) {
+            auto bIntersects = std::ranges::any_of(rMarkData, [&pDPs, &aRange](const SCTAB& rTab) {
                 return pDPs->IntersectsTableByColumns(aRange.aStart.Col(), aRange.aEnd.Col(), aRange.aStart.Row(), rTab); });
             if (bIntersects)
                 // This column range cuts through at least one pivot table.  Not good.
@@ -1761,7 +1761,7 @@ bool canDeleteCellsByPivot(const ScRange& rRange, const ScMarkData& rMarkData, D
         }
         case DelCellCmd::CellsLeft:
         {
-            auto bIntersects = std::any_of(rMarkData.begin(), rMarkData.end(), [&pDPs, &aRange](const SCTAB& rTab) {
+            auto bIntersects = std::ranges::any_of(rMarkData, [&pDPs, &aRange](const SCTAB& rTab) {
                 return pDPs->IntersectsTableByRows(aRange.aStart.Col(), aRange.aStart.Row(), aRange.aEnd.Row(), rTab); });
             if (bIntersects)
                 // This column range cuts through at least one pivot table.  Not good.
