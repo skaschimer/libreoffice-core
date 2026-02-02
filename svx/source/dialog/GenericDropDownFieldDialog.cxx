@@ -15,8 +15,6 @@ GenericDropDownFieldDialog::GenericDropDownFieldDialog(weld::Widget* pParent,
     : GenericDialogController(pParent, u"svx/ui/dropdownfielddialog.ui"_ustr,
                               u"DropDownDialog"_ustr)
     , m_xComboBox(m_xBuilder->weld_combo_box(u"combo_box"_ustr))
-    , m_xOK(m_xBuilder->weld_button(u"OK"_ustr))
-    , m_xCancel(m_xBuilder->weld_button(u"CANCEL"_ustr))
 {
     set_title(rTitle);
 }

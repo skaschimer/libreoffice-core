@@ -49,11 +49,9 @@ namespace sdext::presenter {
 //===== PresenterWindowManager ================================================
 
 PresenterWindowManager::PresenterWindowManager (
-    const Reference<XComponentContext>& rxContext,
     ::rtl::Reference<PresenterPaneContainer> pPaneContainer,
     ::rtl::Reference<PresenterController> pPresenterController)
     : PresenterWindowManagerInterfaceBase(m_aMutex),
-      mxComponentContext(rxContext),
       mpPresenterController(std::move(pPresenterController)),
       mpPaneContainer(std::move(pPaneContainer)),
       mbIsLayoutPending(true),

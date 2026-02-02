@@ -58,7 +58,6 @@ class PresenterWindowManager
 {
 public:
     PresenterWindowManager (
-        const css::uno::Reference<css::uno::XComponentContext>& rxContext,
         ::rtl::Reference<PresenterPaneContainer> pPaneContainer,
         ::rtl::Reference<PresenterController> pPresenterController);
     virtual ~PresenterWindowManager() override;
@@ -143,7 +142,6 @@ public:
         const css::lang::EventObject& rEvent) override;
 
 private:
-    css::uno::Reference<css::uno::XComponentContext> mxComponentContext;
     ::rtl::Reference<PresenterController> mpPresenterController;
     css::uno::Reference<css::awt::XWindow> mxParentWindow;
     css::uno::Reference<css::rendering::XCanvas> mxParentCanvas;

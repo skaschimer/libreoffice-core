@@ -112,8 +112,6 @@ struct RenderState
 
     std::vector<drawinglayer::primitive2d::Primitive2DReference> maPrimitivesToUnhide;
 
-    SdrObject* mpCurrentTarget = nullptr;
-
     bool mbShowMasterPageObjects = false;
     bool mbFooterEnabled = false;
     bool mbDateTimeEnabled = false;
