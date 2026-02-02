@@ -319,7 +319,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testOleEmfPreviewToHtml)
     createSwDoc("ole2.odt");
 
     // When exporting to HTML:
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 
     // Then make sure the <img> tag has matching file extension and data:
     htmlDocUniquePtr pDoc = parseHtml(maTempFile);
@@ -1222,7 +1222,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_Tdf160017_spanClosingOrder)
     // Given a document with a paragraph having explicit font color and character border properties:
     createSwDoc("char_border_and_font_color.fodt");
     // When exporting to HTML:
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
     // Parse it as XML (strict!)
     // Without the fix, this would fail, because span and font elements closed in wrong order
     CPPUNIT_ASSERT(parseXml(maTempFile));
@@ -1232,7 +1232,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_Tdf160390)
 {
     // This document must not hang infinitely on HTML export
     createSwDoc("tdf160390.fodt");
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 }
 
 CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_160867)
@@ -1240,7 +1240,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_160867)
     // Given a document with an image with hyperlink, and text with hyperlink, both in a frame:
     createSwDoc("tdf160867_image_with_link.fodt");
     // When exporting to HTML:
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
     // Parse it as XML (strict!)
     xmlDocUniquePtr pDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
@@ -1280,7 +1280,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_161979)
 {
     // Given a document with two embedded metafiles:
     createSwDoc("tdf161979_metafile.fodt");
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
     xmlDocUniquePtr pDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
     // First image: it has no EMF+ actions, and didn't use canvas rendering before the fix;
@@ -1480,7 +1480,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_exportRelativeURLs)
 
     createSwDoc("URLs.odt");
     // Export to HTML, using relative URLs (the default)
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
 
     // HTTP URL: must be absolute
@@ -1561,7 +1561,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_162426)
     // Given a document with an image with style:wrap="none":
     createSwDoc("tdf162426_image_with_wrap_none.fodt");
     // Before the fix, an assertion failed in HtmlWriter::attribute when exporting to HTML :
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 
     xmlDocUniquePtr pDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
@@ -1577,7 +1577,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_163873)
     // Given a document with an image with style:wrap="none":
     createSwDoc("tdf131728.docx");
     // Before the fix, an assertion failed in HtmlWriter::attribute when exporting to HTML :
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 
     xmlDocUniquePtr pDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
@@ -1622,7 +1622,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testTextAlignStartEnd)
 {
     createSwDoc("text-align-start-end.fodt");
 
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 
     xmlDocUniquePtr pDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pDoc);

@@ -1366,7 +1366,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testPartiallyNumberedListHTML)
     }
 
     // When exporting to HTML:
-    ExportToHTML();
+    save(TestFilter::HTML_WRITER);
 
     xmlDocUniquePtr pXmlDoc = parseXml(maTempFile);
     CPPUNIT_ASSERT(pXmlDoc); // if we have missing closing marks - parse error

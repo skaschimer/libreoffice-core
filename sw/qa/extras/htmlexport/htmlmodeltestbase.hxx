@@ -180,8 +180,6 @@ public:
     void ExportToReqif();
     /// Import using the C++ HTML import filter, with xhtmlns=reqif-xhtml.
     void ImportFromReqif(const OUString& rUrl);
-    /// Export using the C++ HTML export filter
-    void ExportToHTML();
 };
 
 OUString SwHtmlDomExportTest::GetObjectPath(const OUString& ext)
@@ -211,14 +209,6 @@ void SwHtmlDomExportTest::ExportToReqif()
 {
     setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     save(TestFilter::HTML_WRITER);
-}
-
-void SwHtmlDomExportTest::ExportToHTML()
-{
-    uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-    };
-    saveWithParams(aStoreProperties);
 }
 
 void SwHtmlDomExportTest::ImportFromReqif(const OUString& rUrl)
