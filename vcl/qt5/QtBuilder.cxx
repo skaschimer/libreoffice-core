@@ -12,6 +12,7 @@
 #include <QtDoubleSpinBox.hxx>
 #include <QtExpander.hxx>
 #include <QtInstanceMenu.hxx>
+#include <QtInstanceMenuButton.hxx>
 #include <QtInstanceMessageDialog.hxx>
 #include <QtInstanceNotebook.hxx>
 #include <QtInstanceTreeView.hxx>
@@ -1005,6 +1006,7 @@ void QtBuilder::setMenuButtonProperties(QToolButton& rButton, stringmap& rProps,
     }
 
     setButtonProperties(rButton, rProps, pParentWidget);
+    QtInstanceMenuButton::updateToolButtonStyle(rButton);
 }
 
 void QtBuilder::setMessageDialogProperties(QMessageBox& rMessageBox, stringmap& rProps)

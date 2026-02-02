@@ -23,6 +23,8 @@ class QtInstanceMenuButton : public QtInstanceToggleButton, public virtual weld:
 public:
     QtInstanceMenuButton(QToolButton* pButton);
 
+    virtual void set_label(const OUString& rText) override;
+
     virtual void insert_item(int nPos, const OUString& rId, const OUString& rStr,
                              const OUString* pIconName, VirtualDevice* pImageSurface,
                              TriState eCheckRadioFalse) override;
@@ -37,6 +39,8 @@ public:
     virtual void set_item_visible(const OUString& rIdent, bool bVisible) override;
 
     virtual void set_popover(weld::Widget* pPopover) override;
+
+    static void updateToolButtonStyle(QToolButton& rToolButton);
 
 private:
     QMenu& getMenu() const;
