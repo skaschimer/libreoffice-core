@@ -180,15 +180,20 @@ void UnoApiTest::save(TestFilter eFilter, const char* pPassword)
     }
 
     saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
-
-    if (!mbSkipValidation)
-        validate(maTempFile.GetFileName(), aFilter);
 }
 
 void UnoApiTest::saveWithParams(const uno::Sequence<beans::PropertyValue>& rParams)
 {
     css::uno::Reference<frame::XStorable> xStorable(mxComponent, css::uno::UNO_QUERY_THROW);
     xStorable->storeToURL(maTempFile.GetURL(), rParams);
+
+    if (!mbSkipValidation)
+    {
+        ::comphelper::SequenceAsHashMap aParamsHash(rParams);
+        OUString aFilterName;
+        aParamsHash.getValue(u"FilterName"_ustr) >>= aFilterName;
+        validate(maTempFile.GetFileName(), aFilterName);
+    }
 }
 
 void UnoApiTest::saveAndReload(TestFilter eFilter, const char* pPassword)
