@@ -27,6 +27,7 @@
 #include <vcl/weld/ComboBox.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/Entry.hxx>
+#include <vcl/weld/Notebook.hxx>
 #include <vcl/weld/TextView.hxx>
 #include <vcl/weld/Toolbar.hxx>
 #include <vcl/weld/TreeView.hxx>
