@@ -337,6 +337,7 @@ constexpr auto SUPPORTED_WITH_QT_PARENT = frozen::make_unordered_set<std::u16str
     u"svt/ui/datewindow.ui",
     u"svt/ui/linewindow.ui",
     u"svx/ui/colorwindow.ui",
+    u"svx/ui/formnavigator.ui",
     u"svx/ui/formnavimenu.ui",
     u"vcl/ui/editmenu.ui",
     u"xmlsec/ui/certdetails.ui",
