@@ -391,20 +391,6 @@ SET_LINESPACE:
         case SID_ATTR_PARA_LEFT_TO_RIGHT :
         case SID_ATTR_PARA_RIGHT_TO_LEFT :
         {
-            SfxItemSet aAdjustSet(SfxItemSet::makeFixedSfxItemSet<RES_PARATR_ADJUST, RES_PARATR_ADJUST>(GetPool()));
-            GetShell().GetCurAttr(aAdjustSet);
-            bool bChgAdjust = false;
-            SfxItemState eAdjustState = aAdjustSet.GetItemState(RES_PARATR_ADJUST, false);
-            if(eAdjustState  >= SfxItemState::DEFAULT)
-            {
-                SvxAdjust eAdjust =
-                        aAdjustSet.Get(RES_PARATR_ADJUST).GetAdjust();
-                bChgAdjust = (SvxAdjust::Left  == eAdjust  &&  SID_ATTR_PARA_RIGHT_TO_LEFT == nSlot) ||
-                             (SvxAdjust::Right == eAdjust  &&  SID_ATTR_PARA_LEFT_TO_RIGHT == nSlot);
-            }
-            else
-                bChgAdjust = true;
-
             SvxFrameDirection eFrameDirection =
                     (SID_ATTR_PARA_LEFT_TO_RIGHT == nSlot) ?
                         SvxFrameDirection::Horizontal_LR_TB : SvxFrameDirection::Horizontal_RL_TB;
@@ -413,40 +399,6 @@ SET_LINESPACE:
             // tdf#162120: The paragraph direction has been manually set by the user.
             // Don't automatically adjust the paragraph direction anymore.
             aSet.Put(SvxAutoFrameDirectionItem(false, RES_PARATR_AUTOFRAMEDIR));
-
-            if (bChgAdjust)
-            {
-                SvxAdjust eAdjust = (SID_ATTR_PARA_LEFT_TO_RIGHT == nSlot) ?
-                        SvxAdjust::Left : SvxAdjust::Right;
-                SvxAdjustItem aAdjust( eAdjust, RES_PARATR_ADJUST );
-                aSet.Put( aAdjust );
-                aAdjust.SetWhich(SID_ATTR_PARA_ADJUST);
-                GetView().GetViewFrame().GetBindings().SetState( aAdjust );
-                // Toggle numbering alignment
-                const SwNumRule* pCurRule = GetShell().GetNumRuleAtCurrCursorPos();
-                if( pCurRule )
-                {
-                    SvxNumRule aRule = pCurRule->MakeSvxNumRule();
-
-                    for(sal_uInt16 i = 0; i < aRule.GetLevelCount(); i++)
-                    {
-                        SvxNumberFormat aFormat(aRule.GetLevel(i));
-                        if(SvxAdjust::Left == aFormat.GetNumAdjust())
-                            aFormat.SetNumAdjust( SvxAdjust::Right );
-
-                        else if(SvxAdjust::Right == aFormat.GetNumAdjust())
-                            aFormat.SetNumAdjust( SvxAdjust::Left );
-
-                        aRule.SetLevel(i, aFormat, aRule.Get(i) != nullptr);
-                    }
-                    SwNumRule aSetRule( pCurRule->GetName(),
-                                        pCurRule->Get( 0 ).GetPositionAndSpaceMode() );
-                    aSetRule.SetSvxRule( aRule, GetShell().GetDoc());
-                    aSetRule.SetAutoRule( true );
-                    // no start or continuation of a list - list style is only changed
-                    GetShell().SetCurNumRule( aSetRule, false );
-                }
-            }
         }
         break;
         case SID_ATTR_PARA_HYPHENZONE:

@@ -706,24 +706,10 @@ SET_ADJUST:
             else if ( nSlot == SID_ATTR_PARA_LEFT_TO_RIGHT ||
                       nSlot == SID_ATTR_PARA_RIGHT_TO_LEFT )
             {
-                bool bLeftToRight = nSlot == SID_ATTR_PARA_LEFT_TO_RIGHT;
-
-                SvxAdjust nAdjust = SvxAdjust::ParaStart;
-                if( const SvxAdjustItem* pAdjustItem = aEditAttr.GetItemIfSet(EE_PARA_JUST) )
-                    nAdjust = pAdjustItem->GetAdjust();
-
-                if( bLeftToRight )
-                {
-                    aNewAttr.Put( SvxFrameDirectionItem( SvxFrameDirection::Horizontal_LR_TB, EE_PARA_WRITINGDIR ) );
-                    if( nAdjust == SvxAdjust::Right )
-                        aNewAttr.Put( SvxAdjustItem( SvxAdjust::Left, EE_PARA_JUST ) );
-                }
-                else
-                {
-                    aNewAttr.Put( SvxFrameDirectionItem( SvxFrameDirection::Horizontal_RL_TB, EE_PARA_WRITINGDIR ) );
-                    if( nAdjust == SvxAdjust::Left )
-                        aNewAttr.Put( SvxAdjustItem( SvxAdjust::Right, EE_PARA_JUST ) );
-                }
+                auto eFrameDirection = (nSlot == SID_ATTR_PARA_LEFT_TO_RIGHT)
+                                           ? SvxFrameDirection::Horizontal_LR_TB
+                                           : SvxFrameDirection::Horizontal_RL_TB;
+                aNewAttr.Put(SvxFrameDirectionItem{ eFrameDirection, EE_PARA_WRITINGDIR });
 
                 // tdf#162120: The paragraph direction has been manually set by the user.
                 // Don't automatically adjust the paragraph direction anymore.

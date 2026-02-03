@@ -622,25 +622,11 @@ void SwDrawTextShell::Execute( SfxRequest &rReq )
             }
             SfxItemSetFixed<
                     EE_PARA_WRITINGDIR, EE_PARA_WRITINGDIR,
-                    EE_PARA_JUST, EE_PARA_JUST,
                     EE_PARA_AUTOWRITINGDIR, EE_PARA_AUTOWRITINGDIR>  aAttr( *aNewAttr.GetPool() );
 
-            SvxAdjust nAdjust = SvxAdjust::Left;
-            if( const SvxAdjustItem* pAdjustItem = aEditAttr.GetItemIfSet(EE_PARA_JUST) )
-                nAdjust = pAdjustItem->GetAdjust();
-
-            if( bLeftToRight )
-            {
-                aAttr.Put( SvxFrameDirectionItem( SvxFrameDirection::Horizontal_LR_TB, EE_PARA_WRITINGDIR ) );
-                if( nAdjust == SvxAdjust::Right )
-                    aAttr.Put( SvxAdjustItem( SvxAdjust::Left, EE_PARA_JUST ) );
-            }
-            else
-            {
-                aAttr.Put( SvxFrameDirectionItem( SvxFrameDirection::Horizontal_RL_TB, EE_PARA_WRITINGDIR ) );
-                if( nAdjust == SvxAdjust::Left )
-                    aAttr.Put( SvxAdjustItem( SvxAdjust::Right, EE_PARA_JUST ) );
-            }
+            auto eFrameDirection = bLeftToRight ? SvxFrameDirection::Horizontal_LR_TB
+                                                : SvxFrameDirection::Horizontal_RL_TB;
+            aAttr.Put(SvxFrameDirectionItem{ eFrameDirection, EE_PARA_WRITINGDIR });
 
             // tdf#162120: The paragraph direction has been manually set by the user.
             // Don't automatically adjust the paragraph direction anymore.

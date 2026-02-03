@@ -597,6 +597,30 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf163194)
     }
 }
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf165206DirSwitchPreservesAlignment)
+{
+    createSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    CPPUNIT_ASSERT(pWrtShell);
+
+    dispatchCommand(mxComponent, u".uno:ParaLeftToRight"_ustr, {});
+    dispatchCommand(mxComponent, u".uno:LeftPara"_ustr, {});
+
+    CPPUNIT_ASSERT_EQUAL(short(0),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
+    CPPUNIT_ASSERT_EQUAL(short(0),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"ParaAdjust"_ustr));
+
+    // Explicitly set the direction to RTL.
+    // Previously, this would have also set ParaAdjust to force right.
+    dispatchCommand(mxComponent, u".uno:ParaRightToLeft"_ustr, {});
+
+    CPPUNIT_ASSERT_EQUAL(short(1),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
+    CPPUNIT_ASSERT_EQUAL(short(0),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"ParaAdjust"_ustr));
+}
+
 } // end of anonymous namespace
 CPPUNIT_PLUGIN_IMPLEMENT();
 
