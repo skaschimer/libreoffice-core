@@ -360,6 +360,11 @@ bool QtInstanceBuilder::IsUIFileSupported(const OUString& rUIFile, const weld::W
            && dynamic_cast<const QtInstanceWidget*>(pParent);
 }
 
+bool QtInstanceBuilder::IsInterimUIFileSupported(const OUString& rUIFile)
+{
+    return SUPPORTED_WITH_QT_PARENT.contains(rUIFile);
+}
+
 std::unique_ptr<weld::MessageDialog> QtInstanceBuilder::weld_message_dialog(const OUString& id)
 {
     SolarMutexGuard g;

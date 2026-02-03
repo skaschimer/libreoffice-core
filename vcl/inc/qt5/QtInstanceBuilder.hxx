@@ -41,6 +41,7 @@ public:
     ~QtInstanceBuilder();
 
     static bool IsUIFileSupported(const OUString& rUIFile, const weld::Widget* pParent);
+    static bool IsInterimUIFileSupported(const OUString& rUIFile);
 
     virtual std::unique_ptr<weld::MessageDialog> weld_message_dialog(const OUString& id) override;
     virtual std::unique_ptr<weld::Dialog> weld_dialog(const OUString& rId) override;
