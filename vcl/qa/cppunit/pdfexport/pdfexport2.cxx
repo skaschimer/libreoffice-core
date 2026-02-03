@@ -59,44 +59,28 @@ namespace
 /// Tests the PDF export filter.
 class PdfExportTest2 : public UnoApiTest
 {
-protected:
-    comphelper::SequenceAsHashMap aMediaDescriptor;
-
 public:
     PdfExportTest2()
         : UnoApiTest(u"/vcl/qa/cppunit/pdfexport/data/"_ustr)
     {
     }
-
-    void saveAsPDF(std::u16string_view rFile);
-    void load(std::u16string_view rFile, vcl::filter::PDFDocument& rDocument);
 };
-
-void PdfExportTest2::saveAsPDF(std::u16string_view rFile)
-{
-    // Import the bugdoc and export as PDF.
-    loadFromFile(rFile);
-    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
-}
-
-void PdfExportTest2::load(std::u16string_view rFile, vcl::filter::PDFDocument& rDocument)
-{
-    saveAsPDF(rFile);
-
-    // Parse the export result.
-    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
-    CPPUNIT_ASSERT(rDocument.Read(aStream));
-}
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf160705)
 {
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf160705.odt", aDocument);
+    loadFromFile(u"tdf160705.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -156,10 +140,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf159895)
         { "PDFUACompliance", uno::Any(true) },
         { "ExportFormFields", uno::Any(true) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf159895.odt", aDocument);
+    loadFromFile(u"tdf159895.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -214,7 +204,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124272)
 {
     // Import the bugdoc and export as PDF.
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf124272.odt", aDocument);
+    loadFromFile(u"tdf124272.odt");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -246,7 +241,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124272)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf121615)
 {
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf121615.odt", aDocument);
+    loadFromFile(u"tdf121615.odt");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -294,7 +294,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf121615)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf141171)
 {
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf141171.odt", aDocument);
+    loadFromFile(u"tdf141171.odt");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     int nImages(0);
     for (const auto& rDocElement : aDocument.GetElements())
@@ -339,7 +344,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf161346)
 {
     // this crashed
     vcl::filter::PDFDocument aDocument;
-    load(u"fdo47811-1_Word2013.docx", aDocument);
+    loadFromFile(u"fdo47811-1_Word2013.docx");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(2), aPages.size());
@@ -352,10 +362,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf129085)
         // not a JPEG! 80 works currently but set it lower to be sure...
         { "Quality", uno::Any(sal_Int32(50)) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf129085.docx", aDocument);
+    loadFromFile(u"tdf129085.docx");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -429,7 +445,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTocLink)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReduceSmallImage)
 {
     // Load the Writer document.
-    saveAsPDF(u"reduce-small-image.fodt");
+    loadFromFile(u"reduce-small-image.fodt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/0);
@@ -453,7 +470,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReduceSmallImage)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf114256)
 {
-    saveAsPDF(u"tdf114256.ods");
+    loadFromFile(u"tdf114256.ods");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/0);
@@ -467,7 +485,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf114256)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf150931)
 {
-    saveAsPDF(u"tdf150931.ods");
+    loadFromFile(u"tdf150931.ods");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/0);
@@ -516,7 +535,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf147027)
         return;
 
     // Load the Calc document.
-    saveAsPDF(u"tdf147027.ods");
+    loadFromFile(u"tdf147027.ods");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/0);
@@ -531,7 +551,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf147027)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf135346)
 {
     // Load the Calc document.
-    saveAsPDF(u"tdf135346.ods");
+    loadFromFile(u"tdf135346.ods");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/0);
@@ -545,7 +566,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf135346)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf147164)
 {
-    saveAsPDF(u"tdf147164.odp");
+    loadFromFile(u"tdf147164.odp");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(2, pPdfDocument->getPageCount());
     std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex=*/1);
@@ -609,7 +631,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReduceImage)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testLinkWrongPage)
 {
     // Import the bugdoc and export as PDF.
-    saveAsPDF(u"link-wrong-page.odp");
+    loadFromFile(u"link-wrong-page.odp");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     // The document has 2 pages.
@@ -636,8 +659,10 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testLinkWrongPagePartial)
     uno::Sequence<beans::PropertyValue> aFilterData = {
         comphelper::makePropertyValue(u"PageRange"_ustr, u"2-3"_ustr),
     };
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveAsPDF(u"link-wrong-page-partial.odg");
+    loadFromFile(u"link-wrong-page-partial.odg");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Then make sure the we have a link on the 1st page, but not on the 2nd one:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -656,9 +681,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPageRange)
 {
     // Given a document with 3 pages:
     // When exporting that document to PDF, skipping the first page:
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterOptions"_ustr]
         <<= u"{\"PageRange\":{\"type\":\"string\",\"value\":\"2-\"}}"_ustr;
-    saveAsPDF(u"link-wrong-page-partial.odg");
+    loadFromFile(u"link-wrong-page-partial.odg");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Then make sure the resulting PDF has 2 pages:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -672,7 +699,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPageRange)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testLargePage)
 {
     // Import the bugdoc and export as PDF.
-    saveAsPDF(u"6m-wide.odg");
+    loadFromFile(u"6m-wide.odg");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     // The document has 1 page.
@@ -771,6 +799,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testVersion15)
     // Save as PDF.
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence(
         { { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(15)) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
@@ -788,6 +817,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testVersion20)
     // Save as PDF.
     uno::Sequence<beans::PropertyValue> aFilterData = comphelper::InitPropertySequence(
         { { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(20)) } });
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor["FilterData"] <<= aFilterData;
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
@@ -821,7 +851,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testMultiPagePDF)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"SimpleMultiPagePDF.pdf", aDocument);
+    loadFromFile(u"SimpleMultiPagePDF.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(3), aPages.size());
@@ -958,8 +993,10 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFormFontName)
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence({
         { "ExportFormFields", uno::Any(true) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveAsPDF(u"form-font-name.odt");
+    loadFromFile(u"form-font-name.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the export result with pdfium.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -1006,7 +1043,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReexportPDF)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"PDFWithImages.pdf", aDocument);
+    loadFromFile(u"PDFWithImages.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // Assert that the XObject in the page resources dictionary is a reference XObject.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -1196,7 +1238,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReexportPDF)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf160117)
 {
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf160117.ods", aDocument);
+    loadFromFile(u"tdf160117.ods");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -1255,7 +1302,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testReexportDocumentWithComplexResources)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"ComplexContentDictionary.pdf", aDocument);
+    loadFromFile(u"ComplexContentDictionary.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // Assert that the XObject in the page resources dictionary is a reference XObject.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -1335,10 +1387,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfUaMetadata)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"BrownFoxLazyDog.odt", aDocument);
+    loadFromFile(u"BrownFoxLazyDog.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     auto* pCatalog = aDocument.GetCatalog();
     CPPUNIT_ASSERT(pCatalog);
@@ -1409,10 +1467,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf139736)
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) },
                                            { "SelectPdfVersion", uno::Any(sal_Int32(17)) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf139736-1.odt", aDocument);
+    loadFromFile(u"tdf139736-1.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(1), aPages.size());
@@ -1512,9 +1576,15 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152231)
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) },
                                            { "ExportNotesInMargin", uno::Any(true) },
                                            { "SelectPdfVersion", uno::Any(sal_Int32(17)) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf152231.fodt", aDocument);
+    loadFromFile(u"tdf152231.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(1), aPages.size());
@@ -1619,6 +1689,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152235)
           // need to set a font to avoid assertions about missing "Helvetica"
           { "WatermarkFontName", uno::Any(u"Liberation Sans"_ustr) },
           { "SelectPdfVersion", uno::Any(sal_Int32(17)) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     loadFromURL(u"private:factory/swriter"_ustr);
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
@@ -1703,9 +1774,15 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf149140)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     vcl::filter::PDFDocument aDocument;
-    load(u"TableTH_test_LibreOfficeWriter7.3.3_HeaderRow-HeadersInTopRow.fodt", aDocument);
+    loadFromFile(u"TableTH_test_LibreOfficeWriter7.3.3_HeaderRow-HeadersInTopRow.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -1756,10 +1833,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testNestedSection)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"nestedsection.fodt", aDocument);
+    loadFromFile(u"nestedsection.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // the assert needs 2 follows to reproduce => 3 pages
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -1897,10 +1980,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157817)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"SimpleTOC.fodt", aDocument);
+    loadFromFile(u"SimpleTOC.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2066,10 +2155,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf135638)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"image-shape.fodt", aDocument);
+    loadFromFile(u"image-shape.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2156,10 +2251,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157703)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"LO_Lbl_Lbody_bug_report.fodt", aDocument);
+    loadFromFile(u"LO_Lbl_Lbody_bug_report.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2230,10 +2331,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testSpans)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"spanlist.fodt", aDocument);
+    loadFromFile(u"spanlist.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has two pages.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2744,9 +2851,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157182)
         // only happens with PDF/A-1
         { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(1)) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
-    saveAsPDF(u"transparentshape.fodp");
+    loadFromFile(u"transparentshape.fodp");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // just check this does not crash or assert
 }
@@ -2756,10 +2865,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf57423)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"Description PDF Export test .odt", aDocument);
+    loadFromFile(u"Description PDF Export test .odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2855,10 +2970,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf154982)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf154982.odt", aDocument);
+    loadFromFile(u"tdf154982.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -2931,10 +3052,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157397)
         { "PDFUACompliance", uno::Any(true) },
         { "ExportFormFields", uno::Any(true) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"PDF_export_with_formcontrol.fodt", aDocument);
+    loadFromFile(u"PDF_export_with_formcontrol.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3253,10 +3380,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf135192)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf135192-1.fodp", aDocument);
+    loadFromFile(u"tdf135192-1.fodp");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3380,9 +3513,15 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf154955)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     vcl::filter::PDFDocument aDocument;
-    load(u"grouped-shape.fodt", aDocument);
+    loadFromFile(u"grouped-shape.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3508,10 +3647,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf155190)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf155190.odt", aDocument);
+    loadFromFile(u"tdf155190.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3592,10 +3737,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testMediaShapeAnnot)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"vid.odt", aDocument);
+    loadFromFile(u"vid.odt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3726,10 +3877,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFlyFrameHyperlinkAnnot)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "PDFUACompliance", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"image-hyperlink-alttext.fodt", aDocument);
+    loadFromFile(u"image-hyperlink-alttext.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3856,10 +4013,16 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFormControlAnnot)
         { "PDFUACompliance", uno::Any(true) },
         { "ExportFormFields", uno::Any(true) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     vcl::filter::PDFDocument aDocument;
-    load(u"formcontrol.fodt", aDocument);
+    loadFromFile(u"formcontrol.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -3988,6 +4151,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf142129)
     // Enable Outlines export
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "ExportBookmarks", uno::Any(true) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
@@ -4123,7 +4287,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf144222)
 {
 // Assume Windows has the font for U+4E2D
 #ifdef _WIN32
-    saveAsPDF(u"tdf144222.ods");
+    loadFromFile(u"tdf144222.ods");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     // The document has one page.
@@ -4162,7 +4327,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf144222)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf145873)
 {
     // Import the bugdoc and export as PDF.
-    saveAsPDF(u"tdf145873.pptx");
+    loadFromFile(u"tdf145873.pptx");
+    save(TestFilter::PDF_WRITER);
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
@@ -4196,7 +4362,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageHyperlink)
 {
     // Given a Draw file, containing a PDF image, which has a hyperlink in it:
     // When saving to PDF:
-    saveAsPDF(u"pdf-image-hyperlink.odg");
+    loadFromFile(u"pdf-image-hyperlink.odg");
+    save(TestFilter::PDF_WRITER);
 
     // Then make sure that link is preserved:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4314,6 +4481,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testURIs)
             { "ExportLinksRelativeFsys", uno::Any(uri.relativeFsys) },
             { "ConvertOOoTargetToPDFTarget", uno::Any(true) },
         }));
+        comphelper::SequenceAsHashMap aMediaDescriptor;
         aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
         // Add a link (based on testNestedHyperlink in rtfexport3)
@@ -4373,7 +4541,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageAnnots)
 {
     // Given a document with a PDF image that has 2 comments (popup, text) and a hyperlink:
     // When saving to PDF:
-    saveAsPDF(u"pdf-image-annots.odg");
+    loadFromFile(u"pdf-image-annots.odg");
+    save(TestFilter::PDF_WRITER);
 
     // Then make sure only the hyperlink is kept, since Draw itself has its own comments:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4408,6 +4577,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageEncryption)
         comphelper::makePropertyValue(u"EncryptFile"_ustr, true),
         comphelper::makePropertyValue(u"DocumentOpenPassword"_ustr, u"secret"_ustr),
     };
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
@@ -4436,7 +4606,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testBitmapScaledown)
 
     // Given a document with an upscaled and rotated barcode bitmap in it:
     // When saving as PDF:
-    saveAsPDF(u"bitmap-scaledown.odt");
+    loadFromFile(u"bitmap-scaledown.odt");
+    save(TestFilter::PDF_WRITER);
 
     // Then verify that the bitmap is not downscaled:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4465,7 +4636,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testBitmapScaledown)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf139627)
 {
 #if HAVE_MORE_FONTS
-    saveAsPDF(u"justified-arabic-kashida.odt");
+    loadFromFile(u"justified-arabic-kashida.odt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     // The document has one page.
@@ -4550,7 +4722,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportRefToKids)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"ref-to-kids.pdf", aDocument);
+    loadFromFile(u"ref-to-kids.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(5), aPages.size());
@@ -4587,11 +4764,17 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportFilterSingletonArray)
     // the test fails with tagged PDF enabled
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "UseTaggedPDF", uno::Any(false) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"ref-to-kids.pdf", aDocument);
+    loadFromFile(u"ref-to-kids.pdf");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(5), aPages.size());
@@ -4641,7 +4824,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportMediaBoxOrigin)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"ref-to-kids.pdf", aDocument);
+    loadFromFile(u"ref-to-kids.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(5), aPages.size());
@@ -4705,7 +4893,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportResourceItemReference)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"ref-to-kids.pdf", aDocument);
+    loadFromFile(u"ref-to-kids.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(5), aPages.size());
@@ -4741,9 +4934,15 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152246)
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence({
         { "ExportFormFields", uno::Any(true) },
     }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     vcl::filter::PDFDocument aDocument;
-    load(u"content-control-rtl.docx", aDocument);
+    loadFromFile(u"content-control-rtl.docx");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // The document has one page.
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
@@ -4792,7 +4991,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf155161)
 // TODO: We seem to get a fallback font on Windows
 #ifndef _WIN32
     vcl::filter::PDFDocument aDocument;
-    load(u"tdf155161.odt", aDocument);
+    loadFromFile(u"tdf155161.odt");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     // Check that all fonts in the document are Type 3 fonts
     int nFonts = 0;
@@ -4831,7 +5035,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf155161)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf48707_1)
 {
     // Import the bugdoc and export as PDF.
-    saveAsPDF(u"tdf48707-1.fodt");
+    loadFromFile(u"tdf48707-1.fodt");
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result with pdfium.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4861,7 +5066,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf48707_1)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf48707_2)
 {
     // Import the bugdoc and export as PDF.
-    saveAsPDF(u"tdf48707-2.fodt");
+    loadFromFile(u"tdf48707-2.fodt");
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result with pdfium.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4893,7 +5099,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf48707_2)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf156528)
 {
-    saveAsPDF(u"wide_page1.fodt");
+    loadFromFile(u"wide_page1.fodt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     // The document has two pages
@@ -4992,8 +5199,10 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf159817)
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "ExportFormFields", uno::Any(false) } }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveAsPDF(u"tdf159817.fodt");
+    loadFromFile(u"tdf159817.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
@@ -5042,7 +5251,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf159817)
 // Tests that kerning is correctly applied across color changes
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf61444)
 {
-    saveAsPDF(u"tdf61444.odt");
+    loadFromFile(u"tdf61444.odt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5090,7 +5300,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf61444)
 // tdf#124116 - Tests that track-changes inside a grapheme cluster does not break positioning
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124116TrackUntrack)
 {
-    saveAsPDF(u"tdf124116-hebrew-track-untrack.odt");
+    loadFromFile(u"tdf124116-hebrew-track-untrack.odt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5146,7 +5357,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124116TrackUntrack)
 // tdf#134226 - Tests that shaping is not broken by invisible spans
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf134226)
 {
-    saveAsPDF(u"tdf134226-shadda-in-hidden-span.fodt");
+    loadFromFile(u"tdf134226-shadda-in-hidden-span.fodt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5203,7 +5415,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf134226)
 // tdf#71956 - Tests that glyphs can be individually styled
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf71956)
 {
-    saveAsPDF(u"tdf71956-styled-diacritics.fodt");
+    loadFromFile(u"tdf71956-styled-diacritics.fodt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5266,7 +5479,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf71956)
 // tdf#101686 - Verifies that drawinglayer clears RTL flags while drawing Writer text boxes
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf101686)
 {
-    saveAsPDF(u"tdf101686.fodt");
+    loadFromFile(u"tdf101686.fodt");
+    save(TestFilter::PDF_WRITER);
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
 
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5320,7 +5534,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportXnViewColorspace)
 
     // Load the PDF and save as PDF
     vcl::filter::PDFDocument aDocument;
-    load(u"xnview-colorspace.pdf", aDocument);
+    loadFromFile(u"xnview-colorspace.pdf");
+    save(TestFilter::PDF_WRITER);
+
+    // Parse the export result.
+    SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
+    CPPUNIT_ASSERT(aDocument.Read(aStream));
 
     std::vector<vcl::filter::PDFObjectElement*> aPages = aDocument.GetPages();
     CPPUNIT_ASSERT_EQUAL(size_t(1), aPages.size());
@@ -5372,7 +5591,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testRexportXnViewColorspace)
 // tdf#157390 - Verifies metrics are correct for PDF export mixing horizontal and vertical CJK
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157390)
 {
-    saveAsPDF(u"tdf157390-overlapping-kanji.fodt");
+    loadFromFile(u"tdf157390-overlapping-kanji.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5425,7 +5645,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf157390)
 // tdf#162205 - Verifies bidi portions on vertical left-to-right pages are rendered correctly
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Ltr)
 {
-    saveAsPDF(u"tdf162205-ltr.fodt");
+    loadFromFile(u"tdf162205-ltr.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5480,7 +5701,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Ltr)
 // tdf#162205 - Verifies bidi portions on vertical left-to-right pages are rendered correctly
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Rtl)
 {
-    saveAsPDF(u"tdf162205-rtl.fodt");
+    loadFromFile(u"tdf162205-rtl.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5535,7 +5757,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Rtl)
 // tdf#162194 - Verifies soft hyphens inside ligatures are rendered correctly.
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162194SoftHyphen)
 {
-    saveAsPDF(u"tdf162194-soft-hyphen.fodt");
+    loadFromFile(u"tdf162194-soft-hyphen.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5575,7 +5798,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162194SoftHyphen)
 // tdf#160786 - Tests that Calc format code with repeat char is measured correctly
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf160786)
 {
-    saveAsPDF(u"tdf160786.fods");
+    loadFromFile(u"tdf160786.fods");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5624,7 +5848,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf160786)
 // tdf#151748 - Textboxes should validate kashida positions
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf151748KashidaSpace)
 {
-    saveAsPDF(u"tdf151748.fodt");
+    loadFromFile(u"tdf151748.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5684,7 +5909,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf151748KashidaSpace)
 // tdf#163105 - Writer kashida justification should expand spaces
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105SwKashidaSpaceExpansion)
 {
-    saveAsPDF(u"tdf163105-kashida-spaces.fodt");
+    loadFromFile(u"tdf163105-kashida-spaces.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5728,7 +5954,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105SwKashidaSpaceExpansion)
 // tdf#163105 - Writer should use font information when choosing kashida positions
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Writer)
 {
-    saveAsPDF(u"tdf163105-writer.fodt");
+    loadFromFile(u"tdf163105-writer.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5775,7 +6002,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Writer)
 // tdf#163105 - Edit Engine should use font information when choosing kashida positions
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Editeng)
 {
-    saveAsPDF(u"tdf163105-editeng.fodt");
+    loadFromFile(u"tdf163105-editeng.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5820,7 +6048,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Editeng)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf140767SyriacJustification)
 {
-    saveAsPDF(u"tdf140767.odt");
+    loadFromFile(u"tdf140767.odt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5881,7 +6110,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf140767SyriacJustification)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf36709FirstLineIndentEm)
 {
-    saveAsPDF(u"tdf36709.fodt");
+    loadFromFile(u"tdf36709.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -5952,7 +6182,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf36709FirstLineIndentEm)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163913LeftRightMarginEm)
 {
-    saveAsPDF(u"tdf163913.fodt");
+    loadFromFile(u"tdf163913.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -6023,12 +6254,14 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFormRoundtrip)
     });
 
     // Need to properly set the PDF export options
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor["FilterName"] <<= OUString("draw_pdf_Export");
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "UseTaggedPDF", uno::Any(true) } }));
     aMediaDescriptor["FilterData"] <<= aFilterData;
 
-    saveAsPDF(u"FilledUpForm.pdf");
+    loadFromFile(u"FilledUpForm.pdf");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the round-tripped document with PDFium
     auto pPdfDocument = parsePDFExport();
@@ -6074,7 +6307,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testFormRoundtrip)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162750SmallCapsLigature)
 {
-    saveAsPDF(u"tdf162750.fodt");
+    loadFromFile(u"tdf162750.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -6110,7 +6344,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162750SmallCapsLigature)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf164106SplitReorderedClusters)
 {
-    saveAsPDF(u"tdf164106.fodt");
+    loadFromFile(u"tdf164106.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -6166,9 +6401,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPDFAttachmentsWithEncryptedFile)
         = { comphelper::makePropertyValue("IsAddStream", true),
             comphelper::makePropertyValue("EncryptFile", true),
             comphelper::makePropertyValue("DocumentOpenPassword", OUString("secret")) };
+    comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor["FilterData"] <<= aFilterData;
 
-    saveAsPDF(u"SimpleTestDocument.fodt");
+    loadFromFile(u"SimpleTestDocument.fodt");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the round-tripped document with PDFium
     auto pPdfDocument = parsePDFExport("secret"_ostr);
@@ -6225,7 +6462,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTextBoxRuby)
     // It is expected that this test will fail and need to be updated
     // as the feature is refined.
 
-    saveAsPDF(u"textbox-ruby.fodt");
+    loadFromFile(u"textbox-ruby.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -6310,7 +6548,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTextBoxRuby)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf166044ContFootnoteOnlyOnePgNum)
 {
-    saveAsPDF(u"tdf166044-cont-footnote-one-pgnum.fodt");
+    loadFromFile(u"tdf166044-cont-footnote-one-pgnum.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(2, pPdfDocument->getPageCount());
@@ -6340,7 +6579,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf166044ContFootnoteOnlyOnePgNum)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf118350StartEndParaAlign)
 {
-    saveAsPDF(u"tdf118350-start-end-para-align.fodt");
+    loadFromFile(u"tdf118350-start-end-para-align.fodt");
+    save(TestFilter::PDF_WRITER);
 
     auto pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
