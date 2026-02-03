@@ -196,63 +196,6 @@
                     <property name="hexpand">True</property>
                     <property name="row-spacing">6</property>
                     <child>
-                      <object class="GtkCheckButton" id="copyback">
-                        <property name="label" translatable="yes" context="scenariodialog|copyback">Copy _back</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="draw-indicator">True</property>
-                        <child internal-child="accessible">
-                          <object class="AtkObject" id="copyback-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|copyback">Copies the values of cells that you change into the active scenario. If you do not select this option, the scenario is not changed when you change cell values. The behavior of the Copy back setting depends on the cell protection, the sheet protection, and the Prevent changes settings.</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="copysheet">
-                        <property name="label" translatable="yes" context="scenariodialog|copysheet">Copy _entire sheet</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="draw-indicator">True</property>
-                        <child internal-child="accessible">
-                          <object class="AtkObject" id="copysheet-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|copysheet">Copies the entire sheet into an additional scenario sheet.</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="preventchanges">
-                        <property name="label" translatable="yes" context="scenariodialog|preventchanges">_Prevent changes</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="draw-indicator">True</property>
-                        <child internal-child="accessible">
-                          <object class="AtkObject" id="preventchanges-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|preventchanges">Prevents changes to the active scenario. The behavior of the Copy back setting depends on the cell protection, the sheet protection, and the Prevent changes settings.</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
                       <!-- n-columns=2 n-rows=1 -->
                       <object class="GtkGrid" id="grid3">
                         <property name="visible">True</property>
@@ -309,6 +252,63 @@
                       <packing>
                         <property name="left-attach">0</property>
                         <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="copyback">
+                        <property name="label" translatable="yes" context="scenariodialog|copyback">Copy _back</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="draw-indicator">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="copyback-atkobject">
+                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|copyback">Copies the values of cells that you change into the active scenario. If you do not select this option, the scenario is not changed when you change cell values. The behavior of the Copy back setting depends on the cell protection, the sheet protection, and the Prevent changes settings.</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="copysheet">
+                        <property name="label" translatable="yes" context="scenariodialog|copysheet">Copy _entire sheet</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="draw-indicator">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="copysheet-atkobject">
+                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|copysheet">Copies the entire sheet into an additional scenario sheet.</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="preventchanges">
+                        <property name="label" translatable="yes" context="scenariodialog|preventchanges">_Prevent changes</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="draw-indicator">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="preventchanges-atkobject">
+                            <property name="AtkObject::accessible-description" translatable="yes" context="scenariodialog|extended_tip|preventchanges">Prevents changes to the active scenario. The behavior of the Copy back setting depends on the cell protection, the sheet protection, and the Prevent changes settings.</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                   </object>
