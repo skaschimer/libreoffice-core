@@ -152,7 +152,7 @@ void QtInstanceMenuButton::updateToolButtonStyle(QToolButton& rToolButton)
     SolarMutexGuard g;
 
     GetQtInstance().RunInMainThread([&] {
-        // set tool buttton style to ensure that text is shown when not empty,
+        // set tool button style to ensure that text is shown when not empty,
         // and no unnecessary space is reserved for text if it is empty
         const Qt::ToolButtonStyle eStyle
             = rToolButton.text().isEmpty() ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon;
