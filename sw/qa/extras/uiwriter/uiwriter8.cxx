@@ -21,6 +21,7 @@
 #include <com/sun/star/text/XPageCursor.hpp>
 #include <com/sun/star/view/XSelectionSupplier.hpp>
 #include <comphelper/propertysequence.hxx>
+#include <comphelper/propertyvalue.hxx>
 #include <boost/property_tree/json_parser.hpp>
 #include <frameformats.hxx>
 #include <tools/json_writer.hxx>
@@ -680,13 +681,10 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf145584)
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "Selection", uno::Any(true) } }));
 
-    uno::Sequence<beans::PropertyValue> aDescriptor(
-        comphelper::InitPropertySequence({ { "FilterName", uno::Any(u"writer_pdf_Export"_ustr) },
-                                           { "FilterData", uno::Any(aFilterData) },
-                                           { "URL", uno::Any(maTempFile.GetURL()) } }));
-
     // Without the fix in place, this test would have crashed here
-    dispatchCommand(mxComponent, u".uno:ExportToPDF"_ustr, aDescriptor);
+    save(TestFilter::PDF_WRITER, {
+                                     comphelper::makePropertyValue(u"FilterData"_ustr, aFilterData),
+                                 });
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -717,12 +715,9 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf131728)
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence(
         { { "ExportBookmarksToPDFDestination", uno::Any(true) } }));
 
-    uno::Sequence<beans::PropertyValue> aDescriptor(
-        comphelper::InitPropertySequence({ { "FilterName", uno::Any(u"writer_pdf_Export"_ustr) },
-                                           { "FilterData", uno::Any(aFilterData) },
-                                           { "URL", uno::Any(maTempFile.GetURL()) } }));
-
-    dispatchCommand(mxComponent, u".uno:ExportToPDF"_ustr, aDescriptor);
+    save(TestFilter::PDF_WRITER, {
+                                     comphelper::makePropertyValue(u"FilterData"_ustr, aFilterData),
+                                 });
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
@@ -759,12 +754,9 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf95239)
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence(
         { { "ExportBookmarksToPDFDestination", uno::Any(true) } }));
 
-    uno::Sequence<beans::PropertyValue> aDescriptor(
-        comphelper::InitPropertySequence({ { "FilterName", uno::Any(u"writer_pdf_Export"_ustr) },
-                                           { "FilterData", uno::Any(aFilterData) },
-                                           { "URL", uno::Any(maTempFile.GetURL()) } }));
-
-    dispatchCommand(mxComponent, u".uno:ExportToPDF"_ustr, aDescriptor);
+    save(TestFilter::PDF_WRITER, {
+                                     comphelper::makePropertyValue(u"FilterData"_ustr, aFilterData),
+                                 });
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(2, pPdfDocument->getPageCount());
@@ -814,13 +806,10 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf152575)
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "ExportNotesInMargin", uno::Any(true) } }));
 
-    uno::Sequence<beans::PropertyValue> aDescriptor(
-        comphelper::InitPropertySequence({ { "FilterName", uno::Any(u"writer_pdf_Export"_ustr) },
-                                           { "FilterData", uno::Any(aFilterData) },
-                                           { "URL", uno::Any(maTempFile.GetURL()) } }));
-
     // Without the fix in place, this test would have crashed here
-    dispatchCommand(mxComponent, u".uno:ExportToPDF"_ustr, aDescriptor);
+    save(TestFilter::PDF_WRITER, {
+                                     comphelper::makePropertyValue(u"FilterData"_ustr, aFilterData),
+                                 });
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(3, pPdfDocument->getPageCount());

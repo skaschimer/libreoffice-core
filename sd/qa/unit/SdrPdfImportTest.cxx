@@ -224,13 +224,11 @@ CPPUNIT_TEST_FIXTURE(SdrPdfImportTest, testAnnotationsImportExport)
     }
 
     { // save as PDF and check annotations
-        uno::Reference<frame::XStorable> xStorable(mxComponent, uno::UNO_QUERY);
         comphelper::SequenceAsHashMap aMediaDescriptor;
-        aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
         uno::Sequence<beans::PropertyValue> aFilterData(
             comphelper::InitPropertySequence({ { "ExportBookmarks", uno::Any(true) } }));
         aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-        xStorable->storeToURL(maTempFile.GetURL(), aMediaDescriptor.getAsConstPropertyValueList());
+        save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
         // Check PDF for annotations
         auto pPDFDocument = parsePDFExport();
