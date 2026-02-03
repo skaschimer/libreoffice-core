@@ -38,4 +38,8 @@ $(eval $(call gb_CppunitTest_use_configuration,unoxml_rdftest))
 $(eval $(call gb_CppunitTest_use_ure,unoxml_rdftest))
 $(eval $(call gb_CppunitTest_use_vcl,unoxml_rdftest))
 
+$(eval $(call gb_CppunitTest_add_arguments,unoxml_rdftest, \
+    -env:arg-env=$(gb_Helper_LIBRARY_PATH_VAR)"$$$${$(gb_Helper_LIBRARY_PATH_VAR)+=$$$$$(gb_Helper_LIBRARY_PATH_VAR)}" \
+))
+
 # vim: set noet sw=4 ts=4:
