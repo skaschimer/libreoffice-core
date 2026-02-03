@@ -200,15 +200,15 @@ void ZipPackage::checkZipEntriesWithDD()
                 {
                     SAL_INFO("package", "entry STORED with data descriptor is folder: \"" << rEntry.sPath << "\"");
                     throw ZipIOException(
-                        THROW_WHERE
-                        "entry STORED with data descriptor is folder");
+                        u"" THROW_WHERE
+                        "entry STORED with data descriptor is folder"_ustr);
                 }
                 if (!xStream->getPropertyValue("WasEncrypted").get<bool>())
                 {
                     SAL_INFO("package", "entry STORED with data descriptor but not encrypted: \"" << rEntry.sPath << "\"");
                     throw ZipIOException(
-                        THROW_WHERE
-                        "entry STORED with data descriptor but not encrypted");
+                        u"" THROW_WHERE
+                        "entry STORED with data descriptor but not encrypted"_ustr);
                 }
             }
         }
@@ -456,7 +456,7 @@ void ZipPackage::parseManifest()
                                     m_bHasNonEncryptedEntries = true;
                             }
                             else
-                                throw ZipIOException(THROW_WHERE "Wrong content");
+                                throw ZipIOException(u"" THROW_WHERE "Wrong content"_ustr);
                         }
                     }
 
@@ -478,7 +478,7 @@ void ZipPackage::parseManifest()
 
     if ( !bManifestParsed && !m_bForceRecovery )
         throw ZipIOException(
-            THROW_WHERE "Could not parse manifest.xml" );
+            u"" THROW_WHERE "Could not parse manifest.xml"_ustr );
 
     static constexpr OUString sMimetype (u"mimetype"_ustr);
     if ( m_xRootFolder->hasByName( sMimetype ) )
@@ -555,7 +555,7 @@ void ZipPackage::parseManifest()
             // in case of ODF1.2 documents without version in manifest.xml the property IsInconsistent
             // should be checked later
             throw ZipIOException(
-                THROW_WHERE "there are streams not referred in manifest.xml" );
+                u"" THROW_WHERE "there are streams not referred in manifest.xml"_ustr );
         }
         // all the streams should be encrypted with the same StartKey in ODF1.2
         // TODO/LATER: in future the exception should be thrown
@@ -577,7 +577,7 @@ void ZipPackage::parseContentType()
         static constexpr std::u16string_view aContentTypes(u"[Content_Types].xml");
         // the content type must exist in OFOPXML format!
         if ( !m_xRootFolder->hasByName( aContentTypes ) )
-            throw io::IOException(THROW_WHERE "Wrong format!" );
+            throw io::IOException(u"" THROW_WHERE "Wrong format!"_ustr );
 
         uno::Reference < io::XActiveDataSink > xSink;
         uno::Any aAny = m_xRootFolder->getByName( aContentTypes );
@@ -592,7 +592,7 @@ void ZipPackage::parseContentType()
                     ::comphelper::OFOPXMLHelper::ReadContentTypeSequence( xInStream, m_xContext );
 
                 if ( aContentTypeInfo.getLength() != 2 )
-                    throw io::IOException(THROW_WHERE );
+                    throw io::IOException(u"" THROW_WHERE ""_ustr );
 
                 // set the implicit types first
                 for ( const auto& rPair : aContentTypeInfo[0] )
@@ -991,7 +991,7 @@ Any SAL_CALL ZipPackage::getByHierarchicalName( const OUString& aName )
         if ( nIndex == nOldIndex )
             break;
         if ( !pCurrent->hasByName( sTemp ) )
-            throw NoSuchElementException(THROW_WHERE );
+            throw NoSuchElementException(u"" THROW_WHERE ""_ustr );
 
         pPrevious = pCurrent;
         ZipContentInfo& rInfo = pCurrent->doGetByName(sTemp);
@@ -1017,7 +1017,7 @@ Any SAL_CALL ZipPackage::getByHierarchicalName( const OUString& aName )
         return pCurrent->getByName( sTemp );
     }
 
-    throw NoSuchElementException(THROW_WHERE);
+    throw NoSuchElementException(u"" THROW_WHERE ""_ustr);
 }
 
 sal_Bool SAL_CALL ZipPackage::hasByHierarchicalName( const OUString& aName )
@@ -1771,7 +1771,7 @@ uno::Sequence< sal_Int8 > ZipPackage::GetEncryptionKey()
         else if ( m_nStartKeyGenerationID == xml::crypto::DigestID::SHA1 )
             aNameToFind = PACKAGE_ENCRYPTIONDATA_SHA1CORRECT;
         else
-            throw uno::RuntimeException(THROW_WHERE "No expected key is provided!" );
+            throw uno::RuntimeException(u"" THROW_WHERE "No expected key is provided!"_ustr );
 
         for (const auto& rKey : m_aStorageEncryptionKeys)
             if ( rKey.Name == aNameToFind )
@@ -1779,7 +1779,7 @@ uno::Sequence< sal_Int8 > ZipPackage::GetEncryptionKey()
 
         if (!aResult.hasElements() && m_aStorageEncryptionKeys.hasElements())
         {   // tdf#159519 sanity check
-            throw uno::RuntimeException(THROW_WHERE "Expected key is missing!");
+            throw uno::RuntimeException(u"" THROW_WHERE "Expected key is missing!"_ustr);
         }
     }
     else
@@ -1827,7 +1827,7 @@ void SAL_CALL ZipPackage::setPropertyValue( const OUString& aPropertyName, const
       ||aPropertyName == HAS_NONENCRYPTED_ENTRIES_PROPERTY
       ||aPropertyName == IS_INCONSISTENT_PROPERTY
       ||aPropertyName == MEDIATYPE_FALLBACK_USED_PROPERTY)
-        throw PropertyVetoException(THROW_WHERE );
+        throw PropertyVetoException(u"" THROW_WHERE ""_ustr );
     else if ( aPropertyName == ENCRYPTION_KEY_PROPERTY )
     {
         if ( !( aValue >>= m_aEncryptionKey ) )

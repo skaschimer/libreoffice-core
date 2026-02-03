@@ -765,7 +765,7 @@ uno::Reference< XInputStream > ZipFile::StaticGetDataFromRawStream(
         throw ZipIOException(u"Encrypted stream without encryption data!"_ustr );
 
     if (!rData->m_aKey.hasElements())
-        throw packages::WrongPasswordException(THROW_WHERE);
+        throw packages::WrongPasswordException(u"" THROW_WHERE ""_ustr);
 
     uno::Reference<XSeekable> xSeek(xStream, UNO_QUERY);
     if (!xSeek.is())
@@ -793,7 +793,7 @@ uno::Reference< XInputStream > ZipFile::StaticGetDataFromRawStream(
         }
         catch (uno::Exception const&)
         {
-            throw packages::WrongPasswordException(THROW_WHERE);
+            throw packages::WrongPasswordException(u"" THROW_WHERE ""_ustr);
         }
     }
     else if (rData->m_aDigest.hasElements())
@@ -812,7 +812,7 @@ uno::Reference< XInputStream > ZipFile::StaticGetDataFromRawStream(
         xStream->readBytes(aReadBuffer, nSize);
 
         if (!StaticHasValidPassword(rxContext, aReadBuffer, rData))
-            throw packages::WrongPasswordException(THROW_WHERE);
+            throw packages::WrongPasswordException(u"" THROW_WHERE ""_ustr);
     }
 
     return new XUnbufferedStream(rMutexHolder, xStream, rData);
@@ -883,7 +883,7 @@ uno::Reference< XInputStream > ZipFile::getDataStream( ZipEntry& rEntry,
         uno::Reference<XInputStream> const xRet(checkValidPassword(rEntry, rData, *oDecryptedSize, aMutexHolder));
         if (!xRet.is())
         {
-            throw packages::WrongPasswordException(THROW_WHERE);
+            throw packages::WrongPasswordException(u"" THROW_WHERE ""_ustr);
         }
         return xRet;
     }
@@ -922,7 +922,7 @@ uno::Reference< XInputStream > ZipFile::getWrappedRawStream(
     ::osl::MutexGuard aGuard( m_aMutexHolder->GetMutex() );
 
     if ( !rData.is() )
-        throw packages::NoEncryptionException(THROW_WHERE );
+        throw packages::NoEncryptionException(u"" THROW_WHERE ""_ustr );
 
     if ( rEntry.nOffset <= 0 )
         readLOC( rEntry );

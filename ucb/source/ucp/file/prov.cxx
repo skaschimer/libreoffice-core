@@ -117,7 +117,7 @@ FileProvider::queryContent(
 
     if(  err )
     {
-        throw IllegalIdentifierException( THROW_WHERE );
+        throw IllegalIdentifierException( u"" THROW_WHERE ""_ustr );
     }
 
     return Reference<XContent>(new BaseContent(m_pMyShell.get(), xIdentifier, aUnc));

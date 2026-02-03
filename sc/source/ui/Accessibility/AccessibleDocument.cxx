@@ -308,7 +308,7 @@ ScChildrenShapes::ScChildrenShapes(ScAccessibleDocument* pAccessibleDocument, Sc
     {
         //set flag on every selected shape
         if (!xSelectionSupplier.is())
-            throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::ScChildrenShapes.");
+            throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::ScChildrenShapes."_ustr);
 
         uno::Reference<drawing::XShapes> xShapes(mpViewShell->getSelectedXShapes());
         if (xShapes.is())
@@ -595,7 +595,7 @@ bool ScChildrenShapes::IsSelected(sal_Int32 nIndex,
         GetCount(); // fill list with filtered shapes (no internal shapes)
 
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::IsSelected.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::IsSelected."_ustr);
 
     if (mbShapesNeedSorting)
     {
@@ -645,7 +645,7 @@ bool ScChildrenShapes::SelectionChanged()
 {
     bool bResult(false);
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::SelectionChanged.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::SelectionChanged."_ustr);
 
     uno::Reference<drawing::XShapes> xShapes(mpViewShell->getSelectedXShapes());
 
@@ -660,7 +660,7 @@ void ScChildrenShapes::Select(sal_Int32 nIndex)
         GetCount(); // fill list with filtered shapes (no internal shapes)
 
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::Select.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::Select."_ustr);
 
     if (mbShapesNeedSorting)
     {
@@ -698,7 +698,7 @@ void ScChildrenShapes::Select(sal_Int32 nIndex)
 void ScChildrenShapes::DeselectAll()
 {
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::DeselectAll.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::DeselectAll."_ustr);
 
     bool bSomethingSelected(true);
     try
@@ -725,7 +725,7 @@ void ScChildrenShapes::DeselectAll()
 void ScChildrenShapes::SelectAll()
 {
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::SelectAll.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::SelectAll."_ustr);
 
     if (maZOrderedShapes.size() <= 1)
         GetCount(); // fill list with filtered shapes (no internal shapes)
@@ -776,7 +776,7 @@ void ScChildrenShapes::FillShapes(std::vector < uno::Reference < drawing::XShape
 sal_Int32 ScChildrenShapes::GetSelectedCount() const
 {
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::GetSelectedCount.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::GetSelectedCount."_ustr);
 
     std::vector < uno::Reference < drawing::XShape > > aShapes;
     FillShapes(aShapes);
@@ -1171,7 +1171,7 @@ void ScChildrenShapes::AddShape(const uno::Reference<drawing::XShape>& xShape, b
     }
 
     if (!xSelectionSupplier.is())
-        throw uno::RuntimeException("Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::AddShape.");
+        throw uno::RuntimeException(u"Could not get selected shapes. Null reference to xSelectionSupplier in ScChildrenShapes::AddShape."_ustr);
 
     uno::Reference<drawing::XShapes> xShapes(mpViewShell->getSelectedXShapes());
     uno::Reference<container::XEnumerationAccess> xEnumAcc(xShapes, uno::UNO_QUERY);

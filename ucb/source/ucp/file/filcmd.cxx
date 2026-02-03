@@ -86,7 +86,7 @@ XCommandInfo_impl::getCommandInfoByName(
     if (pCommand != std::cend(m_pMyShell->m_sCommandInfo))
         return *pCommand;
 
-    throw UnsupportedCommandException( THROW_WHERE );
+    throw UnsupportedCommandException( u"" THROW_WHERE ""_ustr );
 }
 
 
@@ -99,7 +99,7 @@ XCommandInfo_impl::getCommandInfoByHandle(
     if (pCommand != std::cend(m_pMyShell->m_sCommandInfo))
         return *pCommand;
 
-    throw UnsupportedCommandException( THROW_WHERE );
+    throw UnsupportedCommandException( u"" THROW_WHERE ""_ustr );
 }
 
 

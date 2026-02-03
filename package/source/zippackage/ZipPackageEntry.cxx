@@ -68,7 +68,7 @@ void SAL_CALL ZipPackageEntry::setName( const OUString& aName )
     // unfortunately no other exception than RuntimeException can be thrown here
     // usually the package is used through storage implementation, the problem should be detected there
     if ( !::comphelper::OStorageHelper::IsValidZipEntryFileName( aName, true ) )
-        throw RuntimeException(THROW_WHERE "Unexpected character is used in file name." );
+        throw RuntimeException(u"" THROW_WHERE "Unexpected character is used in file name."_ustr );
 
     msName = aName;
 
@@ -92,10 +92,10 @@ void ZipPackageEntry::doSetParent ( ZipPackageFolder * pNewParent )
 void SAL_CALL ZipPackageEntry::setParent( const uno::Reference< XInterface >& xNewParent )
 {
     if ( !xNewParent.is() )
-        throw NoSupportException(THROW_WHERE );
+        throw NoSupportException(u"" THROW_WHERE ""_ustr );
     ZipPackageFolder* pNewParent = dynamic_cast<ZipPackageFolder*>(xNewParent.get());
     if (!pNewParent)
-        throw NoSupportException(THROW_WHERE );
+        throw NoSupportException(u"" THROW_WHERE ""_ustr );
 
     if ( pNewParent != mpParent )
     {

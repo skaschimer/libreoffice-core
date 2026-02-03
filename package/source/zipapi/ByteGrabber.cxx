@@ -74,7 +74,7 @@ sal_Int32 ByteGrabber::readBytes( sal_Int8* aData,
 void ByteGrabber::seek( sal_Int64 location )
 {
     if (!xSeek.is() )
-        throw io::IOException(THROW_WHERE );
+        throw io::IOException(u"" THROW_WHERE ""_ustr );
 
     xSeek->seek( location );
 }
@@ -82,7 +82,7 @@ void ByteGrabber::seek( sal_Int64 location )
 sal_Int64 ByteGrabber::getPosition(  )
 {
     if (!xSeek.is() )
-        throw io::IOException(THROW_WHERE );
+        throw io::IOException(u"" THROW_WHERE ""_ustr );
 
     return xSeek->getPosition();
 }
@@ -90,7 +90,7 @@ sal_Int64 ByteGrabber::getPosition(  )
 sal_Int64 ByteGrabber::getLength(  )
 {
     if (!xSeek.is() )
-        throw io::IOException(THROW_WHERE );
+        throw io::IOException(u"" THROW_WHERE ""_ustr );
 
     return xSeek->getLength();
 }

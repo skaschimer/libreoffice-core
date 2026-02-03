@@ -373,7 +373,7 @@ TaskManager::startTask(
     TaskMap::iterator it = m_aTaskMap.find( CommandId );
     if( it != m_aTaskMap.end() )
     {
-        throw DuplicateCommandIdentifierException( OSL_LOG_PREFIX );
+        throw DuplicateCommandIdentifierException( u"" OSL_LOG_PREFIX ""_ustr );
     }
     m_aTaskMap.emplace( CommandId, TaskHandling( xCommandEnv ));
 }
@@ -542,7 +542,7 @@ TaskManager::associate( const OUString& aUnqPath,
 
     auto it1 = m_aDefaultProperties.find( newProperty );
     if( it1 != m_aDefaultProperties.end() )
-        throw beans::PropertyExistException( THROW_WHERE );
+        throw beans::PropertyExistException( u"" THROW_WHERE ""_ustr );
 
     {
         std::unique_lock aGuard( m_aMutex );
@@ -555,7 +555,7 @@ TaskManager::associate( const OUString& aUnqPath,
         PropertySet& properties = it->second.properties;
         it1 = properties.find( newProperty );
         if( it1 != properties.end() )
-            throw beans::PropertyExistException(THROW_WHERE );
+            throw beans::PropertyExistException(u"" THROW_WHERE ""_ustr );
 
         // Property does not exist
         properties.insert( newProperty );
@@ -573,7 +573,7 @@ TaskManager::deassociate( const OUString& aUnqPath,
 
     auto it1 = m_aDefaultProperties.find( oldProperty );
     if( it1 != m_aDefaultProperties.end() )
-        throw beans::NotRemoveableException( THROW_WHERE );
+        throw beans::NotRemoveableException( u"" THROW_WHERE ""_ustr );
 
     std::unique_lock aGuard( m_aMutex );
 
@@ -855,7 +855,7 @@ TaskManager::setv( const OUString& aUnqPath,
         it1 = properties.find( toset );
         if( it1 == properties.end() )
         {
-            retRange[i] <<= beans::UnknownPropertyException( THROW_WHERE );
+            retRange[i] <<= beans::UnknownPropertyException( u"" THROW_WHERE ""_ustr );
             continue;
         }
 
@@ -865,7 +865,7 @@ TaskManager::setv( const OUString& aUnqPath,
 
         if( it1->getAttributes() & beans::PropertyAttribute::READONLY )
         {
-            retRange[i] <<= lang::IllegalAccessException( THROW_WHERE );
+            retRange[i] <<= lang::IllegalAccessException( u"" THROW_WHERE ""_ustr );
             continue;
         }
 
@@ -934,7 +934,7 @@ TaskManager::setv( const OUString& aUnqPath,
                     }
                 }
                 else
-                    retRange[i] <<= beans::IllegalTypeException( THROW_WHERE );
+                    retRange[i] <<= beans::IllegalTypeException( u"" THROW_WHERE ""_ustr );
             }
             else if(values[i].Name == IsReadOnly ||
                     values[i].Name == IsHidden)
@@ -1041,7 +1041,7 @@ TaskManager::setv( const OUString& aUnqPath,
                     }
                 }
                 else
-                    retRange[i] <<= beans::IllegalTypeException( THROW_WHERE );
+                    retRange[i] <<= beans::IllegalTypeException( u"" THROW_WHERE ""_ustr );
             }
         }
     }   // end for

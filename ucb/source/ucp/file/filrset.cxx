@@ -463,7 +463,7 @@ XResultSet_impl::getStaticResultSet()
     std::unique_lock aGuard( m_aMutex );
 
     if ( m_xListener.is() )
-        throw ucb::ListenerAlreadySetException( THROW_WHERE );
+        throw ucb::ListenerAlreadySetException( u"" THROW_WHERE ""_ustr );
 
     return uno::Reference< sdbc::XResultSet >( this );
 }
@@ -477,7 +477,7 @@ XResultSet_impl::setListener(
     std::unique_lock aGuard( m_aMutex );
 
     if ( m_xListener.is() )
-        throw ucb::ListenerAlreadySetException( THROW_WHERE );
+        throw ucb::ListenerAlreadySetException( u"" THROW_WHERE ""_ustr );
 
     m_xListener = Listener;
 
@@ -515,7 +515,7 @@ XResultSet_impl::connectToCache(
     {
         std::unique_lock aGuard( m_aMutex );
         if( m_xListener.is() )
-            throw ucb::ListenerAlreadySetException( THROW_WHERE );
+            throw ucb::ListenerAlreadySetException( u"" THROW_WHERE ""_ustr );
     }
     uno::Reference< ucb::XSourceInitialization > xTarget(
         xCache, uno::UNO_QUERY );
@@ -539,7 +539,7 @@ XResultSet_impl::connectToCache(
             return;
         }
     }
-    throw ucb::ServiceNotFoundException( THROW_WHERE );
+    throw ucb::ServiceNotFoundException( u"" THROW_WHERE ""_ustr );
 }
 
 

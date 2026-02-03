@@ -156,7 +156,7 @@ void ZipPackageFolder::setChildStreamsTypeByExtension( const beans::StringPair& 
 void SAL_CALL ZipPackageFolder::insertByName( const OUString& aName, const uno::Any& aElement )
 {
     if (hasByName(aName))
-        throw ElementExistException(THROW_WHERE );
+        throw ElementExistException(u"" THROW_WHERE ""_ustr );
 
     uno::Reference < XInterface > xRef;
     if ( !(aElement >>= xRef) )
@@ -182,7 +182,7 @@ void ZipPackageFolder::removeByName( std::u16string_view aName )
 {
     ContentHash::iterator aIter = maContents.find ( aName );
     if ( aIter == maContents.end() )
-        throw NoSuchElementException(THROW_WHERE );
+        throw NoSuchElementException(u"" THROW_WHERE ""_ustr );
     maContents.erase( aIter );
 }
     // XEnumerationAccess
@@ -204,7 +204,7 @@ ZipContentInfo& ZipPackageFolder::doGetByName( std::u16string_view aName )
 {
     ContentHash::iterator aIter = maContents.find ( aName );
     if ( aIter == maContents.end())
-        throw NoSuchElementException(THROW_WHERE );
+        throw NoSuchElementException(u"" THROW_WHERE ""_ustr );
     return aIter->second;
 }
 
@@ -232,7 +232,7 @@ bool ZipPackageFolder::hasByName( std::u16string_view aName )
 void SAL_CALL ZipPackageFolder::replaceByName( const OUString& aName, const uno::Any& aElement )
 {
     if ( !hasByName( aName ) )
-        throw NoSuchElementException(THROW_WHERE );
+        throw NoSuchElementException(u"" THROW_WHERE ""_ustr );
 
     removeByName( aName );
     insertByName(aName, aElement);
@@ -295,11 +295,11 @@ void ZipPackageFolder::saveContents(
         }
         catch ( ZipException& )
         {
-            throw uno::RuntimeException( THROW_WHERE );
+            throw uno::RuntimeException( u"" THROW_WHERE ""_ustr );
         }
         catch ( IOException& )
         {
-            throw uno::RuntimeException( THROW_WHERE );
+            throw uno::RuntimeException( u"" THROW_WHERE ""_ustr );
         }
     }
 
@@ -315,7 +315,7 @@ void ZipPackageFolder::saveContents(
             if (!aIter->second.pStream->saveChild(rPath + aIter->first, rManList, rZipOut,
                     rEncryptionKey, oPBKDF2IterationCount, oArgon2Args))
             {
-                throw uno::RuntimeException( THROW_WHERE );
+                throw uno::RuntimeException( u"" THROW_WHERE ""_ustr );
             }
         }
     }
@@ -329,7 +329,7 @@ void ZipPackageFolder::saveContents(
                 if (!rInfo.pFolder->saveChild(rPath + rShortName, rManList, rZipOut,
                         rEncryptionKey, oPBKDF2IterationCount, oArgon2Args))
                 {
-                    throw uno::RuntimeException( THROW_WHERE );
+                    throw uno::RuntimeException( u"" THROW_WHERE ""_ustr );
                 }
             }
             else
@@ -337,7 +337,7 @@ void ZipPackageFolder::saveContents(
                 if (!rInfo.pStream->saveChild(rPath + rShortName, rManList, rZipOut,
                         rEncryptionKey, oPBKDF2IterationCount, oArgon2Args))
                 {
-                    throw uno::RuntimeException( THROW_WHERE );
+                    throw uno::RuntimeException( u"" THROW_WHERE ""_ustr );
                 }
             }
         }

@@ -596,7 +596,7 @@ void SAL_CALL
 BaseContent::setParent(
     const Reference< XInterface >& )
 {
-    throw lang::NoSupportException( THROW_WHERE );
+    throw lang::NoSupportException( u"" THROW_WHERE ""_ustr );
 }
 
 
@@ -768,7 +768,7 @@ BaseContent::setPropertyValues(
             OUString NewTitle;
             if( !( Values[i].Value >>= NewTitle ) )
             {
-                retRange[i] <<= beans::IllegalTypeException( THROW_WHERE );
+                retRange[i] <<= beans::IllegalTypeException( u"" THROW_WHERE ""_ustr );
                 break;
             }
             else if( NewTitle.isEmpty() )
