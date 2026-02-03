@@ -1805,7 +1805,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest2, testTdf170567_paste_Biff12_and_save_ODS)
     CPPUNIT_ASSERT_EQUAL(u"3"_ustr, pDoc->GetString(ScAddress(3, 3, 0)));
     CPPUNIT_ASSERT_EQUAL(u"4"_ustr, pDoc->GetString(ScAddress(3, 4, 0)));
 
-    // Save to ODS and realod. Without the fix in place, this test used to hang (and now there is
+    // Save to ODS and reload. Without the fix in place, this test used to hang (and now there is
     // an assertion that would fail):
     saveAndReload(TestFilter::ODS);
 
