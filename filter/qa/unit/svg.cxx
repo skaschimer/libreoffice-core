@@ -58,10 +58,7 @@ CPPUNIT_TEST_FIXTURE(SvgFilterTest, testPreserveJpg)
     dispatchCommand(mxComponent, u".uno:JumpToNextFrame"_ustr, {});
 
     // Export the selection to SVG.
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"writer_svg_Export"_ustr),
-        comphelper::makePropertyValue(u"SelectionOnly"_ustr, true),
-    });
+    save(TestFilter::SVG_WRITER, { comphelper::makePropertyValue(u"SelectionOnly"_ustr, true) });
 
     // Make sure that the original JPG data is reused and we don't perform a PNG re-compress.
     xmlDocUniquePtr pXmlDoc = parseExportedFile();
@@ -402,10 +399,8 @@ CPPUNIT_TEST_FIXTURE(SvgFilterTest, testTdf168054_export_two_pages_to_svg_using_
     loadFromFile(u"tdf168054.odg");
 
     // Emulate --convert-to svg:"draw_svg_Export"
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"draw_svg_Export"_ustr),
-        comphelper::makePropertyValue(u"ConversionRequestOrigin"_ustr, u"CommandLine"_ustr),
-    });
+    save(TestFilter::SVG_DRAW,
+         { comphelper::makePropertyValue(u"ConversionRequestOrigin"_ustr, u"CommandLine"_ustr) });
 
     xmlDocUniquePtr pXmlDoc = parseExportedFile();
     CPPUNIT_ASSERT(pXmlDoc);

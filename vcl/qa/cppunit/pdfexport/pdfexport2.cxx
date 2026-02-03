@@ -76,8 +76,7 @@ void PdfExportTest2::saveAsPDF(std::u16string_view rFile)
 {
     // Import the bugdoc and export as PDF.
     loadFromFile(rFile);
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 }
 
 void PdfExportTest2::load(std::u16string_view rFile, vcl::filter::PDFDocument& rDocument)
@@ -707,8 +706,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageResourceInlineXObjectRef)
     xText->insertTextContent(xCursor->getStart(), xTextContent, /*bAbsorb=*/false);
 
     // Save as PDF.
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -757,8 +755,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testDefaultVersion)
     loadFromURL(u"private:factory/swriter"_ustr);
 
     // Save as PDF.
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -774,9 +771,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testVersion15)
     // Save as PDF.
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence(
         { { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(15)) } }));
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the export result.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -790,12 +786,10 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testVersion20)
     mxComponent = loadFromDesktop("private:factory/swriter");
 
     // Save as PDF.
-    uno::Reference<frame::XStorable> xStorable(mxComponent, uno::UNO_QUERY);
     uno::Sequence<beans::PropertyValue> aFilterData = comphelper::InitPropertySequence(
         { { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(20)) } });
-    aMediaDescriptor["FilterName"] <<= OUString("writer_pdf_Export");
     aMediaDescriptor["FilterData"] <<= aFilterData;
-    xStorable->storeToURL(maTempFile.GetURL(), aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the export result.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -1618,7 +1612,6 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152231)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152235)
 {
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
     // Enable PDF/UA
     uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence(
         { { "PDFUACompliance", uno::Any(true) },
@@ -1628,7 +1621,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152235)
           { "SelectPdfVersion", uno::Any(sal_Int32(17)) } }));
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
     loadFromURL(u"private:factory/swriter"_ustr);
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     vcl::filter::PDFDocument aDocument;
     SvFileStream aStream(maTempFile.GetURL(), StreamMode::READ);
@@ -3992,13 +3985,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf142129)
     // update linked section
     dispatchCommand(mxComponent, u".uno:UpdateAllLinks"_ustr, {});
 
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-
     // Enable Outlines export
     uno::Sequence<beans::PropertyValue> aFilterData(
         comphelper::InitPropertySequence({ { "ExportBookmarks", uno::Any(true) } }));
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Parse the export result.
     vcl::filter::PDFDocument aDocument;
@@ -4089,8 +4080,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageRotate180)
     xText->insertTextContent(xCursor->getStart(), xTextContent, /*bAbsorb=*/false);
 
     // Save as PDF.
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -4334,8 +4324,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testURIs)
         xCursorProps->setPropertyValue(u"HyperLinkName"_ustr, uno::Any(u"Testname"_ustr));
 
         // Save as PDF.
-        aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-        saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+        save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
         // Use the filter rather than the pdfium route, as per the tdf105093 test, it's
         // easier to parse the annotations
@@ -4415,13 +4404,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageEncryption)
     xText->insertTextContent(xCursor->getStart(), xTextContent, /*bAbsorb=*/false);
 
     // When saving as encrypted PDF:
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
     uno::Sequence<beans::PropertyValue> aFilterData = {
         comphelper::makePropertyValue(u"EncryptFile"_ustr, true),
         comphelper::makePropertyValue(u"DocumentOpenPassword"_ustr, u"secret"_ustr),
     };
     aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
     // Then make sure that the image is not lost:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport("secret"_ostr);
@@ -4971,8 +4959,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf113866)
     rDocAccess.setPrintData(aDocPrintData);
 
     // Export to pdf
-    aMediaDescriptor[u"FilterName"_ustr] <<= u"writer_pdf_Export"_ustr;
-    saveWithParams(aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER);
 
     // Parse the export result with pdfium.
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
@@ -6175,7 +6162,6 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPDFAttachmentsWithEncryptedFile)
     // Encrypt the document and use the hybrid mode.
     // The original ODF document will be saved to the PDF as an attachment.
 
-    aMediaDescriptor["FilterName"] <<= OUString("writer_pdf_Export");
     uno::Sequence<beans::PropertyValue> aFilterData
         = { comphelper::makePropertyValue("IsAddStream", true),
             comphelper::makePropertyValue("EncryptFile", true),

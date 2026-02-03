@@ -48,11 +48,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqifEmbedPNGShapeAsOLE)
 
     // When exporting to XHTML:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Then make sure the PNG is embedded with an RTF wrapper:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -166,11 +165,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqifEmbedShapeAsPNGCustomDPI)
 
     // When exporting to XHTML:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"ShapeDPI"_ustr, nDPI),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Then make sure the shape is embedded as a PNG:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -207,11 +205,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqifOleBmpTransparent)
 
     // When exporting to reqif with ExportImagesAsOLE=true:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Then make sure the transparent pixel turns into white:
     SvMemoryStream aOle1;
@@ -410,11 +407,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testLeadingTab)
 
     // When exporting to HTML, using LeadingTabWidth=2:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"LeadingTabWidth"_ustr, static_cast<sal_Int32>(2)),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Then make sure that leading tabs are replaced with 2 nbsps:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -438,10 +434,9 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testLeadingTabHTML)
 
     // When exporting to plain HTML, using LeadingTabWidth=2:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"LeadingTabWidth"_ustr, static_cast<sal_Int32>(2)),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Then make sure that leading tabs are replaced with 2 nbsps:
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
@@ -820,12 +815,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testSingleOleExport)
 
     // Store only the selection
     css::uno::Sequence<css::beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"RTFOLEMimeType"_ustr, u"text/rtf"_ustr),
         comphelper::makePropertyValue(u"SelectionOnly"_ustr, true),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
 
@@ -967,10 +961,9 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_PreserveSpaces)
     pWrtShell->Insert(paraText);
 
     // When exporting to plain HTML, using PreserveSpaces:
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER, {
+                                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+                                  });
 
     // Then make sure that "white-space: pre-wrap" is written into the paragraph's style:
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
@@ -996,11 +989,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_PreserveSpaces)
     pWrtShell->Insert(paraText);
 
     // When exporting to ReqIF, using PreserveSpaces:
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-        comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+             comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+         });
 
     // Then make sure that xml:space="preserve" attribute exists in the paragraph element:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -1043,10 +1036,9 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_NoPreserveSpaces)
     createSwDoc("test_no_space_preserve.fodt");
 
     // Export to plain HTML, using PreserveSpaces:
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER, {
+                                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+                                  });
 
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
     CPPUNIT_ASSERT(pHtmlDoc);
@@ -1102,11 +1094,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_NoPreserveSpaces)
     createSwDoc("test_no_space_preserve.fodt");
 
     // Export to ReqIF, using PreserveSpaces:
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-        comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+             comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+         });
 
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
 
@@ -1166,11 +1158,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_ExportFormulasAsPDF)
 
     // When exporting to reqif with ExportFormulasAsPDF=true:
     uno::Sequence<beans::PropertyValue> aStoreProperties = {
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"ExportFormulasAsPDF"_ustr, true),
     };
-    saveWithParams(aStoreProperties);
+    save(TestFilter::HTML_WRITER, aStoreProperties);
 
     // Make sure that the formula is exported as PDF:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -1332,12 +1323,12 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_exportAbsoluteURLs_ownRelati
 
     createSwDoc("URLs.odt");
     // Export to ReqIF, using absolute URLs
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-        comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
-        comphelper::makePropertyValue(u"RelativeOwnObjectURL"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+             comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
+             comphelper::makePropertyValue(u"RelativeOwnObjectURL"_ustr, true),
+         });
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
 
     // HTTP URL: must be absolute
@@ -1386,11 +1377,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_exportRelativeURLs)
 
     createSwDoc("URLs.odt");
     // Export to ReqIF, using relative URLs (the default)
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-        comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+             comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
+         });
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
 
     // HTTP URL: must be absolute
@@ -1443,10 +1434,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_exportAbsoluteURLs_ownRelativ
 
     createSwDoc("URLs.odt");
     // Export to HTML, using absolute URLs
-    saveWithParams({
-        comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
-        comphelper::makePropertyValue(u"RelativeOwnObjectURL"_ustr, true),
-    });
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"RelativeOwnObjectURL"_ustr, true),
+         });
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
 
     // HTTP URL: must be absolute
