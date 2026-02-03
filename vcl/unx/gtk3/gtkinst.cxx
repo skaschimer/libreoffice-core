@@ -44,6 +44,7 @@
 #include <vcl/weld/MetricSpinButton.hxx>
 #include <vcl/weld/Notebook.hxx>
 #include <vcl/weld/Paned.hxx>
+#include <vcl/weld/Scrollbar.hxx>
 #include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/SpinButton.hxx>
 #include <vcl/weld/TextView.hxx>
