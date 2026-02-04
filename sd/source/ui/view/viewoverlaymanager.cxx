@@ -88,22 +88,22 @@ constexpr OUString aBigPlaceHolders[] =
 
 static Bitmap& getButtonImage( int index, bool large )
 {
-    static ::tools::DeleteOnDeinit< Bitmap > gSmallButtonImages[SAL_N_ELEMENTS(aSmallPlaceHolders)] = {
+    static ::tools::DeleteOnDeinit< Bitmap > gSmallButtonImages[std::size(aSmallPlaceHolders)] = {
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty };
-    static ::tools::DeleteOnDeinit< Bitmap > gLargeButtonImages[SAL_N_ELEMENTS(aBigPlaceHolders)] = {
+    static ::tools::DeleteOnDeinit< Bitmap > gLargeButtonImages[std::size(aBigPlaceHolders)] = {
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty,
             ::tools::DeleteOnDeinitFlag::Empty, ::tools::DeleteOnDeinitFlag::Empty };
 
-    assert(SAL_N_ELEMENTS(aSmallPlaceHolders) == SAL_N_ELEMENTS(aBigPlaceHolders));
+    assert(std::size(aSmallPlaceHolders) == std::size(aBigPlaceHolders));
 
     if( !gSmallButtonImages[0].get() )
     {
-        for (size_t i = 0; i < SAL_N_ELEMENTS(aSmallPlaceHolders); i++ )
+        for (size_t i = 0; i < std::size(aSmallPlaceHolders); i++ )
         {
             gSmallButtonImages[i].set(Bitmap(aSmallPlaceHolders[i]));
             gLargeButtonImages[i].set(Bitmap(aBigPlaceHolders[i]));

@@ -1564,17 +1564,17 @@ bool parseFunction( std::u16string_view rList, sal_Int32 nStartPos, sal_Int32& r
     {
         aFuncStr = comphelper::string::strip(aFuncStr, ' ');
 
-        const sal_Int32 nFuncCount = SAL_N_ELEMENTS(aFunctions);
-        for ( sal_Int32 nFunc=0; nFunc<nFuncCount && !bFound; nFunc++ )
+        for ( const auto& rElement : aFunctions )
         {
-            if (aFuncStr.equalsIgnoreAsciiCaseAscii(aFunctions[nFunc].pName))
+            if (aFuncStr.equalsIgnoreAsciiCaseAscii(rElement.pName))
             {
-                rFunc = aFunctions[nFunc].eFunc;
+                rFunc = rElement.eFunc;
                 bFound = true;
 
                 while (nFuncEnd < nListLen && rList[nFuncEnd] == ' ')
                     ++nFuncEnd;
                 rEndPos = nFuncEnd;
+                break;
             }
         }
     }

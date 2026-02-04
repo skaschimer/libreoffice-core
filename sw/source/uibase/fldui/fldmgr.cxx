@@ -371,7 +371,7 @@ static SwWrtShell* lcl_GetShell()
     return nullptr;
 }
 
-static sal_uInt16 GetPackCount() {  return SAL_N_ELEMENTS(aSwFields); }
+static sal_uInt16 GetPackCount() {  return std::size(aSwFields); }
 
 // FieldManager controls inserting and updating of fields
 SwFieldMgr::SwFieldMgr(SwWrtShell* pSh ) :
@@ -1138,17 +1138,17 @@ bool SwFieldMgr::InsertField(
 
             OUString sReferenceLanguage;
             // handle language-variant formats
-            if (nFormatId >= SAL_N_ELEMENTS(FMT_REF_ARY))
+            if (nFormatId >= std::size(FMT_REF_ARY))
             {
                 LanguageType nLang = GetCurrLanguage();
                 if (nLang == LANGUAGE_HUNGARIAN)
                 {
-                    if (nFormatId >= SAL_N_ELEMENTS(FMT_REF_ARY) * 2)
+                    if (nFormatId >= std::size(FMT_REF_ARY) * 2)
                         sReferenceLanguage = "Hu";
                     else
                         sReferenceLanguage = "hu";
                 }
-                nFormatId %= SAL_N_ELEMENTS(FMT_REF_ARY);
+                nFormatId %= std::size(FMT_REF_ARY);
             }
 
             pField.reset(new SwGetRefField(pTyp, SwMarkName(rData.m_sPar1), sReferenceLanguage, nSubType, nSeqNo, nFlags, static_cast<RefFieldFormat>(nFormatId)));
