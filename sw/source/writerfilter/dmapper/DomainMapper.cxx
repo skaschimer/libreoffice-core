@@ -3374,7 +3374,6 @@ void DomainMapper::sprmWithProps( Sprm& rSprm, const PropertyMapPtr& rContext )
             pProperties->resolve(*this);
     }
     break;
-    break;
     case NS_ooxml::LN_CT_SdtPr_date:
     {
         m_pImpl->m_pSdtHelper->setControlType(SdtControlType::datePicker);
