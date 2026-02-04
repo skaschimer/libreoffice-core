@@ -77,6 +77,8 @@ endif
 
 $(eval $(call gb_Library_add_exception_objects,vclplug_qt6,\
     vcl/qt6/QtAccessibleEventListener \
+    vcl/qt6/QtAccessibleInterimChildWidget \
+    vcl/qt6/QtAccessibleInterimParentWidget \
     vcl/qt6/QtAccessibleRegistry \
     vcl/qt6/QtAccessibleWidget \
     vcl/qt6/QtBitmap \

@@ -22,6 +22,8 @@
 
 #include <com/sun/star/lang/IllegalArgumentException.hpp>
 
+#include <QtAccessibleRegistry.hxx>
+#include <QtAccessibleInterimChildWidget.hxx>
 #include <QtBitmap.hxx>
 #include <QtClipboard.hxx>
 #include <QtData.hxx>
@@ -950,6 +952,14 @@ std::unique_ptr<weld::Builder> QtInstance::CreateInterimBuilder(vcl::Window* pPa
     assert(pEnvData);
 
     QWidget* pWidget = static_cast<QWidget*>(pEnvData->pWidget);
+
+    // set property to identify native Qt widget's a11y parent in QtAccessibleWidget::customFactory
+    rtl::Reference<comphelper::OAccessible> pParentAccessible = pEmbedWindow->GetAccessible();
+    QObject* pParentObject = QtAccessibleRegistry::getQObject(pParentAccessible);
+    assert(pParentObject);
+    pWidget->setProperty(QtAccessibleInterimChildWidget::PROPERTY_INTERIM_PARENT,
+                         QVariant::fromValue(pParentObject));
+
     pWidget->show();
 
     return std::make_unique<QtInstanceBuilder>(pWidget, rUIRoot, rUIFile);

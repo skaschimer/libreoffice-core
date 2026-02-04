@@ -40,24 +40,24 @@ class XAccessibleTable;
 class QtFrame;
 class QtWidget;
 
-class QtAccessibleWidget final : public QObject,
-                                 public QAccessibleInterface,
-                                 public QAccessibleActionInterface,
+class QtAccessibleWidget : public QObject,
+                           public QAccessibleInterface,
+                           public QAccessibleActionInterface,
 #ifndef Q_MOC_RUN
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
-                                 public QAccessibleAttributesInterface,
+                           public QAccessibleAttributesInterface,
 #endif
 #endif
-                                 public QAccessibleTextInterface,
-                                 public QAccessibleEditableTextInterface,
+                           public QAccessibleTextInterface,
+                           public QAccessibleEditableTextInterface,
 #ifndef Q_MOC_RUN
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-                                 public QAccessibleSelectionInterface,
+                           public QAccessibleSelectionInterface,
 #endif
 #endif
-                                 public QAccessibleTableCellInterface,
-                                 public QAccessibleTableInterface,
-                                 public QAccessibleValueInterface
+                           public QAccessibleTableCellInterface,
+                           public QAccessibleTableInterface,
+                           public QAccessibleValueInterface
 {
     Q_OBJECT
 
