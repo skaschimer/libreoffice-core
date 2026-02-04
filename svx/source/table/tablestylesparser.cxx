@@ -645,13 +645,13 @@ void SvxTableStylesExport::exportTableTemplate(const SvxAutoFormatData& rData)
 
         if (i < 10)
         {
-            SvXMLElementExport aElememnt(*this, XML_NAMESPACE_TABLE,
-                                         CellStyleNameMap.at(IndexToCellField.at(i)), true, false);
+            SvXMLElementExport aElement(*this, XML_NAMESPACE_TABLE,
+                                        CellStyleNameMap.at(IndexToCellField.at(i)), true, false);
         }
         else
         {
-            SvXMLElementExport aElememnt(*this, XML_NAMESPACE_LO_EXT,
-                                         CellStyleNameMap.at(IndexToCellField.at(i)), true, false);
+            SvXMLElementExport aElement(*this, XML_NAMESPACE_LO_EXT,
+                                        CellStyleNameMap.at(IndexToCellField.at(i)), true, false);
         }
     }
 }
