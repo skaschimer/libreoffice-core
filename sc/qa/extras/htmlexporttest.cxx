@@ -9,6 +9,7 @@
 
 #include <sal/config.h>
 
+#include <comphelper/propertyvalue.hxx>
 #include <test/htmltesttools.hxx>
 #include <test/unoapixml_test.hxx>
 
@@ -29,8 +30,9 @@ public:
         assertXPath(pDoc, "/html/body", 1);
         assertXPath(pDoc, "/html/body/table/tr/td/img", 1);
 
-        setFilterOptions(u"SkipImages"_ustr);
-        save(TestFilter::HTML_CALC);
+        save(TestFilter::HTML_CALC, {
+                                   comphelper::makePropertyValue(u"FilterOptions"_ustr, u"SkipImages"_ustr),
+                               });
 
         pDoc = parseHtml(maTempFile);
         CPPUNIT_ASSERT (pDoc);

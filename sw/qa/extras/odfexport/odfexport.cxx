@@ -490,7 +490,7 @@ CPPUNIT_TEST_FIXTURE(Test, testSHA1Correct)
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);
 
-    saveAndReload(TestFilter::ODT, sPass);
+    saveAndReload(TestFilter::ODT, /*rParams*/ {}, sPass);
 
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);
@@ -504,7 +504,7 @@ CPPUNIT_TEST_FIXTURE(Test, testSHA1Wrong)
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);
 
-    saveAndReload(TestFilter::ODT, sPass);
+    saveAndReload(TestFilter::ODT, /*rParams*/ {}, sPass);
 
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);

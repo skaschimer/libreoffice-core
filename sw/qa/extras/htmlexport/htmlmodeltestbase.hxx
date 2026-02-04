@@ -207,8 +207,10 @@ void SwHtmlDomExportTest::ParseOle1FromRtfUrl(const OUString& rRtfUrl, SvMemoryS
 
 void SwHtmlDomExportTest::ExportToReqif()
 {
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 }
 
 void SwHtmlDomExportTest::ImportFromReqif(const OUString& rUrl)

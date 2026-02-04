@@ -147,14 +147,15 @@ public:
 
     void save(TestFilter eFilter, const css::uno::Sequence<css::beans::PropertyValue>& rParams = {},
               const char* pPassword = nullptr);
-    void saveAndReload(TestFilter eFilter, const char* pPassword = nullptr);
+    void saveAndReload(TestFilter eFilter,
+                       const css::uno::Sequence<css::beans::PropertyValue>& rParams = {},
+                       const char* pPassword = nullptr);
 
     std::unique_ptr<vcl::pdf::PDFiumDocument> parsePDFExport(const OString& rPassword = OString());
 
     void createTempCopy(std::u16string_view fileName);
 
     void skipValidation() { mbSkipValidation = true; }
-    void setFilterOptions(const OUString& rFilterOptions) { maFilterOptions = rFilterOptions; }
 
     void setImportFilterOptions(const OUString& rFilterOptions)
     {
@@ -184,7 +185,6 @@ private:
 
     bool mbSkipValidation;
     OUString m_aBaseString;
-    OUString maFilterOptions;
 
     OUString maImportFilterOptions;
     TestFilter meImportFilterName;

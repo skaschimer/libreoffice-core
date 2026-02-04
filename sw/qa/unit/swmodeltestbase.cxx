@@ -384,9 +384,11 @@ void SwModelTestBase::loadURL(OUString const& rURL, const char* pPassword)
     calcLayout();
 }
 
-void SwModelTestBase::saveAndReload(TestFilter eFilter, const char* pPassword)
+void SwModelTestBase::saveAndReload(TestFilter eFilter,
+                                    const css::uno::Sequence<css::beans::PropertyValue>& rParams,
+                                    const char* pPassword)
 {
-    save(eFilter, /*rParams*/ {}, pPassword);
+    save(eFilter, rParams, pPassword);
 
     loadURL(maTempFile.GetURL(), pPassword);
 }

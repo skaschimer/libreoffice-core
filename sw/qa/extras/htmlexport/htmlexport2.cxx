@@ -131,9 +131,13 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testJson)
     xDrawPageSupplier->getDrawPage()->add(xShape);
 
     // When exporting to HTML, and specifying options as JSON:
-    setFilterOptions(u"{\"XhtmlNs\":{\"type\":\"string\", \"value\":\"reqif-xhtml\"},"
-                     "\"ShapeDPI\":{\"type\":\"long\",\"value\":\"192\"}}"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(
+                 u"FilterOptions"_ustr,
+                 u"{\"XhtmlNs\":{\"type\":\"string\", \"value\":\"reqif-xhtml\"},"
+                 "\"ShapeDPI\":{\"type\":\"long\",\"value\":\"192\"}}"_ustr),
+         });
 
     // Then make sure those options are not ignored:
     // Without the accompanying fix in place, this test would have failed, as GetPngPath() expects

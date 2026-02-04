@@ -132,7 +132,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODF13)
         comphelper::ScopeGuard g([]() { SetODFDefaultVersion(SvtSaveOptions::ODFVER_LATEST); });
         SetODFDefaultVersion(SvtSaveOptions::ODFVER_013);
 
-        saveAndReload(TestFilter::ODT, "password");
+        saveAndReload(TestFilter::ODT, /*rParams*/ {}, /*pPassword*/ "password");
 
         xmlDocUniquePtr pXmlDoc = parseExport(u"META-INF/manifest.xml"_ustr);
         assertXPath(pXmlDoc, "/manifest:manifest", "version", u"1.3");
@@ -180,7 +180,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODF13)
 
     {
         // store it with new wholesome ODF extended encryption - reload
-        saveAndReload(TestFilter::ODT, "password");
+        saveAndReload(TestFilter::ODT, /*rParams*/ {}, /*pPassword*/ "password");
 
         // test wholesome ODF extended encryption
         xmlDocUniquePtr pXmlDoc = parseExport(u"META-INF/manifest.xml"_ustr);
@@ -252,7 +252,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODFWholesom
 
     {
         // store it with new wholesome ODF extended encryption - reload
-        saveAndReload(TestFilter::ODT, "password");
+        saveAndReload(TestFilter::ODT, /*rParams*/ {}, /*pPassword*/ "password");
 
         // test wholesome ODF extended encryption
         xmlDocUniquePtr pXmlDoc = parseExport(u"META-INF/manifest.xml"_ustr);
@@ -317,7 +317,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODFWholesom
         comphelper::ScopeGuard g([]() { SetODFDefaultVersion(SvtSaveOptions::ODFVER_LATEST); });
         SetODFDefaultVersion(SvtSaveOptions::ODFVER_013);
 
-        saveAndReload(TestFilter::ODT, "password");
+        saveAndReload(TestFilter::ODT, /*rParams*/ {}, /*pPassword*/ "password");
 
         xmlDocUniquePtr pXmlDoc = parseExport(u"META-INF/manifest.xml"_ustr);
         assertXPath(pXmlDoc, "/manifest:manifest", "version", u"1.3");

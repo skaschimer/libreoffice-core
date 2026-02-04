@@ -240,7 +240,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest, testPasswordExport)
 
         pDoc->SetValue(0, 0, 0, 1.0);
 
-        saveAndReload(aFilterNames[i], /*pPassword*/ "test");
+        saveAndReload(aFilterNames[i], /*rParams*/ {}, /*pPassword*/ "test");
 
         pDoc = getScDoc();
         double aVal = pDoc->GetValue(0, 0, 0);
@@ -258,7 +258,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest, testTdf134332)
 
     ASSERT_DOUBLES_EQUAL(238.0, pDoc->GetValue(ScAddress(0, 10144, 0)));
 
-    saveAndReload(TestFilter::ODS, /*pPassword*/ "test");
+    saveAndReload(TestFilter::ODS, /*rParams*/ {}, /*pPassword*/ "test");
 
     // Without the fixes in place, it would have failed here
     pDoc = getScDoc();

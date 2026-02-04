@@ -161,8 +161,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testExportOfImages)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testExportOfImagesWithSkipImagesEnabled)
 {
     createSwDoc("textAndImage.docx");
-    setFilterOptions(u"SkipImages"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"SkipImages"_ustr),
+         });
 
     htmlDocUniquePtr pDoc = parseHtml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
@@ -174,8 +176,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testExportOfImagesWithSkipImagesEnabled)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testSkipImagesEmbedded)
 {
     createSwDoc("skipimage-embedded.doc");
-    setFilterOptions(u"SkipImages"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"SkipImages"_ustr),
+         });
 
     // Embedded spreadsheet was exported as image, so content was lost. Make
     // sure it's exported as HTML instead.
@@ -193,8 +197,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testSkipImagesEmbedded)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testSkipImagesEmbeddedDocument)
 {
     createSwDoc("skipimage-embedded-document.docx");
-    setFilterOptions(u"SkipImages"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"SkipImages"_ustr),
+         });
 
     // Similar to testSkipImagesEmbedded, but with an embedded Writer object,
     // not a Calc one, and this time OOXML, not WW8.
@@ -376,8 +382,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testNormalImageExport)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testEmbedImagesEnabled)
 {
     createSwDoc("textAndImage.docx");
-    setFilterOptions(u"EmbedImages"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"EmbedImages"_ustr),
+         });
 
     htmlDocUniquePtr pDoc = parseHtml(maTempFile);
     CPPUNIT_ASSERT(pDoc);
@@ -395,8 +403,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testEmbedImagesEnabled)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testXHTML)
 {
     createSwWebDoc("hello.html");
-    setFilterOptions(u"XHTML"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"XHTML"_ustr),
+         });
 
     OString aExpected("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML"_ostr);
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
@@ -416,8 +426,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfParagraph)
     setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-p.xhtml");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
     CPPUNIT_ASSERT(pStream);
@@ -468,8 +480,11 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfOleData)
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-ole-data.xhtml");
     verify();
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    saveAndReload(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     verify();
 }
 
@@ -519,8 +534,11 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfOleImg)
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-ole-img.xhtml");
     verify();
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    saveAndReload(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     verify();
 
     // "type" attribute was missing for the inner <object> element.
@@ -578,8 +596,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfJpgImg)
     setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-jpg-img.xhtml");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
     CPPUNIT_ASSERT(pStream);
@@ -594,8 +614,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfTable)
     setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-table.xhtml");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     xmlDocUniquePtr pDoc = WrapReqifFromTempFile();
 
@@ -617,8 +639,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfTable)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfTable2)
 {
     createSwDoc("reqif-table2.odt");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
     CPPUNIT_ASSERT(pStream);
@@ -657,8 +681,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIfTableHeight)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testXHTMLUseCSS)
 {
     createSwDoc("xhtml-css.odt");
-    setFilterOptions(u"XHTML"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"XHTML"_ustr),
+         });
 
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
     CPPUNIT_ASSERT(pStream);
@@ -675,8 +701,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfList)
     setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-list.xhtml");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     SvStream* pStream = maTempFile.GetStream(StreamMode::READ);
     CPPUNIT_ASSERT(pStream);
@@ -720,8 +748,11 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfOle2)
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-ole2.xhtml");
     verify();
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    saveAndReload(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     verify();
 
     // Check that the replacement graphic is exported at RTF level.
@@ -764,8 +795,11 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testReqIfOle2Odg)
     setImportFilterName(TestFilter::HTML_WRITER);
     createSwDoc("reqif-ole-odg.xhtml");
     verify();
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    saveAndReload(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     verify();
 }
 
@@ -817,8 +851,10 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testTransparentImageReqIf)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testOleNodataReqIf)
 {
     createSwDoc("reqif-ole-nodata.odt");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     // This failed, io::IOException was thrown during the filter() call.
     xmlDocUniquePtr pDoc = WrapReqifFromTempFile();
@@ -834,8 +870,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testOleNodataReqIf)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testNoLangReqIf)
 {
     createSwDoc("reqif-no-lang.odt");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     xmlDocUniquePtr pDoc = WrapReqifFromTempFile();
 
@@ -878,8 +916,10 @@ CPPUNIT_TEST_FIXTURE(HtmlExportTest, testTdf132739)
 CPPUNIT_TEST_FIXTURE(HtmlExportTest, testFieldShadeReqIf)
 {
     createSwDoc("field-shade-reqif.odt");
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     htmlDocUniquePtr pDoc = parseHtml(maTempFile);
     CPPUNIT_ASSERT(pDoc);

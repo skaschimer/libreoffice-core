@@ -293,7 +293,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf165115)
 {
     // Test saving a template file with password protection
     createSwDoc();
-    saveAndReload(TestFilter::OTT, "test");
+    saveAndReload(TestFilter::OTT, /*rParams*/ {}, /*pPassword*/ "test");
 }
 
 CPPUNIT_TEST_FIXTURE(Test, testTdf57317_autoListName)

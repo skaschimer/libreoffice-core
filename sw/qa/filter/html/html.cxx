@@ -14,6 +14,7 @@
 
 #include <vcl/gdimtf.hxx>
 
+#include <comphelper/propertyvalue.hxx>
 #include <docsh.hxx>
 #include <fmtfsize.hxx>
 #include <frameformats.hxx>
@@ -117,8 +118,10 @@ CPPUNIT_TEST_FIXTURE(Test, testSvmImageExport)
     xBodyText->insertTextContent(xCursor, xTextContent, false);
 
     // When exporting to reqif:
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     // Then make sure we only export PNG:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -148,8 +151,10 @@ CPPUNIT_TEST_FIXTURE(Test, testTableCellFloatValueType)
     pBoxFormat->GetDoc().SetAttr(aSet, *pBoxFormat);
 
     // When exporting to XHTML:
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     // Then make sure that the sdval attribute is omitted, which is not in the XHTML spec:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -206,8 +211,10 @@ CPPUNIT_TEST_FIXTURE(Test, testCenteredTableCSSExport)
     pWrtShell->SetTableAttr(aSet);
 
     // When exporting to XHTML:
-    setFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
-    save(TestFilter::HTML_WRITER);
+    save(TestFilter::HTML_WRITER,
+         {
+             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+         });
 
     // Then make sure that CSS is used to horizontally position the table:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();

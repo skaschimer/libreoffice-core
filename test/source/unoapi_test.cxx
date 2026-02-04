@@ -329,8 +329,6 @@ void UnoApiTest::save(TestFilter eFilter, const uno::Sequence<beans::PropertyVal
 
     if (rParams.hasElements())
         aMediaDescriptor.update(rParams);
-    if (!maFilterOptions.isEmpty())
-        aMediaDescriptor[u"FilterOptions"_ustr] <<= maFilterOptions;
 
     if (pPassword)
     {
@@ -360,9 +358,11 @@ void UnoApiTest::save(TestFilter eFilter, const uno::Sequence<beans::PropertyVal
         validate(maTempFile.GetFileName(), eFilter);
 }
 
-void UnoApiTest::saveAndReload(TestFilter eFilter, const char* pPassword)
+void UnoApiTest::saveAndReload(TestFilter eFilter,
+                               const uno::Sequence<beans::PropertyValue>& rParams,
+                               const char* pPassword)
 {
-    save(eFilter, /*rParams*/ {}, pPassword);
+    save(eFilter, rParams, pPassword);
     loadFromURL(maTempFile.GetURL(), pPassword);
 }
 
