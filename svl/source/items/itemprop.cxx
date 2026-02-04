@@ -164,7 +164,7 @@ Any SfxItemPropertySet::getPropertyValue( const OUString &rName,
 // static
 void SfxItemPropertySet::setPropertyValue( const SfxItemPropertyMapEntry& rEntry,
                                            const Any& aVal,
-                                           SfxItemSet& rSet )
+                                           SfxItemSet& rSet, bool bIgnoreUnknownProperty )
 {
     // get the SfxPoolItem
     const SfxPoolItem* pItem = nullptr;
@@ -177,21 +177,27 @@ void SfxItemPropertySet::setPropertyValue( const SfxItemPropertyMapEntry& rEntry
     if(!pNewItem)
         return;
     if( !pNewItem->PutValue( aVal, rEntry.nMemberId ) )
+    {
+        if (bIgnoreUnknownProperty)
+            return;
         throw IllegalArgumentException();
+    }
     // apply new item
     rSet.Put( std::move(pNewItem) );
 }
 
 void SfxItemPropertySet::setPropertyValue( const OUString &rName,
                                            const Any& aVal,
-                                           SfxItemSet& rSet ) const
+                                           SfxItemSet& rSet, bool bIgnoreUnknownProperty ) const
 {
     const SfxItemPropertyMapEntry* pEntry = m_aMap.getByName( rName );
     if ( !pEntry )
     {
+        if (bIgnoreUnknownProperty)
+            return;
         throw UnknownPropertyException(rName);
     }
-    setPropertyValue(*pEntry, aVal, rSet);
+    setPropertyValue(*pEntry, aVal, rSet, bIgnoreUnknownProperty);
 }
 
 // static
