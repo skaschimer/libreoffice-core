@@ -405,7 +405,8 @@ QObject* QtBuilder::makeObject(QObject* pParent, std::u16string_view sName, std:
     {
         pObject = new QToolBar(pParentWidget);
     }
-    else if (sName == u"GtkToggleToolButton" || sName == u"GtkToolButton")
+    else if (sName == u"GtkRadioToolButton" || sName == u"GtkToggleToolButton"
+             || sName == u"GtkToolButton")
     {
         QToolButton* pToolButton = new QToolButton(pParentWidget);
         const OUString sIconName = extractIconName(rMap);
@@ -415,7 +416,11 @@ QObject* QtBuilder::makeObject(QObject* pParent, std::u16string_view sName, std:
             pToolButton->setIcon(toQPixmap(aImage));
         }
         pToolButton->setText(toQString(extractLabel(rMap)));
-        pToolButton->setCheckable(sName == u"GtkToggleToolButton");
+        pToolButton->setCheckable(sName == u"GtkRadioToolButton"
+                                  || sName == u"GtkToggleToolButton");
+        if (sName == u"GtkRadioToolButton")
+            extractRadioButtonGroup(rId, rMap);
+
         pObject = pToolButton;
     }
     else if (sName == u"GtkTreeView")
