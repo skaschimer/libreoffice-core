@@ -61,6 +61,9 @@ class QtAccessibleWidget final : public QObject,
 {
     Q_OBJECT
 
+    css::uno::Reference<css::accessibility::XAccessible> m_xAccessible;
+    QObject& m_rObject;
+
 public:
     QtAccessibleWidget(const css::uno::Reference<css::accessibility::XAccessible>& xAccessible,
                        QObject& rObject);
@@ -197,7 +200,6 @@ public:
                                     const rtl::Reference<comphelper::OAccessible>& rAccessible);
 
 private:
-    css::uno::Reference<css::accessibility::XAccessible> m_xAccessible;
     css::uno::Reference<css::accessibility::XAccessibleContext> getAccessibleContextImpl() const;
     css::uno::Reference<css::accessibility::XAccessibleTable> getAccessibleTableForParent() const;
 
@@ -208,8 +210,6 @@ private:
         css::uno::Reference<Interface> xInterface(xContext, css::uno::UNO_QUERY);
         return xInterface.is();
     }
-
-    QObject& m_rObject;
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */
