@@ -477,6 +477,8 @@ public:
 
     SW_DLLPUBLIC void SetAdjustTableLineHeightsToGridHeight(bool bValue);
 
+    SW_DLLPUBLIC void SetListLabelAlignmentIgnoresDirection(bool bValue);
+
     // DOCUMENT COMPATIBILITY FLAGS END
 
     // Calls Idle-formatter of Layout.

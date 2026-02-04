@@ -1130,7 +1130,6 @@ WW8ListManager::WW8ListManager(SvStream& rSt_, SwWW8ImplReader& rReader_)
     , m_rDoc(m_rReader.GetDoc())
     , m_rFib(m_rReader.GetFib()), m_rSt(rSt_)
     , m_nUniqueList(1)
-    , m_nLastLFOPosition(USHRT_MAX)
 {
 
     // LST and LFO only since WW8
@@ -1533,18 +1532,6 @@ SwNumRule* WW8ListManager::GetNumRuleForActivation(sal_uInt16 nLFOPosition,
     if( !rLFOInfo.pNumRule )
         return nullptr;
 
-    // #i25545#
-    // #i100132# - a number format does not have to exist on given list level
-    SwNumFormat aFormat(rLFOInfo.pNumRule->Get(nLevel));
-
-    if (m_rReader.IsRightToLeft() && m_nLastLFOPosition != nLFOPosition) {
-        if ( aFormat.GetNumAdjust() == SvxAdjust::Right)
-            aFormat.SetNumAdjust(SvxAdjust::Left);
-        else if ( aFormat.GetNumAdjust() == SvxAdjust::Left)
-            aFormat.SetNumAdjust(SvxAdjust::Right);
-        rLFOInfo.pNumRule->Set(nLevel, aFormat);
-    }
-    m_nLastLFOPosition = nLFOPosition;
     /*
     #i1869#
     If this list has had its bits set in word 2000 to pretend that it is a

@@ -3808,16 +3808,27 @@ void SwTextFrame::CalcAdditionalFirstLineOffset()
             pPortion = pPortion->GetNextPortion();
         }
 
-        if ( ( IsRightToLeft() &&
-               rNumFormat.GetNumAdjust() == SvxAdjust::Left ) ||
-             ( !IsRightToLeft() &&
-               rNumFormat.GetNumAdjust() == SvxAdjust::Right ) )
+        if (rNumFormat.GetNumAdjust() == SvxAdjust::Center)
         {
-            mnAdditionalFirstLineOffset = -nNumberPortionWidth;
+            mnAdditionalFirstLineOffset = -(nNumberPortionWidth / 2);
         }
-        else if ( rNumFormat.GetNumAdjust() == SvxAdjust::Center )
+        else if (IsRightToLeft()
+                 && GetDoc().getIDocumentSettingAccess().get(
+                     DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION))
         {
-            mnAdditionalFirstLineOffset = -(nNumberPortionWidth/2);
+            if (rNumFormat.GetNumAdjust() == SvxAdjust::Left
+                || rNumFormat.GetNumAdjust() == SvxAdjust::ParaStart)
+            {
+                mnAdditionalFirstLineOffset = -nNumberPortionWidth;
+            }
+        }
+        else
+        {
+            if (rNumFormat.GetNumAdjust() == SvxAdjust::Right
+                || rNumFormat.GetNumAdjust() == SvxAdjust::ParaEnd)
+            {
+                mnAdditionalFirstLineOffset = -nNumberPortionWidth;
+            }
         }
     }
 

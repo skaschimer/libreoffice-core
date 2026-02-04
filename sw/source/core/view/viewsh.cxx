@@ -1196,6 +1196,19 @@ void SwViewShell::SetAdjustTableLineHeightsToGridHeight(bool bValue)
     }
 }
 
+void SwViewShell::SetListLabelAlignmentIgnoresDirection(bool bValue)
+{
+    IDocumentSettingAccess& rIDSA = getIDocumentSettingAccess();
+    if (rIDSA.get(DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION) != bValue)
+    {
+        SwWait aWait(*GetDoc()->GetDocShell(), true);
+        rIDSA.set(DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION, bValue);
+        const SwInvalidateFlags nInv = SwInvalidateFlags::PrtArea | SwInvalidateFlags::Pos
+                                       | SwInvalidateFlags::Size | SwInvalidateFlags::Table;
+        lcl_InvalidateAllContent(*this, nInv);
+    }
+}
+
 void SwViewShell::Reformat()
 {
     SwWait aWait( *GetDoc()->GetDocShell(), true );

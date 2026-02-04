@@ -271,6 +271,10 @@ public:
                         {
                             mnGeneratorVersion = SvXMLImport::LO_262;
                         }
+                        else if (26 == year && month == 8)
+                        {
+                            mnGeneratorVersion = SvXMLImport::LO_268;
+                        }
                         else if (0 < year)
                         {
                             mnGeneratorVersion = SvXMLImport::LO_New;

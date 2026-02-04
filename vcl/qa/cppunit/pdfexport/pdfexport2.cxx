@@ -5242,51 +5242,51 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf159817)
     CPPUNIT_ASSERT_EQUAL(basegfx::B2DPoint(138.6, 623.7), roundPoint(37));
 }
 
-// Tests that kerning is correctly applied across color changes
-CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf61444)
+void GetPdfPageTextObjectsAndBounds(std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument,
+                                    int nPage, std::vector<OUString>& rOutText,
+                                    std::vector<basegfx::B2DRectangle>& rOutRect)
 {
-    loadFromFile(u"tdf61444.odt");
-    save(TestFilter::PDF_WRITER);
-    std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
+    CPPUNIT_ASSERT_GREATER(nPage, pPdfDocument->getPageCount());
 
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    // Get the first page
-    std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
+    auto pPdfPage = pPdfDocument->openPage(nPage);
     CPPUNIT_ASSERT(pPdfPage);
-    std::unique_ptr<vcl::pdf::PDFiumTextPage> pTextPage = pPdfPage->getTextPage();
+    auto pTextPage = pPdfPage->getTextPage();
     CPPUNIT_ASSERT(pTextPage);
 
-    // 4 text objects should be present
     int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(4, nPageObjectCount);
 
-    OUString sText[4];
-    basegfx::B2DRectangle aRect[4];
-
-    int nTextObjectCount = 0;
     for (int i = 0; i < nPageObjectCount; ++i)
     {
         auto pPageObject = pPdfPage->getObject(i);
         CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
         if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
         {
-            sText[nTextObjectCount] = pPageObject->getText(pTextPage);
-            aRect[nTextObjectCount] = pPageObject->getBounds();
-            ++nTextObjectCount;
+            rOutText.push_back(pPageObject->getText(pTextPage));
+            rOutRect.push_back(pPageObject->getBounds());
         }
     }
+}
 
-    CPPUNIT_ASSERT_EQUAL(4, nTextObjectCount);
+// Tests that kerning is correctly applied across color changes
+CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf61444)
+{
+    loadFromFile(u"tdf61444.odt");
+    save(TestFilter::PDF_WRITER);
 
-    CPPUNIT_ASSERT_EQUAL(u"Wait"_ustr, sText[0].trim());
-    CPPUNIT_ASSERT_EQUAL(u"W"_ustr, sText[1].trim());
-    CPPUNIT_ASSERT_EQUAL(u"ai"_ustr, sText[2].trim());
-    CPPUNIT_ASSERT_EQUAL(u"t"_ustr, sText[3].trim());
+    std::vector<OUString> aText;
+    std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
+
+    CPPUNIT_ASSERT_EQUAL(size_t(4), aText.size());
+
+    CPPUNIT_ASSERT_EQUAL(u"Wait"_ustr, aText.at(0).trim());
+    CPPUNIT_ASSERT_EQUAL(u"W"_ustr, aText.at(1).trim());
+    CPPUNIT_ASSERT_EQUAL(u"ai"_ustr, aText.at(2).trim());
+    CPPUNIT_ASSERT_EQUAL(u"t"_ustr, aText.at(3).trim());
 
     // Both lines should have the same kerning, so should end at approximately the same X coordinate
-    auto solid_extent = aRect[0].getMaxX();
-    auto color_extent = aRect[3].getMaxX();
+    auto solid_extent = aRect.at(0).getMaxX();
+    auto color_extent = aRect.at(3).getMaxX();
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL(solid_extent, color_extent, /*delta*/ 0.15);
 }
@@ -5296,34 +5296,10 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124116TrackUntrack)
 {
     loadFromFile(u"tdf124116-hebrew-track-untrack.odt");
     save(TestFilter::PDF_WRITER);
-    std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
-
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    // Get the first page
-    std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    std::unique_ptr<vcl::pdf::PDFiumTextPage> pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(15, nPageObjectCount);
 
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     // The underlying document has 4 lines:
     // - שמחַ plain
@@ -5336,7 +5312,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf124116TrackUntrack)
     // - as above, followed by a blank for the next 2 representing the actual diacritic
     // ---
     // This test will likely need to be rewritten if tdf#158329 is fixed.
-    CPPUNIT_ASSERT_EQUAL(10, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(10), aText.size());
 
     // All that matters for this test is that the patah is positioned well under the het
     auto het_x0 = aRect.at(4).getMinX();
@@ -5353,36 +5329,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf134226)
 {
     loadFromFile(u"tdf134226-shadda-in-hidden-span.fodt");
     save(TestFilter::PDF_WRITER);
-    std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
-
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    // Get the first page
-    std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    std::unique_ptr<vcl::pdf::PDFiumTextPage> pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(8, nPageObjectCount);
 
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(8, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(8), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"ة"_ustr, aText[0].trim());
     CPPUNIT_ASSERT_EQUAL(u""_ustr, aText[1].trim());
@@ -5411,36 +5363,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf71956)
 {
     loadFromFile(u"tdf71956-styled-diacritics.fodt");
     save(TestFilter::PDF_WRITER);
-    std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
-
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    // Get the first page
-    std::unique_ptr<vcl::pdf::PDFiumPage> pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    std::unique_ptr<vcl::pdf::PDFiumTextPage> pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(12, nPageObjectCount);
 
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(12, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(12), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"ه"_ustr, aText[0].trim());
     CPPUNIT_ASSERT_EQUAL(u"\u064e\u0651\u0670ل"_ustr, aText[1].trim());
@@ -5642,34 +5570,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Ltr)
     loadFromFile(u"tdf162205-ltr.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(10, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(10, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(10), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"T"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u"h"_ustr, aText.at(1).trim());
@@ -5698,34 +5603,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162205Rtl)
     loadFromFile(u"tdf162205-rtl.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(10, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(10, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(10), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"T"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u"h"_ustr, aText.at(1).trim());
@@ -5754,34 +5636,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf162194SoftHyphen)
     loadFromFile(u"tdf162194-soft-hyphen.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(4, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(4, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(4), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"Waffle"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u"AAA Waf"_ustr, aText.at(1).trim());
@@ -5795,34 +5654,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf160786)
     loadFromFile(u"tdf160786.fods");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(5, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(5, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(5), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"A"_ustr, aText.at(3).trim());
 
@@ -5845,34 +5681,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf151748KashidaSpace)
     loadFromFile(u"tdf151748.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(21, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(17, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(17), aText.size());
 
     // Box 1: Not enough room for kashida
     CPPUNIT_ASSERT_EQUAL(u"خط تخوردگی"_ustr, aText.at(0).trim());
@@ -5906,34 +5719,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105SwKashidaSpaceExpansion)
     loadFromFile(u"tdf163105-kashida-spaces.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-    CPPUNIT_ASSERT_EQUAL(5, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(5, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(5), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"یده"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u""_ustr, aText.at(1).trim());
@@ -5951,37 +5741,13 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Writer)
     loadFromFile(u"tdf163105-writer.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
+    std::vector<OUString> aText;
+    std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     // The fix allows kashida justification in this document.
     // Without the fix, this will be 1.
-    CPPUNIT_ASSERT_EQUAL(5, nPageObjectCount);
-
-    std::vector<OUString> aText;
-    std::vector<basegfx::B2DRectangle> aRect;
-
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(5, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(5), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"ارسی"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u""_ustr, aText.at(1).trim());
@@ -5999,37 +5765,13 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163105Editeng)
     loadFromFile(u"tdf163105-editeng.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
+    std::vector<OUString> aText;
+    std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     // The fix allows kashida justification in this document.
     // Without the fix, this will be 1.
-    CPPUNIT_ASSERT_EQUAL(5, nPageObjectCount);
-
-    std::vector<OUString> aText;
-    std::vector<basegfx::B2DRectangle> aRect;
-
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(5, nTextObjectCount);
+    CPPUNIT_ASSERT_EQUAL(size_t(5), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"ارسی"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u""_ustr, aText.at(1).trim());
@@ -6045,46 +5787,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf140767SyriacJustification)
     loadFromFile(u"tdf140767.odt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(11, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
-    int nTextObjectCount = 0;
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-            ++nTextObjectCount;
-        }
-    }
-
-    CPPUNIT_ASSERT_EQUAL(11, nTextObjectCount);
-
-    std::cout << "Strings" << std::endl;
-    for (auto const& em : aText)
-    {
-        std::cout << em << std::endl;
-        for (sal_Int32 i = 0; i < em.getLength(); ++i)
-        {
-            std::cout << std::hex << static_cast<uint32_t>(em[i]) << " ";
-        }
-        std::cout << std::endl;
-    }
+    CPPUNIT_ASSERT_EQUAL(size_t(11), aText.size());
 
     CPPUNIT_ASSERT_EQUAL(u"ܝ"_ustr, aText.at(0).trim());
     CPPUNIT_ASSERT_EQUAL(u""_ustr, aText.at(1).trim());
@@ -6107,31 +5814,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf36709FirstLineIndentEm)
     loadFromFile(u"tdf36709.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(16, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     CPPUNIT_ASSERT_EQUAL(size_t(16), aText.size());
 
@@ -6179,31 +5864,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf163913LeftRightMarginEm)
     loadFromFile(u"tdf163913.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(9, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     CPPUNIT_ASSERT_EQUAL(size_t(9), aText.size());
 
@@ -6341,31 +6004,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf164106SplitReorderedClusters)
     loadFromFile(u"tdf164106.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(14, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     CPPUNIT_ASSERT_EQUAL(size_t(14), aText.size());
 
@@ -6458,31 +6099,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTextBoxRuby)
     loadFromFile(u"textbox-ruby.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(17, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     CPPUNIT_ASSERT_EQUAL(size_t(17), aText.size());
 
@@ -6575,31 +6194,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf118350StartEndParaAlign)
     loadFromFile(u"tdf118350-start-end-para-align.fodt");
     save(TestFilter::PDF_WRITER);
 
-    auto pPdfDocument = parsePDFExport();
-    CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
-
-    auto pPdfPage = pPdfDocument->openPage(/*nIndex*/ 0);
-    CPPUNIT_ASSERT(pPdfPage);
-    auto pTextPage = pPdfPage->getTextPage();
-    CPPUNIT_ASSERT(pTextPage);
-
-    int nPageObjectCount = pPdfPage->getObjectCount();
-
-    CPPUNIT_ASSERT_EQUAL(24, nPageObjectCount);
-
     std::vector<OUString> aText;
     std::vector<basegfx::B2DRectangle> aRect;
-
-    for (int i = 0; i < nPageObjectCount; ++i)
-    {
-        auto pPageObject = pPdfPage->getObject(i);
-        CPPUNIT_ASSERT_MESSAGE("no object", pPageObject != nullptr);
-        if (pPageObject->getType() == vcl::pdf::PDFPageObjectType::Text)
-        {
-            aText.push_back(pPageObject->getText(pTextPage));
-            aRect.push_back(pPageObject->getBounds());
-        }
-    }
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*nPage*/ 0, aText, aRect);
 
     CPPUNIT_ASSERT_EQUAL(size_t(24), aText.size());
 
@@ -6660,6 +6257,66 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf118350StartEndParaAlign)
     CPPUNIT_ASSERT_EQUAL(u"This paragraph is RTL aligned end"_ustr, aText.at(22).trim());
     CPPUNIT_ASSERT_EQUAL(u"."_ustr, aText.at(23).trim());
     CPPUNIT_ASSERT_DOUBLES_EQUAL(99.0, aRect.at(23).getMinX(), /*delta*/ 10.0);
+}
+
+CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf72640LabelAlignIgnoresDirOff)
+{
+    loadFromFile(u"tdf72640-label-align-ignores-dir-off.fodt");
+    save(TestFilter::PDF_WRITER);
+
+    std::vector<OUString> aText;
+    std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*page*/ 0, aText, aRect);
+
+    CPPUNIT_ASSERT_EQUAL(size_t(10), aText.size());
+
+    CPPUNIT_ASSERT_EQUAL(u"1."_ustr, aText.at(0).trim());
+    CPPUNIT_ASSERT_EQUAL(u"LTR start"_ustr, aText.at(1).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(80.0, aRect.at(0).getMinX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, aText.at(2).trim());
+    CPPUNIT_ASSERT_EQUAL(u"."_ustr, aText.at(3).trim());
+    CPPUNIT_ASSERT_EQUAL(u"RTL start"_ustr, aText.at(4).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(535.0, aRect.at(2).getMaxX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"1."_ustr, aText.at(5).trim());
+    CPPUNIT_ASSERT_EQUAL(u"LTR end"_ustr, aText.at(6).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(30.0, aRect.at(5).getMinX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, aText.at(7).trim());
+    CPPUNIT_ASSERT_EQUAL(u"."_ustr, aText.at(8).trim());
+    CPPUNIT_ASSERT_EQUAL(u"RTL end"_ustr, aText.at(9).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(585.0, aRect.at(7).getMaxX(), /*delta*/ 1.0);
+}
+
+CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf72640LabelAlignIgnoresDirOn)
+{
+    loadFromFile(u"tdf72640-label-align-ignores-dir-on.fodt");
+    save(TestFilter::PDF_WRITER);
+
+    std::vector<OUString> aText;
+    std::vector<basegfx::B2DRectangle> aRect;
+    GetPdfPageTextObjectsAndBounds(parsePDFExport(), /*page*/ 0, aText, aRect);
+
+    CPPUNIT_ASSERT_EQUAL(size_t(10), aText.size());
+
+    CPPUNIT_ASSERT_EQUAL(u"1."_ustr, aText.at(0).trim());
+    CPPUNIT_ASSERT_EQUAL(u"LTR start"_ustr, aText.at(1).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(80.0, aRect.at(0).getMinX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, aText.at(2).trim());
+    CPPUNIT_ASSERT_EQUAL(u"."_ustr, aText.at(3).trim());
+    CPPUNIT_ASSERT_EQUAL(u"RTL start"_ustr, aText.at(4).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(585.0, aRect.at(2).getMaxX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"1."_ustr, aText.at(5).trim());
+    CPPUNIT_ASSERT_EQUAL(u"LTR end"_ustr, aText.at(6).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(30.0, aRect.at(5).getMinX(), /*delta*/ 1.0);
+
+    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, aText.at(7).trim());
+    CPPUNIT_ASSERT_EQUAL(u"."_ustr, aText.at(8).trim());
+    CPPUNIT_ASSERT_EQUAL(u"RTL end"_ustr, aText.at(9).trim());
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(535.0, aRect.at(7).getMaxX(), /*delta*/ 1.0);
 }
 
 } // end anonymous namespace

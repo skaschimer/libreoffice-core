@@ -33,6 +33,7 @@
 #include <IDocumentFieldsAccess.hxx>
 #include <IDocumentLayoutAccess.hxx>
 #include <IDocumentLinksAdministration.hxx>
+#include <IDocumentSettingAccess.hxx>
 #include <sfx2/linkmgr.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <test/commontesttools.hxx>
@@ -1750,6 +1751,57 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf169882)
     // The document must not hang on layout
     createSwDoc("tdf169882.odt");
     saveAndReload(TestFilter::ODT);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testTdf72640LabelAlignCompatNewVersion)
+{
+    // Tests behavior of the LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION compat flag
+    // in documents created with newer versions of LO.
+
+    auto fnCheck = [&] {
+        SwDoc* pDoc = getSwDoc();
+        IDocumentSettingAccess& rIDSA = pDoc->getIDocumentSettingAccess();
+        return rIDSA.get(DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION);
+    };
+
+    createSwDoc("tdf72640-label-align-compat-new.fodt");
+    CPPUNIT_ASSERT(!fnCheck());
+    saveAndReload(TestFilter::ODT);
+    CPPUNIT_ASSERT(!fnCheck());
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testTdf72640LabelAlignCompatOldVersion)
+{
+    // Tests behavior of the LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION compat flag
+    // in documents created with older versions of LO.
+
+    auto fnCheck = [&] {
+        SwDoc* pDoc = getSwDoc();
+        IDocumentSettingAccess& rIDSA = pDoc->getIDocumentSettingAccess();
+        return rIDSA.get(DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION);
+    };
+
+    createSwDoc("tdf72640-label-align-compat-old.fodt");
+    CPPUNIT_ASSERT(fnCheck());
+    saveAndReload(TestFilter::ODT);
+    CPPUNIT_ASSERT(fnCheck());
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testTdf72640LabelAlignCompatThirdpartyVersion)
+{
+    // Tests behavior of the LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION compat flag
+    // in documents created with generic generators.
+
+    auto fnCheck = [&] {
+        SwDoc* pDoc = getSwDoc();
+        IDocumentSettingAccess& rIDSA = pDoc->getIDocumentSettingAccess();
+        return rIDSA.get(DocumentSettingId::LIST_LABEL_ALIGNMENT_IGNORES_DIRECTION);
+    };
+
+    createSwDoc("tdf72640-label-align-compat-thirdparty.fodt");
+    CPPUNIT_ASSERT(!fnCheck());
+    saveAndReload(TestFilter::ODT);
+    CPPUNIT_ASSERT(!fnCheck());
 }
 
 } // end of anonymous namespace
