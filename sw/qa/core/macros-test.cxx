@@ -61,37 +61,9 @@ class SwMacrosTest : public UnoApiTest
 {
 public:
     SwMacrosTest();
-
-    void testVba();
-    void testModernVBADelete();
-    void testBookmarkDeleteAndJoin();
-    void testBookmarkDeleteTdf90816();
-    void testControlShapeGrouping();
-    void testTdf151846();
-    void testTdf155780_filename_display_format();
-    void testTdf162431();
-    void testFdo55289();
-    void testFdo68983();
-    void testFdo87530();
-    void testFindReplace();
-
-    CPPUNIT_TEST_SUITE(SwMacrosTest);
-    CPPUNIT_TEST(testVba);
-    CPPUNIT_TEST(testModernVBADelete);
-    CPPUNIT_TEST(testBookmarkDeleteAndJoin);
-    CPPUNIT_TEST(testBookmarkDeleteTdf90816);
-    CPPUNIT_TEST(testControlShapeGrouping);
-    CPPUNIT_TEST(testTdf151846);
-    CPPUNIT_TEST(testTdf155780_filename_display_format);
-    CPPUNIT_TEST(testTdf162431);
-    CPPUNIT_TEST(testFdo55289);
-    CPPUNIT_TEST(testFdo68983);
-    CPPUNIT_TEST(testFdo87530);
-    CPPUNIT_TEST(testFindReplace);
-    CPPUNIT_TEST_SUITE_END();
 };
 
-void SwMacrosTest::testVba()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testVba)
 {
     TestMacroInfo testInfo[] = {
         {
@@ -150,7 +122,7 @@ void SwMacrosTest::testVba()
     }
 }
 
-void SwMacrosTest::testModernVBADelete()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testModernVBADelete)
 {
     TestMacroInfo testInfo =
         {
@@ -174,7 +146,7 @@ void SwMacrosTest::testModernVBADelete()
     CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
 }
 
-void SwMacrosTest::testBookmarkDeleteAndJoin()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testBookmarkDeleteAndJoin)
 {
     loadFromURL(u"private:factory/swriter"_ustr);
 
@@ -218,7 +190,7 @@ void SwMacrosTest::testBookmarkDeleteAndJoin()
     }
 }
 
-void SwMacrosTest::testBookmarkDeleteTdf90816()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testBookmarkDeleteTdf90816)
 {
     loadFromURL(u"private:factory/swriter"_ustr);
 
@@ -252,7 +224,7 @@ void SwMacrosTest::testBookmarkDeleteTdf90816()
     CPPUNIT_ASSERT_EQUAL((*iter)->GetOtherMarkPos(), *aPaM.End());
 }
 
-void SwMacrosTest::testControlShapeGrouping()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testControlShapeGrouping)
 {
     loadFromFile(u"odt/testControlShapeGrouping.odt");
 
@@ -352,7 +324,7 @@ void SwMacrosTest::testControlShapeGrouping()
 #endif
 }
 
-void SwMacrosTest::testTdf151846()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf151846)
 {
     loadFromFile(u"odt/tdf151846.odt");
 
@@ -368,7 +340,7 @@ void SwMacrosTest::testTdf151846()
     CPPUNIT_ASSERT_EQUAL(sal_Int32(1), aSeq.getLength());
 }
 
-void SwMacrosTest::testTdf155780_filename_display_format()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf155780_filename_display_format)
 {
     loadFromFile(u"odt/tdf155780_filename_display_format.odt");
 
@@ -380,7 +352,7 @@ void SwMacrosTest::testTdf155780_filename_display_format()
     CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
 }
 
-void SwMacrosTest::testTdf162431()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf162431)
 {
     loadFromFile(u"odt/tdf162431.odt");
 
@@ -392,7 +364,7 @@ void SwMacrosTest::testTdf162431()
     CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
 }
 
-void SwMacrosTest::testFdo55289()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFdo55289)
 {
     SwGlobals::ensure();
     SwDoc* const pDoc = new SwDoc;
@@ -426,7 +398,7 @@ void SwMacrosTest::testFdo55289()
     pDocShell->DoClose();
 }
 
-void SwMacrosTest::testFdo68983()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFdo68983)
 {
     loadFromFile(u"odt/fdo68983.odt");
     Reference< frame::XStorable > xDocStorable(mxComponent, UNO_QUERY_THROW);
@@ -444,7 +416,7 @@ void SwMacrosTest::testFdo68983()
     CPPUNIT_ASSERT(xBasLib->isLibraryLoaded(u"Library1"_ustr));
 }
 
-void SwMacrosTest::testFdo87530()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFdo87530)
 {
     loadFromURL(u"private:factory/swriter"_ustr);
 
@@ -503,7 +475,7 @@ void SwMacrosTest::testFdo87530()
 }
 
 
-void SwMacrosTest::testFindReplace()
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFindReplace)
 {
     // we need a full document with view and layout etc. because ::GetNode()
     loadFromURL(u"private:factory/swriter"_ustr);
@@ -571,8 +543,6 @@ SwMacrosTest::SwMacrosTest()
       : UnoApiTest(u"/sw/qa/core/data/"_ustr)
 {
 }
-
-CPPUNIT_TEST_SUITE_REGISTRATION(SwMacrosTest);
 
 CPPUNIT_PLUGIN_IMPLEMENT();
 
