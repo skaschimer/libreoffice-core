@@ -49,9 +49,8 @@
 #include <IDocumentUndoRedo.hxx>
 #include <IDocumentContentOperations.hxx>
 #include <docsh.hxx>
+#include <swdll.hxx>
 #include <unotxdoc.hxx>
-
-typedef rtl::Reference<SwDocShell> SwDocShellRef;
 
 using namespace ::com::sun::star;
 using namespace ::com::sun::star::uno;
@@ -177,7 +176,11 @@ void SwMacrosTest::testModernVBADelete()
 
 void SwMacrosTest::testBookmarkDeleteAndJoin()
 {
-    rtl::Reference<SwDoc> const pDoc(new SwDoc);
+    loadFromURL(u"private:factory/swriter"_ustr);
+
+    SwXTextDocument *const pTextDoc = dynamic_cast<SwXTextDocument *>(mxComponent.get());
+    CPPUNIT_ASSERT(pTextDoc);
+    SwDoc *const pDoc = pTextDoc->GetDocShell()->GetDoc();
     pDoc->GetIDocumentUndoRedo().DoUndo(true); // bug is in SwUndoDelete
     SwNodeIndex aIdx(pDoc->GetNodes().GetEndOfContent(), -1);
     SwPaM aPaM(aIdx);
@@ -217,7 +220,11 @@ void SwMacrosTest::testBookmarkDeleteAndJoin()
 
 void SwMacrosTest::testBookmarkDeleteTdf90816()
 {
-    rtl::Reference<SwDoc> const pDoc(new SwDoc);
+    loadFromURL(u"private:factory/swriter"_ustr);
+
+    SwXTextDocument *const pTextDoc = dynamic_cast<SwXTextDocument *>(mxComponent.get());
+    CPPUNIT_ASSERT(pTextDoc);
+    SwDoc *const pDoc = pTextDoc->GetDocShell()->GetDoc();
     pDoc->GetIDocumentUndoRedo().DoUndo(true); // bug is in SwUndoDelete
     SwNodeIndex aIdx(pDoc->GetNodes().GetEndOfContent(), -1);
     SwPaM aPaM(aIdx);
@@ -387,8 +394,9 @@ void SwMacrosTest::testTdf162431()
 
 void SwMacrosTest::testFdo55289()
 {
+    SwGlobals::ensure();
     SwDoc* const pDoc = new SwDoc;
-    SwDocShellRef pDocShell = new SwDocShell(*pDoc, SfxObjectCreateMode::EMBEDDED);
+    rtl::Reference<SwDocShell> pDocShell = new SwDocShell(*pDoc, SfxObjectCreateMode::EMBEDDED);
     // this needs to run with no layout to tickle the bugs in the special
     // cases in SwXShape re-anchoring
     assert(!pDoc->getIDocumentLayoutAccess().GetCurrentLayout());
