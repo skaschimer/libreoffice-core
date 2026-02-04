@@ -644,8 +644,8 @@ void QtBuilder::setMnemonicWidget(const OUString& rLabelId, const OUString& rMne
 void QtBuilder::setRadioButtonGroup(const OUString& rRadioButtonId, const OUString& rRadioGroupId)
 {
     // insert all buttons into a button group owned by button whose ID matches the group's
-    QRadioButton* pGroupOwner = get<QRadioButton>(rRadioGroupId);
-    assert(pGroupOwner && "No radio button with the given group name");
+    QAbstractButton* pGroupOwner = get<QAbstractButton>(rRadioGroupId);
+    assert(pGroupOwner && "No button with the given group name");
 
     QButtonGroup* pButtonGroup = nullptr;
     static const char* const pPropertyKey = "PROPERTY_BUTTONGROUP";
@@ -660,7 +660,7 @@ void QtBuilder::setRadioButtonGroup(const OUString& rRadioButtonId, const OUStri
         pButtonGroup->addButton(pGroupOwner);
     }
 
-    QRadioButton* pRadioButton = get<QRadioButton>(rRadioButtonId);
+    QAbstractButton* pRadioButton = get<QAbstractButton>(rRadioButtonId);
     assert(pRadioButton && "No radio button with given ID");
     pButtonGroup->addButton(pRadioButton);
 
