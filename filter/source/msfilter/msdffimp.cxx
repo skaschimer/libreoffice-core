@@ -3286,7 +3286,7 @@ bool SvxMSDffManager::SeekToShape( SvStream& rSt, SvxMSDffClientData* /* pClient
                 rSt.Seek( nOfs );
                 DffRecordHeader aEscherF002Hd;
                 bool bOk = ReadDffRecordHeader( rSt, aEscherF002Hd );
-                sal_uLong nEscherF002End = bOk ? aEscherF002Hd.GetRecEndFilePos() : 0;
+                sal_uInt64 nEscherF002End = bOk ? aEscherF002Hd.GetRecEndFilePos() : 0;
                 while (rSt.good() && rSt.Tell() < nEscherF002End)
                 {
                     DffRecordHeader aEscherObjListHd;
