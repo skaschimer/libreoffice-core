@@ -1885,7 +1885,7 @@ void OStorage::BroadcastModifiedIfNecessary()
     // no need to lock mutex here for the checking of m_pImpl, and m_pData is alive until the object is destructed
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -1922,7 +1922,7 @@ void OStorage::BroadcastTransaction( sal_Int8 nMessage )
     // no need to lock mutex here for the checking of m_pImpl, and m_pData is alive until the object is destructed
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2162,7 +2162,7 @@ void SAL_CALL OStorage::copyToStorage( const uno::Reference< embed::XStorage >& 
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2215,7 +2215,7 @@ uno::Reference< io::XStream > SAL_CALL OStorage::openStreamElement(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2310,7 +2310,7 @@ rtl::Reference< OStorage > OStorage::openStorageElement2(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2440,7 +2440,7 @@ uno::Reference< io::XStream > SAL_CALL OStorage::cloneStreamElement( const OUStr
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2513,7 +2513,7 @@ void SAL_CALL OStorage::copyLastCommitTo(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2566,7 +2566,7 @@ void SAL_CALL OStorage::copyStorageElementLastCommitTo(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2642,7 +2642,7 @@ sal_Bool SAL_CALL OStorage::isStreamElement( const OUString& aElementName )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2700,7 +2700,7 @@ sal_Bool SAL_CALL OStorage::isStorageElement( const OUString& aElementName )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -2759,7 +2759,7 @@ void SAL_CALL OStorage::removeElement( const OUString& aElementName )
 
         if (!m_pImpl)
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException(u"" THROW_WHERE ""_ustr);
         }
 
@@ -2836,7 +2836,7 @@ void SAL_CALL OStorage::renameElement( const OUString& aElementName, const OUStr
 
         if (!m_pImpl)
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException(u"" THROW_WHERE ""_ustr);
         }
 
@@ -2935,7 +2935,7 @@ void SAL_CALL OStorage::copyElementTo(  const OUString& aElementName,
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3017,7 +3017,7 @@ void SAL_CALL OStorage::moveElementTo(  const OUString& aElementName,
 
         if (!m_pImpl)
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException(u"" THROW_WHERE ""_ustr);
         }
 
@@ -3112,7 +3112,7 @@ uno::Reference< io::XStream > SAL_CALL OStorage::openEncryptedStream(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3198,7 +3198,7 @@ uno::Reference< io::XStream > SAL_CALL OStorage::cloneEncryptedStream(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3267,7 +3267,7 @@ uno::Reference< io::XInputStream > SAL_CALL OStorage::getPlainRawStreamElement(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3357,7 +3357,7 @@ uno::Reference< io::XInputStream > SAL_CALL OStorage::getRawEncrStreamElement(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3454,7 +3454,7 @@ void SAL_CALL OStorage::insertRawEncrStreamElement( const OUString& aStreamName,
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3536,7 +3536,7 @@ void SAL_CALL OStorage::commit()
 
         if ( !m_pImpl )
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
         }
 
@@ -3592,7 +3592,7 @@ void SAL_CALL OStorage::revert()
 
         if (!m_pImpl)
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException(u"" THROW_WHERE ""_ustr);
         }
 
@@ -3655,7 +3655,7 @@ void SAL_CALL OStorage::addTransactionListener( const uno::Reference< embed::XTr
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3669,7 +3669,7 @@ void SAL_CALL OStorage::removeTransactionListener( const uno::Reference< embed::
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3688,7 +3688,7 @@ sal_Bool SAL_CALL OStorage::isModified()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3702,7 +3702,7 @@ void SAL_CALL OStorage::setModified( sal_Bool bModified )
 
         if (!m_pImpl)
         {
-            SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+            SAL_INFO("package.xstor", "Disposed");
             throw lang::DisposedException(u"" THROW_WHERE ""_ustr);
         }
 
@@ -3727,7 +3727,7 @@ void SAL_CALL OStorage::addModifyListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3743,7 +3743,7 @@ void SAL_CALL OStorage::removeModifyListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3760,7 +3760,7 @@ uno::Any SAL_CALL OStorage::getByName( const OUString& aName )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3816,7 +3816,7 @@ uno::Sequence< OUString > SAL_CALL OStorage::getElementNames()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3846,7 +3846,7 @@ sal_Bool SAL_CALL OStorage::hasByName( const OUString& aName )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3885,7 +3885,7 @@ uno::Type SAL_CALL OStorage::getElementType()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3899,7 +3899,7 @@ sal_Bool SAL_CALL OStorage::hasElements()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3930,7 +3930,7 @@ void SAL_CALL OStorage::dispose()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3961,7 +3961,7 @@ void SAL_CALL OStorage::addEventListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3976,7 +3976,7 @@ void SAL_CALL OStorage::removeEventListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -3997,7 +3997,7 @@ void SAL_CALL OStorage::removeEncryption()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4058,7 +4058,7 @@ void SAL_CALL OStorage::setEncryptionData( const uno::Sequence< beans::NamedValu
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4123,7 +4123,7 @@ void SAL_CALL OStorage::setEncryptionAlgorithms( const uno::Sequence< beans::Nam
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4183,7 +4183,7 @@ void SAL_CALL OStorage::setGpgProperties( const uno::Sequence< uno::Sequence< be
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4243,7 +4243,7 @@ uno::Sequence< beans::NamedValue > SAL_CALL OStorage::getEncryptionAlgorithms()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4304,7 +4304,7 @@ uno::Reference< beans::XPropertySetInfo > SAL_CALL OStorage::getPropertySetInfo(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4318,7 +4318,7 @@ void SAL_CALL OStorage::setPropertyValue( const OUString& aPropertyName, const u
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4417,7 +4417,7 @@ uno::Any SAL_CALL OStorage::getPropertyValue( const OUString& aPropertyName )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4513,7 +4513,7 @@ void SAL_CALL OStorage::addPropertyChangeListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4528,7 +4528,7 @@ void SAL_CALL OStorage::removePropertyChangeListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4543,7 +4543,7 @@ void SAL_CALL OStorage::addVetoableChangeListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4558,7 +4558,7 @@ void SAL_CALL OStorage::removeVetoableChangeListener(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4575,7 +4575,7 @@ sal_Bool SAL_CALL OStorage::hasByID(  const OUString& sID )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4611,7 +4611,7 @@ OUString SAL_CALL OStorage::getTargetByID(  const OUString& sID  )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4632,7 +4632,7 @@ OUString SAL_CALL OStorage::getTypeByID(  const OUString& sID  )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4653,7 +4653,7 @@ uno::Sequence< beans::StringPair > SAL_CALL OStorage::getRelationshipByID(  cons
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4679,7 +4679,7 @@ uno::Sequence< uno::Sequence< beans::StringPair > > SAL_CALL OStorage::getRelati
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4708,7 +4708,7 @@ uno::Sequence< uno::Sequence< beans::StringPair > > SAL_CALL OStorage::getAllRel
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4745,7 +4745,7 @@ void SAL_CALL OStorage::insertRelationshipByID(  const OUString& sID, const uno:
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4795,7 +4795,7 @@ void SAL_CALL OStorage::removeRelationshipByID(  const OUString& sID  )
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4829,7 +4829,7 @@ void SAL_CALL OStorage::insertRelationships(  const uno::Sequence< uno::Sequence
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4882,7 +4882,7 @@ void SAL_CALL OStorage::clearRelationships()
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4913,7 +4913,7 @@ void SAL_CALL OStorage::insertStreamElementDirect(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -4988,7 +4988,7 @@ void SAL_CALL OStorage::copyElementDirectlyTo(
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5068,7 +5068,7 @@ void SAL_CALL OStorage::writeAndAttachToStream( const uno::Reference< io::XStrea
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5126,7 +5126,7 @@ void SAL_CALL OStorage::attachToURL( const OUString& sURL,
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5194,7 +5194,7 @@ uno::Any SAL_CALL OStorage::getElementPropertyValue( const OUString& aElementNam
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5280,7 +5280,7 @@ void SAL_CALL OStorage::copyStreamElementData( const OUString& aStreamName, cons
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5351,7 +5351,7 @@ uno::Reference< embed::XExtendedStorageStream > SAL_CALL OStorage::openStreamEle
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5413,7 +5413,7 @@ void SAL_CALL OStorage::removeStreamElementByHierarchicalName( const OUString& a
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
@@ -5439,7 +5439,7 @@ uno::Reference< embed::XExtendedStorageStream > SAL_CALL OStorage::openEncrypted
 
     if ( !m_pImpl )
     {
-        SAL_INFO("package.xstor", THROW_WHERE "Disposed!");
+        SAL_INFO("package.xstor", "Disposed");
         throw lang::DisposedException( u"" THROW_WHERE ""_ustr );
     }
 
