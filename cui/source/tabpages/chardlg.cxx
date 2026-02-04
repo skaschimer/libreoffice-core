@@ -338,7 +338,7 @@ void SvxCharNamePage::Initialize()
     m_pImpl->m_aUpdateIdle.SetInvokeHandler( LINK( this, SvxCharNamePage, UpdateHdl_Impl ) );
 }
 
-const FontList* SvxCharNamePage::GetFontList() const
+const FontList& SvxCharNamePage::GetFontList() const
 {
     if ( !m_pImpl->m_pFontList )
     {
@@ -358,7 +358,7 @@ const FontList* SvxCharNamePage::GetFontList() const
         }
     }
 
-    return m_pImpl->m_pFontList.get();
+    return *m_pImpl->m_pFontList;
 }
 
 
@@ -442,28 +442,28 @@ void SvxCharNamePage::UpdatePreview_Impl()
     SvxFont& rCJKFont = GetPreviewCJKFont();
     SvxFont& rCTLFont = GetPreviewCTLFont();
     // Font
-    const FontList* pFontList = GetFontList();
+    const FontList& rFontList = GetFontList();
 
     FontMetric aWestFontMetric = calcFontMetrics(rFont, this, m_xWestFontNameLB.get(),
         m_xWestFontStyleLB.get(), m_xWestFontSizeLB.get(), m_xWestFontLanguageLB.get(),
-        pFontList, GetWhich(SID_ATTR_CHAR_FONT),
+        &rFontList, GetWhich(SID_ATTR_CHAR_FONT),
         GetWhich(SID_ATTR_CHAR_FONTHEIGHT));
 
-    m_xWestFontTypeFT->set_label(pFontList->GetFontMapText(aWestFontMetric));
+    m_xWestFontTypeFT->set_label(rFontList.GetFontMapText(aWestFontMetric));
 
     FontMetric aEastFontMetric = calcFontMetrics(rCJKFont, this, m_xEastFontNameLB.get(),
         m_xEastFontStyleLB.get(), m_xEastFontSizeLB.get(), m_xEastFontLanguageLB.get(),
-        pFontList, GetWhich(SID_ATTR_CHAR_CJK_FONT),
+        &rFontList, GetWhich(SID_ATTR_CHAR_CJK_FONT),
         GetWhich(SID_ATTR_CHAR_CJK_FONTHEIGHT));
 
-    m_xEastFontTypeFT->set_label(pFontList->GetFontMapText(aEastFontMetric));
+    m_xEastFontTypeFT->set_label(rFontList.GetFontMapText(aEastFontMetric));
 
     FontMetric aCTLFontMetric = calcFontMetrics(rCTLFont,
         this, m_xCTLFontNameLB.get(), m_xCTLFontStyleLB.get(), m_xCTLFontSizeLB.get(),
-        m_xCTLFontLanguageLB.get(), pFontList, GetWhich(SID_ATTR_CHAR_CTL_FONT),
+        m_xCTLFontLanguageLB.get(), &rFontList, GetWhich(SID_ATTR_CHAR_CTL_FONT),
         GetWhich(SID_ATTR_CHAR_CTL_FONTHEIGHT));
 
-    m_xCTLFontTypeFT->set_label(pFontList->GetFontMapText(aCTLFontMetric));
+    m_xCTLFontTypeFT->set_label(rFontList.GetFontMapText(aCTLFontMetric));
 
     m_aPreviewWin.Invalidate();
 }
@@ -499,8 +499,7 @@ void SvxCharNamePage::EnableFeatureButton(const weld::Widget& rNameBox)
 
 void SvxCharNamePage::FillStyleBox_Impl(const weld::Widget& rNameBox)
 {
-    const FontList* pFontList = GetFontList();
-    assert(pFontList && "no fontlist");
+    const FontList& rFontList = GetFontList();
 
     FontStyleBox* pStyleBox = nullptr;
     OUString sFontName;
@@ -526,7 +525,7 @@ void SvxCharNamePage::FillStyleBox_Impl(const weld::Widget& rNameBox)
         return;
     }
 
-    pStyleBox->Fill(sFontName, pFontList);
+    pStyleBox->Fill(sFontName, &rFontList);
 
     if ( !m_pImpl->m_bInSearchMode )
         return;
@@ -535,18 +534,17 @@ void SvxCharNamePage::FillStyleBox_Impl(const weld::Widget& rNameBox)
     // "not bold" and "not italic"
     OUString aEntry = m_pImpl->m_aNoStyleText;
     const char sS[] = "%1";
-    aEntry = aEntry.replaceFirst( sS, pFontList->GetBoldStr() );
+    aEntry = aEntry.replaceFirst(sS, rFontList.GetBoldStr());
     m_pImpl->m_nExtraEntryPos = pStyleBox->get_count();
     pStyleBox->append_text( aEntry );
     aEntry = m_pImpl->m_aNoStyleText;
-    aEntry = aEntry.replaceFirst( sS, pFontList->GetItalicStr() );
+    aEntry = aEntry.replaceFirst(sS, rFontList.GetItalicStr());
     pStyleBox->append_text(aEntry);
 }
 
 void SvxCharNamePage::FillSizeBox_Impl(const weld::Widget& rNameBox)
 {
-    const FontList* pFontList = GetFontList();
-    DBG_ASSERT( pFontList, "no fontlist" );
+    const FontList& rFontList = GetFontList();
 
     FontSizeBox* pSizeBox = nullptr;
 
@@ -568,7 +566,7 @@ void SvxCharNamePage::FillSizeBox_Impl(const weld::Widget& rNameBox)
         return;
     }
 
-    pSizeBox->Fill( pFontList );
+    pSizeBox->Fill(&rFontList);
 }
 
 namespace
@@ -635,8 +633,8 @@ void SvxCharNamePage::Reset_Impl( const SfxItemSet& rSet, LanguageGroup eLangGrp
             break;
     }
 
-    const FontList* pFontList = GetFontList();
-    FillFontNames(*pNameBox, *pFontList);
+    const FontList& rFontList = GetFontList();
+    FillFontNames(*pNameBox, rFontList);
 
     const SvxFontItem* pFontItem = nullptr;
     SfxItemState eState = rSet.GetItemState( nWhich );
@@ -698,8 +696,8 @@ void SvxCharNamePage::Reset_Impl( const SfxItemSet& rSet, LanguageGroup eLangGrp
     // currently chosen font
     if ( bStyle && pFontItem )
     {
-        FontMetric aFontMetric = pFontList->Get( pFontItem->GetFamilyName(), eWeight, eItalic );
-        pStyleBox->set_active_text( pFontList->GetStyleName( aFontMetric ) );
+        FontMetric aFontMetric = rFontList.Get(pFontItem->GetFamilyName(), eWeight, eItalic);
+        pStyleBox->set_active_text(rFontList.GetStyleName(aFontMetric));
     }
     else if ( !m_pImpl->m_bInSearchMode || !bStyle )
     {
@@ -707,8 +705,8 @@ void SvxCharNamePage::Reset_Impl( const SfxItemSet& rSet, LanguageGroup eLangGrp
     }
     else if ( bStyle )
     {
-        FontMetric aFontMetric = pFontList->Get( OUString(), eWeight, eItalic );
-        pStyleBox->set_active_text( pFontList->GetStyleName( aFontMetric ) );
+        FontMetric aFontMetric = rFontList.Get(OUString(), eWeight, eItalic);
+        pStyleBox->set_active_text(rFontList.GetStyleName(aFontMetric));
     }
     if (!bStyleAvailable)
     {
@@ -793,8 +791,8 @@ void SvxCharNamePage::Reset_Impl( const SfxItemSet& rSet, LanguageGroup eLangGrp
             break;
     }
 
-    OUString sMapText(pFontList->GetFontMapText(
-        pFontList->Get(pNameBox->get_active_text(), pStyleBox->get_active_text())));
+    OUString sMapText(rFontList.GetFontMapText(
+        rFontList.Get(pNameBox->get_active_text(), pStyleBox->get_active_text())));
 
     switch (eLangGrp)
     {
@@ -865,12 +863,12 @@ bool SvxCharNamePage::FillItemSet_Impl( SfxItemSet& rSet, LanguageGroup eLangGrp
 
     bool bChanged = true;
     const OUString aFontName  = pNameBox->get_active_text();
-    const FontList* pFontList = GetFontList();
+    const FontList& rFontList = GetFontList();
     OUString aStyleBoxText = pStyleBox->get_active_text();
     int nEntryPos = pStyleBox->find_text(aStyleBoxText);
     if (nEntryPos >= m_pImpl->m_nExtraEntryPos)
         aStyleBoxText.clear();
-    FontMetric aInfo( pFontList->Get( aFontName, aStyleBoxText ) );
+    FontMetric aInfo(rFontList.Get( aFontName, aStyleBoxText));
     SvxFontItem aFontItem( aInfo.GetFamilyTypeMaybeAskConfig(), aInfo.GetFamilyName(), aInfo.GetStyleName(),
                            aInfo.GetPitchMaybeAskConfig(), aInfo.GetCharSet(), nWhich );
     pOld = GetOldItem( rSet, nSlot );

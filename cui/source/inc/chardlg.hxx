@@ -109,7 +109,7 @@ private:
     ScopedVclPtrInstance<VirtualDevice> m_xVDev;
 
     void                Initialize();
-    const FontList*     GetFontList() const;
+    const FontList& GetFontList() const;
     void                UpdatePreview_Impl();
     void                FillStyleBox_Impl(const weld::Widget& rBox);
     void                FillSizeBox_Impl(const weld::Widget& rBox);
