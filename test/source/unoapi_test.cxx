@@ -332,8 +332,17 @@ void UnoApiTest::save(TestFilter eFilter, const uno::Sequence<beans::PropertyVal
 
     if (pPassword)
     {
-        if (eFilter != TestFilter::DOCX && eFilter != TestFilter::XLSX
-            && eFilter != TestFilter::PPTX)
+        if (eFilter == TestFilter::PDF_WRITER)
+        {
+            comphelper::SequenceAsHashMap aFilterData;
+            if (aMediaDescriptor.contains(u"FilterData"_ustr))
+                aFilterData = aMediaDescriptor[u"FilterData"_ustr];
+            aFilterData[u"EncryptFile"_ustr] <<= true;
+            aFilterData[u"DocumentOpenPassword"_ustr] <<= OUString::createFromAscii(pPassword);
+            aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData.getAsConstPropertyValueList();
+        }
+        else if (eFilter != TestFilter::DOCX && eFilter != TestFilter::XLSX
+                 && eFilter != TestFilter::PPTX)
         {
             aMediaDescriptor[u"Password"_ustr] <<= OUString::createFromAscii(pPassword);
         }

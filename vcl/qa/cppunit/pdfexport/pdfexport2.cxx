@@ -4573,13 +4573,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageEncryption)
     xText->insertTextContent(xCursor->getStart(), xTextContent, /*bAbsorb=*/false);
 
     // When saving as encrypted PDF:
-    uno::Sequence<beans::PropertyValue> aFilterData = {
-        comphelper::makePropertyValue(u"EncryptFile"_ustr, true),
-        comphelper::makePropertyValue(u"DocumentOpenPassword"_ustr, u"secret"_ustr),
-    };
-    comphelper::SequenceAsHashMap aMediaDescriptor;
-    aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, /*rParams*/ {}, /*pPassword*/ "secret");
 
     // Then make sure that the image is not lost:
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport("secret"_ostr);
@@ -6398,14 +6392,13 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPDFAttachmentsWithEncryptedFile)
     // The original ODF document will be saved to the PDF as an attachment.
 
     uno::Sequence<beans::PropertyValue> aFilterData
-        = { comphelper::makePropertyValue("IsAddStream", true),
-            comphelper::makePropertyValue("EncryptFile", true),
-            comphelper::makePropertyValue("DocumentOpenPassword", OUString("secret")) };
+        = { comphelper::makePropertyValue("IsAddStream", true) };
     comphelper::SequenceAsHashMap aMediaDescriptor;
     aMediaDescriptor["FilterData"] <<= aFilterData;
 
     loadFromFile(u"SimpleTestDocument.fodt");
-    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList(),
+         /*pPassword*/ "secret");
 
     // Parse the round-tripped document with PDFium
     auto pPdfDocument = parsePDFExport("secret"_ostr);
