@@ -148,15 +148,28 @@ void QtInstanceToolbar::set_item_image_mirrored(const OUString&, bool)
     assert(false && "Not implemented yet");
 }
 
-void QtInstanceToolbar::set_item_image(const OUString&,
-                                       const css::uno::Reference<css::graphic::XGraphic>&)
+void QtInstanceToolbar::set_item_image(const OUString& rIdent,
+                                       const css::uno::Reference<css::graphic::XGraphic>& rIcon)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        pToolButton->setIcon(toQPixmap(rIcon));
+    });
 }
 
-void QtInstanceToolbar::set_item_image(const OUString&, VirtualDevice*)
+void QtInstanceToolbar::set_item_image(const OUString& rIdent, VirtualDevice* pDevice)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        const QPixmap aIconPixmap = pDevice ? toQPixmap(*pDevice) : QPixmap();
+        pToolButton->setIcon(aIconPixmap);
+    });
 }
 
 void QtInstanceToolbar::insert_item(int, const OUString&)
