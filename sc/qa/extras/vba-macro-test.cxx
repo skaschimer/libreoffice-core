@@ -361,7 +361,7 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testMacroKeyBinding)
         xAccelerator->getCommandByKeyEvent(aCtrlT));
 }
 
-CPPUNIT_TEST_FIXTURE(VBAMacroTest, testAdress)
+CPPUNIT_TEST_FIXTURE(VBAMacroTest, testAddress)
 {
     testMacro(
         u"TestAddress.xls",
