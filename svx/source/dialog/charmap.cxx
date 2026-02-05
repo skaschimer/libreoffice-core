@@ -27,6 +27,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <svx/ucsubset.hxx>
 

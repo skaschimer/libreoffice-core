@@ -34,6 +34,7 @@
 #include <vcl/glyphitemcache.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <editeng/editids.hrc>
 #include <editeng/fontitem.hxx>

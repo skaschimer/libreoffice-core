@@ -31,6 +31,7 @@
 #include <sot/filelist.hxx>
 #include <svl/eitem.hxx>
 #include <vcl/graphicfilter.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <osl/diagnose.h>
 
 #include <sfx2/docinsert.hxx>

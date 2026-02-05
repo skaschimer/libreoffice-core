@@ -25,6 +25,7 @@
 #include <vcl/event.hxx>
 #include <vcl/status.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <cmdid.h>
 #include <swmodule.hxx>

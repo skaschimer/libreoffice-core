@@ -32,6 +32,7 @@
 #include <svl/stritem.hxx>
 #include <vcl/event.hxx>
 #include <vcl/image.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/weldutils.hxx>
 
 #include <swtypes.hxx>

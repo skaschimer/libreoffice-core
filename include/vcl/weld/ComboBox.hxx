@@ -14,6 +14,8 @@
 
 namespace weld
 {
+class Menu;
+
 struct VCL_DLLPUBLIC ComboBoxEntry
 {
     OUString sString;

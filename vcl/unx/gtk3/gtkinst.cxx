@@ -41,6 +41,7 @@
 #include <vcl/weld/DrawingArea.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
 #include <vcl/weld/Notebook.hxx>
 #include <vcl/weld/Paned.hxx>

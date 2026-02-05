@@ -27,6 +27,7 @@
 #include <tools/stream.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <UITools.hxx>
 #include <core_resource.hxx>
 #include <FieldControls.hxx>

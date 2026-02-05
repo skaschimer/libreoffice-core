@@ -39,6 +39,7 @@
 #include <vcl/uitest/eventdescription.hxx>
 #include <vcl/uitest/logger.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <unordered_map>
 

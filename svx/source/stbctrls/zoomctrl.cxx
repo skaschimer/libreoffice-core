@@ -27,6 +27,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/status.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <vcl/settings.hxx>
 #include <tools/urlobj.hxx>

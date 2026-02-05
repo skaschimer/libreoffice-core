@@ -56,6 +56,7 @@
 #include <bitmaps.hlst>
 #include <vcl/commandevent.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 
 namespace svxform
 {

@@ -38,6 +38,7 @@
 #include <svl/itemset.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <initializer_list>
 #include <memory>

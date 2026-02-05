@@ -13,6 +13,7 @@
 #include <sfx2/sfxresid.hxx>
 #include <vcl/event.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <sfx2/strings.hrc>
 

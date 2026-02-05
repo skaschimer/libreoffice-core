@@ -19,6 +19,8 @@ enum class ImageType;
 
 namespace weld
 {
+class Menu;
+
 class VCL_DLLPUBLIC Toolbar : virtual public Widget
 {
     Link<const OUString&, void> m_aClickHdl;

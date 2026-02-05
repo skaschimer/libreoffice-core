@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <vcl/weld/weld.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QMenu>

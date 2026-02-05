@@ -43,6 +43,7 @@
 #include <vcl/specialchars.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 
 using namespace dbaui;
 

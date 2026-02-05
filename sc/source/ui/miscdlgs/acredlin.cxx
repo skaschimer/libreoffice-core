@@ -24,6 +24,7 @@
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/basedlgs.hxx>
 #include <vcl/commandevent.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <o3tl/string_view.hxx>
 
 #include <acredlin.hxx>

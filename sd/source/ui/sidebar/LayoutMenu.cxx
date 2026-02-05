@@ -53,6 +53,7 @@
 #include <utility>
 #include <vcl/commandevent.hxx>
 #include <vcl/image.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <xmloff/autolayout.hxx>
 #include <comphelper/lok.hxx>
 

@@ -39,6 +39,7 @@
 #include <vcl/event.hxx>
 #include <vcl/ptrstyle.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <TableWindowData.hxx>
 #include <JAccess.hxx>

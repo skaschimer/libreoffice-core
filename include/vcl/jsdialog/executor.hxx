@@ -16,6 +16,7 @@
 #include <vcl/weld/Entry.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>
 #include <vcl/weld/IconView.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/Notebook.hxx>
 #include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/SpinButton.hxx>

@@ -64,6 +64,7 @@
 
 #include <fldmgr.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Menu.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <strings.hrc>
 #include <officecfg/Office/Common.hxx>

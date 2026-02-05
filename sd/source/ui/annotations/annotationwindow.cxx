@@ -49,6 +49,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/ptrstyle.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Menu.hxx>
 
 #include <strings.hrc>
 #include "annotationwindow.hxx"
