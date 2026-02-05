@@ -23,12 +23,6 @@
 #include <com/sun/star/uno/Any.h>
 #include <utility>
 
-struct TestMacroInfo
-{
-    OUString sFileBaseName;
-    OUString sMacroUrl;
-};
-
 class BasicDLL;
 class SvStream;
 
