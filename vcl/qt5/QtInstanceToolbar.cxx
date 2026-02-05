@@ -239,9 +239,15 @@ void QtInstanceToolbar::set_item_accessible_name(int, const OUString&)
     assert(false && "Not implemented yet");
 }
 
-void QtInstanceToolbar::set_item_accessible_name(const OUString&, const OUString&)
+void QtInstanceToolbar::set_item_accessible_name(const OUString& rIdent, const OUString& rName)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        pToolButton->setAccessibleName(toQString(rName));
+    });
 }
 
 vcl::ImageType QtInstanceToolbar::get_icon_size() const
