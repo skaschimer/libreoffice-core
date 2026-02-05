@@ -50,63 +50,63 @@ static void lcl_GetDefaultFontHeight(OUString& sName, OUString& sSize)
     uno::Reference<style::XStyleFamiliesSupplier> xStyleFamiliesSupplier(pDocSh->GetModel(),
                                                                          uno::UNO_QUERY);
 
-    if (xStyleFamiliesSupplier.is())
+    if (!xStyleFamiliesSupplier.is())
+        return;
+
+    uno::Reference<container::XNameAccess> xStyleFamilies
+        = xStyleFamiliesSupplier->getStyleFamilies();
+
+    // Use CellStyles for Calc and ParagraphStyles for Writer
+    if (xStyleFamilies->hasByName(u"CellStyles"_ustr))
     {
-        uno::Reference<container::XNameAccess> xStyleFamilies
-            = xStyleFamiliesSupplier->getStyleFamilies();
+        uno::Reference<container::XNameAccess> xCellStyles;
+        xStyleFamilies->getByName(u"CellStyles"_ustr) >>= xCellStyles;
 
-        // Use CellStyles for Calc and ParagraphStyles for Writer
-        if (xStyleFamilies->hasByName(u"CellStyles"_ustr))
+        if (xCellStyles->hasByName(u"Text"_ustr))
         {
-            uno::Reference<container::XNameAccess> xCellStyles;
-            xStyleFamilies->getByName(u"CellStyles"_ustr) >>= xCellStyles;
+            uno::Reference<beans::XPropertySet> xProps;
+            xCellStyles->getByName(u"Text"_ustr) >>= xProps;
 
-            if (xCellStyles->hasByName(u"Text"_ustr))
+            if (xProps.is())
             {
-                uno::Reference<beans::XPropertySet> xProps;
-                xCellStyles->getByName(u"Text"_ustr) >>= xProps;
+                OUString sFontName;
+                xProps->getPropertyValue(u"CharFontName"_ustr) >>= sFontName;
+                if (!sFontName.isEmpty())
+                    sName = sFontName;
 
-                if (xProps.is())
-                {
-                    OUString sFontName;
-                    xProps->getPropertyValue(u"CharFontName"_ustr) >>= sFontName;
-                    if (!sFontName.isEmpty())
-                        sName = sFontName;
+                float fSize = 0;
+                xProps->getPropertyValue(u"CharHeight"_ustr) >>= fSize;
+                if (fSize > 0)
+                    sSize = OUString::number(static_cast<int>(fSize)) + u" pt"_ustr;
 
-                    float fSize = 0;
-                    xProps->getPropertyValue(u"CharHeight"_ustr) >>= fSize;
-                    if (fSize > 0)
-                        sSize = OUString::number(static_cast<int>(fSize)) + u" pt"_ustr;
-
-                    return;
-                }
+                return;
             }
         }
+    }
 
-        if (xStyleFamilies->hasByName(u"ParagraphStyles"_ustr))
+    if (xStyleFamilies->hasByName(u"ParagraphStyles"_ustr))
+    {
+        uno::Reference<container::XNameAccess> xParaStyles;
+        xStyleFamilies->getByName(u"ParagraphStyles"_ustr) >>= xParaStyles;
+
+        if (xParaStyles->hasByName(u"Table Contents"_ustr))
         {
-            uno::Reference<container::XNameAccess> xParaStyles;
-            xStyleFamilies->getByName(u"ParagraphStyles"_ustr) >>= xParaStyles;
+            uno::Reference<beans::XPropertySet> xProps;
+            xParaStyles->getByName(u"Table Contents"_ustr) >>= xProps;
 
-            if (xParaStyles->hasByName(u"Table Contents"_ustr))
+            if (xProps.is())
             {
-                uno::Reference<beans::XPropertySet> xProps;
-                xParaStyles->getByName(u"Table Contents"_ustr) >>= xProps;
+                OUString sFontName;
+                xProps->getPropertyValue(u"CharFontName"_ustr) >>= sFontName;
+                if (!sFontName.isEmpty())
+                    sName = sFontName;
 
-                if (xProps.is())
-                {
-                    OUString sFontName;
-                    xProps->getPropertyValue(u"CharFontName"_ustr) >>= sFontName;
-                    if (!sFontName.isEmpty())
-                        sName = sFontName;
+                float fSize = 0;
+                xProps->getPropertyValue(u"CharHeight"_ustr) >>= fSize;
+                if (fSize > 0)
+                    sSize = OUString::number(static_cast<int>(fSize)) + u" pt"_ustr;
 
-                    float fSize = 0;
-                    xProps->getPropertyValue(u"CharHeight"_ustr) >>= fSize;
-                    if (fSize > 0)
-                        sSize = OUString::number(static_cast<int>(fSize)) + u" pt"_ustr;
-
-                    return;
-                }
+                return;
             }
         }
     }
