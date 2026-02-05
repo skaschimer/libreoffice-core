@@ -38,7 +38,7 @@ public:
     static sal_uInt32 getEntryEdgeLength();
     static sal_uInt32 getColumnCount();
 
-    void addEntriesForXColorList(const XColorList& rXColorList, sal_uInt32 nStartIndex = 1);
+    void addEntriesForXColorList(const XColorList& rXColorList);
     void addEntriesForColorSet(const std::set<Color>& rColorSet, std::u16string_view rNamePrefix);
     Size layoutAllVisible(sal_uInt32 nEntryCount);
     void layoutToGivenHeight(sal_uInt32 nHeight, sal_uInt32 nEntryCount);
