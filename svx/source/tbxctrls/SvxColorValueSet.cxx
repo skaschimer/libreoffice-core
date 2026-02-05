@@ -71,27 +71,6 @@ void SvxColorValueSet::addEntriesForXColorList(const XColorList& rXColorList)
     }
 }
 
-void SvxColorValueSet::addEntriesForColorSet(const std::set<Color>& rColorSet, std::u16string_view rNamePrefix)
-{
-    sal_uInt32 nStartIndex = 1;
-    if(!rNamePrefix.empty())
-    {
-        for(const auto& rColor : rColorSet)
-        {
-            InsertItem(nStartIndex, rColor, rNamePrefix + OUString::number(nStartIndex));
-            nStartIndex++;
-        }
-    }
-    else
-    {
-        for(const auto& rColor : rColorSet)
-        {
-            InsertItem(nStartIndex, rColor, u""_ustr);
-            nStartIndex++;
-        }
-    }
-}
-
 Size SvxColorValueSet::layoutAllVisible(sal_uInt32 nEntryCount)
 {
     if(!nEntryCount)
