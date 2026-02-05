@@ -43,6 +43,10 @@ static void lcl_GetDefaultFontHeight(OUString& sName, OUString& sSize)
 {
     using namespace css;
     SfxObjectShell* pDocSh = SfxObjectShell::Current();
+
+    if (!pDocSh)
+        return;
+
     uno::Reference<style::XStyleFamiliesSupplier> xStyleFamiliesSupplier(pDocSh->GetModel(),
                                                                          uno::UNO_QUERY);
 
