@@ -780,7 +780,7 @@ void SdtBlockHelper::DeleteAndResetTheLists()
 
 void SdtBlockHelper::WriteSdtBlock(const ::sax_fastparser::FSHelperPtr& pSerializer, bool bRunTextIsOn, bool bParagraphHasDrawing)
 {
-    if (m_nSdtPrToken <= 0 && !m_pDataBindingAttrs.is() && !m_nId)
+    if (!m_nSdtPrToken && !m_pDataBindingAttrs.is() && !m_nId)
         return;
 
     // sdt start mark
@@ -793,7 +793,7 @@ void SdtBlockHelper::WriteSdtBlock(const ::sax_fastparser::FSHelperPtr& pSeriali
 
     WriteExtraParams(pSerializer);
 
-    if (m_nSdtPrToken > 0 && m_pTokenChildren.is())
+    if (m_nSdtPrToken && m_pTokenChildren.is())
     {
         if (!m_pTokenAttributes.is())
             pSerializer->startElement(m_nSdtPrToken);
@@ -802,7 +802,8 @@ void SdtBlockHelper::WriteSdtBlock(const ::sax_fastparser::FSHelperPtr& pSeriali
             pSerializer->startElement(m_nSdtPrToken, detachFrom(m_pTokenAttributes));
         }
 
-        if (m_nSdtPrToken == FSNS(XML_w, XML_date) || m_nSdtPrToken == FSNS(XML_w, XML_docPartObj) || m_nSdtPrToken == FSNS(XML_w, XML_docPartList) || m_nSdtPrToken == FSNS(XML_w14, XML_checkbox)) {
+        assert(m_nSdtPrToken != FSNS(XML_w, XML_date) && "date is never grabbagged, so SdtPrToken is never set to date");
+        if (/*m_nSdtPrToken == FSNS(XML_w, XML_date) ||*/ m_nSdtPrToken == FSNS(XML_w, XML_docPartObj) || m_nSdtPrToken == FSNS(XML_w, XML_docPartList) || m_nSdtPrToken == FSNS(XML_w14, XML_checkbox)) {
             for (auto& it : *m_pTokenChildren)
             {
                 pSerializer->singleElement(it.getToken(), FSNS(XML_w, XML_val), it.toCString());
@@ -811,7 +812,7 @@ void SdtBlockHelper::WriteSdtBlock(const ::sax_fastparser::FSHelperPtr& pSeriali
 
         pSerializer->endElement(m_nSdtPrToken);
     }
-    else if ((m_nSdtPrToken > 0) && m_nSdtPrToken != FSNS(XML_w, XML_id) && !(bRunTextIsOn && bParagraphHasDrawing))
+    else if (m_nSdtPrToken && !(bRunTextIsOn && bParagraphHasDrawing))
     {
         if (!m_pTokenAttributes.is())
             pSerializer->singleElement(m_nSdtPrToken);
@@ -1863,7 +1864,7 @@ void DocxAttributeOutput::EndRun(const SwTextNode* pNode, sal_Int32 nPos, sal_In
 
         // if another sdt starts in this run, then wait
         // as closing the sdt now, might cause nesting of sdts
-        if (m_aRunSdt.m_nSdtPrToken > 0)
+        if (m_aRunSdt.m_nSdtPrToken)
             bCloseEarlierSDT = true;
         else
             m_aRunSdt.EndSdtBlock(m_pSerializer);
@@ -2612,7 +2613,7 @@ void DocxAttributeOutput::WriteSdtPlainText(const OUString & sValue, const uno::
         aSdtBlock.GetSdtParamsFromGrabBag(aGrabBagSdt);
         aSdtBlock.WriteExtraParams(m_pSerializer);
 
-        if (aSdtBlock.m_nSdtPrToken && aSdtBlock.m_nSdtPrToken != FSNS(XML_w, XML_id))
+        if (aSdtBlock.m_nSdtPrToken)
         {
             // Write <w:text/> or whatsoever from grabbag
             m_pSerializer->singleElement(aSdtBlock.m_nSdtPrToken);
