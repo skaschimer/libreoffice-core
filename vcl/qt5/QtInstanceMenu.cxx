@@ -33,6 +33,8 @@ QtInstanceMenu::QtInstanceMenu(QMenu* pMenu)
 {
     assert(m_pMenu);
 
+    connect(m_pMenu, &QMenu::triggered, this, &QtInstanceMenu::menuActionTriggered);
+
     // connect slots in order to show help for current entry on F1
     connect(m_pMenu, &QMenu::hovered, this, &QtInstanceMenu::menuActionHovered);
     QKeySequence sequence(QKeySequence::HelpContents);
@@ -266,6 +268,14 @@ QAction* QtInstanceMenu::getAction(const OUString& rIdent) const
 }
 
 void QtInstanceMenu::menuActionHovered(QAction* pAction) { m_pCurrentAction = pAction; }
+
+void QtInstanceMenu::menuActionTriggered(QAction* pAction)
+{
+    SolarMutexGuard g;
+
+    assert(pAction);
+    signal_activate(toOUString(pAction->objectName()));
+}
 
 void QtInstanceMenu::showHelp()
 {

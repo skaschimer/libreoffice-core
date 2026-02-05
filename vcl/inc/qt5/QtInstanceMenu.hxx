@@ -61,6 +61,7 @@ private:
 
 private Q_SLOTS:
     void menuActionHovered(QAction* pAction);
+    void menuActionTriggered(QAction* pAction);
     void showHelp();
 };
 
