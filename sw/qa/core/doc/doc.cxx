@@ -1113,7 +1113,7 @@ CPPUNIT_TEST_FIXTURE(SwCoreDocTest, testTableAutoFormats)
     createSwDoc();
     SwDoc* pDoc = getSwDoc();
 
-    // Check table styles size, by defualt we have 11 styles
+    // Check table styles size, by default we have 11 styles
     CPPUNIT_ASSERT_EQUAL(size_t(11), pDoc->GetTableStyles().size());
 
     // Create new style
