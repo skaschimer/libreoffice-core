@@ -127,15 +127,29 @@ OUString QtInstanceToolbar::get_item_label(const OUString&) const
     return OUString();
 }
 
-void QtInstanceToolbar::set_item_tooltip_text(const OUString&, const OUString&)
+void QtInstanceToolbar::set_item_tooltip_text(const OUString& rIdent, const OUString& rTip)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        pToolButton->setToolTip(toQString(rTip));
+    });
 }
 
-OUString QtInstanceToolbar::get_item_tooltip_text(const OUString&) const
+OUString QtInstanceToolbar::get_item_tooltip_text(const OUString& rIdent) const
 {
-    assert(false && "Not implemented yet");
-    return OUString();
+    SolarMutexGuard g;
+
+    OUString sToolTip;
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        sToolTip = toOUString(pToolButton->toolTip());
+    });
+
+    return sToolTip;
 }
 
 void QtInstanceToolbar::set_item_icon_name(const OUString& rIdent, const OUString& rIconName)
