@@ -435,7 +435,7 @@ void SwTableAutoFormat::UpdateToSet(SfxItemSet& aItemSet, size_t nRow, size_t nC
     if (bLastCol && UseLastColStyles())
         FillToItemSet(LAST_COL, aItemSet, pNFormatr);
 
-    // Frist & Last Row
+    // First & Last Row
     if (UseFirstColStyles())
     {
         if (bFirstRow)
