@@ -1999,7 +1999,7 @@ bool SwFlowFrame::CheckMoveFwd( bool& rbMakePage, bool bKeep, bool bIgnoreMyOwnK
     {
         if (!pNxt)
             return true;
-        // We ignore non-null next, when it's empty master, than doesn't host a split fly:
+        // We ignore non-null next, when it's empty master, that doesn't host a split fly:
         if (pNxt->IsTextFrame())
         {
             auto pTextFrame = static_cast<const SwTextFrame*>(pNxt);
