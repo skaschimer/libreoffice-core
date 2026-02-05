@@ -138,9 +138,15 @@ OUString QtInstanceToolbar::get_item_tooltip_text(const OUString&) const
     return OUString();
 }
 
-void QtInstanceToolbar::set_item_icon_name(const OUString&, const OUString&)
+void QtInstanceToolbar::set_item_icon_name(const OUString& rIdent, const OUString& rIconName)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        pToolButton->setIcon(loadQPixmapIcon(rIconName));
+    });
 }
 
 void QtInstanceToolbar::set_item_image_mirrored(const OUString&, bool)
