@@ -120,10 +120,10 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="columnpage|columnft">Column</property>
+                    <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
-                    <property name="xalign">0</property>
                     <accessibility>
                       <relation type="label-for" target="back"/>
                       <relation type="label-for" target="next"/>
@@ -140,11 +140,11 @@
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="label">_1</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">width1mf</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">width1mf</property>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
@@ -157,11 +157,11 @@
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="label">_2</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">width2mf</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">width2mf</property>
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
@@ -174,11 +174,11 @@
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="label">_3</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">width3mf</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">width3mf</property>
                   </object>
                   <packing>
                     <property name="left-attach">4</property>
