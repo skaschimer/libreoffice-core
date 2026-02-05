@@ -29,21 +29,6 @@ constexpr double INT_EPS = 2.1;
 constexpr double INT_EPS = 0.1;
 #endif
 
-#define DECLARE_DUMP_TEST(TestName, BaseClass, DumpMode) \
-    class TestName : public BaseClass { \
-        protected:\
-            virtual OUString getTestName() override { return u"" #TestName ""_ustr; } \
-        public:\
-            TestName() : BaseClass(DumpMode) {}; \
-            CPPUNIT_TEST_SUITE(TestName); \
-            CPPUNIT_TEST(verify); \
-            CPPUNIT_TEST_SUITE_END(); \
-            virtual void verify() override;\
-    };\
-    CPPUNIT_TEST_SUITE_REGISTRATION(TestName); \
-    void TestName::verify()
-
-
 #define CPPUNIT_DUMP_ASSERT_NUMBERS_EQUAL(aActual) \
     if(isInDumpMode()) \
         writeActual(OUString::number(aActual), u"" #aActual ""_ustr); \
@@ -87,13 +72,8 @@ constexpr double INT_EPS = 0.1;
 class Chart2DumpTest : public ChartTest
 {
 protected:
-    Chart2DumpTest(bool bDumpMode)
+    Chart2DumpTest()
         : ChartTest(u"/chart2/qa/extras/chart2dump/data/"_ustr)
-    {
-        m_bDumpMode = bDumpMode;
-    }
-
-    virtual ~Chart2DumpTest() override
     {
     }
 
@@ -106,25 +86,22 @@ protected:
 
     bool isInDumpMode () const {return m_bDumpMode;}
 
-    virtual OUString getTestName() { return OUString(); }
     OUString const & getTestFileName() const { return m_sTestFileName; }
-    OUString getReferenceDirName()
-    {
-        return "/chart2/qa/extras/chart2dump/reference/" + getTestName().toAsciiLowerCase() + "/";
-    }
 
-    void setTestFileName (const OUString& sName)
+    void setTestFileName(const OUString& sName, std::u16string_view aTestName, bool bDumpMode=false)
     {
+        m_bDumpMode = bDumpMode;
         m_sTestFileName = sName;
 
         OUString sFileName = m_sTestFileName;
+        OUString aReferenceDirName("/chart2/qa/extras/chart2dump/reference/" + OUString::Concat(aTestName) + "/");
         assert(sFileName.lastIndexOf('.') < sFileName.getLength());
         sFileName = OUString::Concat(sFileName.subView(0, sFileName.lastIndexOf('.'))) + ".txt";
         if (!m_bDumpMode)
         {
             if (m_aReferenceFile.is_open())
                 m_aReferenceFile.close();
-            OString sReferenceFile = OUStringToOString(Concat2View(m_directories.getPathFromSrc(getReferenceDirName()) + sFileName), RTL_TEXTENCODING_UTF8);
+            OString sReferenceFile = OUStringToOString(Concat2View(m_directories.getPathFromSrc(aReferenceDirName) + sFileName), RTL_TEXTENCODING_UTF8);
             m_aReferenceFile.open(sReferenceFile.getStr(), std::ios_base::in);
             CPPUNIT_ASSERT_MESSAGE(OString("Can't open reference file: " + sReferenceFile).getStr(), m_aReferenceFile.is_open());
         }
@@ -132,15 +109,10 @@ protected:
         {
             if (m_aDumpFile.is_open())
                 m_aDumpFile.close();
-            OString sDumpFile = OUStringToOString(Concat2View(m_directories.getPathFromSrc(getReferenceDirName()) + sFileName), RTL_TEXTENCODING_UTF8);
+            OString sDumpFile = OUStringToOString(Concat2View(m_directories.getPathFromSrc(aReferenceDirName) + sFileName), RTL_TEXTENCODING_UTF8);
             m_aDumpFile.open(sDumpFile.getStr(), std::ios_base::out | std::ofstream::binary | std::ofstream::trunc);
             CPPUNIT_ASSERT_MESSAGE(OString("Can't open dump file: " + sDumpFile).getStr(), m_aDumpFile.is_open());
         }
-    }
-
-    virtual void verify()
-    {
-        CPPUNIT_FAIL("verify method must be overridden");
     }
 
     OUString readExpected(std::u16string_view sCheck)
@@ -258,7 +230,7 @@ private:
     std::ofstream    m_aDumpFile;
 };
 
-DECLARE_DUMP_TEST(ChartDataTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, ChartDataTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -268,7 +240,7 @@ DECLARE_DUMP_TEST(ChartDataTest, Chart2DumpTest, false)
 
     for (const OUString& aTestFile : aTestFiles)
     {
-        setTestFileName(aTestFile);
+        setTestFileName(aTestFile, u"chartdatatest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc (getChartDocFromSheet(0), UNO_QUERY_THROW);
 
@@ -365,7 +337,7 @@ DECLARE_DUMP_TEST(ChartDataTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(LegendTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, LegendTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -381,7 +353,7 @@ DECLARE_DUMP_TEST(LegendTest, Chart2DumpTest, false)
 
     for (const OUString& aTestFile : aTestFiles)
     {
-        setTestFileName(aTestFile);
+        setTestFileName(aTestFile, u"legendtest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromDrawImpress(0, 0), UNO_SET_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -463,7 +435,7 @@ DECLARE_DUMP_TEST(LegendTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(GridTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, GridTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -475,7 +447,7 @@ DECLARE_DUMP_TEST(GridTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"gridtest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromSheet(0), UNO_QUERY_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -535,7 +507,7 @@ DECLARE_DUMP_TEST(GridTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(AxisGeometryTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, AxisGeometryTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -547,7 +519,7 @@ DECLARE_DUMP_TEST(AxisGeometryTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"axisgeometrytest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromDrawImpress(0, 0), UNO_SET_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -606,7 +578,7 @@ DECLARE_DUMP_TEST(AxisGeometryTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(AxisLabelTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, AxisLabelTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -620,7 +592,7 @@ DECLARE_DUMP_TEST(AxisLabelTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"axislabeltest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromDrawImpress(0, 0), UNO_SET_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -688,7 +660,7 @@ DECLARE_DUMP_TEST(AxisLabelTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(ColumnBarChartTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, ColumnBarChartTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -703,7 +675,7 @@ DECLARE_DUMP_TEST(ColumnBarChartTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"columnbarcharttest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromSheet(0), UNO_QUERY_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -762,7 +734,7 @@ DECLARE_DUMP_TEST(ColumnBarChartTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(ChartWallTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, ChartWallTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -773,7 +745,7 @@ DECLARE_DUMP_TEST(ChartWallTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"chartwalltest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromDrawImpress(0, 0), UNO_SET_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -825,7 +797,7 @@ DECLARE_DUMP_TEST(ChartWallTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(PieChartTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, PieChartTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -838,7 +810,7 @@ DECLARE_DUMP_TEST(PieChartTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"piecharttest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromSheet(0), UNO_QUERY_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -900,7 +872,7 @@ DECLARE_DUMP_TEST(PieChartTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST(AreaChartTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, AreaChartTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -911,7 +883,7 @@ DECLARE_DUMP_TEST(AreaChartTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"areacharttest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromSheet(0), UNO_QUERY_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -964,7 +936,7 @@ DECLARE_DUMP_TEST(AreaChartTest, Chart2DumpTest, false)
 }
 
 
-DECLARE_DUMP_TEST(PointLineChartTest, Chart2DumpTest, false)
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest, PointLineChartTest)
 {
     const std::vector<OUString> aTestFiles =
     {
@@ -984,7 +956,7 @@ DECLARE_DUMP_TEST(PointLineChartTest, Chart2DumpTest, false)
 
     for (const OUString& sTestFile : aTestFiles)
     {
-        setTestFileName(sTestFile);
+        setTestFileName(sTestFile, u"pointlinecharttest");
         loadFromFile(getTestFileName());
         uno::Reference< chart::XChartDocument > xChartDoc(getChartDocFromSheet(0), UNO_QUERY_THROW);
         uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(xChartDoc, uno::UNO_QUERY);
@@ -1074,9 +1046,9 @@ DECLARE_DUMP_TEST(PointLineChartTest, Chart2DumpTest, false)
     }
 }
 
-DECLARE_DUMP_TEST( PivotChartDataButtonTest, Chart2DumpTest, false )
+CPPUNIT_TEST_FIXTURE(Chart2DumpTest,  PivotChartDataButtonTest)
 {
-    setTestFileName( u"pivotchart_data_button.ods"_ustr );
+    setTestFileName( u"pivotchart_data_button.ods"_ustr, u"pivotchartdatabuttontest");
     loadFromFile(getTestFileName());
 
     // Check that we have pivot chart in the document
