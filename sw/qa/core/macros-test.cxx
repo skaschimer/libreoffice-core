@@ -61,84 +61,87 @@ class SwMacrosTest : public UnoApiTest
 {
 public:
     SwMacrosTest();
+
+    void testMacro(std::u16string_view aFileName, const OUString& rScriptURL);
 };
+
+void SwMacrosTest::testMacro(std::u16string_view aFileName, const OUString& rScriptURL)
+{
+    loadFromFile(aFileName);
+
+    uno::Any aRet = executeMacro(rScriptURL);
+    OUString aStringRes;
+    CPPUNIT_ASSERT(aRet >>= aStringRes);
+    CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
+}
 
 CPPUNIT_TEST_FIXTURE(SwMacrosTest, testVba)
 {
-    TestMacroInfo testInfo[] = {
-        {
-            u"testVBA.docm"_ustr,
-            u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr
-        },
-        {
-            u"testModernVBA.docm"_ustr,
-            u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr
-        },
-        {
-            u"testFind.docm"_ustr,
-            u"vnd.sun.Star.script:Project.Module1.testAll?language=Basic&location=document"_ustr
-        },
-        {
-            u"testDocumentRange.docm"_ustr,
-            u"vnd.sun.Star.script:Project.Module1.testAll?language=Basic&location=document"_ustr
-        },
-        /*{
-            OUString("testSelectionFind.docm"),
-            OUString("vnd.sun.Star.script:Project.Module1.testAll?language=Basic&location=document")
-        },
-        {
-            //current working tests here!
+    testMacro(u"docm/testVBA.docm",
+            u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr);
+}
 
-            OUString("testFontColor.docm"),
-            OUString("vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document")
-        },
-        // TODO - make these pass in Writer
-        {
-            OUString("testSentences.docm"),
-            OUString("vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document")
-        },
-        {
-            OUString("testWords.docm"),
-            OUString("vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document")
-        },
-        {
-            OUString("testParagraphFormat.docm"),
-            OUString("vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document")
-        },*/
-        {
-            u"testTables.docm"_ustr,
-            u"vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document"_ustr
-        },
-    };
-    for (auto const & [ sFileBaseName, sMacroUrl ] : testInfo)
-    {
-        OUString sFileName("docm/" + sFileBaseName);
-        loadFromFile(sFileName);
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testModernVba)
+{
+    testMacro(u"docm/testModernVBA.docm",
+            u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr);
+}
 
-        uno::Any aRet = executeMacro(sMacroUrl);
-        OUString aStringRes;
-        CPPUNIT_ASSERT_MESSAGE(sFileName.toUtf8().getStr(), aRet >>= aStringRes);
-        CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
-    }
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFind)
+{
+    testMacro(u"docm/testFind.docm",
+        u"vnd.sun.Star.script:Project.Module1.testAll?language=Basic&location=document"_ustr);
+}
+
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testDocumentRange)
+{
+    testMacro(u"docm/testDocumentRange.docm",
+        u"vnd.sun.Star.script:Project.Module1.testAll?language=Basic&location=document"_ustr);
+}
+
+/*
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFontColor)
+{
+    testMacro(u"docm/testFontColor.docm",
+        u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr);
+}
+
+// TODO - make these pass in Writer
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testSentences)
+{
+    testMacro(u"docm/testSentences.docm",
+        u"vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document"_ustr);
+}
+
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testWords)
+{
+    testMacro(u"docm/testWords.docm",
+        u"vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document"_ustr);
+}
+
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testParagraphFormat)
+{
+    testMacro(u"docm/testParagraphFormat.docm",
+        u"vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document"_ustr);
+}
+*/
+
+CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTables)
+{
+    testMacro(u"docm/testTables.docm",
+            u"vnd.sun.Star.script:Project.ThisDocument.TestAll?language=Basic&location=document"_ustr);
 }
 
 CPPUNIT_TEST_FIXTURE(SwMacrosTest, testModernVBADelete)
 {
-    TestMacroInfo testInfo =
-        {
-            u"testModernVBADelete.docm"_ustr,
-            u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr
-        };
-
-    OUString sFileName("docm/" + testInfo.sFileBaseName);
-    loadFromFile(sFileName);
+    loadFromFile(u"docm/testModernVBADelete.docm");
 
     SwXTextDocument *const pTextDoc = dynamic_cast<SwXTextDocument *>(mxComponent.get());
     SwDoc *const pDoc = pTextDoc->GetDocShell()->GetDoc();
     pDoc->GetIDocumentUndoRedo().DoUndo(true);
     CPPUNIT_ASSERT(!pDoc->GetIDocumentUndoRedo().GetUndoActionCount());
 
-    uno::Any aRet = executeMacro(testInfo.sMacroUrl);
+    uno::Any aRet = executeMacro(u"vnd.sun.Star.script:Project.ThisDocument.testAll?language=Basic&location=document"_ustr);
     CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), pDoc->GetIDocumentUndoRedo().GetUndoActionCount());
 
     OUString aStringRes;
@@ -342,26 +345,14 @@ CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf151846)
 
 CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf155780_filename_display_format)
 {
-    loadFromFile(u"odt/tdf155780_filename_display_format.odt");
-
-    uno::Any aRet = executeMacro(
+    testMacro(u"odt/tdf155780_filename_display_format.odt",
         u"vnd.sun.Star.script:Standard.Module1.testFilenameDisplayFormat?language=Basic&location=document"_ustr);
-
-    OUString aStringRes;
-    CPPUNIT_ASSERT(aRet >>= aStringRes);
-    CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
 }
 
 CPPUNIT_TEST_FIXTURE(SwMacrosTest, testTdf162431)
 {
-    loadFromFile(u"odt/tdf162431.odt");
-
-    uno::Any aRet = executeMacro(
+    testMacro(u"odt/tdf162431.odt",
         u"vnd.sun.Star.script:Standard.Module1.TestIsMissingUnoParameter?language=Basic&location=document"_ustr);
-
-    OUString aStringRes;
-    CPPUNIT_ASSERT(aRet >>= aStringRes);
-    CPPUNIT_ASSERT_EQUAL(u"OK"_ustr, aStringRes);
 }
 
 CPPUNIT_TEST_FIXTURE(SwMacrosTest, testFdo55289)
