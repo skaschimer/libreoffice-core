@@ -87,6 +87,8 @@ public:
     SvxAutoFormatDataField(){};
     SvxAutoFormatDataField(const SvxAutoFormatDataField& rCopy);
 
+    virtual ~SvxAutoFormatDataField() = default;
+
     void GetValueFormat(OUString& rFormat, LanguageType& rLng, LanguageType& rSys) const;
     const OUString& GetNumFormatString() const noexcept { return maNumFormatString; }
     const LanguageType& GetSysLanguage() const noexcept { return meSysLanguage; }
