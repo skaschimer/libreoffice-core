@@ -1606,7 +1606,8 @@ void ScDocument::GetFilterEntries(
     if (!pDBData)
         return;
     // Do not extend DBArea automatically in case of Table Styles with Total row
-    if (!pDBData->HasTotals() || !pDBData->GetTableStyleInfo())
+    if ((!pDBData->HasTotals() || !pDBData->GetTableStyleInfo())
+        && (pDBData->GetName() == STR_DB_LOCAL_NONAME))
     {
         pDBData->ExtendBackColorArea(*this);
         pDBData->ExtendDataArea(*this);
