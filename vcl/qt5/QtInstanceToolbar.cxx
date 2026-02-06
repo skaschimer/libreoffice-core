@@ -220,14 +220,18 @@ void QtInstanceToolbar::set_item_image(int nIndex,
     GetQtInstance().RunInMainThread([&] { getToolButton(nIndex).setIcon(toQPixmap(rIcon)); });
 }
 
-void QtInstanceToolbar::set_item_tooltip_text(int, const OUString&)
+void QtInstanceToolbar::set_item_tooltip_text(int nIndex, const OUString& rTip)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] { getWidget(nIndex).setToolTip(toQString(rTip)); });
 }
 
-void QtInstanceToolbar::set_item_accessible_name(int, const OUString&)
+void QtInstanceToolbar::set_item_accessible_name(int nIndex, const OUString& rName)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] { getWidget(nIndex).setAccessibleName(toQString(rName)); });
 }
 
 void QtInstanceToolbar::set_item_accessible_name(const OUString& rIdent, const OUString& rName)
