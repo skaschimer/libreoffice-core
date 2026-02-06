@@ -711,7 +711,7 @@ void ScPatternAttr::fillFontOnly(
         // for graphite language features
         eLang = rItemSet.Get( nLangId ).GetLanguage();
     }
-    OSL_ENSURE(pFontAttr,"Oops?");
+    assert(pFontAttr);
 
     //  Evaluate
 
