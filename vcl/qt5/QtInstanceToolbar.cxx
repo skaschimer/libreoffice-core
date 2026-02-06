@@ -100,9 +100,15 @@ void QtInstanceToolbar::set_item_popover(const OUString&, weld::Widget*)
     assert(false && "Not implemented yet");
 }
 
-void QtInstanceToolbar::set_item_visible(const OUString&, bool)
+void QtInstanceToolbar::set_item_visible(const OUString& rIdent, bool bVisible)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        pToolButton->setVisible(bVisible);
+    });
 }
 
 void QtInstanceToolbar::set_item_help_id(const OUString&, const OUString&)
