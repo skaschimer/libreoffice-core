@@ -116,10 +116,18 @@ void QtInstanceToolbar::set_item_help_id(const OUString&, const OUString&)
     assert(false && "Not implemented yet");
 }
 
-bool QtInstanceToolbar::get_item_visible(const OUString&) const
+bool QtInstanceToolbar::get_item_visible(const OUString& rIdent) const
 {
-    assert(false && "Not implemented yet");
-    return false;
+    SolarMutexGuard g;
+
+    bool bVisible = false;
+    GetQtInstance().RunInMainThread([&] {
+        QToolButton* pToolButton = m_pToolBar->findChild<QToolButton*>(toQString(rIdent));
+        assert(pToolButton && "No tool button with the given ID found");
+        bVisible = pToolButton->isVisible();
+    });
+
+    return bVisible;
 }
 
 void QtInstanceToolbar::set_item_label(const OUString&, const OUString&)
