@@ -122,14 +122,14 @@ public:
     css::uno::Any
         getPropertyValue( const OUString &rName,
                                             const SfxItemSet& rSet ) const;
-    /// @param bIgnoreUnknownProperty if true, dont throw an exception when the property is not one we know about
+    /// @param bIgnoreUnknownProperty if true, don't throw an exception when the property is not one we know about
     /// @throws css::uno::RuntimeException
     /// @throws css::lang::IllegalArgumentException
     static void setPropertyValue( const SfxItemPropertyMapEntry& rEntry,
                                           const css::uno::Any& aVal,
                                           SfxItemSet& rSet,
                                   bool bIgnoreUnknownProperty = false);
-    /// @param bIgnoreUnknownProperty if true, dont throw an exception when the property is not one we know about
+    /// @param bIgnoreUnknownProperty if true, don't throw an exception when the property is not one we know about
     /// @throws css::uno::RuntimeException
     /// @throws css::lang::IllegalArgumentException
     /// @throws css::beans::UnknownPropertyException
