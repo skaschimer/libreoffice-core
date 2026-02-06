@@ -161,7 +161,7 @@ void DiagramData_oox::writeDiagramData(DrawingML& rOriginalDrawingML, sax_fastpa
         else
         {
             // for TextShapes it's more complex: this Node (rPoint) may be the
-            // Node holdig the text, but the XShape referencing it is associated
+            // Node holding the text, but the XShape referencing it is associated
             // with a Node that references this by using presAssocID. Use
             // getMasterXShapeForPoint that uses that association and try
             // to access the XShape containing the Text ModelData
