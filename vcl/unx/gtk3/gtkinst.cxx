@@ -11906,30 +11906,30 @@ public:
     virtual void set_item_sensitive(const OUString& rIdent, bool bSensitive) override
     {
         disable_item_notify_events();
-        gtk_widget_set_sensitive(GTK_WIDGET(m_aMap[rIdent]), bSensitive);
+        gtk_widget_set_sensitive(m_aMap[rIdent], bSensitive);
         enable_item_notify_events();
     }
 
     virtual bool get_item_sensitive(const OUString& rIdent) const override
     {
-        return gtk_widget_get_sensitive(GTK_WIDGET(m_aMap.find(rIdent)->second));
+        return gtk_widget_get_sensitive(m_aMap.find(rIdent)->second);
     }
 
     virtual void set_item_visible(const OUString& rIdent, bool bVisible) override
     {
         disable_item_notify_events();
-        gtk_widget_set_visible(GTK_WIDGET(m_aMap[rIdent]), bVisible);
+        gtk_widget_set_visible(m_aMap[rIdent], bVisible);
         enable_item_notify_events();
     }
 
     virtual void set_item_help_id(const OUString& rIdent, const OUString& rHelpId) override
     {
-        ::set_help_id(GTK_WIDGET(m_aMap[rIdent]), rHelpId);
+        ::set_help_id(m_aMap[rIdent], rHelpId);
     }
 
     virtual bool get_item_visible(const OUString& rIdent) const override
     {
-        return gtk_widget_get_visible(GTK_WIDGET(m_aMap.find(rIdent)->second));
+        return gtk_widget_get_visible(m_aMap.find(rIdent)->second);
     }
 
     virtual void set_item_active(const OUString& rIdent, bool bActive) override
@@ -12226,7 +12226,7 @@ public:
 
     virtual void set_item_tooltip_text(const OUString& rIdent, const OUString& rTip) override
     {
-        GtkWidget* pItem = GTK_WIDGET(m_aMap[rIdent]);
+        GtkWidget* pItem = m_aMap[rIdent];
         gtk_widget_set_tooltip_text(pItem, OUStringToOString(rTip, RTL_TEXTENCODING_UTF8).getStr());
     }
 
@@ -12245,7 +12245,7 @@ public:
 
     virtual void set_item_accessible_name(const OUString& rIdent, const OUString& rName) override
     {
-        GtkWidget* pItem = GTK_WIDGET(m_aMap[rIdent]);
+        GtkWidget* pItem = m_aMap[rIdent];
 #if !GTK_CHECK_VERSION(4, 0, 0)
         AtkObject* pAccessible = gtk_widget_get_accessible(pItem);
         assert(pAccessible);
@@ -12258,7 +12258,7 @@ public:
 
     virtual OUString get_item_tooltip_text(const OUString& rIdent) const override
     {
-        GtkWidget* pItem = GTK_WIDGET(m_aMap.find(rIdent)->second);
+        GtkWidget* pItem = m_aMap.find(rIdent)->second;
         const gchar* pStr = gtk_widget_get_tooltip_text(pItem);
         return OUString(pStr, pStr ? strlen(pStr) : 0, RTL_TEXTENCODING_UTF8);
     }
