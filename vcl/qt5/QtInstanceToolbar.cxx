@@ -252,9 +252,18 @@ void QtInstanceToolbar::set_item_label(int, const OUString&)
     assert(false && "Not implemented yet");
 }
 
-void QtInstanceToolbar::set_item_image(int, const css::uno::Reference<css::graphic::XGraphic>&)
+void QtInstanceToolbar::set_item_image(int nIndex,
+                                       const css::uno::Reference<css::graphic::XGraphic>& rIcon)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QAction* pAction = m_pToolBar->actions().at(nIndex);
+        assert(pAction);
+        QToolButton* pToolButton = qobject_cast<QToolButton*>(m_pToolBar->widgetForAction(pAction));
+        assert(pToolButton && "No tool button at the given index");
+        pToolButton->setIcon(toQPixmap(rIcon));
+    });
 }
 
 void QtInstanceToolbar::set_item_tooltip_text(int, const OUString&)
