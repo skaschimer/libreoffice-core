@@ -110,9 +110,11 @@ bool QtInstanceToolbar::get_item_visible(const OUString& rIdent) const
     return bVisible;
 }
 
-void QtInstanceToolbar::set_item_label(const OUString&, const OUString&)
+void QtInstanceToolbar::set_item_label(const OUString& rIdent, const OUString& rLabel)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] { getToolButton(rIdent).setText(toQString(rLabel)); });
 }
 
 OUString QtInstanceToolbar::get_item_label(const OUString&) const
@@ -207,9 +209,11 @@ void QtInstanceToolbar::set_item_ident(int nIndex, const OUString& rIdent)
     GetQtInstance().RunInMainThread([&] { getWidget(nIndex).setObjectName(toQString(rIdent)); });
 }
 
-void QtInstanceToolbar::set_item_label(int, const OUString&)
+void QtInstanceToolbar::set_item_label(int nIndex, const OUString& rLabel)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] { getToolButton(nIndex).setText(toQString(rLabel)); });
 }
 
 void QtInstanceToolbar::set_item_image(int nIndex,
