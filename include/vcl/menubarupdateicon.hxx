@@ -19,6 +19,10 @@
 
 #pragma once
 
+#include <sal/config.h>
+
+#include <vector>
+
 #include <tools/link.hxx>
 #include <vcl/idle.hxx>
 #include <vcl/image.hxx>
