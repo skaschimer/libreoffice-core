@@ -69,7 +69,7 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testMiscRowHeights)
     if (!IsDefaultDPI())
         return;
 
-    static const TestParam::RowData DfltRowData[] = {
+    static const RowData DfltRowData[] = {
         // check rows at the beginning and end of document
         // and make sure they are reported as the default row
         // height ( indicated by -1 )
@@ -77,27 +77,33 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testMiscRowHeights)
         { 1048573, 1048575, 0, -1, 0, false },
     };
 
-    static const TestParam::RowData MultiLineOptData[] = {
+    /* Checks that a document saved to ods with default rows does indeed
+       have default row heights ( there was a problem where the optimal
+       height was being calculated after import if no hard height )
+    */
+    miscRowHeightsTest(u"ods/alldefaultheights.ods", TestFilter::NONE, SAL_N_ELEMENTS(DfltRowData),
+                       DfltRowData);
+}
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testMiscRowHeights2)
+{
+    // FIXME: the DPI check should be removed when either (1) the test is fixed to work with
+    // non-default DPI; or (2) unit tests on Windows are made to use svp VCL plugin.
+    if (!IsDefaultDPI())
+        return;
+
+    static const RowData MultiLineOptData[] = {
         // Row 0 is 12.63 mm and optimal flag is set => 12.36 mm
         { 0, 0, 0, 1236, CHECK_OPTIMAL, true },
         // Row 1 is 11.99 mm and optimal flag is NOT set
         { 1, 1, 0, 1199, CHECK_OPTIMAL, false },
     };
 
-    TestParam aTestValues[] = {
-        /* Checks that a document saved to ods with default rows does indeed
-           have default row heights ( there was a problem where the optimal
-           height was being calculated after import if no hard height )
-        */
-        { u"ods/alldefaultheights.ods", TestFilter::NONE, SAL_N_ELEMENTS(DfltRowData),
-          DfltRowData },
-        /* Checks the imported height of some multiline input, additionally checks
-           that the optimal height flag is set ( or not )
-        */
-        { u"ods/multilineoptimal.ods", TestFilter::NONE, SAL_N_ELEMENTS(MultiLineOptData),
-          MultiLineOptData },
-    };
-    miscRowHeightsTest(aTestValues, SAL_N_ELEMENTS(aTestValues));
+    /* Checks the imported height of some multiline input, additionally checks
+       that the optimal height flag is set ( or not )
+    */
+    miscRowHeightsTest(u"ods/multilineoptimal.ods", TestFilter::NONE,
+                       SAL_N_ELEMENTS(MultiLineOptData), MultiLineOptData);
 }
 
 // regression test at least fdo#59193

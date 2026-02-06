@@ -1091,43 +1091,54 @@ CPPUNIT_TEST_FIXTURE(ScExportTest, testTdf162177_EastersundayODF14)
     assertXPath(pXmlDoc, sPath, "formula", u"of:=EASTERSUNDAY(2024)");
 }
 
+const RowData DfltRowData[] = {
+    { 0, 4, 0, 529, 0, false },
+    { 5, 10, 0, 1058, 0, false },
+    { 17, 20, 0, 1746, 0, false },
+    // check last couple of row in document to ensure
+    // they are 5.29mm ( effective default row xlsx height )
+    { 1048573, 1048575, 0, 529, 0, false },
+};
+
+const RowData EmptyRepeatRowData[] = {
+    // rows 0-4, 5-10, 17-20 are all set at various
+    // heights, there is no content in the rows, there
+    // was a bug where only the first row ( of repeated rows )
+    // was set after export
+    { 0, 4, 0, 529, 0, false },
+    { 5, 10, 0, 1058, 0, false },
+    { 17, 20, 0, 1767, 0, false },
+};
+
 CPPUNIT_TEST_FIXTURE(ScExportTest, testMiscRowHeightExport)
 {
-    static const TestParam::RowData DfltRowData[] = {
-        { 0, 4, 0, 529, 0, false },
-        { 5, 10, 0, 1058, 0, false },
-        { 17, 20, 0, 1746, 0, false },
-        // check last couple of row in document to ensure
-        // they are 5.29mm ( effective default row xlsx height )
-        { 1048573, 1048575, 0, 529, 0, false },
-    };
+    // Checks that some distributed ( non-empty ) heights remain set after export (roundtrip)
+    // additionally there is effectively a default row height ( 5.29 mm ). So we test the
+    // unset rows at the end of the document to ensure the effective xlsx default height
+    // is set there too.
+    miscRowHeightsTest(u"xlsx/miscrowheights.xlsx", TestFilter::XLSX, SAL_N_ELEMENTS(DfltRowData),
+                       DfltRowData);
+}
 
-    static const TestParam::RowData EmptyRepeatRowData[] = {
-        // rows 0-4, 5-10, 17-20 are all set at various
-        // heights, there is no content in the rows, there
-        // was a bug where only the first row ( of repeated rows )
-        // was set after export
-        { 0, 4, 0, 529, 0, false },
-        { 5, 10, 0, 1058, 0, false },
-        { 17, 20, 0, 1767, 0, false },
-    };
+CPPUNIT_TEST_FIXTURE(ScExportTest, testMiscRowHeightExport2)
+{
+    // Checks that some distributed ( non-empty ) heights remain set after export (to xls)
+    miscRowHeightsTest(u"xlsx/miscrowheights.xlsx", TestFilter::XLS, SAL_N_ELEMENTS(DfltRowData),
+                       DfltRowData);
+}
 
-    TestParam aTestValues[] = {
-        // Checks that some distributed ( non-empty ) heights remain set after export (roundtrip)
-        // additionally there is effectively a default row height ( 5.29 mm ). So we test the
-        // unset rows at the end of the document to ensure the effective xlsx default height
-        // is set there too.
-        { u"xlsx/miscrowheights.xlsx", TestFilter::XLSX, SAL_N_ELEMENTS(DfltRowData), DfltRowData },
-        // Checks that some distributed ( non-empty ) heights remain set after export (to xls)
-        { u"xlsx/miscrowheights.xlsx", TestFilter::XLS, SAL_N_ELEMENTS(DfltRowData), DfltRowData },
-        // Checks that repeated rows ( of various heights ) remain set after export ( to xlsx )
-        { u"ods/miscemptyrepeatedrowheights.ods", TestFilter::XLSX,
-          SAL_N_ELEMENTS(EmptyRepeatRowData), EmptyRepeatRowData },
-        // Checks that repeated rows ( of various heights ) remain set after export ( to xls )
-        { u"ods/miscemptyrepeatedrowheights.ods", TestFilter::XLS,
-          SAL_N_ELEMENTS(EmptyRepeatRowData), EmptyRepeatRowData },
-    };
-    miscRowHeightsTest(aTestValues, SAL_N_ELEMENTS(aTestValues));
+CPPUNIT_TEST_FIXTURE(ScExportTest, testMiscRowHeightExport3)
+{
+    // Checks that repeated rows ( of various heights ) remain set after export ( to xlsx )
+    miscRowHeightsTest(u"ods/miscemptyrepeatedrowheights.ods", TestFilter::XLSX,
+                       SAL_N_ELEMENTS(EmptyRepeatRowData), EmptyRepeatRowData);
+}
+
+CPPUNIT_TEST_FIXTURE(ScExportTest, testMiscRowHeightExport4)
+{
+    // Checks that repeated rows ( of various heights ) remain set after export ( to xls )
+    miscRowHeightsTest(u"ods/miscemptyrepeatedrowheights.ods", TestFilter::XLS,
+                       SAL_N_ELEMENTS(EmptyRepeatRowData), EmptyRepeatRowData);
 }
 
 namespace
