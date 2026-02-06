@@ -4277,6 +4277,9 @@ void SwFlyFrame::PaintSwFrame(vcl::RenderContext& rRenderContext, SwRect const& 
         }
     }
 
+    const SwViewOption* pViewOptions = pShell ? pShell->GetViewOptions() : nullptr;
+    SwRedlineRenderMode eRedlineRenderMode
+        = pViewOptions ? pViewOptions->GetRedlineRenderMode() : SwRedlineRenderMode::Standard;
     {
         bool bContour = GetFormat()->GetSurround().IsContour();
         tools::PolyPolygon aPoly;
@@ -4323,9 +4326,6 @@ void SwFlyFrame::PaintSwFrame(vcl::RenderContext& rRenderContext, SwRect const& 
             }
         }
         // paint of margin needed.
-        const SwViewOption* pViewOptions = pShell ? pShell->GetViewOptions() : nullptr;
-        SwRedlineRenderMode eRedlineRenderMode = pViewOptions ? pViewOptions->GetRedlineRenderMode()
-            : SwRedlineRenderMode::Standard;
         const bool bPaintMarginOnly( !bPaintCompleteBack &&
                                      (getFramePrintArea().SSize() != getFrameArea().SSize() || eRedlineRenderMode != SwRedlineRenderMode::Standard));
 
@@ -4493,9 +4493,6 @@ void SwFlyFrame::PaintSwFrame(vcl::RenderContext& rRenderContext, SwRect const& 
     PaintDecorators();
 
     // crossing out for tracked deletion
-    const SwViewOption* pViewOptions = pShell ? pShell->GetViewOptions() : nullptr;
-    SwRedlineRenderMode eRedlineRenderMode
-        = pViewOptions ? pViewOptions->GetRedlineRenderMode() : SwRedlineRenderMode::Standard;
     if (GetAuthor() != std::string::npos && IsDeleted()
         && eRedlineRenderMode == SwRedlineRenderMode::Standard)
     {
