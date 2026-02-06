@@ -204,8 +204,12 @@ void QtInstanceToolbar::insert_separator(int, const OUString&)
 
 int QtInstanceToolbar::get_n_items() const
 {
-    assert(false && "Not implemented yet");
-    return 0;
+    SolarMutexGuard g;
+
+    int nItemCount = 0;
+    GetQtInstance().RunInMainThread([&] { nItemCount = m_pToolBar->actions().count(); });
+
+    return nItemCount;
 }
 
 OUString QtInstanceToolbar::get_item_ident(int) const
