@@ -218,10 +218,20 @@ int QtInstanceToolbar::get_n_items() const
     return nItemCount;
 }
 
-OUString QtInstanceToolbar::get_item_ident(int) const
+OUString QtInstanceToolbar::get_item_ident(int nIndex) const
 {
-    assert(false && "Not implemented yet");
-    return OUString();
+    SolarMutexGuard g;
+
+    OUString sIdent;
+    GetQtInstance().RunInMainThread([&] {
+        QAction* pAction = m_pToolBar->actions().at(nIndex);
+        assert(pAction);
+        QWidget* pWidget = m_pToolBar->widgetForAction(pAction);
+        assert(pWidget);
+        sIdent = toOUString(pWidget->objectName());
+    });
+
+    return sIdent;
 }
 
 void QtInstanceToolbar::set_item_ident(int, const OUString&)
