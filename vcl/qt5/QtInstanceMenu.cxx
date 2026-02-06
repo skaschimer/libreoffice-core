@@ -236,6 +236,8 @@ OUString QtInstanceMenu::get_id(int nPos) const
     return sId;
 }
 
+QMenu* QtInstanceMenu::getMenu() const { return m_pMenu; }
+
 void QtInstanceMenu::setActionName(QAction& rAction, const OUString& rActionName)
 {
     rAction.setProperty(PROPERTY_ACTION_NAME, toQString(rActionName));

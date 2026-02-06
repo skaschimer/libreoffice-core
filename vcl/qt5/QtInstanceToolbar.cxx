@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <QtInstanceMenu.hxx>
 #include <QtInstanceToolbar.hxx>
 #include <QtInstanceToolbar.moc>
 
@@ -79,10 +80,18 @@ bool QtInstanceToolbar::get_menu_item_active(const OUString&) const
     return false;
 }
 
-void QtInstanceToolbar::set_item_menu(const OUString&, weld::Menu*)
+void QtInstanceToolbar::set_item_menu(const OUString& rIdent, weld::Menu* pMenu)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QtInstanceMenu* pQtInstanceMenu = dynamic_cast<QtInstanceMenu*>(pMenu);
+        assert((!pMenu || pQtInstanceMenu) && "Non-Qt menu");
+        QMenu* pQMenu = pQtInstanceMenu ? pQtInstanceMenu->getMenu() : nullptr;
+        getToolButton(rIdent).setMenu(pQMenu);
+    });
 }
+
 void QtInstanceToolbar::set_item_popover(const OUString&, weld::Widget*)
 {
     assert(false && "Not implemented yet");

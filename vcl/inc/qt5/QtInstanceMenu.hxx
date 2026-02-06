@@ -52,6 +52,8 @@ public:
 
     virtual OUString get_id(int nPos) const override;
 
+    QMenu* getMenu() const;
+
     static void setActionName(QAction& rAction, const OUString& rActionName);
 
 private:
