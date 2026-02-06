@@ -3501,7 +3501,7 @@ void AttributeOutputBase::TextField( const SwFormatField& rField )
                 {
                     OUString aCond = pField->GetPar1();
                     OUString aTrueFalse = pField->GetPar2();
-                    sal_Int32 nPos = aTrueFalse.indexOf('|');
+                    sal_Int32 nPos = aTrueFalse.indexOf(CONDITIONAL_FIELD_SEPARATOR);
                     OUString aTrue;
                     OUString aFalse;
                     if (nPos == -1)

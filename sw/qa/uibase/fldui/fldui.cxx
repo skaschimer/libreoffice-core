@@ -119,6 +119,32 @@ CPPUNIT_TEST_FIXTURE(Test, testInsertRefmark)
     CPPUNIT_ASSERT_EQUAL(u"aaabbbccc"_ustr, pTextNode->GetText());
 }
 
+CPPUNIT_TEST_FIXTURE(Test, testTdf56126InsertConditionalFieldWithVerticalSeparator)
+{
+    // Create an empty document
+    createSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+
+    // Insert a conditional field containing exactly two dots for its condition
+    SwFieldMgr aFieldMgr(pWrtShell);
+    SwInsertField_Data aFieldData(SwFieldTypesEnum::ConditionalText, 0, u"true"_ustr,
+                                  u"foo|bar"_ustr, 0);
+    CPPUNIT_ASSERT(aFieldMgr.InsertField(aFieldData));
+    pWrtShell->SttEndDoc(true);
+
+    // Without the accompanying fix in place, this test would have failed with:
+    // - Expected: foo|bar
+    // - Actual  : foo
+    // i.e. the conditional text after the vertical separator disappeared
+    CPPUNIT_ASSERT_EQUAL(u"foo|bar"_ustr, pWrtShell->GetCurField()->ExpandField(true, nullptr));
+
+    // Reload document in order to check if the new separator will be saved in ODT
+    saveAndReload(TestFilter::ODT);
+    pWrtShell = getSwDocShell()->GetWrtShell();
+    pWrtShell->SttEndDoc(true);
+    CPPUNIT_ASSERT_EQUAL(u"foo|bar"_ustr, pWrtShell->GetCurField()->ExpandField(true, nullptr));
+}
+
 CPPUNIT_TEST_FIXTURE(Test, testTdf68364InsertConditionalFieldWithTwoDots)
 {
     // Create an empty document
