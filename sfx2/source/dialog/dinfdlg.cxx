@@ -1483,10 +1483,10 @@ namespace
 
     void fillTypeBox(weld::ComboBox& rTypeBox)
     {
-        for (const auto& rCustomProperty : SFX_LB_PROPERTY_STRINGARRAY)
+        for (const auto& [rResId, rProperty] : SFX_LB_PROPERTY_STRINGARRAY)
         {
-            OUString sId(OUString::number(rCustomProperty.second));
-            rTypeBox.append(sId, SfxResId(rCustomProperty.first));
+            OUString sId(OUString::number(rProperty));
+            rTypeBox.append(sId, SfxResId(rResId));
         }
         rTypeBox.set_active(0);
         Size aSize(rTypeBox.get_preferred_size());
