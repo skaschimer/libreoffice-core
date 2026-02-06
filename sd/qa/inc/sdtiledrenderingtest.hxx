@@ -51,6 +51,8 @@ protected:
     osl::Condition m_aDocumentSizeCondition;
     xmlBufferPtr m_pXmlBuffer;
     TestLokCallbackWrapper m_callbackWrapper;
+
+    void testClipNumRules(const char* pFileName);
 };
 
 /// A view callback tracks callbacks invoked on one specific view.

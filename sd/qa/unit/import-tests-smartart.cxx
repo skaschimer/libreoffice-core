@@ -375,16 +375,6 @@ CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testTextAutoRotation)
     testText(2, 15, u"p"_ustr, 2250, 0);
 }
 
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testBasicProcess)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testPyramid)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
 CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testPyramidOneChild)
 {
     // Load a document with a pyra algorithm in it.

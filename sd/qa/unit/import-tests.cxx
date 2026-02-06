@@ -1968,7 +1968,7 @@ CPPUNIT_TEST_FIXTURE(SdImportTest, testBnc910045)
     CPPUNIT_ASSERT_EQUAL(Color(0x4f81bd), nColor);
 }
 
-CPPUNIT_TEST_FIXTURE(SdImportTest, testRowHeight)
+CPPUNIT_TEST_FIXTURE(SdImportTest, testRowHeight_n80340)
 {
     createSdImpressDoc("pptx/n80340.pptx");
     const SdrPage* pPage = GetPage(1);
@@ -1982,7 +1982,10 @@ CPPUNIT_TEST_FIXTURE(SdImportTest, testRowHeight)
     uno::Reference<beans::XPropertySet> xRefRow(xRows->getByIndex(0), uno::UNO_QUERY_THROW);
     xRefRow->getPropertyValue(u"Height"_ustr) >>= nHeight;
     CPPUNIT_ASSERT_EQUAL(sal_Int32(508), nHeight);
+}
 
+CPPUNIT_TEST_FIXTURE(SdImportTest, testRowHeight_tableScale)
+{
     createSdImpressDoc("pptx/tablescale.pptx");
     const SdrPage* pPage2 = GetPage(1);
 
@@ -1992,6 +1995,7 @@ CPPUNIT_TEST_FIXTURE(SdImportTest, testRowHeight)
     uno::Reference<css::table::XTable> xTable2(pTableObj2->getTable(), uno::UNO_SET_THROW);
     uno::Reference<css::table::XTableRows> xRows2(xTable2->getRows(), uno::UNO_SET_THROW);
 
+    sal_Int32 nHeight;
     for (sal_Int32 nRow = 0; nRow < 7; ++nRow)
     {
         uno::Reference<beans::XPropertySet> xRefRow2(xRows2->getByIndex(nRow),

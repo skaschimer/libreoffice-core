@@ -1132,7 +1132,10 @@ CPPUNIT_TEST_FIXTURE(SdOOXMLExportTest3, testTdf168736)
     // Verify hyperlink to nextslide is properly exported the Relationship has Target attribute
     assertXPath(pXmlDoc, "/p:sld/p:cSld/p:spTree/p:sp[3]/p:txBody/a:p/a:r/a:rPr/a:hlinkClick",
                 "action", u"ppaction://hlinkshowjump?jump=nextslide");
+}
 
+CPPUNIT_TEST_FIXTURE(SdOOXMLExportTest3, testTdf168736_2)
+{
     createSdImpressDoc("ppt/tdf168736-2.ppt");
     save(TestFilter::PPTX);
 

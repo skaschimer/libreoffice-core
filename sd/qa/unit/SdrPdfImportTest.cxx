@@ -228,7 +228,7 @@ CPPUNIT_TEST_FIXTURE(SdrPdfImportTest, testAnnotationsImportExport)
         uno::Sequence<beans::PropertyValue> aFilterData(
             comphelper::InitPropertySequence({ { "ExportBookmarks", uno::Any(true) } }));
         aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
-        save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+        saveAndReload(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
 
         // Check PDF for annotations
         auto pPDFDocument = parsePDFExport();
@@ -248,8 +248,7 @@ CPPUNIT_TEST_FIXTURE(SdrPdfImportTest, testAnnotationsImportExport)
         CPPUNIT_ASSERT_EQUAL(vcl::pdf::PDFAnnotationSubType::Popup,
                              pPDFAnnotation2->getSubType()); // Pop-up annotation
 
-        // Load document again
-        loadFromURL(maTempFile.GetURL());
+        // check the loaded document again
         auto pNewImpressDocument = dynamic_cast<SdXImpressDocument*>(mxComponent.get());
         sd::ViewShell* pNewViewShell = pNewImpressDocument->GetDocShell()->GetViewShell();
         CPPUNIT_ASSERT(pNewViewShell);
