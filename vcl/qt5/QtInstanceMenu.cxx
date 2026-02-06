@@ -20,8 +20,10 @@
 #include <vcl/qt/QtUtils.hxx>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QtGui/QActionGroup>
 #include <QtGui/QShortcut>
 #else
+#include <QtWidgets/QActionGroup>
 #include <QtWidgets/QShortcut>
 #endif
 
@@ -152,9 +154,6 @@ void QtInstanceMenu::insert(int nPos, const OUString& rId, const OUString& rStr,
                             const css::uno::Reference<css::graphic::XGraphic>& rImage,
                             TriState eCheckRadioFalse)
 {
-    assert(eCheckRadioFalse != TRISTATE_FALSE
-           && "Support for radio menu items not implemented yet");
-
     SolarMutexGuard g;
 
     GetQtInstance().RunInMainThread([&] {
@@ -162,8 +161,17 @@ void QtInstanceMenu::insert(int nPos, const OUString& rId, const OUString& rStr,
 
         insertAction(*pAction, rId, nPos);
 
-        if (eCheckRadioFalse == TRISTATE_TRUE)
-            pAction->setCheckable(true);
+        pAction->setCheckable(eCheckRadioFalse != TRISTATE_INDET);
+        if (eCheckRadioFalse == TRISTATE_FALSE)
+        {
+            // For Qt, all mutually exclusive actions/menu entries would usually be put
+            // into the same QActionGroup. However, LO currently manually implements logic
+            // to toggle all other entries off when one gets enabled and doesn't use the concept of groups.
+            // Creating a separate QActionGroup for each item causes each item to be displayed
+            // with a radio button and leaves control for manually toggling on/off.
+            QActionGroup* pActionGroup = new QActionGroup(pAction);
+            pActionGroup->addAction(pAction);
+        }
 
         if (pIconName && !pIconName->isEmpty())
             pAction->setIcon(loadQPixmapIcon(*pIconName));
