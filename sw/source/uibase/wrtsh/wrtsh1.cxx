@@ -129,6 +129,8 @@
 
 #include <UndoAttribute.hxx>
 
+#include <comphelper/flagguard.hxx>
+
 using namespace sw::mark;
 using namespace com::sun::star;
 namespace {
@@ -2711,6 +2713,15 @@ void SwWrtShell::MakeOutlineContentVisible(const size_t nPos, bool bMakeVisible,
 // make content visible or not visible only if needed
 void SwWrtShell::InvalidateOutlineContentVisibility()
 {
+    // tdf#170599 fix taken from fix for:
+    //   "rhbz#818557, fdo#58893: EndAllAction will call SelectShell(),
+    //    which pushes a bunch of SfxShells that are not cleared
+    //    (for unknown reasons) when closing the document, causing crash;
+    //    setting g_bNoInterrupt appears to avoid the problem."
+    // In this case the crash occurs when reopening Print Preview with outline folding enabled and
+    // a heading in the first paragraph and display formatting hidden characters option is enabled.
+    comphelper::FlagRestorationGuard g(g_bNoInterrupt, true);
+
     StartAction();
 
     GetView().GetEditWin().GetFrameControlsManager().HideControls(FrameControlType::Outline);
