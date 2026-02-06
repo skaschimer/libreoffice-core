@@ -242,9 +242,17 @@ OUString QtInstanceToolbar::get_item_ident(int nIndex) const
     return sIdent;
 }
 
-void QtInstanceToolbar::set_item_ident(int, const OUString&)
+void QtInstanceToolbar::set_item_ident(int nIndex, const OUString& rIdent)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        QAction* pAction = m_pToolBar->actions().at(nIndex);
+        assert(pAction);
+        QWidget* pWidget = m_pToolBar->widgetForAction(pAction);
+        assert(pWidget);
+        pWidget->setObjectName(toQString(rIdent));
+    });
 }
 
 void QtInstanceToolbar::set_item_label(int, const OUString&)
