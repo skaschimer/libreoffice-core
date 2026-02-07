@@ -1774,12 +1774,17 @@ namespace emfio
         }
         vcl::Font aTmp( maFont );
         aTmp.SetColor( maTextColor );
-        aTmp.SetFillColor( maBkColor );
 
         if( mnBkMode == BackgroundMode::Transparent )
+        {
+            aTmp.SetFillColor( COL_TRANSPARENT );
             aTmp.SetTransparent( true );
+        }
         else
+        {
+            aTmp.SetFillColor( maBkColor );
             aTmp.SetTransparent( false );
+        }
 
         aTmp.SetAlignment( eTextAlign );
 
