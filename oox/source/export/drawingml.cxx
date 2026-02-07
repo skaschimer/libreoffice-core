@@ -4949,9 +4949,21 @@ bool IsValidOOXMLFormula(std::u16string_view sFormula)
     // "?: n1 n2 n3" // ifelse
 
     // Below vector contains validTokens for the 1st token based on the number of tokens in the formula. The order is: 2, 3, 4
-    const std::vector<std::set<OUString>> validTokens
-        = { { "val", "abs", "sqrt" }, { "min", "max" }, { "*/", "+-", "+/", "?:" } };
-    const std::set<OUString> builtInVariables = { "w", "h", "t", "b", "l", "r" };
+    const std::vector<std::set<std::u16string_view>> validTokens =
+    {
+        { u"val", u"abs", u"sqrt" },
+        { u"min", u"max" },
+        { u"*/", u"+-", u"+/", u"?:" }
+    };
+    const std::set<std::u16string_view> builtInVariables =
+    {
+        u"w",
+        u"h",
+        u"t",
+        u"b",
+        u"l",
+        u"r"
+    };
     const std::vector<OUString> strTokens = comphelper::string::split(sFormula, ' ');
     sal_uInt16 nSize = strTokens.size();
 
