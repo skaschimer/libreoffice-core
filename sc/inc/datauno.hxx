@@ -261,7 +261,7 @@ public:
 
 //  to uno, all three look the same
 
-class ScFilterDescriptorBase : public cppu::WeakImplHelper<
+class SAL_DLLPUBLIC_RTTI ScFilterDescriptorBase : public cppu::WeakImplHelper<
                                     css::sheet::XSheetFilterDescriptor,
                                     css::sheet::XSheetFilterDescriptor2,
                                     css::sheet::XSheetFilterDescriptor3,
