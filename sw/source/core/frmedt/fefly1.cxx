@@ -333,7 +333,9 @@ void SwFEShell::UnfloatFlyFrame()
             // else
             SelectObj(Point(), 0, pAnchoredObj->DrawObj());
 
-            GetSfxViewShell()->GetDispatcher()->Execute(FN_TOOL_ANCHOR_PARAGRAPH,
+            auto pSfxViewShell = GetSfxViewShell();
+            assert(pSfxViewShell);
+            pSfxViewShell->GetDispatcher()->Execute(FN_TOOL_ANCHOR_PARAGRAPH,
                                                         SfxCallMode::SYNCHRON);
 
             // Check if anchor id changed.
