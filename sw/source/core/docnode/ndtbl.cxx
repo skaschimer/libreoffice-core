@@ -4205,6 +4205,7 @@ void SwDoc::ResetTableStyles(const OUString& sTableStyle, std::u16string_view sO
     for (size_t i = 0; i < pAutoFormats.size(); i++)
     {
         SwTableAutoFormat* pAutoFormat = pAutoFormats.GetData(i);
+        assert(pAutoFormat);
         OUString sCurrentStyle = pAutoFormat->GetName().toString();
         while (pAutoFormat)
         {
