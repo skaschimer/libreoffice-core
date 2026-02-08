@@ -371,7 +371,7 @@ bool ZipPackageStream::ParsePackageRawStream()
                                  ( aHeader [3] & 0xFF ) << 24;
             if ( nHeader == n_ConstHeader )
             {
-                // this is one of our god-awful, but extremely devious hacks, everyone cheer
+                // this is one of our godd-awful, but extremely devious hacks, everyone cheer
                 xTempEncrData = new BaseEncryptionData;
 
                 OUString aMediaType;
