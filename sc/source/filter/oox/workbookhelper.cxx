@@ -164,7 +164,7 @@ public:
     /** Creates and returns a database range on-the-fly in the Calc document. */
     rtl::Reference<ScDatabaseRangeObj> createDatabaseRangeObject( OUString& orName, const ScRange& rRangeAddr );
     /** Creates and returns an unnamed database range on-the-fly in the Calc document. */
-    Reference< XDatabaseRange > createUnnamedDatabaseRangeObject( const ScRange& rRangeAddr );
+    rtl::Reference<ScDatabaseRangeObj> createUnnamedDatabaseRangeObject(const ScRange& rRangeAddr);
     /** Finds the (already existing) database range of the given formula token index. */
     ScDBData* findDatabaseRangeByIndex( sal_uInt16 nIndex );
     /** Creates and returns a com.sun.star.style.Style object for cells or pages. */
@@ -481,14 +481,13 @@ rtl::Reference<ScDatabaseRangeObj> WorkbookGlobals::createDatabaseRangeObject( O
     return {};
 }
 
-Reference< XDatabaseRange > WorkbookGlobals::createUnnamedDatabaseRangeObject( const ScRange& rRangeAddr )
+rtl::Reference<ScDatabaseRangeObj> WorkbookGlobals::createUnnamedDatabaseRangeObject(const ScRange& rRangeAddr)
 {
     // validate cell range
     ScRange aDestRange = rRangeAddr;
     bool bValidRange = getAddressConverter().validateCellRange( aDestRange, true, true );
 
     // create database range and insert it into the Calc document
-    Reference< XDatabaseRange > xDatabaseRange;
     if( bValidRange ) try
     {
         ScDocument& rDoc =  getScDocument();
@@ -499,13 +498,13 @@ Reference< XDatabaseRange > WorkbookGlobals::createUnnamedDatabaseRangeObject( c
                                        aDestRange.aEnd.Col(), aDestRange.aEnd.Row() ));
         rDoc.SetAnonymousDBData( aDestRange.aStart.Tab() , std::move(pNewDBData) );
         ScDocShell* pDocSh = rDoc.GetDocumentShell();
-        xDatabaseRange.set(new ScDatabaseRangeObj(pDocSh, aDestRange.aStart.Tab()));
+        return new ScDatabaseRangeObj(pDocSh, aDestRange.aStart.Tab());
     }
     catch( Exception& )
     {
+        DBG_UNHANDLED_EXCEPTION("sc");
     }
-    OSL_ENSURE( xDatabaseRange.is(), "WorkbookData::createDatabaseRangeObject - cannot create database range" );
-    return xDatabaseRange;
+    return {};
 }
 
 ScDBData* WorkbookGlobals::findDatabaseRangeByIndex( sal_uInt16 nIndex )
@@ -920,7 +919,7 @@ rtl::Reference<ScDatabaseRangeObj> WorkbookHelper::createDatabaseRangeObject( OU
     return mrBookGlob.createDatabaseRangeObject( orName, rRangeAddr );
 }
 
-Reference< XDatabaseRange > WorkbookHelper::createUnnamedDatabaseRangeObject( const ScRange& rRangeAddr ) const
+rtl::Reference<ScDatabaseRangeObj> WorkbookHelper::createUnnamedDatabaseRangeObject(const ScRange& rRangeAddr) const
 {
     return mrBookGlob.createUnnamedDatabaseRangeObject( rRangeAddr );
 }

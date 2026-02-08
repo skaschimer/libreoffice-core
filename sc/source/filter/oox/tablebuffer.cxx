@@ -182,9 +182,14 @@ void Table::applyAutoFilters()
     try
     {
         // get the range ( maybe we should cache the xDatabaseRange from finalizeImport )
-        PropertySet aDocProps(( Reference< css::beans::XPropertySet >(getDocument()) ));
-        Reference< XDatabaseRanges > xDatabaseRanges( aDocProps.getAnyProperty( PROP_DatabaseRanges ), UNO_QUERY_THROW );
-        Reference< XDatabaseRange > xDatabaseRange( xDatabaseRanges->getByName( maDBRangeName ), UNO_QUERY );
+        rtl::Reference<ScDatabaseRangeObj> xDatabaseRange;
+        ScDocShell* pDocSh = getScDocument().GetDocumentShell();
+        ScDBCollection* pNames = getScDocument().GetDBCollection();
+        if ( pDocSh && pNames
+             && pNames->getNamedDBs().findByUpperName(ScGlobal::getCharClass().uppercase( maDBRangeName )) != nullptr)
+            xDatabaseRange = new ScDatabaseRangeObj(pDocSh, maDBRangeName);
+        else
+            throw css::container::NoSuchElementException();
         maAutoFilters.finalizeImport( xDatabaseRange, maModel.maRange.aStart.Tab() );
     }
     catch( Exception& )
