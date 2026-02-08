@@ -904,7 +904,7 @@ bool PDFExport::Export( const OUString& rFile, const Sequence< PropertyValue >& 
 
                 switch( nPrintAllowed )
                 {
-                case 0: // initialized when aContext is build, means no printing
+                case 0: // initialized when aContext is built, means no printing
                     break;
                 default:
                 case 2:

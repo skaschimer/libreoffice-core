@@ -1684,7 +1684,7 @@ CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testTdf149551Gear)
 
 CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testTdf145528Matrix)
 {
-    // The file contains a diagram of type "Titled Matrix". Such is build from shapes of type
+    // The file contains a diagram of type "Titled Matrix". Such is built from shapes of type
     // 'round1Rect'.
     createSdImpressDoc("pptx/tdf145528_SmartArt_Matrix.pptx");
     uno::Reference<drawing::XShape> xGroup(getShapeFromPage(0, 0), uno::UNO_QUERY);
