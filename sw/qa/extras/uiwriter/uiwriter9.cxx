@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <config_poppler.h>
 #include <swmodeltestbase.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <officecfg/Office/Writer.hxx>
@@ -756,6 +757,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest9, testTdf111969B)
     //CPPUNIT_ASSERT(!pWrtShell->GetCurField(true));
 }
 
+#if ENABLE_PDFIMPORT
 CPPUNIT_TEST_FIXTURE(SwUiWriterTest9, testPDFExportCrash)
 {
     createSwDoc("section-table-section.fodt");
@@ -771,6 +773,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest9, testPDFExportCrash)
     std::unique_ptr<vcl::pdf::PDFiumDocument> pPdfDocument = parsePDFExport();
     CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->getPageCount());
 }
+#endif
 
 CPPUNIT_TEST_FIXTURE(SwUiWriterTest9, testTdf159049)
 {
