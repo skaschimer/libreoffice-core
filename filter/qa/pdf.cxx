@@ -205,17 +205,35 @@ void Test::doTestCommentsInMargin(bool commentsInMarginEnabled)
         CPPUNIT_ASSERT_EQUAL(1, pPdfDocument->openPage(0)->getObjectCount());
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testCommentsInMargin)
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginEnabled) { doTestCommentsInMargin(true); }
+
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginDisabled) { doTestCommentsInMargin(false); }
+
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginEnabledTiledAnnotationsEnabled)
 {
-    // Test that setting/unsetting the "ExportNotesInMargin" property works correctly
-    doTestCommentsInMargin(true);
-    doTestCommentsInMargin(false);
     comphelper::LibreOfficeKit::setActive(true);
     comphelper::LibreOfficeKit::setTiledAnnotations(true);
     doTestCommentsInMargin(true);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginDisabledTiledAnnotationsEnabled)
+{
+    comphelper::LibreOfficeKit::setActive(true);
+    comphelper::LibreOfficeKit::setTiledAnnotations(true);
     doTestCommentsInMargin(false);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginEnabledTiledAnnotationsDisabled)
+{
+    comphelper::LibreOfficeKit::setActive(true);
     comphelper::LibreOfficeKit::setTiledAnnotations(false);
     doTestCommentsInMargin(true);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testCommentsInMarginDisabledTiledAnnotationsDisabled)
+{
+    comphelper::LibreOfficeKit::setActive(true);
+    comphelper::LibreOfficeKit::setTiledAnnotations(false);
     doTestCommentsInMargin(false);
 }
 

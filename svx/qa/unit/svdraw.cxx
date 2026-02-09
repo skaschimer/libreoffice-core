@@ -67,6 +67,9 @@ public:
 
     void setUp() override;
 
+    void testEOLinCurvedText(std::u16string_view aFileName, bool bLegacy);
+    void testCurveTextWidth(std::u16string_view aFileName, bool bLegacy);
+
 #if ENABLE_PDFIMPORT
     uno::Reference<xml::crypto::XXMLSecurityContext>& getSecurityContext()
     {
@@ -443,86 +446,102 @@ CPPUNIT_TEST_FIXTURE(SvdrawTest, testFontWorks)
 
 CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_EOLinCurvedText)
 {
-    std::vector<OUString> aFilenames
-        = { u"tdf148000_EOLinCurvedText.pptx"_ustr, u"tdf148000_EOLinCurvedText_New.odp"_ustr,
-            u"tdf148000_EOLinCurvedText_Legacy.odp"_ustr };
+    testEOLinCurvedText(u"tdf148000_EOLinCurvedText.pptx", false);
+}
 
-    for (int i = 0; i < 3; i++)
+CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_EOLinCurvedText_New)
+{
+    testEOLinCurvedText(u"tdf148000_EOLinCurvedText_New.odp", false);
+}
+
+CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_EOLinCurvedText_Legacy)
+{
+    testEOLinCurvedText(u"tdf148000_EOLinCurvedText_Legacy.odp", true);
+}
+
+void SvdrawTest::testEOLinCurvedText(std::u16string_view aFileName, bool bLegacy)
+{
+    loadFromFile(aFileName);
+
+    SdrPage* pSdrPage = getFirstDrawPageWithAssert();
+
+    xmlDocUniquePtr pXmlDoc = lcl_dumpAndParseFirstObjectWithAssert(pSdrPage);
+    tools::XPath aXPath(pXmlDoc.get());
+
+    // this is a group shape, hence 2 nested objectinfo
+    auto aBasePath = aXPath.create("/primitive2D/objectinfo[4]/objectinfo/unhandled/group/"
+                                   "unhandled/group/polypolygoncolor/polypolygon");
+
+    // The text is: "O" + eop + "O" + eol + "O"
+    // It should be displayed as 3 line of text. (1 "O" letter in every line)
+
+    sal_Int32 nY1 = aXPath.create(aBasePath, "/polygon[1]/point[1]")->attribute("y").toInt32();
+    sal_Int32 nY2 = aXPath.create(aBasePath, "/polygon[3]/point[1]")->attribute("y").toInt32();
+    sal_Int32 nY3 = aXPath.create(aBasePath, "/polygon[5]/point[1]")->attribute("y").toInt32();
+
+    sal_Int32 nDiff21 = nY2 - nY1;
+    sal_Int32 nDiff32 = nY3 - nY2;
+
+    // the 2. "O" must be positioned much lower as the 1. "O". (the eop break the line)
+    CPPUNIT_ASSERT_GREATER(sal_Int32(300), nDiff21);
+    if (!bLegacy)
     {
-        loadFromFile(aFilenames[i]);
-
-        SdrPage* pSdrPage = getFirstDrawPageWithAssert();
-
-        xmlDocUniquePtr pXmlDoc = lcl_dumpAndParseFirstObjectWithAssert(pSdrPage);
-        tools::XPath aXPath(pXmlDoc.get());
-
-        // this is a group shape, hence 2 nested objectinfo
-        auto aBasePath = aXPath.create("/primitive2D/objectinfo[4]/objectinfo/unhandled/group/"
-                                       "unhandled/group/polypolygoncolor/polypolygon");
-
-        // The text is: "O" + eop + "O" + eol + "O"
-        // It should be displayed as 3 line of text. (1 "O" letter in every line)
-
-        sal_Int32 nY1 = aXPath.create(aBasePath, "/polygon[1]/point[1]")->attribute("y").toInt32();
-        sal_Int32 nY2 = aXPath.create(aBasePath, "/polygon[3]/point[1]")->attribute("y").toInt32();
-        sal_Int32 nY3 = aXPath.create(aBasePath, "/polygon[5]/point[1]")->attribute("y").toInt32();
-
-        sal_Int32 nDiff21 = nY2 - nY1;
-        sal_Int32 nDiff32 = nY3 - nY2;
-
-        // the 2. "O" must be positioned much lower as the 1. "O". (the eop break the line)
-        CPPUNIT_ASSERT_GREATER(sal_Int32(300), nDiff21);
-        if (i < 2)
-        {
-            // the 3. "O" must be positioned even lower with 1 line. (the eol must break the line as well)
-            CPPUNIT_ASSERT_LESS(sal_Int32(50), abs(nDiff32 - nDiff21));
-        }
-        else
-        {
-            // In legacy mode, the 3. "O" must be positioned about the same high as the 2. "O"
-            // the eol not break the line.
-            CPPUNIT_ASSERT_LESS(sal_Int32(50), nDiff32);
-        }
+        // the 3. "O" must be positioned even lower with 1 line. (the eol must break the line as well)
+        CPPUNIT_ASSERT_LESS(sal_Int32(50), abs(nDiff32 - nDiff21));
+    }
+    else
+    {
+        // In legacy mode, the 3. "O" must be positioned about the same high as the 2. "O"
+        // the eol not break the line.
+        CPPUNIT_ASSERT_LESS(sal_Int32(50), nDiff32);
     }
 }
 
 CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_CurvedTextWidth)
 {
-    std::vector<OUString> aFilenames
-        = { u"tdf148000_CurvedTextWidth.pptx"_ustr, u"tdf148000_CurvedTextWidth_New.odp"_ustr,
-            u"tdf148000_CurvedTextWidth_Legacy.odp"_ustr };
+    testCurveTextWidth(u"tdf148000_CurvedTextWidth.pptx", false);
+}
 
-    for (int i = 0; i < 3; i++)
+CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_CurvedTextWidth_New)
+{
+    testCurveTextWidth(u"tdf148000_CurvedTextWidth_New.odp", false);
+}
+
+CPPUNIT_TEST_FIXTURE(SvdrawTest, testTdf148000_CurvedTextWidth_Legacy)
+{
+    testCurveTextWidth(u"tdf148000_CurvedTextWidth_Legacy.odp", true);
+}
+
+void SvdrawTest::testCurveTextWidth(std::u16string_view aFileName, bool bLegacy)
+{
+    loadFromFile(aFileName);
+
+    SdrPage* pSdrPage = getFirstDrawPageWithAssert();
+
+    xmlDocUniquePtr pXmlDoc = lcl_dumpAndParseFirstObjectWithAssert(pSdrPage);
+    tools::XPath aXPath(pXmlDoc.get());
+
+    auto aBasePath = aXPath.create("/primitive2D/objectinfo[4]/objectinfo/unhandled/group/"
+                                   "unhandled/group/polypolygoncolor/polypolygon");
+
+    // The text is: 7 line od "OOOOOOO"
+    // Take the x coord of the 4 "O" on the corners
+    sal_Int32 nX1 = aXPath.create(aBasePath, "/polygon[1]/point[1]")->attribute("x").toInt32();
+    sal_Int32 nX2 = aXPath.create(aBasePath, "/polygon[13]/point[1]")->attribute("x").toInt32();
+    sal_Int32 nX3 = aXPath.create(aBasePath, "/polygon[85]/point[1]")->attribute("x").toInt32();
+    sal_Int32 nX4 = aXPath.create(aBasePath, "/polygon[97]/point[1]")->attribute("x").toInt32();
+
+    if (!bLegacy)
     {
-        loadFromFile(aFilenames[i]);
-
-        SdrPage* pSdrPage = getFirstDrawPageWithAssert();
-
-        xmlDocUniquePtr pXmlDoc = lcl_dumpAndParseFirstObjectWithAssert(pSdrPage);
-        tools::XPath aXPath(pXmlDoc.get());
-
-        auto aBasePath = aXPath.create("/primitive2D/objectinfo[4]/objectinfo/unhandled/group/"
-                                       "unhandled/group/polypolygoncolor/polypolygon");
-
-        // The text is: 7 line od "OOOOOOO"
-        // Take the x coord of the 4 "O" on the corners
-        sal_Int32 nX1 = aXPath.create(aBasePath, "/polygon[1]/point[1]")->attribute("x").toInt32();
-        sal_Int32 nX2 = aXPath.create(aBasePath, "/polygon[13]/point[1]")->attribute("x").toInt32();
-        sal_Int32 nX3 = aXPath.create(aBasePath, "/polygon[85]/point[1]")->attribute("x").toInt32();
-        sal_Int32 nX4 = aXPath.create(aBasePath, "/polygon[97]/point[1]")->attribute("x").toInt32();
-
-        if (i < 2)
-        {
-            // All the lines should be positioned similar (start/end is similar)
-            CPPUNIT_ASSERT_LESS(sal_Int32(150), abs(nX3 - nX1));
-            CPPUNIT_ASSERT_LESS(sal_Int32(150), abs(nX4 - nX2));
-        }
-        else
-        {
-            // In legacy mode, the outer lines become much wider
-            CPPUNIT_ASSERT_GREATER(sal_Int32(1500), nX3 - nX1);
-            CPPUNIT_ASSERT_GREATER(sal_Int32(1500), nX2 - nX4);
-        }
+        // All the lines should be positioned similar (start/end is similar)
+        CPPUNIT_ASSERT_LESS(sal_Int32(150), abs(nX3 - nX1));
+        CPPUNIT_ASSERT_LESS(sal_Int32(150), abs(nX4 - nX2));
+    }
+    else
+    {
+        // In legacy mode, the outer lines become much wider
+        CPPUNIT_ASSERT_GREATER(sal_Int32(1500), nX3 - nX1);
+        CPPUNIT_ASSERT_GREATER(sal_Int32(1500), nX2 - nX4);
     }
 }
 

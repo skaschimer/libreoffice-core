@@ -279,9 +279,7 @@ CPPUNIT_TEST_FIXTURE(XmloffDrawTest, testFillAndLineThemeColorExportImport)
 
     checkFillAndLineComplexColors(getShape(0));
 
-    save(TestFilter::ODP);
-
-    loadFromURL(maTempFile.GetURL());
+    saveAndReload(TestFilter::ODP);
 
     checkFillAndLineComplexColors(getShape(0));
 }
