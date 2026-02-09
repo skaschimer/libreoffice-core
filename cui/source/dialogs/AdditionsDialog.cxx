@@ -439,7 +439,7 @@ AdditionsDialog::AdditionsDialog(weld::Window* pParent, const OUString& sAdditio
     , m_xGearBtn(m_xBuilder->weld_menu_button(u"buttonGear"_ustr))
 {
     m_xGearBtn->connect_selected(LINK(this, AdditionsDialog, GearHdl));
-    m_xGearBtn->set_item_active(u"gear_sort_voting"_ustr, true);
+    m_xGearBtn->set_item_active(u"gear_sort_rating"_ustr, true);
 
     m_aSearchDataTimer.SetInvokeHandler(LINK(this, AdditionsDialog, ImplUpdateDataHdl));
     m_aSearchDataTimer.SetTimeout(EDIT_UPDATEDATA_TIMEOUT);
@@ -617,11 +617,11 @@ AdditionsItem::AdditionsItem(weld::Box* pParentBox, AdditionsDialog* pParentDial
     , m_xLabelLicense(m_xBuilder->weld_label(u"lbLicenseText"_ustr))
     , m_xLabelVersion(m_xBuilder->weld_label(u"lbVersionText"_ustr))
     , m_xLinkButtonComments(m_xBuilder->weld_link_button(u"linkButtonComments"_ustr))
-    , m_xImageVoting1(m_xBuilder->weld_image(u"imageVoting1"_ustr))
-    , m_xImageVoting2(m_xBuilder->weld_image(u"imageVoting2"_ustr))
-    , m_xImageVoting3(m_xBuilder->weld_image(u"imageVoting3"_ustr))
-    , m_xImageVoting4(m_xBuilder->weld_image(u"imageVoting4"_ustr))
-    , m_xImageVoting5(m_xBuilder->weld_image(u"imageVoting5"_ustr))
+    , m_xImageRating1(m_xBuilder->weld_image(u"imageRating1"_ustr))
+    , m_xImageRating2(m_xBuilder->weld_image(u"imageRating2"_ustr))
+    , m_xImageRating3(m_xBuilder->weld_image(u"imageRating3"_ustr))
+    , m_xImageRating4(m_xBuilder->weld_image(u"imageRating4"_ustr))
+    , m_xImageRating5(m_xBuilder->weld_image(u"imageRating5"_ustr))
     , m_xLabelDownloadNumber(m_xBuilder->weld_label(u"labelDownloadNumber"_ustr))
     , m_pParentDialog(pParentDialog)
     , m_sDownloadURL(u""_ustr)
@@ -652,19 +652,19 @@ AdditionsItem::AdditionsItem(weld::Box* pParentBox, AdditionsDialog* pParentDial
     switch (std::isnan(aExtensionRating) ? 0 : int(std::clamp(aExtensionRating, 0.0, 5.0)))
     {
         case 5:
-            m_xImageVoting5->set_from_icon_name(RID_SVXBMP_STARS_FULL);
+            m_xImageRating5->set_from_icon_name(RID_SVXBMP_STARS_FULL);
             [[fallthrough]];
         case 4:
-            m_xImageVoting4->set_from_icon_name(RID_SVXBMP_STARS_FULL);
+            m_xImageRating4->set_from_icon_name(RID_SVXBMP_STARS_FULL);
             [[fallthrough]];
         case 3:
-            m_xImageVoting3->set_from_icon_name(RID_SVXBMP_STARS_FULL);
+            m_xImageRating3->set_from_icon_name(RID_SVXBMP_STARS_FULL);
             [[fallthrough]];
         case 2:
-            m_xImageVoting2->set_from_icon_name(RID_SVXBMP_STARS_FULL);
+            m_xImageRating2->set_from_icon_name(RID_SVXBMP_STARS_FULL);
             [[fallthrough]];
         case 1:
-            m_xImageVoting1->set_from_icon_name(RID_SVXBMP_STARS_FULL);
+            m_xImageRating1->set_from_icon_name(RID_SVXBMP_STARS_FULL);
             break;
     }
 
@@ -852,7 +852,7 @@ void TmpRepositoryCommandEnv::pop() {}
 
 IMPL_LINK(AdditionsDialog, GearHdl, const OUString&, rIdent, void)
 {
-    if (rIdent == "gear_sort_voting")
+    if (rIdent == "gear_sort_rating")
     {
         std::sort(m_aAllExtensionsVector.begin(), m_aAllExtensionsVector.end(), sortByRating);
     }
