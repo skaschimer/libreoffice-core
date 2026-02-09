@@ -34,7 +34,7 @@ CertPathDialog::CertPathDialog(weld::Window* pParent)
     m_xCertPathList->set_size_request(m_xCertPathList->get_approximate_digit_width() * 140,
                                       m_xCertPathList->get_height_rows(6));
 
-    // needed for VLCPLUGIN != gtk3 (e.g. "gen")
+    // needed for VCLPLUGIN != gtk3 (e.g. "gen")
     int nControlWidth = m_xCertPathList->get_approximate_digit_width() * 40;
     m_xCertPathList->set_column_fixed_widths({nControlWidth});
 
