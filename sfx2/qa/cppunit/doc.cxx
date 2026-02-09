@@ -79,6 +79,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTempFilePath)
     pBaseModel->storeAsURL(aTargetFile, aArgs);
 
     // Load it and export to PDF.
+    dispose();
     loadFromURL(aTargetFile);
     pBaseModel = dynamic_cast<SfxBaseModel*>(mxComponent.get());
     OUString aPdfTarget = aTargetDir + "/test.pdf";

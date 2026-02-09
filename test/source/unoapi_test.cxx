@@ -286,6 +286,12 @@ void UnoApiTest::loadFromURL(OUString const& rURL, const char* pPassword)
     }
 }
 
+void UnoApiTest::dispose()
+{
+    mxComponent->dispose();
+    mxComponent.clear();
+}
+
 void UnoApiTest::loadWithParams(OUString const& rURL,
                                 const uno::Sequence<beans::PropertyValue>& rParams)
 {

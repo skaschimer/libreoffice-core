@@ -336,22 +336,22 @@ CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testBarChart)
 CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testCrosses)
 {
     // test crosses val="autoZero" with DOCX
-    {
-        loadFromFile(u"docx/Bar_horizontal_cone.docx");
-        save(TestFilter::DOCX);
-        xmlDocUniquePtr pXmlDoc = parseExport(u"word/charts/chart1.xml"_ustr);
+    loadFromFile(u"docx/Bar_horizontal_cone.docx");
+    save(TestFilter::DOCX);
+    xmlDocUniquePtr pXmlDoc = parseExport(u"word/charts/chart1.xml"_ustr);
 
-        assertXPath(pXmlDoc, "/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crosses", "val", u"autoZero");
-    }
+    assertXPath(pXmlDoc, "/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crosses", "val", u"autoZero");
+}
+
+CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testCrosses_tdf142351)
+{
     // tdf#142351: test crossesAt val="-50" with XLSX
-    {
-        loadFromFile(u"xlsx/tdf142351.xlsx");
-        save(TestFilter::XLSX);
-        xmlDocUniquePtr pXmlDoc = parseExport(u"xl/charts/chart1.xml"_ustr);
-        CPPUNIT_ASSERT(pXmlDoc);
+    loadFromFile(u"xlsx/tdf142351.xlsx");
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pXmlDoc = parseExport(u"xl/charts/chart1.xml"_ustr);
+    CPPUNIT_ASSERT(pXmlDoc);
 
-        assertXPath(pXmlDoc, "/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crossesAt", "val", u"-50");
-    }
+    assertXPath(pXmlDoc, "/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crossesAt", "val", u"-50");
 }
 
 CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testScatterChartTextXValues)
@@ -1327,43 +1327,42 @@ CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testLabelStringODS)
 }
 
 
-CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testInvertNegative)
+CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testInvertNegative_BarChart)
 {
     // Bar chart
-    {
-        loadFromFile(u"xlsx/invertIfNeg_bar.xlsx");
-        // make sure the import was successful
-        uno::Reference< chart2::XChartDocument > xChartDoc = getChartDocFromSheet( 0 );
-        CPPUNIT_ASSERT(xChartDoc.is());
+    loadFromFile(u"xlsx/invertIfNeg_bar.xlsx");
+    // make sure the import was successful
+    uno::Reference< chart2::XChartDocument > xChartDoc = getChartDocFromSheet( 0 );
+    CPPUNIT_ASSERT(xChartDoc.is());
 
-        Reference< chart2::XDataSeries > xDataSeries = getDataSeriesFromDoc( xChartDoc, 0 );
-        CPPUNIT_ASSERT( xDataSeries.is() );
+    Reference< chart2::XDataSeries > xDataSeries = getDataSeriesFromDoc( xChartDoc, 0 );
+    CPPUNIT_ASSERT( xDataSeries.is() );
 
-        Reference< beans::XPropertySet > xPropSet( xDataSeries, UNO_QUERY_THROW );
+    Reference< beans::XPropertySet > xPropSet( xDataSeries, UNO_QUERY_THROW );
 
-        bool bInvertNeg;
-        CPPUNIT_ASSERT(
-            xPropSet->getPropertyValue(u"InvertNegative"_ustr) >>= bInvertNeg);
-        CPPUNIT_ASSERT_EQUAL(true, bInvertNeg);
-    }
+    bool bInvertNeg;
+    CPPUNIT_ASSERT(
+        xPropSet->getPropertyValue(u"InvertNegative"_ustr) >>= bInvertNeg);
+    CPPUNIT_ASSERT_EQUAL(true, bInvertNeg);
+}
 
+CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testInvertNegative_BubbleChart)
+{
     // Bubble chart
-    {
-        loadFromFile(u"xlsx/invertIfNeg_bubble.xlsx");
-        // make sure the import was successful
-        uno::Reference< chart2::XChartDocument > xChartDoc = getChartDocFromSheet( 0 );
-        CPPUNIT_ASSERT(xChartDoc.is());
+    loadFromFile(u"xlsx/invertIfNeg_bubble.xlsx");
+    // make sure the import was successful
+    uno::Reference< chart2::XChartDocument > xChartDoc = getChartDocFromSheet( 0 );
+    CPPUNIT_ASSERT(xChartDoc.is());
 
-        Reference< chart2::XDataSeries > xDataSeries = getDataSeriesFromDoc( xChartDoc, 0 );
-        CPPUNIT_ASSERT( xDataSeries.is() );
+    Reference< chart2::XDataSeries > xDataSeries = getDataSeriesFromDoc( xChartDoc, 0 );
+    CPPUNIT_ASSERT( xDataSeries.is() );
 
-        Reference< beans::XPropertySet > xPropSet( xDataSeries, UNO_QUERY_THROW );
+    Reference< beans::XPropertySet > xPropSet( xDataSeries, UNO_QUERY_THROW );
 
-        bool bInvertNeg;
-        CPPUNIT_ASSERT(
-            xPropSet->getPropertyValue(u"InvertNegative"_ustr) >>= bInvertNeg);
-        CPPUNIT_ASSERT_EQUAL(true, bInvertNeg);
-    }
+    bool bInvertNeg;
+    CPPUNIT_ASSERT(
+        xPropSet->getPropertyValue(u"InvertNegative"_ustr) >>= bInvertNeg);
+    CPPUNIT_ASSERT_EQUAL(true, bInvertNeg);
 }
 
 CPPUNIT_TEST_FIXTURE(Chart2ExportTest, testStyleImportExport)
