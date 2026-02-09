@@ -265,6 +265,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"xmlsec/ui/selectcertificatedialog.ui",
     u"xmlsec/ui/viewcertdialog.ui",
     u"writerperfect/ui/exportepub.ui",
+    u"writerperfect/ui/wpftencodingdialog.ui",
 });
 
 // These UI files are only supported inside native Qt dialogs/widgets
