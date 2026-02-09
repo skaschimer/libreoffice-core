@@ -330,7 +330,8 @@ excludelist:
     - com/sun/star/io/XTruncate.hpp
     include/sax/fastattribs.hxx:
     # base class has to be a complete type
-    - com/sun/star/xml/sax/XFastAttributeList.hpp
+    - com/sun/star/util/XCloneable.hpp
+    - com/sun/star/xml/sax/XFastTokenHandler.hpp
     include/sax/fastparser.hxx:
     # base class has to be a complete type
     - com/sun/star/lang/XInitialization.hpp
