@@ -48,6 +48,7 @@
 #include <sal/log.hxx>
 #include <tools/UnitConversion.hxx>
 #include <vcl/fontcharmap.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/outdev.hxx>
 #include <document.hxx>
 #include <documentimport.hxx>

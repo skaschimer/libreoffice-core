@@ -28,6 +28,7 @@
 #include <svl/intitem.hxx>
 #include <sfx2/objsh.hxx>
 #include <svtools/unitconv.hxx>
+#include <tools/mapunit.hxx>
 #include <sal/log.hxx>
 
 #include <com/sun/star/lang/IllegalArgumentException.hpp>

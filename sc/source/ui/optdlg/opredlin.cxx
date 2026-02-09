@@ -25,6 +25,7 @@
 #include <scmod.hxx>
 #include <docsh.hxx>
 #include <svx/svxids.hrc>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <officecfg/Office/Calc.hxx>
 

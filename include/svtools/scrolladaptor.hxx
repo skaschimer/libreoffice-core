@@ -24,7 +24,6 @@
 #include <vcl/InterimItemWindow.hxx>
 #include <vcl/scrollable.hxx>
 #include <vcl/weld/Scrollbar.hxx>
-#include <vcl/weld/weld.hxx>
 
 class SVT_DLLPUBLIC ScrollAdaptor : public InterimItemWindow, public Scrollable
 {

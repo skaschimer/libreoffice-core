@@ -34,8 +34,10 @@
 #include <dialmgr.hxx>
 #include <sfx2/htmlmode.hxx>
 #include <vcl/fieldvalues.hxx>
+#include <vcl/image.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <svx/dialmgr.hxx>
 #include <svx/flagsdef.hxx>
 #include <svl/grabbagitem.hxx>

@@ -23,13 +23,13 @@
 #include <map>
 #include <vector>
 #include <svtools/svtdllapi.h>
-#include <tools/fldunit.hxx>
 #include <tools/link.hxx>
 #include <tools/fract.hxx>
 #include <vcl/window.hxx>
 #include <vcl/glyphitem.hxx>
 
 class MouseEvent;
+enum class FieldUnit : sal_uInt16;
 
 /*************************************************************************
 

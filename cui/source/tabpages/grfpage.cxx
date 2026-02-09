@@ -29,6 +29,7 @@
 #include <rtl/ustring.hxx>
 #include <tools/debug.hxx>
 #include <tools/fract.hxx>
+#include <tools/mapunit.hxx>
 #include <svx/svxids.hrc>
 #include <strings.hrc>
 #include <vcl/fieldvalues.hxx>

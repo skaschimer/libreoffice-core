@@ -28,6 +28,7 @@
 #include <i18nlangtag/mslangid.hxx>
 #include <utility>
 #include <vcl/embeddedfontsmanager.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/outdev.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>

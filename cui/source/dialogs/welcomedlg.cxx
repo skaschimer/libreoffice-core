@@ -17,6 +17,7 @@
 #include <officecfg/Office/UI/ToolbarMode.hxx>
 #include <officecfg/Setup.hxx>
 #include <unotools/confignode.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <sfx2/bindings.hxx>
 #include <sfx2/dispatch.hxx>

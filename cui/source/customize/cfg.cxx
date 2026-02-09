@@ -30,6 +30,7 @@
 #include <vcl/event.hxx>
 #include <vcl/graph.hxx>
 #include <vcl/graphicfilter.hxx>
+#include <vcl/image.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/toolbox.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -38,6 +39,7 @@
 #include <vcl/weld/weld.hxx>
 #include <vcl/decoview.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 
 #include <sfx2/minfitem.hxx>
 #include <sfx2/sfxhelp.hxx>

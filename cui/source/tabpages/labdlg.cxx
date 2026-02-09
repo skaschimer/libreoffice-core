@@ -21,6 +21,7 @@
 #include <o3tl/untaint.hxx>
 #include <svtools/unitconv.hxx>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 
 #include <svx/svddef.hxx>
 #include <svx/sxcecitm.hxx>
@@ -35,6 +36,7 @@
 
 #include <vcl/tabs.hrc>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 
 // define ----------------------------------------------------------------
 

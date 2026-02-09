@@ -467,34 +467,18 @@ excludelist:
     include/svtools/dialogclosedlistener.hxx:
     # base class has to be a complete type
     - com/sun/star/ui/dialogs/XDialogClosedListener.hpp
-    include/svtools/genericunodialog.hxx:
-    # base class has to be a complete type
-    - com/sun/star/lang/XInitialization.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
-    - com/sun/star/ui/dialogs/XExecutableDialog.hpp
     include/svtools/openfiledroptargetlistener.hxx:
     # base class has to be a complete type
     - com/sun/star/datatransfer/dnd/XDropTargetListener.hpp
-    include/svtools/popupmenucontrollerbase.hxx:
-    # base class has to be a complete type
-    - com/sun/star/frame/XDispatch.hpp
-    - com/sun/star/frame/XDispatchProvider.hpp
-    - com/sun/star/frame/XPopupMenuController.hpp
-    - com/sun/star/frame/XStatusListener.hpp
-    - com/sun/star/lang/XInitialization.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
     include/svtools/popupwindowcontroller.hxx:
     # base class has to be a complete type
     - com/sun/star/lang/XServiceInfo.hpp
     include/svtools/sfxecode.hxx:
     # Needed for macro defines
     - class ErrCode
-    include/svtools/toolboxcontroller.hxx:
-    # base class has to be a complete type
-    - com/sun/star/frame/XStatusListener.hpp
-    - com/sun/star/frame/XToolbarController.hpp
-    - com/sun/star/util/XUpdatable.hpp
-    - com/sun/star/lang/XInitialization.hpp
+    include/svtools/strings.hrc:
+    # Needed for TranslateId macro
+    - unotools/resmgr.hxx
     include/svtools/unoevent.hxx:
     # base class has to be a complete type
     - com/sun/star/container/XNameReplace.hpp

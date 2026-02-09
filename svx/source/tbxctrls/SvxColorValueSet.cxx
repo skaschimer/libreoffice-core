@@ -21,6 +21,7 @@
 #include <svx/xtable.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <osl/diagnose.h>
 
 #include <svx/uiobject.hxx>

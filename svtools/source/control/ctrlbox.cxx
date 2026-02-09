@@ -35,9 +35,11 @@
 #include <vcl/image.hxx>
 #include <vcl/vclevent.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
 #include <vcl/weld/Popover.hxx>
 #include <vcl/weld/customweld.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <rtl/math.hxx>
 #include <sal/macros.h>

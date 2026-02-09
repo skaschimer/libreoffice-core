@@ -22,6 +22,9 @@
 #include <vcl/toolbox.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
+#include <vcl/weld/Toolbar.hxx>
 
 namespace {
 

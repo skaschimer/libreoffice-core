@@ -47,6 +47,8 @@
 #include <osl/diagnose.h>
 #include <i18nlangtag/languagetag.hxx>
 #include <unotools/fontdefs.hxx>
+#include <vcl/accessibility/AccessibleBrowseBox.hxx>
+#include <vcl/accessibility/AccessibleBrowseBoxObjType.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/svapp.hxx>

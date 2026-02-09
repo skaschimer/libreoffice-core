@@ -34,6 +34,7 @@
 #include <tools/debug.hxx>
 #include <tools/resary.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Dialog.hxx>
 
 #include <vcl/tabs.hrc>

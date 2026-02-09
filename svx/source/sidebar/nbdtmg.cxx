@@ -26,6 +26,7 @@
 #include <sfx2/objsh.hxx>
 #include <editeng/flstitem.hxx>
 #include <svl/itempool.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/outdev.hxx>
 #include <editeng/brushitem.hxx>
 #include <svx/dialmgr.hxx>

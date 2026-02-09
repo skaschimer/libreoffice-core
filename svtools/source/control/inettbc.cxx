@@ -39,6 +39,7 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/string.hxx>
 #include <salhelper/thread.hxx>
+#include <tools/urlobj.hxx>
 #include <tools/debug.hxx>
 #include <o3tl/string_view.hxx>
 #include <osl/file.hxx>

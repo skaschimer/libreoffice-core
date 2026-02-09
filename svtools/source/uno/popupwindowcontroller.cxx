@@ -23,6 +23,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/toolbox.hxx>
 #include <vcl/vclevent.hxx>
+#include <vcl/weld/Toolbar.hxx>
 
 #include <svtools/popupwindowcontroller.hxx>
 #include <svtools/toolbarmenu.hxx>

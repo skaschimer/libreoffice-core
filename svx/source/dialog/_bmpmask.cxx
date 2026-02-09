@@ -24,6 +24,8 @@
 #include <vcl/metaact.hxx>
 #include <vcl/metaactiontypes.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <svtools/valueset.hxx>
 #include <svl/eitem.hxx>
 #include <svl/itemset.hxx>

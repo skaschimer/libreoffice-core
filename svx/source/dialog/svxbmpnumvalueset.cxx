@@ -32,6 +32,7 @@
 #include <vcl/graph.hxx>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <svx/numvset.hxx>
 #include <com/sun/star/style/NumberingType.hpp>
 #include <com/sun/star/container/XIndexAccess.hpp>

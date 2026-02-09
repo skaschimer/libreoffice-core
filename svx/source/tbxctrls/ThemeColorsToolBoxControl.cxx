@@ -19,6 +19,8 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/dispatchcommand.hxx>
 #include <comphelper/propertyvalue.hxx>
+#include <vcl/weld/Builder.hxx>
+#include <svx/dialog/ThemeColorsPaneBase.hxx>
 
 ThemeColorsToolBoxControl::ThemeColorsToolBoxControl() {}
 

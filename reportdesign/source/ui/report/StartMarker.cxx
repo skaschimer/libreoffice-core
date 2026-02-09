@@ -18,6 +18,7 @@
  */
 #include <StartMarker.hxx>
 #include <UITools.hxx>
+#include <tools/fldunit.hxx>
 #include <vcl/image.hxx>
 #include <vcl/svapp.hxx>
 #include <bitmaps.hlst>

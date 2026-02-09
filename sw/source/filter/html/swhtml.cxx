@@ -47,6 +47,7 @@
 #include <svtools/htmlkywd.hxx>
 #include <svtools/ctrltool.hxx>
 #include <unotools/pathoptions.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/svapp.hxx>
 #include <sfx2/event.hxx>
 #include <sfx2/docfile.hxx>

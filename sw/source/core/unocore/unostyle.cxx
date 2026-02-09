@@ -26,6 +26,7 @@
 #include <comphelper/propertysequence.hxx>
 #include <hintids.hxx>
 #include <utility>
+#include <vcl/metric.hxx>
 #include <vcl/svapp.hxx>
 #include <svl/hint.hxx>
 #include <svtools/ctrltool.hxx>

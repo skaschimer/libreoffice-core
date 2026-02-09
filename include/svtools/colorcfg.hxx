@@ -21,9 +21,10 @@
 #include <svtools/svtdllapi.h>
 #include <rtl/ustring.hxx>
 #include <tools/color.hxx>
-#include <com/sun/star/uno/Sequence.h>
 #include <unotools/options.hxx>
 #include <memory>
+
+namespace com::sun::star::uno { template <class E> class Sequence; }
 
 namespace svtools{
 enum ColorConfigEntry : int

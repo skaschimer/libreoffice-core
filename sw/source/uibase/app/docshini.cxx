@@ -47,6 +47,7 @@
 #include <editeng/orphitem.hxx>
 #include <editeng/widwitem.hxx>
 #include <editeng/hyphenzoneitem.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>

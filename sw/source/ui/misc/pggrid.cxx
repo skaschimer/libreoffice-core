@@ -29,6 +29,7 @@
 #include <pggrid.hxx>
 #include <tgrditem.hxx>
 #include <svx/pageitem.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Dialog.hxx>
 
 #include <wrtsh.hxx>

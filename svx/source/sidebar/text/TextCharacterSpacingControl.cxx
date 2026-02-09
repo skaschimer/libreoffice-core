@@ -30,6 +30,7 @@
 #include <svl/itempool.hxx>
 #include <svl/itemset.hxx>
 #include <tools/mapunit.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <helpids.h>
 
 #include <com/sun/star/beans/NamedValue.hpp>

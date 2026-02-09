@@ -518,6 +518,9 @@ excludelist:
     sc/source/ui/inc/tpview.hxx:
     # Needed for VclPtr type
     - svx/colorbox.hxx
+    sc/source/ui/optdlg/opredlin.cxx:
+    # Needed for implicit ctor
+    - vcl/weld/Dialog.hxx
     sc/source/ui/unoobj/exceldetect.hxx:
     # base class has to be a complete type
     - com/sun/star/document/XExtendedFilterDetection.hpp

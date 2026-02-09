@@ -54,6 +54,7 @@
 #include <svtools/unitconv.hxx>
 #include <tools/debug.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 
 using namespace com::sun::star;
 

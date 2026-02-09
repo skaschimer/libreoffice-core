@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <unotools/resmgr.hxx>
+
 #define NC_(Context, String) TranslateId(Context, u8##String)
 
 // To translators: tdf#125447 use no mnemonic in this string

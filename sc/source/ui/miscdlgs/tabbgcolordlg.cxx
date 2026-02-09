@@ -24,6 +24,7 @@
 #include <tools/color.hxx>
 #include <vcl/event.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/Dialog.hxx>
 
 #include <officecfg/Office/Common.hxx>

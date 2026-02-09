@@ -21,6 +21,7 @@
 
 #include <comphelper/propertyvalue.hxx>
 #include <vcl/gdimtf.hxx>
+#include <vcl/graph.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/outdev.hxx>
 #include <vcl/pdfextoutdevdata.hxx>

@@ -25,6 +25,7 @@
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 
 namespace svx::sidebar {
 

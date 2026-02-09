@@ -30,6 +30,7 @@
 #include <vcl/image.hxx>
 #include <vcl/transfer.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 
 #include <colrctrl.hxx>
 

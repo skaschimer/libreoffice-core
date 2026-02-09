@@ -29,6 +29,7 @@
 #include <svtools/unitconv.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <o3tl/string_view.hxx>
+#include <vcl/weld/Builder.hxx>
 
 #include <sdattr.hrc>
 #include <View.hxx>

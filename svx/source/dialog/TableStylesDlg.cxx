@@ -26,8 +26,10 @@
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/style/XStyleFamiliesSupplier.hpp>
 #include <editeng/adjustitem.hxx>
+#include <vcl/image.hxx>
 #include <vcl/svapp.hxx>
 #include <bitmaps.hlst>
+#include <editeng/borderline.hxx>
 #include <editeng/editids.hrc>
 #include <editeng/flstitem.hxx>
 #include <sfx2/objsh.hxx>
@@ -37,6 +39,8 @@
 #include <svx/svxtableitems.hxx>
 #include <svx/dialog/TableStylesDlg.hxx>
 #include <tools/fldunit.hxx>
+#include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/Toolbar.hxx>

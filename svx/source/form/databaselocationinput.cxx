@@ -32,6 +32,7 @@
 #include <sfx2/filedlghelper.hxx>
 #include <svl/filenotation.hxx>
 #include <svtools/inettbc.hxx>
+#include <tools/urlobj.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <unotools/confignode.hxx>
 #include <unotools/ucbhelper.hxx>

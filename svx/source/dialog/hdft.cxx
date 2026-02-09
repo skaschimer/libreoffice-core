@@ -36,6 +36,7 @@
 #include <sfx2/htmlmode.hxx>
 #include <osl/diagnose.h>
 #include <tools/debug.hxx>
+#include <tools/mapunit.hxx>
 
 #include <editeng/brushitem.hxx>
 #include <editeng/lrspitem.hxx>

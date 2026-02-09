@@ -53,6 +53,7 @@
 #include <editeng/frmdiritem.hxx>
 #include <editeng/orphitem.hxx>
 #include <utility>
+#include <vcl/metric.hxx>
 #include <vcl/svapp.hxx>
 #include <sal/log.hxx>
 #include <osl/diagnose.h>

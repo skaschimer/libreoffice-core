@@ -24,7 +24,10 @@
 #include <svx/colorbox.hxx>
 #include <svx/dialmgr.hxx>
 #include <vcl/BitmapTools.hxx>
+#include <vcl/image.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
+#include <vcl/weld/ScrolledWindow.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/strings.hrc>

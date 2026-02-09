@@ -39,6 +39,7 @@
 #include <svx/ruler.hxx>
 #include <svx/rulritem.hxx>
 #include <sfx2/viewsh.hxx>
+#include <tools/fldunit.hxx>
 #include <editeng/editids.hrc>
 #include <editeng/tstpitem.hxx>
 #include <editeng/lrspitem.hxx>

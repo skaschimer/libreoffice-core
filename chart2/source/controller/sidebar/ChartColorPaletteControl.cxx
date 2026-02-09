@@ -22,6 +22,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/toolbox.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Toolbar.hxx>
 
 #include <ChartColorPaletteHelper.hxx>
 #include "ChartColorPaletteControl.hxx"

@@ -27,6 +27,7 @@
 #include <svtools/brwhead.hxx>
 #include <tools/lineend.hxx>
 #include <vcl/InterimItemWindow.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/ComboBox.hxx>
 #include <vcl/weld/Entry.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>

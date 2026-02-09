@@ -37,6 +37,7 @@
 
 #include <comphelper/lok.hxx>
 #include <i18nutil/unicode.hxx>
+#include <vcl/metric.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/weld/ComboBox.hxx>

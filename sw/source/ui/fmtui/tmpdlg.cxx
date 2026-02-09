@@ -27,6 +27,7 @@
 #include <sfx2/sfxdlg.hxx>
 #include <svl/cjkoptions.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Builder.hxx>
 #include <numpara.hxx>
 #include <swmodule.hxx>
 #include <wrtsh.hxx>

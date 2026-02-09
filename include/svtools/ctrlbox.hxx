@@ -20,24 +20,27 @@
 #pragma once
 
 #include <tools/date.hxx>
+#include <svtools/borderline.hxx>
 #include <svtools/svtdllapi.h>
 #include <svtools/toolbarmenu.hxx>
-#include <editeng/borderline.hxx>
 #include <vcl/idle.hxx>
 #include <vcl/metric.hxx>
-#include <vcl/weld/Builder.hxx>
 #include <vcl/weld/ComboBox.hxx>
 #include <vcl/weld/MenuButton.hxx>
 #include <vcl/weld/weld.hxx>
 
 #include <memory>
 
+namespace weld { class Builder; }
 namespace weld { class CustomWeld; }
 
 class Bitmap;
 class FontList;
 class VclSimpleEvent;
 class VirtualDevice;
+
+enum class SvxBorderLineStyle : sal_Int16;
+enum class FieldUnit : sal_uInt16;
 
 /** Utility class storing the border line width, style and colors. The widths
     are defined in Twips.

@@ -20,6 +20,7 @@
 #include <svtools/ruler.hxx>
 #include <svtools/unitconv.hxx>
 #include <svx/svxids.hrc>
+#include <tools/mapunit.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
