@@ -251,8 +251,6 @@ public:
 
     virtual std::unique_ptr<SvLBoxItem> Clone(SvLBoxItem const * pSource) const override;
 
-    void SetModeImages(const Image& rBitmap1, const Image& rBitmap2);
-
     void SetBitmap1(const Image& rImage) { m_aImage1 = rImage; };
     void SetBitmap2(const Image& rImage) { m_aImage2 = rImage; };
     const Image& GetBitmap1() const { return m_aImage1; };

@@ -439,9 +439,10 @@ void SvLBoxButton::InitViewData(SvTreeListBox* pView,SvTreeListEntry* pEntry, Sv
 // ***************************************************************
 
 SvLBoxContextBmp::SvLBoxContextBmp(const Image& aBmp1, const Image& aBmp2, bool bExpanded)
-    : m_bExpanded(bExpanded)
+    : m_aImage1(aBmp1)
+    , m_aImage2(aBmp2)
+    , m_bExpanded(bExpanded)
 {
-    SetModeImages( aBmp1, aBmp2 );
 }
 
 SvLBoxContextBmp::SvLBoxContextBmp()
@@ -456,12 +457,6 @@ SvLBoxContextBmp::~SvLBoxContextBmp()
 SvLBoxItemType SvLBoxContextBmp::GetType() const
 {
     return SvLBoxItemType::ContextBmp;
-}
-
-void SvLBoxContextBmp::SetModeImages( const Image& _rBitmap1, const Image& _rBitmap2 )
-{
-    m_aImage1 = _rBitmap1;
-    m_aImage2 = _rBitmap2;
 }
 
 void SvLBoxContextBmp::InitViewData( SvTreeListBox* pView,SvTreeListEntry* pEntry,
