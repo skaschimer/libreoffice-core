@@ -367,7 +367,6 @@ SlideTransitionPane::SlideTransitionPane(
         mrBase( rBase ),
         mpDrawDoc( rBase.GetDocShell() ? rBase.GetDocShell()->GetDoc() : nullptr ),
         mxTransitionsIconView(m_xBuilder->weld_icon_view("transitions_icons")),
-        mxTransitionsScrollWindow(m_xBuilder->weld_scrolled_window("transitions_icons_scrolled_window")),
         mxRepeatAutoFrame(m_xBuilder->weld_frame("repeat_after_frame")),
         mbHasSelection( false ),
         mbUpdatingControls( false ),
@@ -453,7 +452,6 @@ SlideTransitionPane::~SlideTransitionPane()
 {
     maLateInitTimer.Stop();
     removeListener();
-    mxTransitionsScrollWindow.reset();
     mxTransitionsIconView.reset();
     mxRepeatAutoFrame.reset();
     mxLB_VARIANT.reset();
@@ -645,8 +643,8 @@ void SlideTransitionPane::updateControls()
 
 void SlideTransitionPane::updateControlState()
 {
-    if (mxTransitionsScrollWindow)
-        mxTransitionsScrollWindow->set_sensitive(mbHasSelection);
+    if (mxTransitionsIconView)
+        mxTransitionsIconView->set_sensitive(mbHasSelection);
     mxLB_VARIANT->set_sensitive( mbHasSelection && mxLB_VARIANT->get_count() > 0 );
     mxCBX_duration->set_sensitive( mbHasSelection );
     mxLB_SOUND->set_sensitive( mbHasSelection );
