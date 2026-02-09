@@ -1447,7 +1447,7 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testInvalidBareBiff5)
     CPPUNIT_ASSERT_EQUAL(OUString(), pDoc->GetString(aPos));
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTooManyColsRows)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTooManyColsRows_ods)
 {
     // The intentionally doc has cells beyond our MAXROW/MAXCOL, so there
     // should be a warning on load.
@@ -1458,12 +1458,15 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTooManyColsRows)
 
     CPPUNIT_ASSERT(pMedium->GetWarningError() == SCWARN_IMPORT_ROW_OVERFLOW
                    || pMedium->GetWarningError() == SCWARN_IMPORT_COLUMN_OVERFLOW);
+}
 
+CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTooManyColsRows_xlsx)
+{
     createScDoc("xlsx/too-many-cols-rows.xlsx", /*pPassword*/ nullptr,
                 /*bCheckWarningError*/ false);
 
-    pDocSh = getScDocShell();
-    pMedium = pDocSh->GetMedium();
+    ScDocShell* pDocSh = getScDocShell();
+    SfxMedium* pMedium = pDocSh->GetMedium();
 
     CPPUNIT_ASSERT(pMedium->GetWarningError() == SCWARN_IMPORT_ROW_OVERFLOW
                    || pMedium->GetWarningError() == SCWARN_IMPORT_COLUMN_OVERFLOW);
@@ -1730,40 +1733,39 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testRhbz1390776)
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong range", u"=SUM(A18:A23)"_ustr, pDoc->GetFormula(0, 27, 0));
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTdf104310)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTdf104310_x14)
 {
     // 1. Test x14 extension
-    {
-        createScDoc("xlsx/tdf104310.xlsx");
-        ScDocument* pDoc = getScDoc();
+    createScDoc("xlsx/tdf104310.xlsx");
+    ScDocument* pDoc = getScDoc();
 
-        const ScValidationData* pData = pDoc->GetValidationEntry(1);
-        CPPUNIT_ASSERT(pData);
+    const ScValidationData* pData = pDoc->GetValidationEntry(1);
+    CPPUNIT_ASSERT(pData);
 
-        // Make sure the list is correct.
-        std::vector<ScTypedStrData> aList;
-        pData->FillSelectionList(aList, ScAddress(0, 1, 0));
-        CPPUNIT_ASSERT_EQUAL(size_t(5), aList.size());
-        for (size_t i = 0; i < 5; ++i)
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(double(i + 1), aList[i].GetValue(), 1e-8);
-    }
+    // Make sure the list is correct.
+    std::vector<ScTypedStrData> aList;
+    pData->FillSelectionList(aList, ScAddress(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(size_t(5), aList.size());
+    for (size_t i = 0; i < 5; ++i)
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(double(i + 1), aList[i].GetValue(), 1e-8);
+}
 
+CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTdf104310_x12ac)
+{
     // 2. Test x12ac extension
-    {
-        createScDoc("xlsx/tdf104310-2.xlsx");
-        ScDocument* pDoc = getScDoc();
+    createScDoc("xlsx/tdf104310-2.xlsx");
+    ScDocument* pDoc = getScDoc();
 
-        const ScValidationData* pData = pDoc->GetValidationEntry(1);
-        CPPUNIT_ASSERT(pData);
+    const ScValidationData* pData = pDoc->GetValidationEntry(1);
+    CPPUNIT_ASSERT(pData);
 
-        // Make sure the list is correct.
-        std::vector<ScTypedStrData> aList;
-        pData->FillSelectionList(aList, ScAddress(0, 1, 0));
-        CPPUNIT_ASSERT_EQUAL(size_t(3), aList.size());
-        CPPUNIT_ASSERT_EQUAL(u"1"_ustr, aList[0].GetString());
-        CPPUNIT_ASSERT_EQUAL(u"2,3"_ustr, aList[1].GetString());
-        CPPUNIT_ASSERT_EQUAL(u"4"_ustr, aList[2].GetString());
-    }
+    // Make sure the list is correct.
+    std::vector<ScTypedStrData> aList;
+    pData->FillSelectionList(aList, ScAddress(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(size_t(3), aList.size());
+    CPPUNIT_ASSERT_EQUAL(u"1"_ustr, aList[0].GetString());
+    CPPUNIT_ASSERT_EQUAL(u"2,3"_ustr, aList[1].GetString());
+    CPPUNIT_ASSERT_EQUAL(u"4"_ustr, aList[2].GetString());
 }
 
 CPPUNIT_TEST_FIXTURE(ScFiltersTest3, testTdf31231)

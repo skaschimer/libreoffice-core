@@ -536,6 +536,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest2, testTdf118189)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 
@@ -733,6 +734,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest2, testTdf130614)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 

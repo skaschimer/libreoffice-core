@@ -41,6 +41,8 @@ class ScUiCalcTest : public ScModelTestBase
 {
 public:
     ScUiCalcTest();
+
+    void verifyTdf162087();
 };
 
 ScUiCalcTest::ScUiCalcTest()
@@ -48,19 +50,22 @@ ScUiCalcTest::ScUiCalcTest()
 {
 }
 
-CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf142854_GridVisibilityImportXlsxInHeadlessMode)
+CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf142854_GridVisibilityImportXlsxInHeadlessMode_Globally)
 {
     // Tests are running in Headless mode
     // Import an ods file with 'Hide' global grid visibility setting.
     createScDoc("tdf126541_GridOffGlobally.ods");
     ScDocument* pDoc = getScDoc();
     CPPUNIT_ASSERT(!pDoc->GetViewOptions().GetOption(sc::ViewOption::GRID));
+}
 
+CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf142854_GridVisibilityImportXlsxInHeadlessMode)
+{
     // To avoid regression, in headless mode leave the bug tdf126541
     // It means Sheet based grid line visibility setting will overwrite the global setting.
     // If there is only 1 sheet in the document, it will not result visible problems.
     createScDoc("tdf126541_GridOff.xlsx");
-    pDoc = getScDoc();
+    ScDocument* pDoc = getScDoc();
     CPPUNIT_ASSERT(!pDoc->GetViewOptions().GetOption(sc::ViewOption::GRID));
 }
 
@@ -89,6 +94,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testExternalReferences)
     save(TestFilter::ODS);
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 
@@ -224,46 +230,52 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf151886)
 }
 #endif
 
-CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf162087)
+void ScUiCalcTest::verifyTdf162087()
 {
-    auto verify = [this]() {
-        ScDocument* pDoc = getScDoc();
-        insertArrayToCell(u"E5"_ustr, u"=myData[[#Data]]");
+    ScDocument* pDoc = getScDoc();
+    insertArrayToCell(u"E5"_ustr, u"=myData[[#Data]]");
 
-        CPPUNIT_ASSERT_EQUAL(u"Elisabeth"_ustr, pDoc->GetString(4, 4, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Frieda"_ustr, pDoc->GetString(4, 5, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Adele"_ustr, pDoc->GetString(4, 6, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Berta"_ustr, pDoc->GetString(4, 7, 0));
-        CPPUNIT_ASSERT_EQUAL(u"total"_ustr, pDoc->GetString(4, 8, 0));
-        CPPUNIT_ASSERT_EQUAL(u"7"_ustr, pDoc->GetString(5, 4, 0));
-        CPPUNIT_ASSERT_EQUAL(u"6"_ustr, pDoc->GetString(5, 5, 0));
-        CPPUNIT_ASSERT_EQUAL(u"4"_ustr, pDoc->GetString(5, 6, 0));
-        CPPUNIT_ASSERT_EQUAL(u"5"_ustr, pDoc->GetString(5, 7, 0));
-        CPPUNIT_ASSERT_EQUAL(u"22"_ustr, pDoc->GetString(5, 8, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Elisabeth"_ustr, pDoc->GetString(4, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Frieda"_ustr, pDoc->GetString(4, 5, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Adele"_ustr, pDoc->GetString(4, 6, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Berta"_ustr, pDoc->GetString(4, 7, 0));
+    CPPUNIT_ASSERT_EQUAL(u"total"_ustr, pDoc->GetString(4, 8, 0));
+    CPPUNIT_ASSERT_EQUAL(u"7"_ustr, pDoc->GetString(5, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"6"_ustr, pDoc->GetString(5, 5, 0));
+    CPPUNIT_ASSERT_EQUAL(u"4"_ustr, pDoc->GetString(5, 6, 0));
+    CPPUNIT_ASSERT_EQUAL(u"5"_ustr, pDoc->GetString(5, 7, 0));
+    CPPUNIT_ASSERT_EQUAL(u"22"_ustr, pDoc->GetString(5, 8, 0));
 
-        insertArrayToCell(u"H5"_ustr, u"=myData[[#Headers]]");
+    insertArrayToCell(u"H5"_ustr, u"=myData[[#Headers]]");
 
-        CPPUNIT_ASSERT_EQUAL(u"Name"_ustr, pDoc->GetString(7, 4, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Count"_ustr, pDoc->GetString(8, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Name"_ustr, pDoc->GetString(7, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Count"_ustr, pDoc->GetString(8, 4, 0));
 
-        insertArrayToCell(u"K5"_ustr, u"=myData[[#All]]");
+    insertArrayToCell(u"K5"_ustr, u"=myData[[#All]]");
 
-        CPPUNIT_ASSERT_EQUAL(u"Name"_ustr, pDoc->GetString(10, 4, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Elisabeth"_ustr, pDoc->GetString(10, 5, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Frieda"_ustr, pDoc->GetString(10, 6, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Adele"_ustr, pDoc->GetString(10, 7, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Berta"_ustr, pDoc->GetString(10, 8, 0));
-        CPPUNIT_ASSERT_EQUAL(u"total"_ustr, pDoc->GetString(10, 9, 0));
-        CPPUNIT_ASSERT_EQUAL(u"Count"_ustr, pDoc->GetString(11, 4, 0));
-        CPPUNIT_ASSERT_EQUAL(u"7"_ustr, pDoc->GetString(11, 5, 0));
-        CPPUNIT_ASSERT_EQUAL(u"6"_ustr, pDoc->GetString(11, 6, 0));
-        CPPUNIT_ASSERT_EQUAL(u"4"_ustr, pDoc->GetString(11, 7, 0));
-        CPPUNIT_ASSERT_EQUAL(u"5"_ustr, pDoc->GetString(11, 8, 0));
-        CPPUNIT_ASSERT_EQUAL(u"22"_ustr, pDoc->GetString(11, 9, 0));
-    };
+    CPPUNIT_ASSERT_EQUAL(u"Name"_ustr, pDoc->GetString(10, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Elisabeth"_ustr, pDoc->GetString(10, 5, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Frieda"_ustr, pDoc->GetString(10, 6, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Adele"_ustr, pDoc->GetString(10, 7, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Berta"_ustr, pDoc->GetString(10, 8, 0));
+    CPPUNIT_ASSERT_EQUAL(u"total"_ustr, pDoc->GetString(10, 9, 0));
+    CPPUNIT_ASSERT_EQUAL(u"Count"_ustr, pDoc->GetString(11, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(u"7"_ustr, pDoc->GetString(11, 5, 0));
+    CPPUNIT_ASSERT_EQUAL(u"6"_ustr, pDoc->GetString(11, 6, 0));
+    CPPUNIT_ASSERT_EQUAL(u"4"_ustr, pDoc->GetString(11, 7, 0));
+    CPPUNIT_ASSERT_EQUAL(u"5"_ustr, pDoc->GetString(11, 8, 0));
+    CPPUNIT_ASSERT_EQUAL(u"22"_ustr, pDoc->GetString(11, 9, 0));
+}
 
+CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf162087_withoutUseEnglishFuncName)
+{
     createScDoc("tdf162087.ods");
-    verify();
+    verifyTdf162087();
+}
+
+CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf162087_withUseEnglishFuncName)
+{
+    createScDoc("tdf162087.ods");
 
     // change UseEnglishFuncName to true
     ScDocShell* pDocSh = getScDocShell();
@@ -272,13 +284,10 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf162087)
     aFormulaOptions.SetUseEnglishFuncName(true);
     pDocSh->SetFormulaOptions(aFormulaOptions);
 
-    createScDoc("tdf162087.ods");
-    pDocSh = getScDocShell();
-
     // Without the fix in place, this test would have failed with
     // - Expected: Elisabeth
     // - Actual  : #NAME?
-    verify();
+    verifyTdf162087();
 
     aFormulaOptions.SetUseEnglishFuncName(bOldStatus);
     pDocSh->SetFormulaOptions(aFormulaOptions);
@@ -296,6 +305,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf103994)
     save(TestFilter::ODS);
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 
@@ -332,6 +342,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf113541)
     save(TestFilter::ODS);
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 
@@ -1746,6 +1757,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf117706)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     ScDocument* pDoc = getScDoc();
 
@@ -1857,6 +1869,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testTdf108292)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 
@@ -1890,6 +1903,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testMultiRangeCol)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     ScDocument* pDoc = getScDoc();
 
@@ -1934,6 +1948,7 @@ CPPUNIT_TEST_FIXTURE(ScUiCalcTest, testPasteTransposed)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Open a new document
+    dispose();
     createScDoc();
     pDoc = getScDoc();
 

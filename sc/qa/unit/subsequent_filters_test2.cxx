@@ -487,85 +487,84 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSharedFormulaXLSB)
     }
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSharedFormulaXLS)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSharedFormulaXLS_fdo80091)
 {
-    {
-        // fdo#80091
-        createScDoc("xls/shared-formula/relative-refs1.xls");
-        ScDocument* pDoc = getScDoc();
-        pDoc->CalcAll();
+    // fdo#80091
+    createScDoc("xls/shared-formula/relative-refs1.xls");
+    ScDocument* pDoc = getScDoc();
+    pDoc->CalcAll();
 
-        // A1:A30 should be all formulas, and they should belong to the same group.
-        const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(0, 1, 0));
+    // A1:A30 should be all formulas, and they should belong to the same group.
+    const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(0, 1, 0));
+    CPPUNIT_ASSERT(pFC);
+    CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(1), pFC->GetSharedTopRow());
+    CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(29), pFC->GetSharedLength());
+
+    for (SCROW nRow = 0; nRow < 30; ++nRow)
+    {
+        ASSERT_DOUBLES_EQUAL(double(nRow + 1), pDoc->GetValue(0, nRow, 0));
+    }
+}
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSharedFormulaXLS_fdo84556)
+{
+    // fdo#84556 and some related tests
+    createScDoc("xls/shared-formula/relative-refs2.xls");
+    ScDocument* pDoc = getScDoc();
+    pDoc->CalcAll();
+
+    {
+        const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(2, 1, 0));
         CPPUNIT_ASSERT(pFC);
         CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(1), pFC->GetSharedTopRow());
-        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(29), pFC->GetSharedLength());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
 
-        for (SCROW nRow = 0; nRow < 30; ++nRow)
-        {
-            ASSERT_DOUBLES_EQUAL(double(nRow + 1), pDoc->GetValue(0, nRow, 0));
-        }
+        pFC = pDoc->GetFormulaCell(ScAddress(2, 10, 0));
+        CPPUNIT_ASSERT(pFC);
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(1), pFC->GetSharedTopRow());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
+
+        OUString aFormula = pDoc->GetFormula(2, 1, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(B9:D9)"_ustr, aFormula);
+
+        aFormula = pDoc->GetFormula(2, 10, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(B18:D18)"_ustr, aFormula);
     }
 
     {
-        // fdo#84556 and some related tests
-        createScDoc("xls/shared-formula/relative-refs2.xls");
-        ScDocument* pDoc = getScDoc();
-        pDoc->CalcAll();
+        const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(4, 8, 0));
+        CPPUNIT_ASSERT(pFC);
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(8), pFC->GetSharedTopRow());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
 
-        {
-            const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(2, 1, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(1), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
+        pFC = pDoc->GetFormulaCell(ScAddress(4, 17, 0));
+        CPPUNIT_ASSERT(pFC);
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(8), pFC->GetSharedTopRow());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
 
-            pFC = pDoc->GetFormulaCell(ScAddress(2, 10, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(1), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
+        OUString aFormula = pDoc->GetFormula(4, 8, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(G9:EY9)"_ustr, aFormula);
 
-            OUString aFormula = pDoc->GetFormula(2, 1, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(B9:D9)"_ustr, aFormula);
+        aFormula = pDoc->GetFormula(4, 17, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(G18:EY18)"_ustr, aFormula);
+    }
 
-            aFormula = pDoc->GetFormula(2, 10, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(B18:D18)"_ustr, aFormula);
-        }
+    {
+        const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(6, 15, 0));
+        CPPUNIT_ASSERT(pFC);
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(15), pFC->GetSharedTopRow());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
 
-        {
-            const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(4, 8, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(8), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
+        pFC = pDoc->GetFormulaCell(ScAddress(6, 24, 0));
+        CPPUNIT_ASSERT(pFC);
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(15), pFC->GetSharedTopRow());
+        CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
 
-            pFC = pDoc->GetFormulaCell(ScAddress(4, 17, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(8), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
+        OUString aFormula = pDoc->GetFormula(6, 15, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(A16:A40000)"_ustr, aFormula);
 
-            OUString aFormula = pDoc->GetFormula(4, 8, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(G9:EY9)"_ustr, aFormula);
-
-            aFormula = pDoc->GetFormula(4, 17, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(G18:EY18)"_ustr, aFormula);
-        }
-
-        {
-            const ScFormulaCell* pFC = pDoc->GetFormulaCell(ScAddress(6, 15, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(15), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
-
-            pFC = pDoc->GetFormulaCell(ScAddress(6, 24, 0));
-            CPPUNIT_ASSERT(pFC);
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(15), pFC->GetSharedTopRow());
-            CPPUNIT_ASSERT_EQUAL(static_cast<SCROW>(10), pFC->GetSharedLength());
-
-            OUString aFormula = pDoc->GetFormula(6, 15, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(A16:A40000)"_ustr, aFormula);
-
-            aFormula = pDoc->GetFormula(6, 24, 0);
-            CPPUNIT_ASSERT_EQUAL(u"=SUM(A25:A40009)"_ustr, aFormula);
-        }
+        aFormula = pDoc->GetFormula(6, 24, 0);
+        CPPUNIT_ASSERT_EQUAL(u"=SUM(A25:A40009)"_ustr, aFormula);
     }
 }
 
@@ -1489,59 +1488,58 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testTdf42481)
     CPPUNIT_ASSERT_EQUAL(u"14"_ustr, pDoc->GetString(ScAddress(3, 11, 0)));
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testNamedExpressionsXLSXML)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testNamedExpressionsXLSXML_Global)
 {
-    {
-        // global named expressions
+    // global named expressions
 
-        createScDoc("xml/named-exp-global.xml");
-        ScDocument* pDoc = getScDoc();
+    createScDoc("xml/named-exp-global.xml");
+    ScDocument* pDoc = getScDoc();
 
-        // A7
-        ScAddress aPos(0, 6, 0);
-        CPPUNIT_ASSERT_EQUAL(15.0, pDoc->GetValue(aPos));
-        CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
-                             pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
+    // A7
+    ScAddress aPos(0, 6, 0);
+    CPPUNIT_ASSERT_EQUAL(15.0, pDoc->GetValue(aPos));
+    CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
+                         pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
 
-        // B7
-        aPos.IncCol();
-        CPPUNIT_ASSERT_EQUAL(55.0, pDoc->GetValue(aPos));
-        CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange2)"_ustr,
-                             pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
+    // B7
+    aPos.IncCol();
+    CPPUNIT_ASSERT_EQUAL(55.0, pDoc->GetValue(aPos));
+    CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange2)"_ustr,
+                         pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
 
-        const ScRangeData* pRD = pDoc->GetRangeName()->findByUpperName(u"MYRANGE"_ustr);
-        CPPUNIT_ASSERT(pRD);
-        pRD = pDoc->GetRangeName()->findByUpperName(u"MYRANGE2"_ustr);
-        CPPUNIT_ASSERT(pRD);
-    }
+    const ScRangeData* pRD = pDoc->GetRangeName()->findByUpperName(u"MYRANGE"_ustr);
+    CPPUNIT_ASSERT(pRD);
+    pRD = pDoc->GetRangeName()->findByUpperName(u"MYRANGE2"_ustr);
+    CPPUNIT_ASSERT(pRD);
+}
 
-    {
-        // sheet-local named expressions
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testNamedExpressionsXLSXML_Local)
+{
+    // sheet-local named expressions
 
-        createScDoc("xml/named-exp-local.xml");
-        ScDocument* pDoc = getScDoc();
+    createScDoc("xml/named-exp-local.xml");
+    ScDocument* pDoc = getScDoc();
 
-        // A7 on Sheet1
-        ScAddress aPos(0, 6, 0);
-        CPPUNIT_ASSERT_EQUAL(27.0, pDoc->GetValue(aPos));
-        CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
-                             pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
+    // A7 on Sheet1
+    ScAddress aPos(0, 6, 0);
+    CPPUNIT_ASSERT_EQUAL(27.0, pDoc->GetValue(aPos));
+    CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
+                         pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
 
-        // A7 on Sheet2
-        aPos.IncTab();
-        CPPUNIT_ASSERT_EQUAL(74.0, pDoc->GetValue(aPos));
-        CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
-                             pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
+    // A7 on Sheet2
+    aPos.IncTab();
+    CPPUNIT_ASSERT_EQUAL(74.0, pDoc->GetValue(aPos));
+    CPPUNIT_ASSERT_EQUAL(u"=SUM(MyRange)"_ustr,
+                         pDoc->GetFormula(aPos.Col(), aPos.Row(), aPos.Tab()));
 
-        const ScRangeName* pRN = pDoc->GetRangeName(0);
-        CPPUNIT_ASSERT(pRN);
-        const ScRangeData* pRD = pRN->findByUpperName(u"MYRANGE"_ustr);
-        CPPUNIT_ASSERT(pRD);
-        pRN = pDoc->GetRangeName(1);
-        CPPUNIT_ASSERT(pRN);
-        pRD = pRN->findByUpperName(u"MYRANGE"_ustr);
-        CPPUNIT_ASSERT(pRD);
-    }
+    const ScRangeName* pRN = pDoc->GetRangeName(0);
+    CPPUNIT_ASSERT(pRN);
+    const ScRangeData* pRD = pRN->findByUpperName(u"MYRANGE"_ustr);
+    CPPUNIT_ASSERT(pRD);
+    pRN = pDoc->GetRangeName(1);
+    CPPUNIT_ASSERT(pRN);
+    pRD = pRN->findByUpperName(u"MYRANGE"_ustr);
+    CPPUNIT_ASSERT(pRD);
 }
 
 CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testEmptyRowsXLSXML)
@@ -1695,15 +1693,18 @@ void testCells(ScDocument* pDoc)
 }
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSingleLine)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSingleLine_xls)
 {
     createScDoc("xls/cell-multi-line.xls");
     ScDocument* pDoc = getScDoc();
     CPPUNIT_ASSERT(pDoc);
     testCells(pDoc);
+}
 
+CPPUNIT_TEST_FIXTURE(ScFiltersTest2, testSingleLine_xlsx)
+{
     createScDoc("xlsx/cell-multi-line.xlsx");
-    pDoc = getScDoc();
+    ScDocument* pDoc = getScDoc();
     CPPUNIT_ASSERT(pDoc);
     testCells(pDoc);
 }

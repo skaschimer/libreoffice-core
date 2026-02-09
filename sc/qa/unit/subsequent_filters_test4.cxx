@@ -1103,24 +1103,38 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf147955)
     CPPUNIT_ASSERT_EQUAL(10.98, pDoc->GetValue(1, 15, 0));
 }
 
-CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testImportCrashes)
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf149752) { testImportCrash("ods/tdf149752.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf158483) { testImportCrash("xls/tdf158483.xls"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf122643) { testImportCrash("ods/tdf122643.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf132278) { testImportCrash("ods/tdf132278.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf130959) { testImportCrash("xlsx/tdf130959.xlsx"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf129410) { testImportCrash("ods/tdf129410.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf138507) { testImportCrash("ods/tdf138507.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf131380) { testImportCrash("xlsx/tdf131380.xlsx"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf139782) { testImportCrash("ods/tdf139782.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf136551) { testImportCrash("ods/tdf136551.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf90391) { testImportCrash("ods/tdf90391.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf121887)
 {
-    testImportCrash("ods/tdf149752.ods");
-    testImportCrash("xls/tdf158483.xls");
-    testImportCrash("ods/tdf122643.ods");
-    testImportCrash("ods/tdf132278.ods");
-    testImportCrash("xlsx/tdf130959.xlsx");
-    testImportCrash("ods/tdf129410.ods");
-    testImportCrash("ods/tdf138507.ods");
-    testImportCrash("xlsx/tdf131380.xlsx");
-    testImportCrash("ods/tdf139782.ods");
-    testImportCrash("ods/tdf136551.ods");
-    testImportCrash("ods/tdf90391.ods");
     testImportCrash("xlsx/tdf121887.xlsx"); // 'Maximum number of rows per sheet' warning
-    testImportCrash("xlsm/tdf111974.xlsm");
-    testImportCrash("ods/tdf149679.ods");
-    testImportCrash("xlsx/tdf124525.xlsx");
 }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf111974) { testImportCrash("xlsm/tdf111974.xlsm"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf149679) { testImportCrash("ods/tdf149679.ods"); }
+
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf124525) { testImportCrash("xlsx/tdf124525.xlsx"); }
 
 CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testTdf129681)
 {
@@ -1203,13 +1217,16 @@ CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testSharedFormulaXLS)
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Incorrect group geometry.", SCROW(1),
                                  xGroup->mpTopCell->aPos.Row());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Incorrect group geometry.", SCROW(18), xGroup->mnLength);
+}
 
+CPPUNIT_TEST_FIXTURE(ScFiltersTest4, testSharedFormulaXLS2)
+{
     // The following file contains shared formula whose range is inaccurate.
     // Excel can easily mess up shared formula ranges, so we need to be able
     // to handle these wrong ranges that Excel stores.
 
     createScDoc("xls/shared-formula/gap.xls");
-    pDoc = getScDoc();
+    ScDocument* pDoc = getScDoc();
     pDoc->CalcAll();
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Wrong formula.", u"=A1*20"_ustr, pDoc->GetFormula(1, 0, 0));

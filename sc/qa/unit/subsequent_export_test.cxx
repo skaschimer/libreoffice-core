@@ -228,26 +228,50 @@ CPPUNIT_TEST_FIXTURE(ScExportTest, testTdf111876)
     CPPUNIT_ASSERT(sTarget != "../xls/bug-fixes.xls");
 }
 
-CPPUNIT_TEST_FIXTURE(ScExportTest, testPasswordExport)
+CPPUNIT_TEST_FIXTURE(ScExportTest, testPasswordExport_ODS)
 {
-    std::vector<TestFilter> aFilterNames{ TestFilter::ODS, TestFilter::XLS, TestFilter::XLSX };
+    createScDoc();
 
-    for (size_t i = 0; i < aFilterNames.size(); ++i)
-    {
-        createScDoc();
+    ScDocument* pDoc = getScDoc();
 
-        ScDocument* pDoc = getScDoc();
+    pDoc->SetValue(0, 0, 0, 1.0);
 
-        pDoc->SetValue(0, 0, 0, 1.0);
+    saveAndReload(TestFilter::ODS, /*rParams*/ {}, /*pPassword*/ "test");
 
-        saveAndReload(aFilterNames[i], /*rParams*/ {}, /*pPassword*/ "test");
-
-        pDoc = getScDoc();
-        double aVal = pDoc->GetValue(0, 0, 0);
-        ASSERT_DOUBLES_EQUAL(1.0, aVal);
-    }
+    pDoc = getScDoc();
+    double aVal = pDoc->GetValue(0, 0, 0);
+    ASSERT_DOUBLES_EQUAL(1.0, aVal);
 }
 
+CPPUNIT_TEST_FIXTURE(ScExportTest, testPasswordExport_XLS)
+{
+    createScDoc();
+
+    ScDocument* pDoc = getScDoc();
+
+    pDoc->SetValue(0, 0, 0, 1.0);
+
+    saveAndReload(TestFilter::XLS, /*rParams*/ {}, /*pPassword*/ "test");
+
+    pDoc = getScDoc();
+    double aVal = pDoc->GetValue(0, 0, 0);
+    ASSERT_DOUBLES_EQUAL(1.0, aVal);
+}
+
+CPPUNIT_TEST_FIXTURE(ScExportTest, testPasswordExport_XLSX)
+{
+    createScDoc();
+
+    ScDocument* pDoc = getScDoc();
+
+    pDoc->SetValue(0, 0, 0, 1.0);
+
+    saveAndReload(TestFilter::XLSX, /*rParams*/ {}, /*pPassword*/ "test");
+
+    pDoc = getScDoc();
+    double aVal = pDoc->GetValue(0, 0, 0);
+    ASSERT_DOUBLES_EQUAL(1.0, aVal);
+}
 CPPUNIT_TEST_FIXTURE(ScExportTest, testTdf134332)
 {
     createScDoc("ods/tdf134332.ods");

@@ -68,6 +68,8 @@ class ScExportTest4 : public ScModelTestBase
 {
 public:
     ScExportTest4();
+
+    void testTdf151484(TestFilter eFilter);
 };
 
 ScExportTest4::ScExportTest4()
@@ -191,36 +193,39 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf85553)
     CPPUNIT_ASSERT_EQUAL(u"4.5"_ustr, pDoc->GetString(ScAddress(2, 2, 0)));
 }
 
-CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf151484)
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf151484_ODS) { testTdf151484(TestFilter::ODS); }
+
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf151484_XLS)
 {
-    std::vector<TestFilter> aFilterNames{ TestFilter::ODS, TestFilter::XLS, TestFilter::XLSX };
+    // Without the fix in place, this test would have failed with
+    // - Expected: 4
+    // - Actual  : 1
+    // - Failed on filter: MS Excel 97
+    testTdf151484(TestFilter::XLS);
+}
 
-    for (size_t i = 0; i < aFilterNames.size(); ++i)
-    {
-        createScDoc("ods/tdf151484.ods");
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf151484_XLSX) { testTdf151484(TestFilter::XLSX); }
 
-        const OString sFailedMessage
-            = OString::Concat("Failed on filter: ") + TestFilterNames.at(aFilterNames[i]).toUtf8();
+void ScExportTest4::testTdf151484(TestFilter eFilter)
+{
+    createScDoc("ods/tdf151484.ods");
 
-        saveAndReload(aFilterNames[i]);
+    const OString sFailedMessage
+        = OString::Concat("Failed on filter: ") + TestFilterNames.at(eFilter).toUtf8();
 
-        ScDocument* pDoc = getScDoc();
+    saveAndReload(eFilter);
 
-        const ScValidationData* pData = pDoc->GetValidationEntry(1);
-        CPPUNIT_ASSERT(pData);
+    ScDocument* pDoc = getScDoc();
 
-        std::vector<ScTypedStrData> aList;
-        pData->FillSelectionList(aList, ScAddress(0, 1, 0));
+    const ScValidationData* pData = pDoc->GetValidationEntry(1);
+    CPPUNIT_ASSERT(pData);
 
-        // Without the fix in place, this test would have failed with
-        // - Expected: 4
-        // - Actual  : 1
-        // - Failed on filter: MS Excel 97
-        CPPUNIT_ASSERT_EQUAL_MESSAGE(sFailedMessage.getStr(), size_t(4), aList.size());
-        for (size_t j = 0; j < 4; ++j)
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(sFailedMessage.getStr(), double(j + 1),
-                                         aList[j].GetValue());
-    }
+    std::vector<ScTypedStrData> aList;
+    pData->FillSelectionList(aList, ScAddress(0, 1, 0));
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE(sFailedMessage.getStr(), size_t(4), aList.size());
+    for (size_t j = 0; j < 4; ++j)
+        CPPUNIT_ASSERT_EQUAL_MESSAGE(sFailedMessage.getStr(), double(j + 1), aList[j].GetValue());
 }
 
 CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf143979)
@@ -994,7 +999,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testtdf169496_hidden_graphic)
         CPPUNIT_FAIL("Names of graphics is incorrect");
 }
 
-CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf144642_RowHeightRounding)
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf144642_RowHeightRounding_saveByCalc)
 {
     // MS Excel round down row heights to 0.75pt
     // MS Excel can save a row height of 28.35pt, but will display it as a row height of 27.75pt.
@@ -1005,9 +1010,12 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf144642_RowHeightRounding)
     // 10mm == 567 twips == 28.35pt
     CPPUNIT_ASSERT_EQUAL(sal_uInt16(567), pDoc->GetRowHeight(0, 0));
     CPPUNIT_ASSERT_EQUAL(tools::Long(567 * 26), pDoc->GetRowHeight(0, 25, 0, true));
+}
 
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf144642_RowHeightRounding_saveByExcel)
+{
     createScDoc("xlsx/tdf144642_RowHeight_28.35pt_SavedByExcel.xlsx");
-    pDoc = getScDoc();
+    ScDocument* pDoc = getScDoc();
     // 555twips == 27.75pt == 9.79mm
     CPPUNIT_ASSERT_EQUAL(sal_uInt16(555), pDoc->GetRowHeight(0, 0));
     CPPUNIT_ASSERT_EQUAL(tools::Long(555 * 26), pDoc->GetRowHeight(0, 25, 0, true));

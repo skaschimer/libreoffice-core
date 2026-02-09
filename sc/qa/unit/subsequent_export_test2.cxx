@@ -208,12 +208,15 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testRefStringConfigXLSX)
     CPPUNIT_ASSERT_EQUAL_MESSAGE("String ref syntax doesn't match",
                                  formula::FormulaGrammar::CONV_OOO,
                                  aConfig.meStringRefAddressSyntax);
+}
 
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testNoRefStringConfigXLSX)
+{
     // this doc has no entry for ref syntax
     createScDoc("xlsx/empty-noconf.xlsx");
 
-    pDoc = getScDoc();
-    aConfig = pDoc->GetCalcConfig();
+    ScDocument* pDoc = getScDoc();
+    ScCalcConfig aConfig = pDoc->GetCalcConfig();
     // therefore after import, ref syntax should be set to CalcA1 | ExcelA1
     CPPUNIT_ASSERT_EQUAL_MESSAGE("String ref syntax doesn't match",
                                  formula::FormulaGrammar::CONV_A1_XL_A1,
@@ -641,39 +644,36 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testAutofilterColorsODF)
 
 CPPUNIT_TEST_FIXTURE(ScExportTest2, testAutofilterColorsOOXML)
 {
-    {
-        createScDoc("xlsx/autofilter-colors.xlsx");
-        save(TestFilter::XLSX);
-        xmlDocUniquePtr pTable1 = parseExport(u"xl/tables/table1.xml"_ustr);
-        CPPUNIT_ASSERT(pTable1);
-        sal_Int32 nDxfId
-            = getXPath(pTable1, "/x:table/x:autoFilter/x:filterColumn/x:colorFilter", "dxfId")
-                  .toInt32()
-              + 1;
+    createScDoc("xlsx/autofilter-colors.xlsx");
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pTable1 = parseExport(u"xl/tables/table1.xml"_ustr);
+    CPPUNIT_ASSERT(pTable1);
+    sal_Int32 nDxfId
+        = getXPath(pTable1, "/x:table/x:autoFilter/x:filterColumn/x:colorFilter", "dxfId").toInt32()
+          + 1;
 
-        xmlDocUniquePtr pStyles = parseExport(u"xl/styles.xml"_ustr);
-        CPPUNIT_ASSERT(pStyles);
-        OString sDxfXPath("/x:styleSheet/x:dxfs/x:dxf[" + OString::number(nDxfId)
-                          + "]/x:fill/x:patternFill/x:fgColor");
-        assertXPath(pStyles, sDxfXPath, "rgb", u"FFFFD7D7");
-    }
+    xmlDocUniquePtr pStyles = parseExport(u"xl/styles.xml"_ustr);
+    CPPUNIT_ASSERT(pStyles);
+    OString sDxfXPath("/x:styleSheet/x:dxfs/x:dxf[" + OString::number(nDxfId)
+                      + "]/x:fill/x:patternFill/x:fgColor");
+    assertXPath(pStyles, sDxfXPath, "rgb", u"FFFFD7D7");
+}
 
-    {
-        createScDoc("xlsx/autofilter-colors-fg.xlsx");
-        save(TestFilter::XLSX);
-        xmlDocUniquePtr pTable1 = parseExport(u"xl/tables/table1.xml"_ustr);
-        CPPUNIT_ASSERT(pTable1);
-        sal_Int32 nDxfId
-            = getXPath(pTable1, "/x:table/x:autoFilter/x:filterColumn/x:colorFilter", "dxfId")
-                  .toInt32()
-              + 1;
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testAutofilterColorsOOXML2)
+{
+    createScDoc("xlsx/autofilter-colors-fg.xlsx");
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pTable1 = parseExport(u"xl/tables/table1.xml"_ustr);
+    CPPUNIT_ASSERT(pTable1);
+    sal_Int32 nDxfId
+        = getXPath(pTable1, "/x:table/x:autoFilter/x:filterColumn/x:colorFilter", "dxfId").toInt32()
+          + 1;
 
-        xmlDocUniquePtr pStyles = parseExport(u"xl/styles.xml"_ustr);
-        CPPUNIT_ASSERT(pStyles);
-        OString sDxfXPath("/x:styleSheet/x:dxfs/x:dxf[" + OString::number(nDxfId)
-                          + "]/x:fill/x:patternFill/x:fgColor");
-        assertXPath(pStyles, sDxfXPath, "rgb", u"FF3465A4");
-    }
+    xmlDocUniquePtr pStyles = parseExport(u"xl/styles.xml"_ustr);
+    CPPUNIT_ASSERT(pStyles);
+    OString sDxfXPath("/x:styleSheet/x:dxfs/x:dxf[" + OString::number(nDxfId)
+                      + "]/x:fill/x:patternFill/x:fgColor");
+    assertXPath(pStyles, sDxfXPath, "rgb", u"FF3465A4");
 }
 
 CPPUNIT_TEST_FIXTURE(ScExportTest2, testAutofilterTop10XLSX)
@@ -893,8 +893,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testOpenDocumentAsReadOnly)
     ScDocShell* pDocSh = getScDocShell();
     CPPUNIT_ASSERT(pDocSh->IsSecurityOptOpenReadOnly());
 
-    save(TestFilter::XLSX);
-    loadWithParams(maTempFile.GetURL(), aParams);
+    saveAndReload(TestFilter::XLSX, aParams);
 
     pDocSh = getScDocShell();
     CPPUNIT_ASSERT(pDocSh->IsSecurityOptOpenReadOnly());
@@ -1084,7 +1083,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf169072_illegalDates)
     assertXPath(pXmlCore, "/cp:coreProperties/cp:lastPrinted", 0); // was 1600-12-31T00:00:52Z
 }
 
-CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf165180_date1904)
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf165180_date1904_XLSX_2007)
 {
     // given a hand-modified document (which added dateCompatibility="0")
     // with an earliest date of 1904 (Excel-for-mac null-date)
@@ -1108,14 +1107,29 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf165180_date1904)
     xmlDocUniquePtr pWorkbook = parseExport(u"xl/workbook.xml"_ustr);
     // dateCompatibility is ignored: make sure that date1904=true is round-tripped
     assertXPath(pWorkbook, "/x:workbook/x:workbookPr", "date1904", u"true");
+}
 
+CPPUNIT_TEST_FIXTURE(ScExportTest2, testTdf165180_date1904_XLSX)
+{
+    // given a hand-modified document (which added dateCompatibility="0")
+    // with an earliest date of 1904 (Excel-for-mac null-date)
+
+    // ensure en-US locale for expected date formatting
+    SvtSysLocaleOptions aOptions;
+    OUString sLocaleConfigString = aOptions.GetLanguageTag().getBcp47();
+    aOptions.SetLocaleConfigString(u"en-US"_ustr);
+    aOptions.Commit();
+    comphelper::ScopeGuard g([&aOptions, &sLocaleConfigString] {
+        aOptions.SetLocaleConfigString(sLocaleConfigString);
+        aOptions.Commit();
+    });
     createScDoc("xlsx/tdf165180_date1904.xlsx");
     saveAndReload(TestFilter::XLSX);
 
-    pDoc = getScDoc();
+    ScDocument* pDoc = getScDoc();
     CPPUNIT_ASSERT_EQUAL(u"Tuesday, March 1, 1904"_ustr, pDoc->GetString(0, 0, 0));
 
-    pWorkbook = parseExport(u"xl/workbook.xml"_ustr);
+    xmlDocUniquePtr pWorkbook = parseExport(u"xl/workbook.xml"_ustr);
     // dateCompatibility is ignored: make sure that date1904=true is round-tripped
     assertXPath(pWorkbook, "/x:workbook/x:workbookPr", "date1904", u"true");
 }
@@ -1220,6 +1234,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testValidationCopyPaste)
     pDoc->CopyToClip(aClipParam, &aClipDoc, &aMark, false, false);
 
     // Create second document, paste B1 from clip
+    dispose();
     createScDoc();
     pDoc = getScDoc();
     ScRange aDstRange(1, 0, 0);
