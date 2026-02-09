@@ -151,7 +151,7 @@ def unwrapInclude(include):
     return include[1:-1]
 
 
-def processIWYUOutput(iwyuOutput, moduleRules, fileName, noexclude, checknamespaces, finderrors, removefwdd):
+def processIWYUOutput(iwyuOutput, moduleRules, fileName, noexclude, checknamespaces, finderrors, removefwdd, headersfwd):
     inAdd = False
     toAdd = []
     inRemove = False
@@ -264,7 +264,7 @@ def processIWYUOutput(iwyuOutput, moduleRules, fileName, noexclude, checknamespa
                     # check if a hpp files hdl pair is now considered necessary
                     # then there is no need for an explicit exclusion
                     hdlMatch = re.match(".*.hdl", include)
-                    if hdlMatch:
+                    if hdlMatch and headersfwd:
                         hdl = include.replace(".hdl", ".hpp")
                         if hdl in excludelistRules[realFileName]:
                             print("WARNING:", hdl, "excluded header can be removed from exclusion list of file:", realFileName)
@@ -452,13 +452,13 @@ def processIWYUOutput(iwyuOutput, moduleRules, fileName, noexclude, checknamespa
     return len(toRemove)
 
 
-def run_tool(task_queue, failed_files, noexclude, checknamespaces, finderrors, removefwdd):
+def run_tool(task_queue, failed_files, noexclude, checknamespaces, finderrors, removefwdd, headersfwd):
     while True:
         invocation, moduleRules = task_queue.get()
         if not len(failed_files):
             print("[IWYU] " + invocation.split(' ')[-1])
             p = subprocess.Popen(invocation, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            retcode = processIWYUOutput(p.communicate()[0].decode('utf-8').splitlines(), moduleRules, invocation.split(' ')[-1], noexclude, checknamespaces, finderrors, removefwdd)
+            retcode = processIWYUOutput(p.communicate()[0].decode('utf-8').splitlines(), moduleRules, invocation.split(' ')[-1], noexclude, checknamespaces, finderrors, removefwdd, headersfwd)
             if finderrors:
                 if p.returncode == 1:
                     print("Running the IWYU process returned error code:\n" + invocation)
@@ -609,7 +609,7 @@ def tidy(compileCommands, paths, noexclude, checknamespaces, finderrors, removef
         task_queue = queue.Queue(max_task)
         failed_files = []
         for _ in range(max_task):
-            t = threading.Thread(target=run_tool, args=(task_queue, failed_files, noexclude, checknamespaces, finderrors, removefwdd))
+            t = threading.Thread(target=run_tool, args=(task_queue, failed_files, noexclude, checknamespaces, finderrors, removefwdd, headersfwd))
             t.daemon = True
             t.start()
 
