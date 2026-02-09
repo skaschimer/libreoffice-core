@@ -251,35 +251,10 @@ public:
 
     void SetModeImages(const Image& rBitmap1, const Image& rBitmap2);
 
-    inline void SetBitmap1(const Image& rImage);
-    inline void SetBitmap2(const Image& rImage);
-    inline const Image& GetBitmap1() const;
-    inline const Image& GetBitmap2() const;
-
-private:
-    Image& implGetImageStore(bool bFirst);
+    void SetBitmap1(const Image& rImage);
+    void SetBitmap2(const Image& rImage);
+    const Image& GetBitmap1() const;
+    const Image& GetBitmap2() const;
 };
-
-inline void SvLBoxContextBmp::SetBitmap1(const Image& _rImage)
-{
-    implGetImageStore(true) = _rImage;
-}
-
-inline void SvLBoxContextBmp::SetBitmap2(const Image& _rImage)
-{
-    implGetImageStore(false) = _rImage;
-}
-
-inline const Image& SvLBoxContextBmp::GetBitmap1() const
-{
-    Image& rImage = const_cast<SvLBoxContextBmp*>(this)->implGetImageStore(true);
-    return rImage;
-}
-
-inline const Image& SvLBoxContextBmp::GetBitmap2() const
-{
-    Image& rImage = const_cast<SvLBoxContextBmp*>(this)->implGetImageStore(false);
-    return rImage;
-}
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

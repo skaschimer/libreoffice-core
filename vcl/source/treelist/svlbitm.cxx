@@ -478,12 +478,13 @@ void SvLBoxContextBmp::SetModeImages( const Image& _rBitmap1, const Image& _rBit
     m_pImpl->m_aImage2 = _rBitmap2;
 }
 
-Image& SvLBoxContextBmp::implGetImageStore( bool _bFirst )
-{
+void SvLBoxContextBmp::SetBitmap1(const Image& _rImage) { m_pImpl->m_aImage1 = _rImage; }
 
-    // OJ: #i27071# wrong mode so we just return the normal images
-    return _bFirst ? m_pImpl->m_aImage1 : m_pImpl->m_aImage2;
-}
+void SvLBoxContextBmp::SetBitmap2(const Image& _rImage) { m_pImpl->m_aImage2 = _rImage; }
+
+const Image& SvLBoxContextBmp::GetBitmap1() const { return m_pImpl->m_aImage1; }
+
+const Image& SvLBoxContextBmp::GetBitmap2() const { return m_pImpl->m_aImage2; }
 
 void SvLBoxContextBmp::InitViewData( SvTreeListBox* pView,SvTreeListEntry* pEntry,
     SvViewDataItem* pViewData)
@@ -501,7 +502,8 @@ void SvLBoxContextBmp::Paint(
 {
 
     // get the image.
-    const Image& rImage = implGetImageStore(pView->IsExpanded() != m_pImpl->m_bExpanded);
+    const Image& rImage
+        = pView->IsExpanded() != m_pImpl->m_bExpanded ? m_pImpl->m_aImage1 : m_pImpl->m_aImage2;
 
     bool _bSemiTransparent = bool( SvTLEntryFlags::SEMITRANSPARENT & rEntry.GetFlags( ) );
     // draw
