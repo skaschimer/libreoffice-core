@@ -529,53 +529,9 @@ excludelist:
     - cppuhelper/supportsservice.hxx
     # Needed for HAVE_FEATURE_JAVA
     - rtl/ref.hxx
-    include/connectivity/ConnectionWrapper.hxx:
-    # base class has to be a complete type
-    - com/sun/star/lang/XUnoTunnel.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
-    include/connectivity/conncleanup.hxx:
-    # base class has to be a complete type
-    - com/sun/star/beans/XPropertyChangeListener.hpp
-    - com/sun/star/sdbc/XRowSetListener.hpp
-    include/connectivity/parameters.hxx:
-    # base class has to be a complete type
-    - com/sun/star/sdb/XSingleSelectQueryComposer.hpp
-    include/connectivity/paramwrapper.hxx:
-    # base class has to be a complete type
-    - com/sun/star/container/XEnumerationAccess.hpp
-    - com/sun/star/container/XIndexAccess.hpp
     include/connectivity/sdbcx/VCollection.hxx:
     # base class has to be a complete type
-    - com/sun/star/container/XNameAccess.hpp
-    - com/sun/star/container/XIndexAccess.hpp
-    - com/sun/star/container/XEnumerationAccess.hpp
-    - com/sun/star/container/XContainer.hpp
-    - com/sun/star/sdbc/XColumnLocate.hpp
-    - com/sun/star/util/XRefreshable.hpp
-    - com/sun/star/sdbcx/XDataDescriptorFactory.hpp
-    - com/sun/star/sdbcx/XAppend.hpp
-    - com/sun/star/sdbcx/XDrop.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
     - com/sun/star/beans/XPropertySet.hpp
-    include/connectivity/sdbcx/VColumn.hxx:
-    # base class has to be a complete type
-    - com/sun/star/container/XNamed.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
-    - com/sun/star/sdbcx/XDataDescriptorFactory.hpp
-    include/connectivity/sdbcx/VTable.hxx:
-    # base class has to be a complete type
-    - com/sun/star/container/XNamed.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
-    - com/sun/star/sdbcx/XAlterTable.hpp
-    - com/sun/star/sdbcx/XColumnsSupplier.hpp
-    - com/sun/star/sdbcx/XDataDescriptorFactory.hpp
-    - com/sun/star/sdbcx/XIndexesSupplier.hpp
-    - com/sun/star/sdbcx/XKeysSupplier.hpp
-    - com/sun/star/sdbcx/XRename.hpp
-    include/connectivity/sdbcx/VView.hxx:
-    # base class has to be a complete type
-    - com/sun/star/container/XNamed.hpp
-    - com/sun/star/lang/XServiceInfo.hpp
     include/drawinglayer/primitive2d/baseprimitive2d.hxx:
     # base class has to be a complete type
     - com/sun/star/graphic/XPrimitive2D.hpp
