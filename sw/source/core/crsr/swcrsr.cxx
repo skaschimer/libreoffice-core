@@ -856,7 +856,7 @@ static sal_Int32 lcl_FindSelection( SwFindParas& rParas, SwCursor* pCurrentCurso
                 }
             }
 
-            // tdf#131431 move pCurrentCursor if it hasn't moved to avoid an infinte loop
+            // tdf#131431 move pCurrentCursor if it hasn't moved to avoid an infinite loop
             if( bSrchBkwrd && *pEndPos == *pCurrentCursor->Start() )
             {
                 (*fnMove.fnPos)( pCurrentCursor->GetMark(), false );
