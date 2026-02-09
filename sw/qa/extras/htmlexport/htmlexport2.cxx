@@ -375,7 +375,12 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testTrailingLineBreak)
     pWrtShell->Insert(u"test\n"_ustr);
 
     // When exporting to reqif-xhtml:
-    ExportToReqif();
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
 
     // Then make sure that we still have a single line-break:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -388,8 +393,6 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testTrailingLineBreak)
     // Then test the import side:
     // Given an empty document:
     // When importing a <br> from reqif-xhtml:
-    ImportFromReqif(maTempFile.GetURL());
-
     // Then make sure that line-break is not lost:
     pWrtShell = getSwDocShell()->GetWrtShell();
     OUString aActual = pWrtShell->GetCursor()->GetPointNode().GetTextNode()->GetText();
@@ -926,12 +929,16 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testTdf156647_CellPaddingRoundtrip)
         CPPUNIT_ASSERT(aTableBorder.IsDistanceValid);
     }
     // When exporting to reqif-xhtml:
-    ExportToReqif();
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     // Make sure that we export it:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
     assertXPath(pXmlDoc, "//reqif-xhtml:table", "cellpadding", u"48"); // px
     // Now import it
-    ImportFromReqif(maTempFile.GetURL());
     // Then make sure that padding is not lost:
     {
         auto xTable = getParagraphOrTable(1);
@@ -965,9 +972,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_PreserveSpaces)
     pWrtShell->Insert(paraText);
 
     // When exporting to plain HTML, using PreserveSpaces:
-    save(TestFilter::HTML_WRITER, {
-                                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-                                  });
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(TestFilter::HTML_WRITER,
+                  {
+                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+                  });
 
     // Then make sure that "white-space: pre-wrap" is written into the paragraph's style:
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
@@ -978,9 +987,6 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_PreserveSpaces)
     assertXPathContent(pHtmlDoc, "/html/body/p", paraText);
 
     // Test import
-
-    setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL());
     CPPUNIT_ASSERT_EQUAL(paraText, getParagraph(1)->getString());
 }
 
@@ -993,11 +999,13 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_PreserveSpaces)
     pWrtShell->Insert(paraText);
 
     // When exporting to ReqIF, using PreserveSpaces:
-    save(TestFilter::HTML_WRITER,
-         {
-             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-             comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-         });
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+            comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+        });
 
     // Then make sure that xml:space="preserve" attribute exists in the paragraph element:
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
@@ -1006,12 +1014,6 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_PreserveSpaces)
     assertXPathContent(pXmlDoc, "/reqif-xhtml:html/reqif-xhtml:div/reqif-xhtml:p", paraText);
 
     // Test import
-
-    setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL(), {
-                                         comphelper::makePropertyValue(u"FilterOptions"_ustr,
-                                                                       u"xhtmlns=reqif-xhtml"_ustr),
-                                     });
     CPPUNIT_ASSERT_EQUAL(paraText, getParagraph(1)->getString());
 }
 
@@ -1042,9 +1044,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_NoPreserveSpaces)
     createSwDoc("test_no_space_preserve.fodt");
 
     // Export to plain HTML, using PreserveSpaces:
-    save(TestFilter::HTML_WRITER, {
-                                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-                                  });
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(TestFilter::HTML_WRITER,
+                  {
+                      comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+                  });
 
     htmlDocUniquePtr pHtmlDoc = parseHtml(maTempFile);
     CPPUNIT_ASSERT(pHtmlDoc);
@@ -1073,10 +1077,6 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testHTML_NoPreserveSpaces)
     assertXPath_NoWhiteSpaceInStyle(pHtmlDoc, "/html/body/p[11]");
 
     // Test import
-
-    setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL());
-
     CPPUNIT_ASSERT_EQUAL(u"No special spaces"_ustr, getParagraph(1)->getString());
     CPPUNIT_ASSERT_EQUAL(u" Leading space"_ustr, getParagraph(2)->getString());
     CPPUNIT_ASSERT_EQUAL(u"Trailing space "_ustr, getParagraph(3)->getString());
@@ -1100,11 +1100,13 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_NoPreserveSpaces)
     createSwDoc("test_no_space_preserve.fodt");
 
     // Export to ReqIF, using PreserveSpaces:
-    save(TestFilter::HTML_WRITER,
-         {
-             comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
-             comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
-         });
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+            comphelper::makePropertyValue(u"PreserveSpaces"_ustr, true),
+        });
 
     xmlDocUniquePtr pXmlDoc = WrapReqifFromTempFile();
 
@@ -1137,13 +1139,6 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_NoPreserveSpaces)
     assertXPathNoAttribute(pXmlDoc, "/reqif-xhtml:html/reqif-xhtml:div/reqif-xhtml:p[11]", "space");
 
     // Test import
-
-    setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL(), {
-                                         comphelper::makePropertyValue(u"FilterOptions"_ustr,
-                                                                       u"xhtmlns=reqif-xhtml"_ustr),
-                                     });
-
     CPPUNIT_ASSERT_EQUAL(u"No special spaces"_ustr, getParagraph(1)->getString());
     CPPUNIT_ASSERT_EQUAL(u" Leading space"_ustr, getParagraph(2)->getString());
     CPPUNIT_ASSERT_EQUAL(u"Trailing space "_ustr, getParagraph(3)->getString());

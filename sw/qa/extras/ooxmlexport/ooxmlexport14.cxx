@@ -72,6 +72,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf128197)
     xmlDocUniquePtr pLayout14 = parseLayoutDump();
     sal_Int32 nHeight14 = getXPath(pLayout14, "//page[1]/body/txt[1]/infos/bounds", "height").toInt32();
 
+    dispose();
     createSwDoc("128197_compat15.docx");
     xmlDocUniquePtr pLayout15 = parseLayoutDump();
     sal_Int32 nHeight15 = getXPath(pLayout15, "//page[1]/body/txt[1]/infos/bounds", "height").toInt32();

@@ -2137,7 +2137,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter5, testTdf72341GrowAllScripts)
     CPPUNIT_ASSERT_GREATER(nWidthAlephInitial, nWidthAlephResized);
 }
 
-CPPUNIT_TEST_FIXTURE(SwLayoutWriter5, testTdf168858)
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter5, testTdf168858_singleHiddenSection)
 {
     // Both test documents have no content outside of hidden sections.
     // Each test checks, that the document loads OK, sections in the document load with correct
@@ -2186,7 +2186,10 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter5, testTdf168858)
         assertXPath(pXmlDoc, "//page['pass 2']/body/section", "formatName", u"abc");
         assertXPath(pXmlDoc, "//page['pass 2']/body/section/infos/bounds", "height", u"0");
     }
+}
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter5, testTdf168858_nestedHiddenSection)
+{
     // 2. A conditionally hidden section inside another hidden section
     {
         createSwDoc("tdf168858_nested_hidden_section.fodt");

@@ -1409,6 +1409,7 @@ CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf41652NBSPWidth)
 
         nSectionAfterNBSPX_legacy_leftAligned = getXPath(pXmlDoc, "//textarray[4]", "x").toInt32();
         nSectionAfterNBSPX_legacy_justified = getXPath(pXmlDoc, "//textarray[10]", "x").toInt32();
+        dispose();
     }
 
     // Measure the X of sections after NBSPs in a file with the option enabled
@@ -1423,6 +1424,7 @@ CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf41652NBSPWidth)
             = getXPath(pXmlDoc, "//textarray[4]", "x").toInt32();
         nSectionAfterNBSPX_optionDisabled_justified
             = getXPath(pXmlDoc, "//textarray[10]", "x").toInt32();
+        dispose();
     }
 
     // Measure the X of the sections after NBSPs in a file with the option enabled

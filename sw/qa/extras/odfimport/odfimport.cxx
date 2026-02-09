@@ -390,6 +390,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf149978)
 {
     createSwDoc("tdf149978.fodt");
     // on Linux the bug only reproduces if a document has been loaded previously
+    dispose();
     createSwDoc("tdf149978.fodt");
     // this was nondeterministic so try 10 times
     for (int i = 1; i <= 10; ++i)

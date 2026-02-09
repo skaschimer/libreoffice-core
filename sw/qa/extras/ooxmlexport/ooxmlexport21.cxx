@@ -800,6 +800,13 @@ CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaData)
     assertXPath(pCoreDoc, "/cp:coreProperties/cp:lastModifiedBy", 0);
     assertXPath(pCoreDoc, "/cp:coreProperties/cp:lastPrinted", 0);
     assertXPath(pCoreDoc, "/cp:coreProperties/cp:revision", 0);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaDataAndKeepUserInformation)
+{
+    // 1. Remove all personal info
+    ScopedConfigValue<officecfg::Office::Common::Security::Scripting::RemovePersonalInfoOnSaving>
+        aCfg1(true);
 
     // 2. Remove personal information, keep user information
     ScopedConfigValue<officecfg::Office::Common::Security::Scripting::KeepDocUserInfoOnSaving>
@@ -808,10 +815,10 @@ CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaData)
     createSwDoc("personalmetadata.docx");
     save(TestFilter::DOCX);
 
-    pAppDoc = parseExport(u"docProps/app.xml"_ustr);
+    xmlDocUniquePtr pAppDoc = parseExport(u"docProps/app.xml"_ustr);
     assertXPath(pAppDoc, "/extended-properties:Properties/extended-properties:Template", 0);
     assertXPath(pAppDoc, "/extended-properties:Properties/extended-properties:TotalTime", 0);
-    pCoreDoc = parseExport(u"docProps/core.xml"_ustr);
+    xmlDocUniquePtr pCoreDoc = parseExport(u"docProps/core.xml"_ustr);
     assertXPath(pCoreDoc, "/cp:coreProperties/dcterms:created", 1);
     assertXPath(pCoreDoc, "/cp:coreProperties/dcterms:modified", 1);
     assertXPath(pCoreDoc, "/cp:coreProperties/dc:creator", 1);
@@ -834,14 +841,17 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf169072_illegalDates)
     assertXPath(pXmlCore, "/cp:coreProperties/cp:lastPrinted", 0); // was 1600-12-31T00:00:52Z
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData)
+CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData_Disabled)
 {
     // 1. Check we have the original edit time info
     createSwDoc("personalmetadata.docx");
     save(TestFilter::DOCX);
     xmlDocUniquePtr pAppDoc = parseExport(u"docProps/app.xml"_ustr);
     assertXPath(pAppDoc, "/extended-properties:Properties/extended-properties:TotalTime", 1);
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData_Enabled)
+{
     // Set config RemoveEditingTimeOnSaving to true
     ScopedConfigValue<officecfg::Office::Common::Security::Scripting::RemoveEditingTimeOnSaving>
         aCfg(true);
@@ -849,7 +859,7 @@ CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData)
     // 2. Check edit time info is removed
     createSwDoc("personalmetadata.docx");
     save(TestFilter::DOCX);
-    pAppDoc = parseExport(u"docProps/app.xml"_ustr);
+    xmlDocUniquePtr pAppDoc = parseExport(u"docProps/app.xml"_ustr);
     assertXPath(pAppDoc, "/extended-properties:Properties/extended-properties:TotalTime", 0);
 }
 

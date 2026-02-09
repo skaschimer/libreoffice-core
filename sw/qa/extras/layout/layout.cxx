@@ -3633,11 +3633,9 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter, testForcepoint92)
 }
 
 //just care it doesn't crash/assert
-CPPUNIT_TEST_FIXTURE(SwLayoutWriter, testForcepoint93)
-{
-    createSwDoc("forcepoint93-1.rtf");
-    createSwDoc("forcepoint93-2.rtf");
-}
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter, testForcepoint93_1) { createSwDoc("forcepoint93-1.rtf"); }
+
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter, testForcepoint93_2) { createSwDoc("forcepoint93-2.rtf"); }
 
 //just care it doesn't crash/assert
 CPPUNIT_TEST_FIXTURE(SwLayoutWriter, testForcepoint94) { createSwWebDoc("forcepoint94.html"); }

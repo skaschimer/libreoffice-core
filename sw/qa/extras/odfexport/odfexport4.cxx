@@ -83,65 +83,64 @@ CPPUNIT_TEST_FIXTURE(Test, tdf150927)
         "/office:document-styles/office:automatic-styles/style:style[@style:family='table']", 2);
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaData)
+CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaDataAndKeepUserInformation)
 {
     ScopedConfigValue<ScriptingCfg::RemovePersonalInfoOnSaving> aCfg1(true);
-    {
-        // 1. Remove personal info, keep user info
-        ScopedConfigValue<ScriptingCfg::KeepDocUserInfoOnSaving> aCfg2(true);
+    // 1. Remove personal info, keep user info
+    ScopedConfigValue<ScriptingCfg::KeepDocUserInfoOnSaving> aCfg2(true);
 
-        createSwDoc("personalmetadata.odt");
-        saveAndReload(TestFilter::ODT);
-        xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:initial-creator", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:creation-date", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:date", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:creator", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:printed-by", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:print-date", 1);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-cycles", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:template", 0);
-        pXmlDoc = parseExport(u"settings.xml"_ustr);
-        assertXPath(pXmlDoc,
-                    "/office:document-settings/office:settings/config:config-item-set[2]/"
-                    "config:config-item[@config:name='PrinterName']",
-                    0);
-        assertXPath(pXmlDoc,
-                    "/office:document-settings/office:settings/config:config-item-set[2]/"
-                    "config:config-item[@config:name='PrinterSetup']",
-                    0);
-    }
-
-    {
-        // 2. Remove user info too
-        ScopedConfigValue<ScriptingCfg::KeepDocUserInfoOnSaving> aCfg2(false);
-
-        createSwDoc("personalmetadata.odt");
-        saveAndReload(TestFilter::ODT);
-        xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:initial-creator", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:creation-date", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:date", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:creator", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:printed-by", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:print-date", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-cycles", 0);
-        assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:template", 0);
-        pXmlDoc = parseExport(u"settings.xml"_ustr);
-        assertXPath(pXmlDoc,
-                    "/office:document-settings/office:settings/config:config-item-set[2]/"
-                    "config:config-item[@config:name='PrinterName']",
-                    0);
-        assertXPath(pXmlDoc,
-                    "/office:document-settings/office:settings/config:config-item-set[2]/"
-                    "config:config-item[@config:name='PrinterSetup']",
-                    0);
-    }
+    createSwDoc("personalmetadata.odt");
+    saveAndReload(TestFilter::ODT);
+    xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:initial-creator", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:creation-date", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:date", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:creator", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:printed-by", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:print-date", 1);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-cycles", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:template", 0);
+    pXmlDoc = parseExport(u"settings.xml"_ustr);
+    assertXPath(pXmlDoc,
+                "/office:document-settings/office:settings/config:config-item-set[2]/"
+                "config:config-item[@config:name='PrinterName']",
+                0);
+    assertXPath(pXmlDoc,
+                "/office:document-settings/office:settings/config:config-item-set[2]/"
+                "config:config-item[@config:name='PrinterSetup']",
+                0);
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData)
+CPPUNIT_TEST_FIXTURE(Test, testPersonalMetaData)
+{
+    // 1. Remove all personal info
+    ScopedConfigValue<ScriptingCfg::RemovePersonalInfoOnSaving> aCfg1(true);
+
+    createSwDoc("personalmetadata.odt");
+    saveAndReload(TestFilter::ODT);
+    xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:initial-creator", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:creation-date", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:date", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/dc:creator", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:printed-by", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:print-date", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:editing-cycles", 0);
+    assertXPath(pXmlDoc, "/office:document-meta/office:meta/meta:template", 0);
+    pXmlDoc = parseExport(u"settings.xml"_ustr);
+    assertXPath(pXmlDoc,
+                "/office:document-settings/office:settings/config:config-item-set[2]/"
+                "config:config-item[@config:name='PrinterName']",
+                0);
+    assertXPath(pXmlDoc,
+                "/office:document-settings/office:settings/config:config-item-set[2]/"
+                "config:config-item[@config:name='PrinterSetup']",
+                0);
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData_Disabled)
 {
     // 1. Check we have the original edit time info
     createSwDoc("personalmetadata.odt");
@@ -149,14 +148,17 @@ CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData)
     xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
     assertXPathContent(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration",
                        u"PT21M22S");
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testRemoveOnlyEditTimeMetaData_Enabled)
+{
     // Set config RemoveEditingTimeOnSaving to true
     ScopedConfigValue<ScriptingCfg::RemoveEditingTimeOnSaving> aCfg(true);
 
     // 2. Check edit time info is 0
     createSwDoc("personalmetadata.odt");
     save(TestFilter::ODT);
-    pXmlDoc = parseExport(u"meta.xml"_ustr);
+    xmlDocUniquePtr pXmlDoc = parseExport(u"meta.xml"_ustr);
     assertXPathContent(pXmlDoc, "/office:document-meta/office:meta/meta:editing-duration", u"P0D");
 }
 
@@ -898,7 +900,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf150408_IsLegal)
         "is-legal", u"true");
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testTdf159382)
+CPPUNIT_TEST_FIXTURE(Test, testTdf159382_DOCX)
 {
     // Testing NoGapAfterNoteNumber compat option
 
@@ -945,7 +947,10 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf159382)
         CPPUNIT_ASSERT(width);
         CPPUNIT_ASSERT_LESS(sal_Int32(100), width);
     }
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testTdf159382_DOC)
+{
     createSwDoc("footnote_spacing_hanging_para.doc");
     // 3. Make sure that DOC import sets NoGapAfterNoteNumber option, and creates
     // correct layout
@@ -965,7 +970,10 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf159382)
         CPPUNIT_ASSERT(width);
         CPPUNIT_ASSERT_LESS(sal_Int32(100), width);
     }
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testTdf159382_RTF)
+{
     createSwDoc("footnote_spacing_hanging_para.rtf");
     // 4. Make sure that RTF import sets NoGapAfterNoteNumber option, and creates
     // correct layout
@@ -985,7 +993,10 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf159382)
         CPPUNIT_ASSERT(width);
         CPPUNIT_ASSERT_LESS(sal_Int32(100), width);
     }
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testTdf159382_NewDocument)
+{
     createSwDoc();
     // 5. Make sure that a new Writer document has this setting set to false
     {
@@ -1520,7 +1531,10 @@ CPPUNIT_TEST_FIXTURE(Test, testMsWordUlTrailSpace)
         CPPUNIT_ASSERT_EQUAL(uno::Any(false),
                              xSettings->getPropertyValue(u"MsWordUlTrailSpace"_ustr));
     }
+}
 
+CPPUNIT_TEST_FIXTURE(Test, testMsWordUlTrailSpace_NewDocument)
+{
     createSwDoc();
     // 5. Make sure that a new Writer document has this setting set to false
     {

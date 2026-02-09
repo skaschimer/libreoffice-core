@@ -443,16 +443,20 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148)
                          lcl_translitTest(*pDoc, *pCursor, TF::LOWERCASE_UPPERCASE));
     CPPUNIT_ASSERT_EQUAL(u"   text"_ustr,
                          lcl_translitTest(*pDoc, *pCursor, TF::UPPERCASE_LOWERCASE));
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148_2)
+{
+    using TF = TransliterationFlags;
     /* Test what happens when node contains text but selection does not contain any text */
     createSwDoc();
-    pDoc = getSwDoc();
-    pWrtShell = getSwDocShell()->GetWrtShell();
+    SwDoc* pDoc = getSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
     pWrtShell->SttEndDoc(/*bStt=*/false);
     pWrtShell->Insert(u"text   "_ustr);
 
     pWrtShell->StartOfSection();
-    pCursor = pWrtShell->getShellCursor(false);
+    SwShellCursor* pCursor = pWrtShell->getShellCursor(false);
     for (int i = 0; i < 4; i++)
     {
         pCursor->Move(fnMoveForward);
@@ -469,16 +473,20 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148)
                          lcl_translitTest(*pDoc, *pCursor, TF::LOWERCASE_UPPERCASE));
     CPPUNIT_ASSERT_EQUAL(u"text   "_ustr,
                          lcl_translitTest(*pDoc, *pCursor, TF::UPPERCASE_LOWERCASE));
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148_3)
+{
+    using TF = TransliterationFlags;
     /* Test what happens when node contains only non-word text but selection does not contain any text */
     createSwDoc();
-    pDoc = getSwDoc();
-    pWrtShell = getSwDocShell()->GetWrtShell();
+    SwDoc* pDoc = getSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
     pWrtShell->SttEndDoc(/*bStt=*/false);
     pWrtShell->Insert(u"-1   "_ustr);
 
     pWrtShell->StartOfSection();
-    pCursor = pWrtShell->getShellCursor(false);
+    SwShellCursor* pCursor = pWrtShell->getShellCursor(false);
     for (int i = 0; i < 2; i++)
     {
         pCursor->Move(fnMoveForward);
@@ -493,15 +501,19 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148)
     CPPUNIT_ASSERT_EQUAL(u"-1   "_ustr, lcl_translitTest(*pDoc, *pCursor, TF::TITLE_CASE));
     CPPUNIT_ASSERT_EQUAL(u"-1   "_ustr, lcl_translitTest(*pDoc, *pCursor, TF::LOWERCASE_UPPERCASE));
     CPPUNIT_ASSERT_EQUAL(u"-1   "_ustr, lcl_translitTest(*pDoc, *pCursor, TF::UPPERCASE_LOWERCASE));
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148_4)
+{
+    using TF = TransliterationFlags;
     createSwDoc();
-    pDoc = getSwDoc();
-    pWrtShell = getSwDocShell()->GetWrtShell();
+    SwDoc* pDoc = getSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
     pWrtShell->SttEndDoc(/*bStt=*/false);
     pWrtShell->Insert(u"   -1"_ustr);
 
     pWrtShell->StartOfSection();
-    pCursor = pWrtShell->getShellCursor(false);
+    SwShellCursor* pCursor = pWrtShell->getShellCursor(false);
     pCursor->SetMark();
     for (int i = 0; i < 2; i++)
     {
@@ -512,16 +524,20 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148)
     CPPUNIT_ASSERT_EQUAL(u"   -1"_ustr, lcl_translitTest(*pDoc, *pCursor, TF::TITLE_CASE));
     CPPUNIT_ASSERT_EQUAL(u"   -1"_ustr, lcl_translitTest(*pDoc, *pCursor, TF::LOWERCASE_UPPERCASE));
     CPPUNIT_ASSERT_EQUAL(u"   -1"_ustr, lcl_translitTest(*pDoc, *pCursor, TF::UPPERCASE_LOWERCASE));
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf148148_5)
+{
+    using TF = TransliterationFlags;
     /* Test what happens when node and selection contains only non-word text */
     createSwDoc();
-    pDoc = getSwDoc();
-    pWrtShell = getSwDocShell()->GetWrtShell();
+    SwDoc* pDoc = getSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
     pWrtShell->SttEndDoc(/*bStt=*/false);
     pWrtShell->Insert(u"   -1"_ustr);
 
     pWrtShell->StartOfSection();
-    pCursor = pWrtShell->getShellCursor(false);
+    SwShellCursor* pCursor = pWrtShell->getShellCursor(false);
     pCursor->SetMark();
     for (int i = 0; i < 5; i++)
     {
@@ -1045,7 +1061,6 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testClassificationPaste)
 CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testSmallCaps)
 {
     // Create a document, add some characters and select them.
-    createSwDoc();
     createSwDoc();
     SwDocShell* pDocShell = getSwDocShell();
     SwWrtShell* pWrtShell = pDocShell->GetWrtShell();
@@ -2095,7 +2110,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf106736)
     CPPUNIT_ASSERT_MESSAGE("Left Tab width is ~103", nWidth < 150);
 }
 
-CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks)
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks_True)
 {
     // The option is true in settings.xml
     createSwDoc("MsWordCompTrailingBlanksTrue.odt");
@@ -2161,14 +2176,17 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks)
                 u"PortionType::Hole");
     assertXPath(pXmlDoc, "/root/page/body/txt[3]/SwParaPortion/SwLineLayout/child::*[4]", "portion",
                 u"         "); // All the trailing blanks
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks_false)
+{
     // The option is false in settings.xml
     createSwDoc("MsWordCompTrailingBlanksFalse.odt");
-    pDoc = getSwDoc();
+    SwDoc* pDoc = getSwDoc();
     CPPUNIT_ASSERT_EQUAL(false, pDoc->getIDocumentSettingAccess().get(
                                     DocumentSettingId::MS_WORD_COMP_TRAILING_BLANKS));
     calcLayout();
-    pXmlDoc = parseLayoutDump();
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
     // Check that trailing spaces spans are put into Text portions if option is disabled
 
     assertXPath(pXmlDoc, "/root/page/body/txt", 3);
@@ -2238,16 +2256,22 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks)
                 u"PortionType::Text");
     assertXPath(pXmlDoc, "/root/page/body/txt[3]/SwParaPortion/SwLineLayout/child::*[5]", "portion",
                 u"   "); // third colored trailing blank span here
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks_EmptyDocument)
+{
     // MsWordCompTrailingBlanks option should be false by default in new documents
     createSwDoc();
-    pDoc = getSwDoc();
+    SwDoc* pDoc = getSwDoc();
     CPPUNIT_ASSERT_EQUAL(false, pDoc->getIDocumentSettingAccess().get(
                                     DocumentSettingId::MS_WORD_COMP_TRAILING_BLANKS));
+}
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testMsWordCompTrailingBlanks_Docx)
+{
     // The option should be true if a .docx, .doc or .rtf document is opened
     createSwDoc("MsWordCompTrailingBlanks.docx");
-    pDoc = getSwDoc();
+    SwDoc* pDoc = getSwDoc();
     CPPUNIT_ASSERT_EQUAL(true, pDoc->getIDocumentSettingAccess().get(
                                    DocumentSettingId::MS_WORD_COMP_TRAILING_BLANKS));
 }
@@ -2585,6 +2609,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest4, testTdf143320)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Create a new document
+    dispose();
     createSwDoc();
     pWrtShell = getSwDocShell()->GetWrtShell();
     CPPUNIT_ASSERT(pWrtShell);

@@ -638,7 +638,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf134548)
     }
 }
 
-CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf124423)
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf124423_DOCX)
 {
     createSwDoc("tdf124423.docx");
     xmlDocUniquePtr pXmlDoc = parseLayoutDump();
@@ -649,12 +649,17 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf124423)
     sal_Int32 nPageWidth = getXPath(pXmlDoc, "//page/infos/prtBounds", "width").toInt32();
     CPPUNIT_ASSERT_EQUAL(nPageWidth, nFly2Width);
     CPPUNIT_ASSERT_LESS(nPageWidth / 2, nFly1Width);
+}
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf124423_ODT)
+{
     createSwDoc("tdf124423.odt");
-    pXmlDoc = parseLayoutDump();
-    nFly1Width = getXPath(pXmlDoc, "(//anchored/fly)[1]/infos/prtBounds", "width").toInt32();
-    nFly2Width = getXPath(pXmlDoc, "(//anchored/fly)[2]/infos/prtBounds", "width").toInt32();
-    nPageWidth = getXPath(pXmlDoc, "//page/infos/prtBounds", "width").toInt32();
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
+    sal_Int32 nFly1Width
+        = getXPath(pXmlDoc, "(//anchored/fly)[1]/infos/prtBounds", "width").toInt32();
+    sal_Int32 nFly2Width
+        = getXPath(pXmlDoc, "(//anchored/fly)[2]/infos/prtBounds", "width").toInt32();
+    sal_Int32 nPageWidth = getXPath(pXmlDoc, "//page/infos/prtBounds", "width").toInt32();
     CPPUNIT_ASSERT_LESS(nPageWidth / 2, nFly2Width);
     CPPUNIT_ASSERT_LESS(nPageWidth / 2, nFly1Width);
 }
@@ -714,7 +719,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf138782)
             .toInt32());
 }
 
-CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf135035)
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf135035_DOCX)
 {
     createSwDoc("tdf135035.docx");
     xmlDocUniquePtr pXmlDoc = parseLayoutDump();
@@ -728,13 +733,19 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf135035)
     CPPUNIT_ASSERT_EQUAL(nParentWidth, nFly2Width);
     CPPUNIT_ASSERT_EQUAL(nParentWidth, nFly3Width);
     CPPUNIT_ASSERT_LESS(nParentWidth / 2, nFly1Width);
+}
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf135035_ODT)
+{
     createSwDoc("tdf135035.odt");
-    pXmlDoc = parseLayoutDump();
-    nFly1Width = getXPath(pXmlDoc, "(//anchored/fly)[1]/infos/prtBounds", "width").toInt32();
-    nFly2Width = getXPath(pXmlDoc, "(//anchored/fly)[2]/infos/prtBounds", "width").toInt32();
-    nFly3Width = getXPath(pXmlDoc, "(//anchored/fly)[3]/infos/prtBounds", "width").toInt32();
-    nParentWidth = getXPath(pXmlDoc, "(//txt)[1]/infos/prtBounds", "width").toInt32();
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
+    sal_Int32 nFly1Width
+        = getXPath(pXmlDoc, "(//anchored/fly)[1]/infos/prtBounds", "width").toInt32();
+    sal_Int32 nFly2Width
+        = getXPath(pXmlDoc, "(//anchored/fly)[2]/infos/prtBounds", "width").toInt32();
+    sal_Int32 nFly3Width
+        = getXPath(pXmlDoc, "(//anchored/fly)[3]/infos/prtBounds", "width").toInt32();
+    sal_Int32 nParentWidth = getXPath(pXmlDoc, "(//txt)[1]/infos/prtBounds", "width").toInt32();
     CPPUNIT_ASSERT_LESS(nParentWidth / 2, nFly2Width);
     CPPUNIT_ASSERT_LESS(nParentWidth / 2, nFly1Width);
     CPPUNIT_ASSERT_GREATER(nParentWidth, nFly3Width);
@@ -760,7 +771,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf139336_ColumnsWithFootnoteDoNotOccu
     assertXPath(pXmlDoc, "/root/page", 2);
 }
 
-CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf54465_ColumnsWithFootnoteDoNotOccupyEntirePage)
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf54465_ColumnsWithFootnoteDoNotOccupyEntirePage_Old)
 {
     // Old odt files should keep their original layout, as it was before Tdf139336 fix.
     // The new odt file is only 1 page long, while the old odt file (with the same content)
@@ -774,9 +785,12 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf54465_ColumnsWithFootnoteDoNotOccup
     xmlNodeSetPtr pXmlNodes = pXmlObj->nodesetval;
     CPPUNIT_ASSERT_GREATER(1, xmlXPathNodeSetGetLength(pXmlNodes));
     xmlXPathFreeObject(pXmlObj);
+}
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, testTdf54465_ColumnsWithFootnoteDoNotOccupyEntirePage_New)
+{
     createSwDoc("tdf54465_ColumnsWithFootnoteDoNotOccupyEntirePage_New.odt");
-    pXmlDoc = parseLayoutDump();
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
     assertXPath(pXmlDoc, "/root/page", 1);
 }
 
@@ -1828,12 +1842,15 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, TestTdf162614)
     // - Expected: 770
     // - Actual  : 267
     assertXPath(pXmlDoc, "//page[2]/body/tab[2]/infos/bounds", "height", u"770");
+}
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter4, TestTdf162614_2)
+{
     // Now a test for a case that took me some time to fix when creating the patch.
     // It is the greatly simplified tdf124795-5.
 
     createSwDoc("C4_must_start_on_p1.fodt");
-    pXmlDoc = parseLayoutDump();
+    auto pXmlDoc = parseLayoutDump();
 
     // The first line of C4 text must start on the first page - the initial version of the fix
     // moved it to page 2.

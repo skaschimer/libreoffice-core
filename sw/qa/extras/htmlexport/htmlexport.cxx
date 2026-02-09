@@ -593,8 +593,8 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIfPngImg)
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"ExportImagesAsOLE"_ustr, true),
     };
-    save(TestFilter::HTML_WRITER, aStoreProperties);
-    ImportFromReqif(maTempFile.GetURL());
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(TestFilter::HTML_WRITER, aStoreProperties);
     verify(/*bExported=*/true);
 }
 
@@ -1081,7 +1081,12 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqifOle1PDF)
     // Save to reqif-xhtml.
     createSwDoc("pdf-ole.odt");
 
-    ExportToReqif();
+    setImportFilterName(TestFilter::HTML_WRITER);
+    saveAndReload(
+        TestFilter::HTML_WRITER,
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
     OUString aRtfUrl = GetOlePath();
     SvMemoryStream aOle1;
     ParseOle1FromRtfUrl(aRtfUrl, aOle1);
@@ -1096,8 +1101,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqifOle1PDF)
     // OLE1-in-OLE2 data, resulting in additional size.
     CPPUNIT_ASSERT_EQUAL(static_cast<sal_uInt32>(0x99ed), aOle1Reader.m_nNativeDataSize);
 
-    // Now import this back and check the ODT result.
-    ImportFromReqif(maTempFile.GetURL());
+    // Now check the ODT result.
     save(TestFilter::ODT);
     uno::Reference<packages::zip::XZipFileAccess2> xNameAccess
         = packages::zip::ZipFileAccess::createWithURL(comphelper::getComponentContext(m_xSFactory),

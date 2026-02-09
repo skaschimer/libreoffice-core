@@ -1360,6 +1360,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf156546)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // create another document
+    dispose();
     createSwDoc();
     dispatchCommand(mxComponent, u".uno:Paste"_ustr, {});
 
@@ -1544,6 +1545,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf121546)
     CPPUNIT_ASSERT_EQUAL(1, getParagraphs());
 
     // Create a new document
+    dispose();
     createSwDoc();
 
     dispatchCommand(mxComponent, u".uno:Paste"_ustr, {});
@@ -1600,6 +1602,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf134626)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Create a new document
+    dispose();
     createSwDoc();
     pWrtShell = getSwDocShell()->GetWrtShell();
     CPPUNIT_ASSERT(pWrtShell);
@@ -3095,6 +3098,7 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest8, testTdf157129)
     dispatchCommand(mxComponent, u".uno:Copy"_ustr, {});
 
     // Create a new document
+    dispose();
     createSwDoc();
     SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
 

@@ -391,7 +391,7 @@ void SwModelTestBase::saveAndReload(TestFilter eFilter,
                                     const char* pPassword)
 {
     save(eFilter, rParams, pPassword);
-
+    dispose();
     loadURL(maTempFile.GetURL(), rParams, pPassword);
 }
 

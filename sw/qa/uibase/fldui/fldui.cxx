@@ -164,37 +164,62 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf68364InsertConditionalFieldWithTwoDots)
     CPPUNIT_ASSERT_EQUAL(u"19.12.2023"_ustr, pWrtShell->GetCurField()->ExpandField(true, nullptr));
 }
 
-CPPUNIT_TEST_FIXTURE(Test, testTdf170392FilenameFormatConstantsIdl)
+CPPUNIT_TEST_FIXTURE(Test, testTdf170392FilenameFormatConstantsIdl_Name)
 {
-    SwFileNameFormat aFormats[] = { SwFileNameFormat::Name, SwFileNameFormat::Path };
-    for (SwFileNameFormat eFormat : aFormats)
-    {
-        // Create an empty document
-        createSwDoc();
-        SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    // Create an empty document
+    createSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
 
-        // Insert a filename field containing a specific format
-        SwFieldMgr aFieldMgr(pWrtShell);
-        SwInsertField_Data aFieldData(SwFieldTypesEnum::Filename, 0, u""_ustr, u""_ustr,
-                                      static_cast<sal_uInt32>(eFormat));
-        CPPUNIT_ASSERT(aFieldMgr.InsertField(aFieldData));
+    // Insert a filename field containing a specific format
+    SwFieldMgr aFieldMgr(pWrtShell);
+    SwInsertField_Data aFieldData(SwFieldTypesEnum::Filename, 0, u""_ustr, u""_ustr,
+                                  static_cast<sal_uInt32>(SwFileNameFormat::Name));
+    CPPUNIT_ASSERT(aFieldMgr.InsertField(aFieldData));
 
-        // First reload in order to get a value for the filename field
-        saveAndReload(TestFilter::ODT);
-        pWrtShell = getSwDocShell()->GetWrtShell();
-        pWrtShell->SttEndDoc(true);
-        const auto aExpandedField = pWrtShell->GetCurField()->ExpandField(true, nullptr);
+    // First reload in order to get a value for the filename field
+    saveAndReload(TestFilter::ODT);
+    pWrtShell = getSwDocShell()->GetWrtShell();
+    pWrtShell->SttEndDoc(true);
+    const auto aExpandedField = pWrtShell->GetCurField()->ExpandField(true, nullptr);
 
-        // Second reload in order to check consistency for the filename field
-        saveAndReload(TestFilter::ODT);
-        pWrtShell = getSwDocShell()->GetWrtShell();
-        pWrtShell->SttEndDoc(true);
+    // Second reload in order to check consistency for the filename field
+    saveAndReload(TestFilter::ODT);
+    pWrtShell = getSwDocShell()->GetWrtShell();
+    pWrtShell->SttEndDoc(true);
 
-        // Without the accompanying fix in place, this test would have failed with:
-        // - Expected: filename field is the same
-        // - Actual  : filename field differ since the filename format constants differ
-        CPPUNIT_ASSERT_EQUAL(aExpandedField, pWrtShell->GetCurField()->ExpandField(true, nullptr));
-    }
+    // Without the accompanying fix in place, this test would have failed with:
+    // - Expected: filename field is the same
+    // - Actual  : filename field differ since the filename format constants differ
+    CPPUNIT_ASSERT_EQUAL(aExpandedField, pWrtShell->GetCurField()->ExpandField(true, nullptr));
+}
+
+CPPUNIT_TEST_FIXTURE(Test, testTdf170392FilenameFormatConstantsIdl_Path)
+{
+    // Create an empty document
+    createSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+
+    // Insert a filename field containing a specific format
+    SwFieldMgr aFieldMgr(pWrtShell);
+    SwInsertField_Data aFieldData(SwFieldTypesEnum::Filename, 0, u""_ustr, u""_ustr,
+                                  static_cast<sal_uInt32>(SwFileNameFormat::Path));
+    CPPUNIT_ASSERT(aFieldMgr.InsertField(aFieldData));
+
+    // First reload in order to get a value for the filename field
+    saveAndReload(TestFilter::ODT);
+    pWrtShell = getSwDocShell()->GetWrtShell();
+    pWrtShell->SttEndDoc(true);
+    const auto aExpandedField = pWrtShell->GetCurField()->ExpandField(true, nullptr);
+
+    // Second reload in order to check consistency for the filename field
+    saveAndReload(TestFilter::ODT);
+    pWrtShell = getSwDocShell()->GetWrtShell();
+    pWrtShell->SttEndDoc(true);
+
+    // Without the accompanying fix in place, this test would have failed with:
+    // - Expected: filename field is the same
+    // - Actual  : filename field differ since the filename format constants differ
+    CPPUNIT_ASSERT_EQUAL(aExpandedField, pWrtShell->GetCurField()->ExpandField(true, nullptr));
 }
 
 CPPUNIT_TEST_FIXTURE(Test, testInsertRefmarkSelection)
