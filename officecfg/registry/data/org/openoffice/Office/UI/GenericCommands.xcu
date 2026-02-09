@@ -6823,6 +6823,16 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
           <value>1</value>
         </prop>
       </node>
+      <!-- tdf#170387 for compatibility: This one was replaced by the above ".uno:ExtensionManager"
+      in all menus, etc., but existing configuration can still reference this one. -->
+      <node oor:name="service:com.sun.star.deployment.ui.PackageManagerDialog" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">~Extensions...</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int">
+          <value>1</value>
+        </prop>
+      </node>
       <node oor:name=".uno:Signature" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Digital Signatu~res...</value>
