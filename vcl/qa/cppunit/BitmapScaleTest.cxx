@@ -10,7 +10,6 @@
 #include <cppunit/TestAssert.h>
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include <sal/log.hxx>
 #include <vcl/bitmap.hxx>
 
 #include <tools/stream.hxx>
@@ -110,7 +109,7 @@ void BitmapScaleTest::testScale()
             OString testStr = "Testing scale (" + scaleSize.srcSize.toString() + ")->("
                               + scaleSize.destSize.toString() + "), method "
                               + OString::number(static_cast<int>(scaleMethod));
-            SAL_INFO("vcl", testStr);
+            fprintf(stderr, "%s\n", testStr.getStr());
             Bitmap bitmap(scaleSize.srcSize, vcl::PixelFormat::N24_BPP);
             {
                 // Fill each quarter of the source bitmap with a different color,

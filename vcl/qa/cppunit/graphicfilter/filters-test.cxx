@@ -8,7 +8,6 @@
  */
 
 #include <sal/config.h>
-#include <sal/log.hxx>
 #include <cstdlib>
 
 #include <unotest/filters-test.hxx>
@@ -138,15 +137,15 @@ void VclFiltersTest::checkExportImport(std::u16string_view aFilterShortName)
 
 void VclFiltersTest::testExportImport()
 {
-    SAL_INFO("vcl", "Check ExportImport JPG");
+    fprintf(stderr, "Check ExportImport JPG\n");
     checkExportImport(u"jpg");
-    SAL_INFO("vcl", "Check ExportImport PNG");
+    fprintf(stderr, "Check ExportImport PNG\n");
     checkExportImport(u"png");
-    SAL_INFO("vcl", "Check ExportImport BMP");
+    fprintf(stderr, "Check ExportImport BMP\n");
     checkExportImport(u"bmp");
-    SAL_INFO("vcl", "Check ExportImport TIF");
+    fprintf(stderr, "Check ExportImport TIF\n");
     checkExportImport(u"tif");
-    SAL_INFO("vcl", "Check ExportImport WEBP");
+    fprintf(stderr, "Check ExportImport WEBP\n");
     checkExportImport(u"webp");
 }
 
