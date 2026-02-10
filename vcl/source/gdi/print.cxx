@@ -74,7 +74,6 @@ namespace
         static PaperInfo aInfo(PAPER_USER);
         return aInfo;
     }
-}
 
 void ImplUpdateJobSetupPaper( JobSetup& rJobSetup )
 {
@@ -97,6 +96,7 @@ void ImplUpdateJobSetupPaper( JobSetup& rJobSetup )
         if ( ePaper != PAPER_USER )
             rJobSetup.ImplGetData().SetPaperFormat(ePaper);
     }
+}
 }
 
 void Printer::ImplPrintTransparent( const Bitmap& rBmp,
