@@ -25,6 +25,7 @@
 #include <unx/geninst.h>
 #include <salusereventlist.hxx>
 #include <vcl/timer.hxx>
+#include <vcl/weld/ColorChooserDialog.hxx>
 
 #include <osl/conditn.hxx>
 
