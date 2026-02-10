@@ -165,6 +165,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/scalc/ui/ttestdialog.ui",
     u"modules/scalc/ui/ztestdialog.ui",
     u"modules/schart/ui/charttypedialog.ui",
+    u"modules/schart/ui/dlg_InsertLegend.ui",
     u"modules/schart/ui/insertaxisdlg.ui",
     u"modules/schart/ui/insertgriddlg.ui",
     u"modules/schart/ui/inserttitledlg.ui",
