@@ -1287,7 +1287,6 @@ sal_Bool SwXTextViewCursor::screenUp()
 uno::Reference< text::XText >  SwXTextViewCursor::getText()
 {
     SolarMutexGuard aGuard;
-    uno::Reference< text::XText >  xRet;
     if(!m_pView)
         throw uno::RuntimeException();
 
@@ -1297,7 +1296,7 @@ uno::Reference< text::XText >  SwXTextViewCursor::getText()
     SwWrtShell& rSh = m_pView->GetWrtShell();
     SwPaM* pShellCursor = rSh.GetCursor();
     SwDoc* pDoc = m_pView->GetDocShell()->GetDoc();
-    xRet = ::sw::CreateParentXText(*pDoc, *pShellCursor->Start());
+    uno::Reference< SwXText > xRet = ::sw::CreateParentXText(*pDoc, *pShellCursor->Start());
 
     return xRet;
 }
