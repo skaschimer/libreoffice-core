@@ -11,6 +11,8 @@
 
 #include "QtInstanceToggleButton.hxx"
 
+#include <vcl/weld/MenuButton.hxx>
+
 #include <QtWidgets/QToolButton>
 
 class QtInstanceMenuButton : public QtInstanceToggleButton, public virtual weld::MenuButton

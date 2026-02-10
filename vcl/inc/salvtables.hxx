@@ -18,6 +18,7 @@
 #include <vcl/weld/EntryTreeView.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>
 #include <vcl/weld/Menu.hxx>
+#include <vcl/weld/MenuButton.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
 #include <vcl/weld/Notebook.hxx>
 #include <vcl/weld/Scrollbar.hxx>

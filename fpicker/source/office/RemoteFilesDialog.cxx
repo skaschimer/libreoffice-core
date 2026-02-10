@@ -24,6 +24,7 @@
 #include <vcl/errinf.hxx>
 #include <vcl/windowstate.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/MenuButton.hxx>
 #include <officecfg/Office/Common.hxx>
 
 using namespace ::svt;
