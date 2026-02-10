@@ -20,6 +20,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/event.hxx>
 #include <vcl/weld/Menu.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <sfx2/doctempl.hxx>
 #include <helpids.h>
 #include <bitmaps.hlst>

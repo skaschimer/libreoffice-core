@@ -38,6 +38,7 @@
 #include <vcl/vclenum.hxx>
 #include <vcl/windowstate.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <unotools/ucbhelper.hxx>
 #include <unotools/pathoptions.hxx>
 #include <unotools/viewoptions.hxx>

@@ -25,6 +25,7 @@
 #include <vcl/windowstate.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/MenuButton.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <officecfg/Office/Common.hxx>
 
 using namespace ::svt;

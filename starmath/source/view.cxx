@@ -71,6 +71,7 @@
 #include <vcl/help.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <sal/log.hxx>
 #include <tools/svborder.hxx>
 #include <o3tl/string_view.hxx>

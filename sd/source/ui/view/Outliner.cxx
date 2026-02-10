@@ -29,6 +29,7 @@
 #include <editeng/editstat.hxx>
 #include <vcl/canvastools.hxx>
 #include <vcl/outdev.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <sfx2/dispatch.hxx>
 #include <svx/svdotext.hxx>

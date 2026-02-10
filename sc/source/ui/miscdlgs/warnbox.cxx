@@ -24,6 +24,7 @@
 
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 ScReplaceWarnBox::ScReplaceWarnBox(weld::Window* pParent)
     : MessageDialogController(pParent, u"modules/scalc/ui/checkwarningdialog.ui"_ustr,

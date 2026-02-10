@@ -39,6 +39,7 @@
 #include <vcl/gfxlink.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 #include <sdpage.hxx>
 #include <drawdoc.hxx>

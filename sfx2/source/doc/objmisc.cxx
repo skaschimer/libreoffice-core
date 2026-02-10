@@ -66,6 +66,7 @@
 #include <basic/basmgr.hxx>
 #include <basic/sberrors.hxx>
 #include <utility>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <basic/sbx.hxx>
 #include <svtools/sfxecode.hxx>

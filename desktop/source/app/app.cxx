@@ -127,6 +127,7 @@
 #include <svtools/accessibilityoptions.hxx>
 #include <svtools/apearcfg.hxx>
 #include <vcl/graphicfilter.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/window.hxx>
 #include "langselect.hxx"
 #include <salhelper/thread.hxx>

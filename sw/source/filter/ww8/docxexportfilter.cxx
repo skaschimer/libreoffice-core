@@ -30,6 +30,7 @@
 
 #include <comphelper/sequenceashashmap.hxx>
 #include <unotools/mediadescriptor.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 #include <wrtsh.hxx>
 

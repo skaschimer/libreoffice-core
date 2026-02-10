@@ -32,6 +32,7 @@
 #include <officecfg/Office/Common.hxx>
 #include <svtools/restartdialog.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 #include <tpcalc.hxx>
 #if HAVE_FEATURE_OPENCL

@@ -41,6 +41,7 @@
 #include <vcl/dialoghelper.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Menu.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weldutils.hxx>
 
 #include <app.hrc>

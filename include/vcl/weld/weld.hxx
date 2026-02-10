@@ -580,16 +580,6 @@ public:
         = 0;
 };
 
-class VCL_DLLPUBLIC MessageDialog : virtual public Dialog
-{
-public:
-    virtual void set_primary_text(const OUString& rText) = 0;
-    virtual OUString get_primary_text() const = 0;
-    virtual void set_secondary_text(const OUString& rText) = 0;
-    virtual OUString get_secondary_text() const = 0;
-    virtual std::unique_ptr<Container> weld_message_area() = 0;
-};
-
 inline OUString toId(const void* pValue)
 {
     return OUString::number(reinterpret_cast<sal_uIntPtr>(pValue));

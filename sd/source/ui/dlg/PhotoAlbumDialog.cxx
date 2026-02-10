@@ -23,6 +23,7 @@
 #include <vcl/graphicfilter.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/xfillit0.hxx>
 #include <svx/xfltrit.hxx>

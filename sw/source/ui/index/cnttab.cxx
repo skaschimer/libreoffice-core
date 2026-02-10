@@ -25,6 +25,7 @@
 #include <svl/style.hxx>
 #include <utility>
 #include <vcl/weld/DialogController.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svl/stritem.hxx>
 #include <unotools/pathoptions.hxx>

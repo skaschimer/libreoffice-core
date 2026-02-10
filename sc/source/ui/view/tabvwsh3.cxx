@@ -28,6 +28,7 @@
 #include <vcl/vclenum.hxx>
 #include <vcl/uitest/logger.hxx>
 #include <vcl/uitest/eventdescription.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 #include <globstr.hrc>
 #include <strings.hrc>

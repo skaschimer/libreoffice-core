@@ -37,6 +37,7 @@
 #include <svx/svxtableitems.hxx>
 #include <svx/dialog/TableStylesDlg.hxx>
 #include <tools/fldunit.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/Toolbar.hxx>
 
 static void lcl_GetDefaultFontHeight(OUString& sName, OUString& sSize)

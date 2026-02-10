@@ -60,6 +60,7 @@
 #include <utility>
 #include <vcl/print.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <xmloff/autolayout.hxx>

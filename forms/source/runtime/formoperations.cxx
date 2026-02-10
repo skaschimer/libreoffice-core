@@ -52,6 +52,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/wintypes.hxx>
 #include <comphelper/diagnose_ex.hxx>

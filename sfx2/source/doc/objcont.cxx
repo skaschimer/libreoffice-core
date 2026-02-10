@@ -26,6 +26,7 @@
 #include <comphelper/fileurl.hxx>
 #include <vcl/rendercontext/AntialiasingFlags.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svl/style.hxx>
 

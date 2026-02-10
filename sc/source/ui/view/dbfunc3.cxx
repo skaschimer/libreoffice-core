@@ -20,6 +20,7 @@
 #include <dbfunc.hxx>
 #include <scitems.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svl/numformat.hxx>
 #include <svl/zforlist.hxx>

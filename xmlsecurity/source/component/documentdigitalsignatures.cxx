@@ -37,6 +37,7 @@
 #include <com/sun/star/uno/SecurityException.hpp>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <tools/date.hxx>
 #include <tools/time.hxx>
 #include <unotools/securityoptions.hxx>

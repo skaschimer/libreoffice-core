@@ -22,6 +22,7 @@
 #include <connectivity/dbexception.hxx>
 #include <o3tl/typed_flags_set.hxx>
 #include <vcl/weld/DialogController.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <memory>
 

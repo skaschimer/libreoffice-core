@@ -19,6 +19,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 
 #if ENABLE_ZXING
 #if __has_include(<Version.h>)

@@ -21,6 +21,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 
 short ExecuteQuerySaveDocument(weld::Widget* _pParent, std::u16string_view _rTitle)

@@ -113,6 +113,7 @@
 #include <svtools/optionsdrawinglayer.hxx>
 #include <svl/numformat.hxx>
 #include <svl/zformat.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <memory>
 
 #include "../../core/crsr/callnk.hxx"

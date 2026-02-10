@@ -23,6 +23,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/timer.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <openuriexternally.hxx>
 #include <comphelper/lok.hxx>

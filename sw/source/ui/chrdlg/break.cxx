@@ -19,6 +19,7 @@
 
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <osl/diagnose.h>
 #include <bitmaps.hlst>
 

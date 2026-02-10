@@ -51,6 +51,7 @@
 #include <comphelper/processfactory.hxx>
 
 #include <utility>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>

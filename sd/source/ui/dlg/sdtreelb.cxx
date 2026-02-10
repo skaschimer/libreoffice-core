@@ -21,6 +21,7 @@
 #include <sal/types.h>
 #include <sot/formats.hxx>
 #include <utility>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/svditer.hxx>
 #include <sfx2/docfile.hxx>

@@ -19,6 +19,7 @@
 
 #include <sfx2/app.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/dataaccessdescriptor.hxx>
 #include <svx/svdpage.hxx>

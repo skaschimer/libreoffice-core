@@ -19,6 +19,7 @@
 
 #include <memory>
 #include <svx/svdpntv.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/window.hxx>
 #include <svx/sdrpaintwindow.hxx>

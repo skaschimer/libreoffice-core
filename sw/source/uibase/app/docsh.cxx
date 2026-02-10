@@ -23,6 +23,7 @@
 #include <officecfg/Office/Common.hxx>
 #include <officecfg/Office/Impress.hxx>
 #include <officecfg/Office/Writer.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/syswin.hxx>

@@ -45,6 +45,7 @@
 #include <sfx2/objface.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <o3tl/string_view.hxx>
 #include <PostItMgr.hxx>
 

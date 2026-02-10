@@ -28,6 +28,7 @@
 #include <svl/stritem.hxx>
 #include <sfx2/request.hxx>
 #include <sfx2/app.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <svx/svdorect.hxx>
 #include <svx/svdundo.hxx>

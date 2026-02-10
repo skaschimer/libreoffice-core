@@ -27,6 +27,7 @@
 #include <tools/bigint.hxx>
 #include <tools/debug.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 
 #include <getallcharpropids.hxx>

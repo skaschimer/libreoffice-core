@@ -39,6 +39,7 @@
 #include <svx/srchdlg.hxx>
 #include <svx/svdview.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <osl/diagnose.h>
 

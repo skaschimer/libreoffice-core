@@ -56,6 +56,7 @@
 #include <unotools/extendedsecurityoptions.hxx>
 #include <svl/eitem.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <sal/log.hxx>
 
 #include <svx/svxdlg.hxx>

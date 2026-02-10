@@ -59,6 +59,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/stdtext.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <xmlscript/xmldlg_imexp.hxx>
 
 namespace basctl

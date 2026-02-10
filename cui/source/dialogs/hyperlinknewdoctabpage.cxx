@@ -18,6 +18,7 @@
 #include <unotools/dynamicmenuoptions.hxx>
 #include <unotools/ucbstreamhelper.hxx>
 #include <unotools/ucbhelper.hxx>
+#include <vcl/weld/MessageDialog.hxx>
 #include <osl/file.hxx>
 #include <comphelper/processfactory.hxx>
 #include <com/sun/star/frame/XFrame.hpp>
