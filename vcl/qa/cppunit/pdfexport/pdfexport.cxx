@@ -1947,10 +1947,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf66597_2)
 }
 
 /// Test writing ActualText for LTR many to one glyph to Unicode mapping.
-// This requires Gentium Basic font, if it is missing the test will fail.
 CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf66597_3)
 {
-#if HAVE_MORE_FONTS
     vcl::filter::PDFDocument aDocument;
     loadFromFile(u"tdf66597-3.odt");
     save(TestFilter::PDF_WRITER);
@@ -1973,7 +1971,8 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf66597_3)
                 auto pName
                     = dynamic_cast<vcl::filter::PDFNameElement*>(pObject->Lookup("BaseFont"_ostr));
                 auto aName = pName->GetValue().copy(7); // skip the subset id
-                CPPUNIT_ASSERT_EQUAL_MESSAGE("Unexpected font name", "GentiumBasic"_ostr, aName);
+                CPPUNIT_ASSERT_EQUAL_MESSAGE("Unexpected font name", "NotoSans-Regular"_ostr,
+                                             aName);
 
                 auto pToUnicodeRef = dynamic_cast<vcl::filter::PDFReferenceElement*>(
                     pObject->Lookup("ToUnicode"_ostr));
@@ -2036,7 +2035,6 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf66597_3)
         CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of ActualText entries does not match!",
                                      static_cast<size_t>(4), nCount);
     }
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf105954)

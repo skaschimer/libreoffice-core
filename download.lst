@@ -145,11 +145,6 @@ FONT_DEJAVU_TARBALL := 33e1e61fab06a547851ed308b4ffef42-dejavu-fonts-ttf-2.37.zi
 # three static lines
 # so that git cherry-pick
 # will not run into conflicts
-FONT_GENTIUM_SHA256SUM := 2f1a2c5491d7305dffd3520c6375d2f3e14931ee35c6d8ae1e8f098bf1a7b3cc
-FONT_GENTIUM_TARBALL := 1725634df4bb3dcb1b2c91a6175f8789-GentiumBasic_1102.zip
-# three static lines
-# so that git cherry-pick
-# will not run into conflicts
 FONT_LIBERATION_NARROW_SHA256SUM := 8879d89b5ff7b506c9fc28efc31a5c0b954bbe9333e66e5283d27d20a8519ea3
 FONT_LIBERATION_NARROW_TARBALL := liberation-narrow-fonts-ttf-1.07.6.tar.gz
 FONT_LIBERATION_SHA256SUM := 7191c669bf38899f73a2094ed00f7b800553364f90e2637010a69c0e268f25d0
