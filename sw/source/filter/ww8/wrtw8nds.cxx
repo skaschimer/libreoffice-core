@@ -2858,8 +2858,6 @@ void MSWordExportBase::OutputTextNode( SwTextNode& rNode )
 
             AttrOutput().WritePostitFieldReference();
 
-            aSymbolFont = lcl_GetSymbolFont(m_rDoc.GetAttrPool(), rNode, nCurrentPos, nCurrentPos + nLen);
-
             AttrOutput().EndRun(&rNode, nCurrentPos, nLen, nNextAttr == nEnd);
 
             nCurrentPos = nNextAttr;
