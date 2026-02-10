@@ -379,10 +379,14 @@ void SwRedlineAcceptDlg::EnableControls(const SwView* pView)
     bool const bEnable = isAcceptRejectCommandsEnabled(*pView)
         && rTreeView.n_children() != 0
         && !pSh->getIDocumentRedlineAccess().GetRedlinePassword().hasElements();
-    std::unique_ptr<weld::TreeIter> pSelectedEntry = rTreeView.get_selected();
 
+    bool bAcceptReject = false;
     bool bIsNotFormated = false;
-    rTreeView.selected_foreach([this, pSh, &bIsNotFormated](weld::TreeIter& rEntry){
+    rTreeView.selected_foreach([this, pSh, &bIsNotFormated, &bAcceptReject](weld::TreeIter& rEntry){
+        // Only enable these controls for top-level redlines
+        if (m_pTable->GetWidget().get_iter_depth(rEntry) == 0)
+            bAcceptReject = true;
+
         // find the selected redline
         // (fdo#57874: ignore, if the redline is already gone)
         SwRedlineTable::size_type nPos = GetRedlinePos(rEntry);
@@ -395,9 +399,9 @@ void SwRedlineAcceptDlg::EnableControls(const SwView* pView)
         return false;
     });
 
-    m_rTPView.EnableAccept(bEnable && pSelectedEntry);
-    m_rTPView.EnableReject(bEnable && pSelectedEntry);
-    m_rTPView.EnableClearFormat(bEnable && !bIsNotFormated && pSelectedEntry);
+    m_rTPView.EnableAccept(bEnable && bAcceptReject);
+    m_rTPView.EnableReject(bEnable && bAcceptReject);
+    m_rTPView.EnableClearFormat(bEnable && !bIsNotFormated && bAcceptReject);
     m_rTPView.EnableAcceptAll(bEnable);
     m_rTPView.EnableRejectAll(bEnable);
     m_rTPView.EnableClearFormatAll(bEnable && m_bOnlyFormatedRedlines);
