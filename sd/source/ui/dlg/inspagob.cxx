@@ -29,6 +29,7 @@
 #include <ViewShell.hxx>
 
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 SdInsertPagesObjsDlg::SdInsertPagesObjsDlg(
     weld::Window* pWindow, const SdDrawDocument& rDoc,

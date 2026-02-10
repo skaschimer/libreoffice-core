@@ -28,6 +28,7 @@
 #include <unotools/localedatawrapper.hxx>
 #include <svx/svxids.hrc>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <svx/postattr.hxx>
 #include <postdlg.hxx>

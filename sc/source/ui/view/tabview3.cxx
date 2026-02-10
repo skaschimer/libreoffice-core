@@ -33,6 +33,7 @@
 #include <vcl/dndlistenercontainer.hxx>
 #include <vcl/uitest/logger.hxx>
 #include <vcl/uitest/eventdescription.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <sal/log.hxx>
 #include <osl/diagnose.h>
 

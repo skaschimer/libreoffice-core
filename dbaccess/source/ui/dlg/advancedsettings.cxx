@@ -32,6 +32,7 @@
 #include <svl/intitem.hxx>
 #include <svl/stritem.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 namespace dbaui
 {

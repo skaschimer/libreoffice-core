@@ -23,6 +23,7 @@
 #include <svl/stritem.hxx>
 #include <unotools/viewoptions.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/windowstate.hxx>
 #include <o3tl/string_view.hxx>

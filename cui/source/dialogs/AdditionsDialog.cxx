@@ -35,6 +35,7 @@
 #include <vcl/graph.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <cppuhelper/exc_hlp.hxx>
 
 #include <com/sun/star/util/SearchFlags.hpp>

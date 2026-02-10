@@ -30,6 +30,7 @@
 #include <com/sun/star/beans/PropertyValue.hpp>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 SvPasteObjectDialog::SvPasteObjectDialog(weld::Window* pParent)
     : GenericDialogController(pParent, u"cui/ui/pastespecial.ui"_ustr, u"PasteSpecialDialog"_ustr)

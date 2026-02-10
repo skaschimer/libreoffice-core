@@ -22,6 +22,7 @@
 #include <svtools/unitconv.hxx>
 #include <sal/log.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <view.hxx>
 #include <wrtsh.hxx>
 #include <docsh.hxx>

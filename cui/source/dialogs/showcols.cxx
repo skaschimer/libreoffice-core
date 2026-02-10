@@ -25,6 +25,7 @@
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 constexpr OUString CUIFM_PROP_HIDDEN = u"Hidden"_ustr;
 constexpr OUStringLiteral CUIFM_PROP_LABEL = u"Label";

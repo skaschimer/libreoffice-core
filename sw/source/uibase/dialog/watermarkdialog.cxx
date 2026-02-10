@@ -18,6 +18,7 @@
 #include <sfx2/objsh.hxx>
 #include <tools/fldunit.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <sfx2/watermarkitem.hxx>
 #include <svtools/ctrltool.hxx>
 #include <comphelper/lok.hxx>

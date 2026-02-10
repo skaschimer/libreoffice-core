@@ -24,6 +24,7 @@
 #include <tools/urlobj.hxx>
 #include <utility>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/weld/weldutils.hxx>

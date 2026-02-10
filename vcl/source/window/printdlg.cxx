@@ -41,6 +41,7 @@
 #include <vcl/virdev.hxx>
 #include <vcl/wall.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <vcl/windowstate.hxx>
 

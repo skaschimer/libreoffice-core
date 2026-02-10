@@ -28,6 +28,7 @@
 #include <insfnote.hxx>
 #include <svx/svxdlg.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <memory>
 

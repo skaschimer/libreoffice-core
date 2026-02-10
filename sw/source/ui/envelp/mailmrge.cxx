@@ -20,6 +20,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <comphelper/propertyvalue.hxx>
 
 #include <tools/urlobj.hxx>

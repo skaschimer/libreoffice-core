@@ -41,6 +41,7 @@
 
 #include <vcl/tabs.hrc>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 static bool bLastRelative = false;
 

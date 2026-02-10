@@ -27,6 +27,7 @@
 #include <svx/postattr.hxx>
 #include <utility>
 #include <vcl/commandevent.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/Menu.hxx>
 #include <swtypes.hxx>
 #include <wrtsh.hxx>

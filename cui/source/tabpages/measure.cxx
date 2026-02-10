@@ -35,6 +35,7 @@
 #include <svtools/unitconv.hxx>
 #include <tools/debug.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <measure.hxx>
 

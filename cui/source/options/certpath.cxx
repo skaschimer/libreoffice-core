@@ -14,6 +14,7 @@
 #include <comphelper/diagnose_ex.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include "certpath.hxx"
 
 #include <com/sun/star/xml/crypto/NSSInitializer.hpp>

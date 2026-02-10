@@ -15,6 +15,7 @@
 #include <o3tl/safeint.hxx>
 #include <unotools/viewoptions.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/windowstate.hxx>
 
 ScCondFormatManagerWindow::ScCondFormatManagerWindow(weld::TreeView& rTreeView,

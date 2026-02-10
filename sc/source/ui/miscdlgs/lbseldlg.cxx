@@ -22,6 +22,7 @@
 #include <lbseldlg.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 ScSelEntryDlg::ScSelEntryDlg(weld::Window* pParent, const std::vector<OUString> &rEntryList)
     : GenericDialogController(pParent, u"modules/scalc/ui/selectrange.ui"_ustr, u"SelectRangeDialog"_ustr)

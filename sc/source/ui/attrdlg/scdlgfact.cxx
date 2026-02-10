@@ -72,6 +72,7 @@
 
 #include <vcl/abstdlgimpl.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 namespace
 {

@@ -17,6 +17,7 @@
 #include <svtools/strings.hrc>
 #include <svtools/place.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include "ServerDetailsControls.hxx"
 

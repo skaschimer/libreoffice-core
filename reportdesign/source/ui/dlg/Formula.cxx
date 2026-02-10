@@ -23,6 +23,7 @@
 #include <formula/tokenarray.hxx>
 #include <formula/FormulaCompiler.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/windowstate.hxx>
 #include <com/sun/star/lang/XMultiServiceFactory.hpp>
 #include <com/sun/star/beans/PropertyValue.hpp>

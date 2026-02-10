@@ -64,6 +64,7 @@
 #include <svx/strings.hrc>
 #include <cuitabarea.hxx>
 #include <svtools/unitconv.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <comphelper/lok.hxx>
 #include <o3tl/string_view.hxx>
 

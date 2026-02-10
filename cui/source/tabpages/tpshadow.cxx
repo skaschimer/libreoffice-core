@@ -37,6 +37,7 @@
 #include <svx/xfltrit.hxx>
 #include <cuitabarea.hxx>
 #include <svx/dlgutil.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <cuitabline.hxx>
 
 using namespace com::sun::star;

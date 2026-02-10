@@ -26,6 +26,7 @@
 #include <cppuhelper/exc_hlp.hxx>
 #include <utility>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <cppuhelper/implbase.hxx>

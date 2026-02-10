@@ -22,6 +22,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <uitool.hxx>
 #include <translatelangselect.hxx>
 #include <translatehelper.hxx>

@@ -17,6 +17,7 @@
 #include <svx/diagram/datamodel_svx.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <svx/diagram/DiagramHelper_svx.hxx>
 
 DiagramDialog::DiagramDialog(weld::Window* pWindow, SdrObjGroup& rDiagram)

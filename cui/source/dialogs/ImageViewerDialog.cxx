@@ -9,6 +9,7 @@
 
 #include <vcl/virdev.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <ImageViewerDialog.hxx>
 
 ImageViewerDialog::ImageViewerDialog(weld::Dialog* pParent, Bitmap aBitmap, const OUString& atitle)

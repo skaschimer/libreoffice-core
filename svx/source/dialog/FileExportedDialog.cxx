@@ -10,6 +10,7 @@
 #include <svx/FileExportedDialog.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <comphelper/diagnose_ex.hxx>
 #include <comphelper/backupfilehelper.hxx>

@@ -30,6 +30,7 @@
 #include <svl/filenotation.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <rtl/strbuf.hxx>
 #include <utility>
 

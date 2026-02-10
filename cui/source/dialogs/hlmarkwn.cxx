@@ -25,6 +25,7 @@
 #include <vcl/vclenum.hxx>
 #include <vcl/windowstate.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 // UNO-Stuff
 #include <comphelper/processfactory.hxx>

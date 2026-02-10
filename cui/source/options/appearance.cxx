@@ -21,6 +21,7 @@
 #include <svtools/restartdialog.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/themecolors.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <map>
 

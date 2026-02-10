@@ -68,6 +68,7 @@
 #include <svx/svxdlg.hxx>
 #include <vcl/toolbox.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <o3tl/typed_flags_set.hxx>
 #include <comphelper/lok.hxx>
 

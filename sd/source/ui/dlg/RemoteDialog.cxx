@@ -11,6 +11,7 @@
 #include <RemoteServer.hxx>
 
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 using namespace ::sd;
 

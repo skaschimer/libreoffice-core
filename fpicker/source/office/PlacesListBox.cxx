@@ -10,6 +10,7 @@
 #include "PlacesListBox.hxx"
 #include <svtools/PlaceEditDialog.hxx>
 #include <vcl/vclenum.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <bitmaps.hlst>
 

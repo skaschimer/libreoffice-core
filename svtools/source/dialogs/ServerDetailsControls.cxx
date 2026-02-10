@@ -19,6 +19,7 @@
 #include <rtl/uri.hxx>
 #include <ucbhelper/content.hxx>
 #include <ucbhelper/commandenvironment.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <comphelper/diagnose_ex.hxx>
 
 #include <svtools/PlaceEditDialog.hxx>

@@ -23,6 +23,7 @@
 
 #include <com/sun/star/awt/XWindow.hpp>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <utility>
 
 using namespace ::com::sun::star;

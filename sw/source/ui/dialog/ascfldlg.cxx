@@ -34,6 +34,7 @@
 #include <sfx2/printer.hxx>
 #include <sfx2/docfile.hxx>
 #include <svl/languageoptions.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <editeng/langitem.hxx>
 #include <swtypes.hxx>
 #include <ascfldlg.hxx>

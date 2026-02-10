@@ -24,6 +24,7 @@
 #include <tools/urlobj.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <osl/file.hxx>
 

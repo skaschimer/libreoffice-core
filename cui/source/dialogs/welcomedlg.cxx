@@ -24,6 +24,7 @@
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/strings.hrc>
 #include <sfx2/viewfrm.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 constexpr OUString sNewsTab = u"WhatsNewTabPage"_ustr;
 constexpr OUString sUITab = u"UITabPage"_ustr;

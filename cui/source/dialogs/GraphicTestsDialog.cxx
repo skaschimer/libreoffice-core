@@ -20,6 +20,7 @@
 #include <svl/svlresid.hxx>
 #include <svl/svl.hrc>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 
 #include <dialmgr.hxx>

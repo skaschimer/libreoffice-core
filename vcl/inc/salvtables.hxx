@@ -13,6 +13,7 @@
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/ColorChooserDialog.hxx>
 #include <vcl/weld/ComboBox.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/DrawingArea.hxx>
 #include <vcl/weld/Entry.hxx>

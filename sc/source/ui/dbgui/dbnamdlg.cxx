@@ -25,6 +25,7 @@
 #include <comphelper/string.hxx>
 #include <unotools/charclass.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/EntryTreeView.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>

@@ -39,6 +39,7 @@
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/IconView.hxx>
 
 #include <swmodule.hxx>

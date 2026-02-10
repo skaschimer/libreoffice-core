@@ -40,6 +40,7 @@
 #include <vcl/toolkit/floatwin.hxx>
 #include <vcl/weld/DrawingArea.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/FormattedSpinButton.hxx>
 #include <vcl/weld/Menu.hxx>
 #include <vcl/weld/MenuButton.hxx>

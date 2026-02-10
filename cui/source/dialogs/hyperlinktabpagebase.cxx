@@ -12,6 +12,7 @@
 #include <sfx2/app.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/sfxsids.hrc>
+#include <vcl/weld/Dialog.hxx>
 #include <macroass.hxx>
 #include <dialmgr.hxx>
 #include <strings.hrc>

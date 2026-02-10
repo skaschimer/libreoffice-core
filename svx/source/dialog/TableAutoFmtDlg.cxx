@@ -25,6 +25,7 @@
 #include <svx/dialmgr.hxx>
 #include <svx/strings.hrc>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 
 namespace

@@ -29,6 +29,7 @@
 #include <o3tl/untaint.hxx>
 #include <vcl/toolbox.hxx>
 #include <vcl/virdev.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <sfx2/viewsh.hxx>
 

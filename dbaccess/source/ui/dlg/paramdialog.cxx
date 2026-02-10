@@ -26,6 +26,7 @@
 #include <connectivity/dbtools.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <o3tl/safeint.hxx>
 #include <osl/diagnose.h>

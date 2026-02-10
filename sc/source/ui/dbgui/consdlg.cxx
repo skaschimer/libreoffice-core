@@ -34,6 +34,7 @@
 #include <consdlg.hxx>
 #include <o3tl/safeint.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 

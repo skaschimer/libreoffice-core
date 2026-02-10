@@ -29,6 +29,7 @@
 #include <tools/fldunit.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 namespace
 {

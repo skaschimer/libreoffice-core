@@ -32,6 +32,7 @@
 #include <svl/intitem.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/weld/Builder.hxx>
+#include <vcl/weld/Dialog.hxx>
 
 #include <officecfg/Office/Common.hxx>
 #include <unotools/useroptions.hxx>
