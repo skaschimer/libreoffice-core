@@ -2548,7 +2548,6 @@ void MSWordExportBase::OutputTextNode( SwTextNode& rNode )
             bool bTextAtr = aAttrIter.IsTextAttr( nCurrentPos );
             nOpenAttrWithRange += aAttrIter.OutAttrWithRange( rNode, nCurrentPos );
 
-            OUString aSymbolFont;
             sal_Int32 nLen = nNextAttr - nCurrentPos;
 
             // DOCX: Put the flies in their own run.
@@ -2736,7 +2735,7 @@ void MSWordExportBase::OutputTextNode( SwTextNode& rNode )
                     m_bAddFootnoteTab = false;
                 }
 
-                aSymbolFont = lcl_GetSymbolFont(m_rDoc.GetAttrPool(), rNode, nCurrentPos + ofs,
+                OUString aSymbolFont = lcl_GetSymbolFont(m_rDoc.GetAttrPool(), rNode, nCurrentPos + ofs,
                                                 nCurrentPos + ofs + nLen);
 
                 AttrOutput().RunText( aSnippet, eChrSet, aSymbolFont );
