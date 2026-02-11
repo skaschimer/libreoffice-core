@@ -865,7 +865,7 @@ public:
     void                DrawPolyPolygon( const tools::PolyPolygon& rPolyPoly );
     void                DrawRect( const tools::Rectangle& rRect );
     void                DrawRect( const tools::Rectangle& rRect,
-                                  sal_uInt32 nHorzRount, sal_uInt32 nVertRound );
+                                  sal_uInt32 nHorzRound, sal_uInt32 nVertRound );
     void                DrawEllipse( const tools::Rectangle& rRect );
     void                DrawArc( const tools::Rectangle& rRect,
                                  const Point& rStartPt, const Point& rEndPt );
