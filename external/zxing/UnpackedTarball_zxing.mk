@@ -22,7 +22,6 @@ endif
 $(eval $(call gb_UnpackedTarball_add_patches,zxing, \
 	external/zxing/0001-add-ZXVersion-h.patch \
 	external/zxing/gcc12-format.patch \
-	external/zxing/deprecatedMultiFormatWriter.patch \
 ))
 
 # vim: set noet sw=4 ts=4:
