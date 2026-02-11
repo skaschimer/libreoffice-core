@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface domain="pcr">
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkDialog" id="MappingDialog">
@@ -950,27 +950,27 @@
                 <child>
                   <object class="GtkLabel" id="label33">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes" context="mappingdialog|label33">Local copy</property>
-                    <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">LocalURLCombobox</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">LocalURLCombobox</property>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">14</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">14</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBoxText" id="LocalURLCombobox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">5</property>
-                    <property name="top_attach">14</property>
+                    <property name="left-attach">5</property>
+                    <property name="top-attach">14</property>
                   </packing>
                 </child>
                 <child>
