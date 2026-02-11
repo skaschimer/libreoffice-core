@@ -1,0 +1,11 @@
+--- zxing/core/src/MultiFormatWriter.h	2026-02-11 13:06:00.665958666 +0100
++++ zxing/core/src/MultiFormatWriter.h	2026-02-11 13:06:08.693923744 +0100
+@@ -23,7 +23,7 @@
+ class MultiFormatWriter
+ {
+ public:
+-	[[deprecated("use CreateBarcode()")]] explicit MultiFormatWriter(BarcodeFormat format) : _format(format) {}
++	explicit MultiFormatWriter(BarcodeFormat format) : _format(format) {}
+ 
+ 	/**
+ 	* Used for Aztec, PDF417, and QRCode only.

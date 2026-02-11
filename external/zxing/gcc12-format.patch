@@ -1,0 +1,35 @@
+--- /dev/null	2023-12-10 14:00:18.140142051 +0100
++++ a/core/src/Version.h	2023-12-22 21:38:22.466302568 +0100
+--- zxing/core/src/BarcodeFormat.cpp	2026-02-11 12:34:03.089993797 +0100
++++ zxing/core/src/BarcodeFormat.cpp	2026-02-11 12:34:12.849941196 +0100
+@@ -9,7 +9,6 @@
+ #include "ZXAlgorithms.h"
+ 
+ #include <algorithm>
+-#include <format>
+ 
+ namespace ZXing {
+ 
+--- zxing/core/src/GTIN.cpp	2026-02-11 12:36:55.685059936 +0100
++++ zxing/core/src/GTIN.cpp	2026-02-11 12:38:19.324604946 +0100
+@@ -7,7 +7,6 @@
+ #include "GTIN.h"
+ 
+ #include <algorithm>
+-#include <format>
+ #include <iomanip>
+ #include <iterator>
+ #include <string>
+@@ -241,11 +240,7 @@
+ 	}
+ 
+ 	int rawAmount = std::stoi(ean5AddOn.substr(1));
+-#ifndef __cpp_lib_to_chars // not available on older macOS
+ 	return currency + std::to_string(rawAmount / 100) + '.' + std::to_string(rawAmount % 100);
+-#else
+-	return std::format("{}{:.2f}", currency, float(rawAmount) / 100);
+-#endif
+ }
+ 
+ } // namespace ZXing::GTIN
+
