@@ -2240,6 +2240,20 @@ bool SwTransferable::PasteFileContent( const TransferableDataHelper& rData,
         }
         [[fallthrough]]; // because then test if we get a stream
 
+    case SotClipboardFormatId::MARKDOWN:
+        {
+            pRead = ReadMarkdown;
+            if( rData.GetString( nFormat, sData ) )
+            {
+                pStream = new SvMemoryStream( const_cast<sal_Unicode *>(sData.getStr()),
+                                              sData.getLength() * sizeof( sal_Unicode ),
+                                              StreamMode::READ );
+                pStream->ResetEndianSwap();
+                break;
+            }
+        }
+        [[fallthrough]];
+
     default:
         if( (xStrm = rData.GetSotStorageStream( nFormat )) )
         {
@@ -2259,10 +2273,6 @@ bool SwTransferable::PasteFileContent( const TransferableDataHelper& rData,
                 pStream = xStrm.get();
                 if( SotClipboardFormatId::RTF == nFormat || SotClipboardFormatId::RICHTEXT == nFormat)
                     pRead = SwReaderWriter::GetRtfReader();
-                else if( SotClipboardFormatId::MARKDOWN == nFormat )
-                {
-                    pRead = ReadMarkdown;
-                }
                 else if( !pRead )
                 {
                     pRead = ReadHTML;
