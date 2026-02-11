@@ -762,11 +762,14 @@ class SFScriptForge:
                 if 1900 <= unodate.Year <= datetime.MAXYEAR:
                     date = datetime.datetime(unodate.Year, unodate.Month, unodate.Day, unodate.Hours,
                                              unodate.Minutes, unodate.Seconds, int(unodate.NanoSeconds / 1000))
+                elif unodate.Year == 1899:      # The date has not been set
+                    date = datetime.time(unodate.Hours, unodate.Minutes, unodate.Seconds,
+                                         int(unodate.NanoSeconds / 1000))
             elif 'com.sun.star.util.Date' in datetype:
                 if 1900 <= unodate.Year <= datetime.MAXYEAR:
                     date = datetime.datetime(unodate.Year, unodate.Month, unodate.Day)
             elif 'com.sun.star.util.Time' in datetype:
-                date = datetime.datetime(unodate.Hours, unodate.Minutes, unodate.Seconds,
+                date = datetime.time(unodate.Hours, unodate.Minutes, unodate.Seconds,
                                          int(unodate.NanoSeconds / 1000))
             else:
                 return unodate  # Not recognized as a UNO date structure
@@ -1811,6 +1814,13 @@ class SFScriptForge:
 
         def Documents(self):
             return self.ExecMethod(self.vbMethod + self.flgArrayRet, 'Documents')
+
+        def EnterValue(self, prompt = '', valuetype = 'STRING', default = '', title = '', choices = (), format = ''):
+            if isinstance(default, (datetime.datetime, datetime.time)):
+                default = SFScriptForge.SF_Basic.CDateToUnoDateTime(default)
+            flag = self.flgDateArg + self.flgDateRet if valuetype.upper() in ('DATE', 'TIME', 'DATETIME') else 0
+            return self.ExecMethod(self.vbMethod + flag, 'EnterValue', prompt, valuetype, default, title,
+                                   choices, format)
 
         def GetDocument(self, windowname = ''):
             return self.ExecMethod(self.vbMethod, 'GetDocument', windowname)
