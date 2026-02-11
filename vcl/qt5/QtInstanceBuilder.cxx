@@ -239,6 +239,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"sfx/ui/printeroptionsdialog.ui",
     u"sfx/ui/querysavedialog.ui",
     u"sfx/ui/safemodequerydialog.ui",
+    u"sfx/ui/saveastemplatedlg.ui",
     u"sfx/ui/templatecategorydlg.ui",
     u"sfx/ui/versioncommentdialog.ui",
     u"sfx/ui/versionsofdialog.ui",
