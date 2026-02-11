@@ -58,6 +58,9 @@
 #include <fmturl.hxx>
 #include <formatcontentcontrol.hxx>
 #include <docsh.hxx>
+#include <unicode/utypes.h>
+#include <unicode/ucsdet.h>
+#include <rtl/tencinfo.h>
 
 #include "swmd.hxx"
 
@@ -748,7 +751,6 @@ SwMarkdownParser::SwMarkdownParser(SwDoc& rD, SwPaM& rCursor, SvStream& rIn, OUS
     m_nFilesize = m_rInput.TellEnd();
     m_rInput.Seek(STREAM_SEEK_TO_BEGIN);
     m_rInput.ResetError();
-    m_pArr.reset(new char[m_nFilesize + 1]);
 }
 
 void MarkdownReader::SetupFilterOptions(SwDoc& rDoc)
@@ -840,13 +842,103 @@ ErrCodeMsg MarkdownReader::Read(SwDoc& rDoc, const OUString& rBaseURL, SwPaM& rP
 
 ErrCode SwMarkdownParser::CallParser()
 {
+    // use utf8
+    rtl_TextEncoding eSrcEnc = RTL_TEXTENCODING_DONTKNOW;
+    m_rInput.StartReadingUnicodeText(eSrcEnc);
+    if (m_rInput.good())
+    {
+        sal_uInt64 nPos = m_rInput.Tell(); //bom size
+        {
+            std::vector<char> buf(65535); // Arbitrarily chosen 64KiB buffer
+            const size_t nSize = m_rInput.ReadBytes(buf.data(), buf.size());
+            if (nSize > 0)
+            {
+                UErrorCode uerr = U_ZERO_ERROR;
+                UCharsetDetector* ucd = ucsdet_open(&uerr);
+                ucsdet_setText(ucd, buf.data(), nSize, &uerr);
+                if (const UCharsetMatch* match = ucsdet_detect(ucd, &uerr))
+                {
+                    const char* pEncodingName = ucsdet_getName(match, &uerr);
+
+                    if (strcmp("UTF-16LE", pEncodingName) == 0)
+                    {
+                        eSrcEnc = RTL_TEXTENCODING_UCS2;
+                        m_rInput.SetEndian(SvStreamEndian::LITTLE);
+                    }
+                    else if (strcmp("UTF-16BE", pEncodingName) == 0)
+                    {
+                        eSrcEnc = RTL_TEXTENCODING_UCS2;
+                        m_rInput.SetEndian(SvStreamEndian::BIG);
+                    }
+                    else
+                    {
+                        eSrcEnc = rtl_getTextEncodingFromMimeCharset(pEncodingName);
+                    }
+                }
+                ucsdet_close(ucd);
+            }
+            else
+            {
+                return ERRCODE_IO_INVALIDLENGTH;
+            }
+        }
+
+        if (eSrcEnc == RTL_TEXTENCODING_DONTKNOW)
+            return ERRCODE_IO_INVALIDCHAR;
+
+        m_rInput.Seek(nPos);
+        m_rInput.ResetError();
+        m_nFilesize -= nPos;
+
+        OUString sData;
+        OString sUtf8Data;
+
+        if (eSrcEnc == RTL_TEXTENCODING_UCS2)
+        {
+            if (m_nFilesize & 1)
+                return ERRCODE_IO_INVALIDCHAR;
+
+            tools::Long nChars = m_nFilesize / 2;
+            std::vector<sal_Unicode> aCharData(nChars);
+
+            for (tools::Long n = 0; n < nChars; n++)
+            {
+                m_rInput.ReadUtf16(aCharData[n]);
+            }
+
+            sData = OUString(aCharData.data(), nChars);
+            sUtf8Data = OUStringToOString(sData, RTL_TEXTENCODING_UTF8);
+        }
+        else
+        {
+            tools::Long nChars = m_nFilesize;
+            std::vector<char> aCharData(nChars);
+            m_rInput.ReadBytes(aCharData.data(), nChars);
+            sData = OUString(aCharData.data(), nChars, eSrcEnc);
+            sUtf8Data = OUStringToOString(sData, RTL_TEXTENCODING_UTF8);
+        }
+
+        if (sUtf8Data.getLength())
+        {
+            m_nFilesize = sUtf8Data.getLength();
+            m_pArr.reset(new char[m_nFilesize]);
+            memcpy(m_pArr.get(), sUtf8Data.getStr(), m_nFilesize);
+        }
+        else
+        {
+            return ERRCODE_IO_INVALIDCHAR;
+        }
+    }
+    else
+    {
+        return ERRCODE_IO_INVALIDCHAR;
+    }
+
     ::StartProgress(STR_STATSTR_W4WREAD, 0, m_nFilesize, m_xDoc->GetDocShell());
 
     SwTextFormatColl* pColl
         = m_xDoc->getIDocumentStylePoolAccess().GetTextCollFromPool(SwPoolFormatId::COLL_TEXT);
     m_xDoc->SetTextFormatColl(*m_pPam, pColl);
-    m_rInput.ReadBytes(m_pArr.get(), m_nFilesize);
-    m_pArr[m_nFilesize] = '\0';
 
     ErrCode nRet;
 
