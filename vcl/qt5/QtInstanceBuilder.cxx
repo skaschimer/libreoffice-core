@@ -121,6 +121,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"cui/ui/zoomdialog.ui",
     u"dbaccess/ui/designsavemodifieddialog.ui",
     u"dbaccess/ui/fielddialog.ui",
+    u"dbaccess/ui/queryfilterdialog.ui",
     u"dbaccess/ui/savedialog.ui",
     u"dbaccess/ui/tabledesignsavemodifieddialog.ui",
     u"desktop/ui/installforalldialog.ui",
