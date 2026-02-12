@@ -196,7 +196,8 @@ protected:
      * createSwDoc("test.fodt");
      * createSwDoc("test.fodt", "test");
      */
-    void createSwDoc(const char* pName = nullptr, const char* pPassword = nullptr);
+    void createSwDoc(const char* pName = nullptr,
+            const css::uno::Sequence<css::beans::PropertyValue>& rParams = {}, const char* pPassword = nullptr);
 
     /**
      * As createSwDoc except a Web Document in Browse Mode
@@ -231,7 +232,8 @@ protected:
     void emulateTyping(std::u16string_view rStr);
 
 private:
-    void loadURL(OUString const& rURL, const char* pPassword = nullptr);
+    void loadURL(OUString const& rURL,
+            const css::uno::Sequence<css::beans::PropertyValue>& rParams = {}, const char* pPassword = nullptr);
 
     void dumpLayout(SwDoc* pDoc);
 };

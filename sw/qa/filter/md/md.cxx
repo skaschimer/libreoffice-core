@@ -13,6 +13,7 @@
 
 #include <com/sun/star/style/ParagraphAdjust.hpp>
 
+#include <comphelper/propertyvalue.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <svx/xfillit0.hxx>
 #include <svx/xflclit.hxx>
@@ -939,15 +940,16 @@ CPPUNIT_TEST_FIXTURE(Test, testEmbeddedAnchoredImageMdExport)
 CPPUNIT_TEST_FIXTURE(Test, testTemplateMdImport)
 {
     // Given a document with a template:
-    setImportFilterOptions(uR"json({
+
+    // When importing that markdown:
+    createSwDoc("template.md", {
+                                   comphelper::makePropertyValue(u"FilterOptions"_ustr, uR"json({
     "TemplateURL": {
         "type": "string",
         "value": "./template.ott"
     }
-})json"_ustr);
-
-    // When importing that markdown:
-    createSwDoc("template.md");
+})json"_ustr),
+                               });
 
     // Then make sure the styles are taken from the template:
     SwDocShell* pDocShell = getSwDocShell();
@@ -968,16 +970,16 @@ CPPUNIT_TEST_FIXTURE(Test, testTemplateMdImport)
 CPPUNIT_TEST_FIXTURE(Test, testDocxTemplateMdImport)
 {
     // Given a document with a DOCX template:
-    setImportFilterOptions(uR"json({
+    // When importing that markdown:
+    // Without the accompanying fix in place, this crashed.
+    createSwDoc("template.md", {
+                                   comphelper::makePropertyValue(u"FilterOptions"_ustr, uR"json({
     "TemplateURL": {
         "type": "string",
         "value": "./template.docx"
     }
-})json"_ustr);
-
-    // When importing that markdown:
-    // Without the accompanying fix in place, this crashed.
-    createSwDoc("template.md");
+})json"_ustr),
+                               });
 
     // Then make sure the styles are taken from the template:
     SwDocShell* pDocShell = getSwDocShell();

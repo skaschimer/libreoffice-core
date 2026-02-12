@@ -47,9 +47,12 @@ public:
 CPPUNIT_TEST_FIXTURE(Test, testEmptyParagraph)
 {
     // Given a document with 2 paragraphs, the second is empty:
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    createSwDoc("empty-paragraph.xhtml");
+    createSwDoc(
+        "empty-paragraph.xhtml",
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
 
     // Then make sure that the resulting document has a 2nd empty paragraph:
     getParagraph(1, u"a"_ustr);
@@ -62,9 +65,12 @@ CPPUNIT_TEST_FIXTURE(Test, testEmptyParagraph)
 CPPUNIT_TEST_FIXTURE(Test, testRelativeKeepAspect)
 {
     // Given a document with an OLE object, width set to 100%, height is not set:
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    createSwDoc("relative-keep-aspect.xhtml");
+    createSwDoc(
+        "relative-keep-aspect.xhtml",
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
 
     // Then make sure that the aspect ratio of the image is kept:
     SwDoc* pDoc = getSwDoc();
@@ -82,9 +88,12 @@ CPPUNIT_TEST_FIXTURE(Test, testRelativeKeepAspect)
 CPPUNIT_TEST_FIXTURE(Test, testRelativeKeepAspectImage)
 {
     // Given a document with an image, width set to 100%, height is not set:
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    createSwDoc("relative-keep-aspect-image.xhtml");
+    createSwDoc(
+        "relative-keep-aspect-image.xhtml",
+        {
+            comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+        });
 
     // Then make sure that the aspect ratio of the image is kept:
     SwDoc* pDoc = getSwDoc();
@@ -229,9 +238,11 @@ CPPUNIT_TEST_FIXTURE(Test, testCenteredTableCSSExport)
 CPPUNIT_TEST_FIXTURE(Test, testCenteredTableCSSImport)
 {
     // Given an XHTML file with a centered (with inline CSS) table, when importing that document:
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    createSwDoc("centered-table.xhtml");
+    createSwDoc("centered-table.xhtml", {
+                                            comphelper::makePropertyValue(
+                                                u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
+                                        });
 
     // Then make sure that the table is centered:
     SwDoc* pDoc = getSwDoc();

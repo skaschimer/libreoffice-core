@@ -683,7 +683,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter6, testTdf122607_regression)
     };
 
     // inline the loading because currently properties can't be passed...
-    loadFromFile(u"tdf122607_leerzeile.odt", comphelper::containerToSequence(aFilterOptions));
+    createSwDoc("tdf122607_leerzeile.odt", comphelper::containerToSequence(aFilterOptions));
     save(TestFilter::PDF_WRITER);
 
     xmlDocUniquePtr pXmlDoc = parseLayoutDump();
@@ -710,7 +710,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter6, TestTdf150616)
     };
 
     // inline the loading because currently properties can't be passed...
-    loadFromFile(u"in_056132_mod.odt", comphelper::containerToSequence(aFilterOptions));
+    createSwDoc("in_056132_mod.odt", comphelper::containerToSequence(aFilterOptions));
     save(TestFilter::PDF_WRITER);
 
     xmlDocUniquePtr pXmlDoc = parseLayoutDump();
@@ -1519,7 +1519,7 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter6, testTdf156724)
     };
 
     // inline the loading because currently properties can't be passed...
-    loadFromFile(u"fdo56797-2-min.odt", comphelper::containerToSequence(aFilterOptions));
+    createSwDoc("fdo56797-2-min.odt", comphelper::containerToSequence(aFilterOptions));
     save(TestFilter::PDF_WRITER);
 
     xmlDocUniquePtr pXmlDoc = parseLayoutDump();

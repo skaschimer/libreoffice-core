@@ -161,11 +161,6 @@ public:
 
     void skipValidation() { mbSkipValidation = true; }
 
-    void setImportFilterOptions(const OUString& rFilterOptions)
-    {
-        maImportFilterOptions = rFilterOptions;
-    }
-
     void setImportFilterName(TestFilter eFilterName) { meImportFilterName = eFilterName; }
 
 protected:
@@ -187,7 +182,6 @@ private:
     bool mbSkipValidation;
     OUString m_aBaseString;
 
-    OUString maImportFilterOptions;
     TestFilter meImportFilterName;
 };
 

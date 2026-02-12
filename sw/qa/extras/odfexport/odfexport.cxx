@@ -485,7 +485,7 @@ CPPUNIT_TEST_FIXTURE(Test, testFramebackgrounds)
 CPPUNIT_TEST_FIXTURE(Test, testSHA1Correct)
 {   // tdf#114939 this has both an affected password as well as content.xml
     const char* const sPass = "1012345678901234567890123456789012345678901234567890";
-    createSwDoc("sha1_correct.odt", sPass);
+    createSwDoc("sha1_correct.odt", /*rParams*/ {}, sPass);
 
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);
@@ -499,7 +499,7 @@ CPPUNIT_TEST_FIXTURE(Test, testSHA1Correct)
 CPPUNIT_TEST_FIXTURE(Test, testSHA1Wrong)
 {   // tdf#114939 this has both an affected password as well as content.xml
     const char* const sPass = "1012345678901234567890123456789012345678901234567890";
-    createSwDoc("sha1_wrong.odt", sPass);
+    createSwDoc("sha1_wrong.odt", /*rParams*/ {}, sPass);
 
     CPPUNIT_ASSERT_EQUAL(1, getPages());
     getParagraph(1, u"012"_ustr);

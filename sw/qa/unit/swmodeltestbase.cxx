@@ -372,12 +372,14 @@ uno::Reference<drawing::XShape> SwModelTestBase::getTextFrameByName(const OUStri
     return xShape;
 }
 
-void SwModelTestBase::loadURL(OUString const& rURL, const char* pPassword)
+void SwModelTestBase::loadURL(OUString const& rURL,
+                              const css::uno::Sequence<css::beans::PropertyValue>& rParams,
+                              const char* pPassword)
 {
     // Output name at load time, so in the case of a hang, the name of the hanging input file is visible.
     std::cout << rURL << ":\n";
 
-    loadFromURL(rURL, /*rParams*/ {}, pPassword);
+    loadFromURL(rURL, rParams, pPassword);
 
     CPPUNIT_ASSERT(!getSwDocShell()->GetMedium()->GetWarningError());
 
@@ -390,7 +392,7 @@ void SwModelTestBase::saveAndReload(TestFilter eFilter,
 {
     save(eFilter, rParams, pPassword);
 
-    loadURL(maTempFile.GetURL(), pPassword);
+    loadURL(maTempFile.GetURL(), rParams, pPassword);
 }
 
 int SwModelTestBase::getPages() const
@@ -411,12 +413,14 @@ int SwModelTestBase::getShapes() const
     return xDraws->getCount();
 }
 
-void SwModelTestBase::createSwDoc(const char* pName, const char* pPassword)
+void SwModelTestBase::createSwDoc(const char* pName,
+                                  const css::uno::Sequence<css::beans::PropertyValue>& rParams,
+                                  const char* pPassword)
 {
     if (!pName)
         loadURL(u"private:factory/swriter"_ustr);
     else
-        loadURL(createFileURL(OUString::createFromAscii(pName)), pPassword);
+        loadURL(createFileURL(OUString::createFromAscii(pName)), rParams, pPassword);
 
     uno::Reference<lang::XServiceInfo> xServiceInfo(mxComponent, uno::UNO_QUERY_THROW);
     CPPUNIT_ASSERT(xServiceInfo->supportsService(u"com.sun.star.text.TextDocument"_ustr));

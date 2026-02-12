@@ -826,7 +826,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTableStyleConfNested)
 CPPUNIT_TEST_FIXTURE(Test, testTdf133771)
 {
     // Create the doc model.
-    createSwDoc("tdf133771.odt", /*pPassword*/ "test");
+    createSwDoc("tdf133771.odt", /*rParams*/ {}, /*pPassword*/ "test");
 
     CPPUNIT_ASSERT_EQUAL(u"Password Protected"_ustr, getParagraph(1)->getString());
 

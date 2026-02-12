@@ -25,6 +25,7 @@
 #include <vcl/vectorgraphicdata.hxx>
 #include <sfx2/linkmgr.hxx>
 #include <comphelper/propertysequence.hxx>
+#include <comphelper/propertyvalue.hxx>
 #include <comphelper/scopeguard.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <unotxdoc.hxx>
@@ -799,8 +800,10 @@ void Test::testSkipImages()
         bool bSkipImages = !rFilterNamePair.second.isEmpty();
         OString sFailedMessage = OString::Concat("Failed on filter: ") + rFilterNamePair.first.toUtf8();
 
-        setImportFilterOptions(rFilterNamePair.second);
-        createSwDoc(rFilterNamePair.first.toUtf8().getStr());
+        createSwDoc(rFilterNamePair.first.toUtf8().getStr(),
+            {
+                comphelper::makePropertyValue(u"FilterOptions"_ustr, rFilterNamePair.second),
+            });
         sFailedMessage += " - " + rFilterNamePair.second.toUtf8();
 
         // Check shapes (images, textboxes, custom shapes)

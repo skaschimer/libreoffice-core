@@ -1007,9 +1007,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_PreserveSpaces)
 
     // Test import
 
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL());
+    loadFromURL(maTempFile.GetURL(), {
+                                         comphelper::makePropertyValue(u"FilterOptions"_ustr,
+                                                                       u"xhtmlns=reqif-xhtml"_ustr),
+                                     });
     CPPUNIT_ASSERT_EQUAL(paraText, getParagraph(1)->getString());
 }
 
@@ -1136,9 +1138,11 @@ CPPUNIT_TEST_FIXTURE(SwHtmlDomExportTest, testReqIF_NoPreserveSpaces)
 
     // Test import
 
-    setImportFilterOptions(u"xhtmlns=reqif-xhtml"_ustr);
     setImportFilterName(TestFilter::HTML_WRITER);
-    loadFromURL(maTempFile.GetURL());
+    loadFromURL(maTempFile.GetURL(), {
+                                         comphelper::makePropertyValue(u"FilterOptions"_ustr,
+                                                                       u"xhtmlns=reqif-xhtml"_ustr),
+                                     });
 
     CPPUNIT_ASSERT_EQUAL(u"No special spaces"_ustr, getParagraph(1)->getString());
     CPPUNIT_ASSERT_EQUAL(u" Leading space"_ustr, getParagraph(2)->getString());

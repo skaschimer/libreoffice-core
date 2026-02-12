@@ -173,10 +173,10 @@ CPPUNIT_TEST_FIXTURE(Test, testOpenODTWithRestrictedEmbeddedFont)
         // 1. Load and do not approve the restricted font
         FontMappingUseListener fontMappingData;
         rtl::Reference xInteraction(new FontInteractionHandler(false));
-        loadFromFile(u"embed-restricted-style+autostyle.odt",
-                     { comphelper::makePropertyValue(
-                         u"InteractionHandler"_ustr,
-                         uno::Reference<task::XInteractionHandler>(xInteraction)) });
+        createSwDoc("embed-restricted-style+autostyle.odt",
+                    { comphelper::makePropertyValue(
+                        u"InteractionHandler"_ustr,
+                        uno::Reference<task::XInteractionHandler>(xInteraction)) });
 
         // It asked exactly once, even though both styles.xml and content.xml requested the font:
         CPPUNIT_ASSERT_EQUAL(1, xInteraction->getRequestCount());
@@ -207,10 +207,10 @@ CPPUNIT_TEST_FIXTURE(Test, testOpenODTWithRestrictedEmbeddedFont)
         // 2. Load and approve the restricted font
         FontMappingUseListener fontMappingData;
         rtl::Reference xInteraction(new FontInteractionHandler(true));
-        loadFromFile(u"embed-restricted-style+autostyle.odt",
-                     { comphelper::makePropertyValue(
-                         u"InteractionHandler"_ustr,
-                         uno::Reference<task::XInteractionHandler>(xInteraction)) });
+        createSwDoc("embed-restricted-style+autostyle.odt",
+                    { comphelper::makePropertyValue(
+                        u"InteractionHandler"_ustr,
+                        uno::Reference<task::XInteractionHandler>(xInteraction)) });
 
         // It asked exactly once, even though both styles.xml and content.xml requested the font:
         CPPUNIT_ASSERT_EQUAL(1, xInteraction->getRequestCount());
@@ -276,10 +276,10 @@ CPPUNIT_TEST_FIXTURE(Test, testOpenDOCXWithRestrictedEmbeddedFont)
         // unrestricted one must load.
         FontMappingUseListener fontMappingData;
         rtl::Reference xInteraction(new FontInteractionHandler(false));
-        loadFromFile(u"embed-restricted+unrestricted.docx",
-                     { comphelper::makePropertyValue(
-                         u"InteractionHandler"_ustr,
-                         uno::Reference<task::XInteractionHandler>(xInteraction)) });
+        createSwDoc("embed-restricted+unrestricted.docx",
+                    { comphelper::makePropertyValue(
+                        u"InteractionHandler"_ustr,
+                        uno::Reference<task::XInteractionHandler>(xInteraction)) });
 
         CPPUNIT_ASSERT_EQUAL(1, xInteraction->getRequestCount());
         // It requested only the expected font (no requests for 'Unsteady Oversteer')
@@ -312,10 +312,10 @@ CPPUNIT_TEST_FIXTURE(Test, testOpenDOCXWithRestrictedEmbeddedFont)
         // mode.
         FontMappingUseListener fontMappingData;
         rtl::Reference xInteraction(new FontInteractionHandler(true));
-        loadFromFile(u"embed-restricted+unrestricted.docx",
-                     { comphelper::makePropertyValue(
-                         u"InteractionHandler"_ustr,
-                         uno::Reference<task::XInteractionHandler>(xInteraction)) });
+        createSwDoc("embed-restricted+unrestricted.docx",
+                    { comphelper::makePropertyValue(
+                        u"InteractionHandler"_ustr,
+                        uno::Reference<task::XInteractionHandler>(xInteraction)) });
 
         CPPUNIT_ASSERT_EQUAL(1, xInteraction->getRequestCount());
         // It requested the expected font

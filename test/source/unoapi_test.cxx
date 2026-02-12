@@ -259,9 +259,6 @@ void UnoApiTest::loadFromURL(OUString const& rURL,
             <<= css::uno::Reference<task::XInteractionHandler2>(xInteractionHandler);
     }
 
-    if (!maImportFilterOptions.isEmpty())
-        aMediaDescriptor[u"FilterOptions"_ustr] <<= maImportFilterOptions;
-
     if (meImportFilterName != TestFilter::NONE)
         aMediaDescriptor[u"FilterName"_ustr] <<= TestFilterNames.at(meImportFilterName);
 
@@ -362,7 +359,7 @@ void UnoApiTest::saveAndReload(TestFilter eFilter,
                                const char* pPassword)
 {
     save(eFilter, rParams, pPassword);
-    loadFromURL(maTempFile.GetURL(), /*rParams*/ {}, pPassword);
+    loadFromURL(maTempFile.GetURL(), rParams, pPassword);
 }
 
 std::unique_ptr<vcl::pdf::PDFiumDocument> UnoApiTest::parsePDFExport(const OString& rPassword)
