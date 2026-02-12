@@ -404,7 +404,7 @@ void Dialog::ImplInitDialogData()
 
 void Dialog::PixelInvalidate(const tools::Rectangle* pRectangle)
 {
-    if (!mpDialogImpl->m_bLOKTunneling)
+    if (!mpDialogImpl || !mpDialogImpl->m_bLOKTunneling)
         return;
 
     Window::PixelInvalidate(pRectangle);
