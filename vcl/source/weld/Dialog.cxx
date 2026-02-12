@@ -7,10 +7,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <vcl/abstdlg.hxx>
 #include <vcl/weld/Dialog.hxx>
 
 namespace weld
 {
+void Dialog::executeScreenshotAnnotationDialog()
+{
+    // open screenshot annotation dialog
+    VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();
+    ScopedVclPtr<AbstractScreenshotAnnotationDlg> pDialog
+        = pFact->CreateScreenshotAnnotationDlg(*this);
+    assert(pDialog);
+    pDialog->Execute();
+}
+
 void Dialog::set_default_response(int nResponse)
 {
     std::unique_ptr<weld::Button> pButton = weld_button_for_response(nResponse);

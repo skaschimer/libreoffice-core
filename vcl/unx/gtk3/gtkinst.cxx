@@ -105,7 +105,6 @@
 #include <unotools/tempfile.hxx>
 #include <unx/gstsink.hxx>
 #include <vcl/ImageTree.hxx>
-#include <vcl/abstdlg.hxx>
 #include <vcl/event.hxx>
 #include <vcl/i18nhelp.hxx>
 #include <vcl/quickselectionengine.hxx>
@@ -7042,13 +7041,7 @@ private:
         gtk_menu_detach(GTK_MENU(pMenu));
 
         if (bActivate)
-        {
-            // open screenshot annotation dialog
-            VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();
-            VclPtr<AbstractScreenshotAnnotationDlg> xTmp = pFact->CreateScreenshotAnnotationDlg(*this);
-            ScopedVclPtr<AbstractScreenshotAnnotationDlg> xDialog(xTmp);
-            xDialog->Execute();
-        }
+            executeScreenshotAnnotationDialog();
 
         return false;
     }

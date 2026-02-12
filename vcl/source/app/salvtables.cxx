@@ -50,7 +50,6 @@
 #include <unotools/fontdefs.hxx>
 #include <utility>
 #include <tools/helpers.hxx>
-#include <vcl/abstdlg.hxx>
 #include <vcl/builder.hxx>
 #include <vcl/dndlistenercontainer.hxx>
 #include <vcl/toolkit/combobox.hxx>
@@ -1990,21 +1989,7 @@ IMPL_LINK(SalInstanceDialog, PopupScreenShotMenuHdl, const CommandEvent&, rCEvt,
 
         // 0 == no selection (so not usable as ID)
         if (0 != nId)
-        {
-            // open screenshot annotation dialog
-            VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();
-            VclPtr<AbstractScreenshotAnnotationDlg> pTmp
-                = pFact->CreateScreenshotAnnotationDlg(*this);
-            ScopedVclPtr<AbstractScreenshotAnnotationDlg> pDialog(pTmp);
-
-            if (pDialog)
-            {
-                // currently just execute the dialog, no need to do
-                // different things for ok/cancel. This may change later,
-                // for that case use 'if (pDlg->Execute() == RET_OK)'
-                pDialog->Execute();
-            }
-        }
+            executeScreenshotAnnotationDialog();
 
         // consume event when:
         // - CommandEventId::ContextMenu

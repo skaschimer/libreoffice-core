@@ -22,6 +22,9 @@ private:
                           const std::function<void(sal_Int32)>& func)
         = 0;
 
+protected:
+    void executeScreenshotAnnotationDialog();
+
 public:
     virtual void set_modal(bool bModal) = 0;
     virtual bool get_modal() const = 0;
