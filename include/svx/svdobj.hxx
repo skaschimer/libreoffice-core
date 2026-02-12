@@ -230,8 +230,8 @@ public:
     virtual bool isDiagram() const;
     virtual const std::shared_ptr< svx::diagram::DiagramHelper_svx >& getDiagramHelper() const;
     const std::shared_ptr< svx::diagram::DiagramHelper_svx >& getDiagramHelperFromDiagramOrMember() const;
-    void setDiagramDataModelID(const OUString& rID) { msDiagramDataModelID = rID; }
-    const OUString& getDiagramDataModelID() const { return msDiagramDataModelID; }
+    void setDiagramDataModelID(const OUString& rID);
+    const OUString& getDiagramDataModelID() const;
 
 private:
     friend class                SdrObjListIter;
@@ -992,9 +992,6 @@ private:
 
     // Hyperlink for the whole shape
     OUString msHyperlink;
-
-    // if this object is a representation of Diagram Sub-Data, hold the DataModelID
-    OUString msDiagramDataModelID;
 
     // only for internal use!
     SvxShape* getSvxShape();
