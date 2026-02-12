@@ -48,6 +48,9 @@ public:
     virtual const vcl::ILibreOfficeKitNotifier* GetLOKNotifier() override;
 
     bool eventFilter(QObject* pObject, QEvent* pEvent) override;
+
+private:
+    void collectScreenShotData(QWidget& rWidget, weld::ScreenShotCollection& rScreenShotCollection);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */
