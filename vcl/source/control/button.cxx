@@ -3578,7 +3578,8 @@ void CheckBox::SetState( TriState eState )
     {
         meState = eState;
         StateChanged( StateChangedType::State );
-        Toggle();
+        if (eState != TRISTATE_INDET) // just removing Toggle() fails at the ui test /tdf65334.py
+            Toggle();
     }
 }
 
