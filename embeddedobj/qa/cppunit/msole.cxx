@@ -100,12 +100,11 @@ CPPUNIT_TEST_FIXTURE(Test, testSaveOnThread)
         return;
 
     DBG_TESTSOLARMUTEX();
-    OUString aURL = createFileURL(u"reqif-ole2.xhtml");
     uno::Sequence<beans::PropertyValue> aLoadProperties = {
         comphelper::makePropertyValue("FilterName", OUString("HTML (StarWriter)")),
         comphelper::makePropertyValue("FilterOptions", OUString("xhtmlns=reqif-xhtml")),
     };
-    loadWithParams(aURL, aLoadProperties);
+    loadFromFile(u"reqif-ole2.xhtml", aLoadProperties);
 
     // When saving that document on a thread:
     OdtExportThread aThread(mxComponent, maTempFile.GetURL());

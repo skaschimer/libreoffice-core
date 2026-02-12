@@ -219,7 +219,7 @@ void SwHtmlDomExportTest::ImportFromReqif(const OUString& rUrl)
         comphelper::makePropertyValue(u"FilterName"_ustr, u"HTML (StarWriter)"_ustr),
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
     };
-    loadWithParams(rUrl, aLoadProperties);
+    loadFromURL(rUrl, aLoadProperties);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

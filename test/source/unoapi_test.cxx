@@ -76,17 +76,6 @@ OUString UnoApiTest::createFilePath(std::u16string_view aFileBase)
     return m_directories.getPathFromSrc(m_aBaseString, aFileBase);
 }
 
-void UnoApiTest::setTestInteractionHandler(const char* pPassword,
-                                           std::vector<beans::PropertyValue>& rFilterOptions)
-{
-    OUString sPassword = OUString::createFromAscii(pPassword);
-    auto& rPropertyValue = rFilterOptions.emplace_back();
-    xInteractionHandler
-        = rtl::Reference<TestInteractionHandler>(new TestInteractionHandler(sPassword));
-    rPropertyValue.Name = "InteractionHandler";
-    rPropertyValue.Value <<= css::uno::Reference<task::XInteractionHandler2>(xInteractionHandler);
-}
-
 #if HAVE_EXPORT_VALIDATION
 namespace
 {
@@ -252,32 +241,38 @@ void UnoApiTest::validate(const OUString& rPath, TestFilter eFilter) const
 #endif
 }
 
-void UnoApiTest::loadFromURL(OUString const& rURL, const char* pPassword)
+void UnoApiTest::loadFromURL(OUString const& rURL,
+                             const uno::Sequence<beans::PropertyValue>& rParams,
+                             const char* pPassword)
 {
-    std::vector<beans::PropertyValue> aFilterOptions;
+    comphelper::SequenceAsHashMap aMediaDescriptor;
+
+    if (rParams.hasElements())
+        aMediaDescriptor.update(rParams);
 
     if (pPassword)
     {
-        setTestInteractionHandler(pPassword, aFilterOptions);
+        OUString sPassword = OUString::createFromAscii(pPassword);
+        xInteractionHandler
+            = rtl::Reference<TestInteractionHandler>(new TestInteractionHandler(sPassword));
+        aMediaDescriptor["InteractionHandler"]
+            <<= css::uno::Reference<task::XInteractionHandler2>(xInteractionHandler);
     }
 
     if (!maImportFilterOptions.isEmpty())
-    {
-        beans::PropertyValue aValue;
-        aValue.Name = "FilterOptions";
-        aValue.Value <<= maImportFilterOptions;
-        aFilterOptions.push_back(aValue);
-    }
+        aMediaDescriptor[u"FilterOptions"_ustr] <<= maImportFilterOptions;
 
     if (meImportFilterName != TestFilter::NONE)
+        aMediaDescriptor[u"FilterName"_ustr] <<= TestFilterNames.at(meImportFilterName);
+
+    if (mxComponent.is())
     {
-        beans::PropertyValue aValue;
-        aValue.Name = "FilterName";
-        aValue.Value <<= TestFilterNames.at(meImportFilterName);
-        aFilterOptions.push_back(aValue);
+        mxComponent->dispose();
+        mxComponent.clear();
     }
 
-    loadWithParams(rURL, comphelper::containerToSequence(aFilterOptions));
+    mxComponent = loadFromDesktop(rURL, OUString(), aMediaDescriptor.getAsConstPropertyValueList());
+    CPPUNIT_ASSERT(mxComponent);
 
     if (pPassword)
     {
@@ -292,23 +287,12 @@ void UnoApiTest::dispose()
     mxComponent.clear();
 }
 
-void UnoApiTest::loadWithParams(OUString const& rURL,
-                                const uno::Sequence<beans::PropertyValue>& rParams)
-{
-    if (mxComponent.is())
-    {
-        mxComponent->dispose();
-        mxComponent.clear();
-    }
-
-    mxComponent = loadFromDesktop(rURL, OUString(), rParams);
-    CPPUNIT_ASSERT(mxComponent);
-}
-
-OUString UnoApiTest::loadFromFile(std::u16string_view aFileBase, const char* pPassword)
+OUString UnoApiTest::loadFromFile(std::u16string_view aFileBase,
+                                  const css::uno::Sequence<css::beans::PropertyValue>& rParams,
+                                  const char* pPassword)
 {
     OUString aFileName = createFileURL(aFileBase);
-    loadFromURL(aFileName, pPassword);
+    loadFromURL(aFileName, rParams, pPassword);
     return aFileName;
 }
 
@@ -378,7 +362,7 @@ void UnoApiTest::saveAndReload(TestFilter eFilter,
                                const char* pPassword)
 {
     save(eFilter, rParams, pPassword);
-    loadFromURL(maTempFile.GetURL(), pPassword);
+    loadFromURL(maTempFile.GetURL(), /*rParams*/ {}, pPassword);
 }
 
 std::unique_ptr<vcl::pdf::PDFiumDocument> UnoApiTest::parsePDFExport(const OString& rPassword)

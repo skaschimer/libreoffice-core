@@ -887,7 +887,7 @@ CPPUNIT_TEST_FIXTURE(SvdrawTest, testVisualSignResize)
 #if ENABLE_PDFIMPORT
     // Given a read-only document with a just inserted signature line:
     uno::Sequence<beans::PropertyValue> aArgs = { comphelper::makePropertyValue("ReadOnly", true) };
-    loadWithParams(createFileURL(u"empty.pdf"), aArgs);
+    loadFromFile(u"empty.pdf", aArgs);
     SfxBaseModel* pBaseModel = dynamic_cast<SfxBaseModel*>(mxComponent.get());
     CPPUNIT_ASSERT(pBaseModel);
     SfxObjectShell* pObjectShell = pBaseModel->GetObjectShell();

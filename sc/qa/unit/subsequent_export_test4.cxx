@@ -2338,8 +2338,8 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf166939)
     // Given a document with a column autostyle name equal to "a" (it could be any single-character
     // name). Load it as template, to keep streams valid (see ScDocShell::SaveAs) to reuse existing
     // autostyle names (see ScXMLExport::collectAutoStyles).
-    loadWithParams(createFileURL(u"ods/autostyle-name-is-single-char.ods"),
-                   { comphelper::makePropertyValue(u"AsTemplate"_ustr, true) });
+    loadFromFile(u"ods/autostyle-name-is-single-char.ods",
+                 { comphelper::makePropertyValue(u"AsTemplate"_ustr, true) });
     // Saving it must not crash / fail an assertion!
     save(TestFilter::ODS);
     // Check that we tested the codepath preserving existing names - otherwise test makes no sense
@@ -2353,8 +2353,8 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf166939_1)
     // Check that the autostyles are stored correctly, when autostyle names are not standard (are
     // not like "ro1"; the chosen names are "r_1", "r_2"). A mistake had made a function return
     // existing style's index negative, and that wasn't caught in tests...
-    loadWithParams(createFileURL(u"fods/lostRowStyle.fods"),
-                   { comphelper::makePropertyValue(u"AsTemplate"_ustr, true) });
+    loadFromFile(u"fods/lostRowStyle.fods",
+                 { comphelper::makePropertyValue(u"AsTemplate"_ustr, true) });
     // Saving it must keep the autostyles
     save(TestFilter::ODS);
     xmlDocUniquePtr pXmlDoc = parseExport(u"content.xml"_ustr);

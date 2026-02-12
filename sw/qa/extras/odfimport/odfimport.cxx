@@ -1534,7 +1534,7 @@ CPPUNIT_TEST_FIXTURE(Test, testBrokenPackage_Tdf159474)
     // It expectedly fails to load normally:
     CPPUNIT_ASSERT_ASSERTION_FAIL(loadFromURL(url));
     // importing it must succeed with RepairPackage set to true.
-    loadWithParams(url, { comphelper::makePropertyValue(u"RepairPackage"_ustr, true) });
+    loadFromURL(url, { comphelper::makePropertyValue(u"RepairPackage"_ustr, true) });
     // The document imports in repair mode; the original broken package is used as a template,
     // and the loaded document has no URL:
     CPPUNIT_ASSERT(mxComponent.queryThrow<frame::XModel>()->getURL().isEmpty());

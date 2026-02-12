@@ -52,7 +52,7 @@ CPPUNIT_TEST_FIXTURE(SdTiledRenderingTest, testInsertSignatureLineExternal)
     // Given a PDF to be signed:
     uno::Sequence<beans::PropertyValue> aArgs = { comphelper::makePropertyValue("ReadOnly", true) };
     createTempCopy(u"empty.pdf");
-    loadWithParams(maTempFile.GetURL(), aArgs);
+    loadFromURL(maTempFile.GetURL(), aArgs);
     SdXImpressDocument* pImpressDocument = dynamic_cast<SdXImpressDocument*>(mxComponent.get());
     pImpressDocument->initializeForTiledRendering({});
     sd::ViewShell* pViewShell = pImpressDocument->GetDocShell()->GetViewShell();

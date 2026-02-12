@@ -889,7 +889,7 @@ CPPUNIT_TEST_FIXTURE(ScExportTest2, testOpenDocumentAsReadOnly)
     uno::Sequence<beans::PropertyValue> aParams
         = { comphelper::makePropertyValue(u"Silent"_ustr, true) };
 
-    loadWithParams(createFileURL(u"xlsx/open-as-read-only.xlsx"), aParams);
+    loadFromFile(u"xlsx/open-as-read-only.xlsx", aParams);
     ScDocShell* pDocSh = getScDocShell();
     CPPUNIT_ASSERT(pDocSh->IsSecurityOptOpenReadOnly());
 

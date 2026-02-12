@@ -744,7 +744,7 @@ CPPUNIT_TEST_FIXTURE(Test, testSplitFlyThenTable)
     uno::Sequence<beans::PropertyValue> aFilterOptions = {
         comphelper::makePropertyValue(u"Hidden"_ustr, true),
     };
-    loadWithParams(createFileURL(u"floattable-then-table.docx"), aFilterOptions);
+    loadFromFile(u"floattable-then-table.docx", aFilterOptions);
 
     // When layout is calculated during PDF export:
     // Then make sure that finishes without errors:

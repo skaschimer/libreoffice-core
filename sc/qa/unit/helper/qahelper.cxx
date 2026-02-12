@@ -612,7 +612,7 @@ void ScModelTestBase::createScDoc(const char* pName, const char* pPassword, bool
     if (!pName)
         loadFromURL(u"private:factory/scalc"_ustr);
     else
-        loadFromFile(OUString::createFromAscii(pName), pPassword);
+        loadFromFile(OUString::createFromAscii(pName), /*rParams*/ {}, pPassword);
 
     uno::Reference<lang::XServiceInfo> xServiceInfo(mxComponent, uno::UNO_QUERY_THROW);
     CPPUNIT_ASSERT(xServiceInfo->supportsService(u"com.sun.star.sheet.SpreadsheetDocument"_ustr));

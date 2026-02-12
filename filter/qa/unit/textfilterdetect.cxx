@@ -304,7 +304,7 @@ CPPUNIT_TEST_FIXTURE(TextFilterDetectTest, testTdf169154)
         = { comphelper::makePropertyValue(u"RepairPackage"_ustr, true) };
 
     // Without the fix in place, this test would fail to load the file in RepairPackage mode
-    loadWithParams(createFileURL(u"tdf169154.doc"), aParams);
+    loadFromFile(u"tdf169154.doc", aParams);
     CPPUNIT_ASSERT(supportsService(mxComponent, "com.sun.star.text.TextDocument"));
 }
 }

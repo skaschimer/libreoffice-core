@@ -491,8 +491,7 @@ CPPUNIT_TEST_FIXTURE(SwHtmlOptionsImportTest, testAllowedRTFOLEMimeTypes)
         comphelper::makePropertyValue(u"FilterOptions"_ustr, u"xhtmlns=reqif-xhtml"_ustr),
         comphelper::makePropertyValue(u"AllowedRTFOLEMimeTypes"_ustr, aTypes),
     };
-    OUString aURL = createFileURL(u"allowed-rtf-ole-mime-types.xhtml");
-    loadWithParams(aURL, aLoadProperties);
+    loadFromFile(u"allowed-rtf-ole-mime-types.xhtml", aLoadProperties);
     uno::Reference<text::XTextEmbeddedObjectsSupplier> xSupplier(mxComponent, uno::UNO_QUERY);
     uno::Reference<container::XIndexAccess> xObjects(xSupplier->getEmbeddedObjects(),
                                                      uno::UNO_QUERY);

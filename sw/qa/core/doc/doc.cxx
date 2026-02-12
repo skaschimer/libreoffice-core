@@ -676,7 +676,7 @@ CPPUNIT_TEST_FIXTURE(SwCoreDocTest, testAtCharImageCopy)
     pWrtShell1->SelAll();
     rtl::Reference<SwTransferable> xTransfer = new SwTransferable(*pWrtShell1);
     xTransfer->Copy();
-    // Don't use createSwDoc(), UnoApiTest::loadWithParams() would dispose the first document.
+    // Don't use createSwDoc(), UnoApiTest::loadFromURL() would dispose the first document.
     mxComponent2 = loadFromDesktop(u"private:factory/swriter"_ustr);
 
     // When copying the body text from that document to a new one:

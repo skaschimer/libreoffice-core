@@ -138,11 +138,13 @@ public:
 
     OUString createFileURL(std::u16string_view aFileBase);
     OUString createFilePath(std::u16string_view aFileBase);
-    void loadFromURL(const OUString& rURL, const char* pPassword = nullptr);
+    void loadFromURL(const OUString& rURL,
+                     const css::uno::Sequence<css::beans::PropertyValue>& rParams = {},
+                     const char* pPassword = nullptr);
     void dispose();
-    void loadWithParams(const OUString& rURL,
-                        const css::uno::Sequence<css::beans::PropertyValue>& rParams);
-    OUString loadFromFile(std::u16string_view aFileBase, const char* pPassword = nullptr);
+    OUString loadFromFile(std::u16string_view aFileBase,
+                          const css::uno::Sequence<css::beans::PropertyValue>& rParams = {},
+                          const char* pPassword = nullptr);
 
     css::uno::Any executeMacro(const OUString& rScriptURL,
                                const css::uno::Sequence<css::uno::Any>& rParams = {});
@@ -180,9 +182,6 @@ protected:
     rtl::Reference<TestInteractionHandler> xInteractionHandler;
 
 private:
-    void setTestInteractionHandler(const char* pPassword,
-                                   std::vector<css::beans::PropertyValue>& rFilterOptions);
-
     void validate(const OUString& rURL, TestFilter eFilter) const;
 
     bool mbSkipValidation;

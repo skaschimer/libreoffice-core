@@ -751,7 +751,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPDFAddVisibleSignature)
     // Open it.
     uno::Sequence<beans::PropertyValue> aArgs
         = { comphelper::makePropertyValue(u"ReadOnly"_ustr, true) };
-    loadWithParams(maTempFile.GetURL(), aArgs);
+    loadFromURL(maTempFile.GetURL(), aArgs);
     SfxBaseModel* pBaseModel = dynamic_cast<SfxBaseModel*>(mxComponent.get());
     CPPUNIT_ASSERT(pBaseModel);
     SfxObjectShell* pObjectShell = pBaseModel->GetObjectShell();
@@ -1297,7 +1297,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testInvalidZIP)
 
     uno::Sequence<beans::PropertyValue> args = { comphelper::makePropertyValue(
         u"InteractionHandler"_ustr, uno::Reference<task::XInteractionHandler>(pIH)) };
-    loadWithParams(createFileURL(u"signature-forgery-cdh-lfh.docx"), args);
+    loadFromFile(u"signature-forgery-cdh-lfh.docx", args);
     SfxBaseModel* pBaseModel = dynamic_cast<SfxBaseModel*>(mxComponent.get());
     CPPUNIT_ASSERT(pBaseModel);
     SfxObjectShell* pObjectShell = pBaseModel->GetObjectShell();
@@ -1402,8 +1402,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature12_ODF)
         const OUString sLoadMessage = "loading failed: " + aURL;
 
         // load the template as-is to validate signatures
-        loadWithParams(aURL,
-                       comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+        loadFromURL(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
         // we are a template, and have a valid document and macro signature
         assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::OK,
@@ -1430,8 +1429,8 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature12_ODF)
             save(eFormat);
 
             // load the saved OTT template as-is to validate signatures
-            loadWithParams(maTempFile.GetURL(),
-                           comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+            loadFromURL(maTempFile.GetURL(),
+                        comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
         }
 
         // the loaded document is a OTT/ODT with a macro signature
@@ -1442,8 +1441,8 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature12_ODF)
         save(TestFilter::OTT);
 
         // load the template as-is to validate signatures
-        loadWithParams(maTempFile.GetURL(),
-                       comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+        loadFromURL(maTempFile.GetURL(),
+                    comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
         // the loaded document is a OTT with a valid macro signature
         assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,
@@ -1458,7 +1457,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testDropMacroTemplateSignature)
     const OUString sLoadMessage = "loading failed: " + aURL;
 
     // load the template as-is to validate signatures
-    loadWithParams(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+    loadFromURL(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
     // we are a template, and have a non-invalid macro signature
     assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,
@@ -1481,7 +1480,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testDropMacroTemplateSignature)
                    SignatureState::NOSIGNATURES, ODFVER_014_TEXT);
 
     // load the template as-is to validate signatures
-    loadWithParams(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+    loadFromURL(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
     // we are a template, and have a non-invalid macro signature
     assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,
@@ -1491,8 +1490,8 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testDropMacroTemplateSignature)
     save(TestFilter::OTT);
 
     // load the template as-is to validate signatures
-    loadWithParams(maTempFile.GetURL(),
-                   comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+    loadFromURL(maTempFile.GetURL(),
+                comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
     // the loaded document is a 1.2 OTT without any signatures
     assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,
@@ -1514,8 +1513,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature10)
         const OUString sLoadMessage = "loading failed: " + aURL;
 
         // load the template as-is to validate signatures
-        loadWithParams(aURL,
-                       comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+        loadFromURL(aURL, comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
         // we are a template, and have a non-invalid macro signature
         assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,
@@ -1542,8 +1540,8 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature10)
             save(TestFilter::OTT);
 
             // load the saved OTT template as-is to validate signatures
-            loadWithParams(maTempFile.GetURL(),
-                           comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+            loadFromURL(maTempFile.GetURL(),
+                        comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
         }
 
         assertDocument(CPPUNIT_SOURCELINE(), eFormat, SignatureState::NOSIGNATURES,
@@ -1552,8 +1550,8 @@ CPPUNIT_TEST_FIXTURE(SigningTest, testPreserveMacroTemplateSignature10)
         save(TestFilter::OTT);
 
         // load the template as-is to validate signatures
-        loadWithParams(maTempFile.GetURL(),
-                       comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
+        loadFromURL(maTempFile.GetURL(),
+                    comphelper::InitPropertySequence({ { "AsTemplate", uno::Any(false) } }));
 
         // the loaded document is a OTT with a non-invalid macro signature
         assertDocument(CPPUNIT_SOURCELINE(), TestFilter::OTT, SignatureState::NOSIGNATURES,

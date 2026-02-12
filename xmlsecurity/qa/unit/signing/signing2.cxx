@@ -112,7 +112,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPreserveMacroSignatureODB)
 CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODF13)
 {
     // load ODF 1.3 encrypted document
-    loadFromFile(u"encrypted_scriptsig_odf13.odt", "password");
+    loadFromFile(u"encrypted_scriptsig_odf13.odt", /*rParams*/ {}, "password");
     {
         uno::Reference<text::XTextDocument> xTextDoc(mxComponent, uno::UNO_QUERY_THROW);
         CPPUNIT_ASSERT_EQUAL(u"secret"_ustr, xTextDoc->getText()->getString());
@@ -235,7 +235,7 @@ CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODF13)
 CPPUNIT_TEST_FIXTURE(SigningTest2, testPasswordPreserveMacroSignatureODFWholesomeLO242)
 {
     // load wholesome ODF (extended) encrypted document
-    loadFromFile(u"encrypted_scriptsig_lo242.odt", "password");
+    loadFromFile(u"encrypted_scriptsig_lo242.odt", /*rParams*/ {}, "password");
     {
         uno::Reference<text::XTextDocument> xTextDoc(mxComponent, uno::UNO_QUERY_THROW);
         CPPUNIT_ASSERT_EQUAL(u"secret"_ustr, xTextDoc->getText()->getString());
