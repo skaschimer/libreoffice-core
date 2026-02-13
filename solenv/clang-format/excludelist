@@ -2635,7 +2635,6 @@ dbaccess/source/ui/dlg/finteraction.cxx
 dbaccess/source/ui/dlg/finteraction.hxx
 dbaccess/source/ui/dlg/generalpage.cxx
 dbaccess/source/ui/dlg/generalpage.hxx
-dbaccess/source/ui/dlg/indexdialog.cxx
 dbaccess/source/ui/dlg/indexfieldscontrol.cxx
 dbaccess/source/ui/dlg/odbcconfig.cxx
 dbaccess/source/ui/dlg/odbcconfig.hxx
@@ -2740,7 +2739,6 @@ dbaccess/source/ui/inc/exsrcbrw.hxx
 dbaccess/source/ui/inc/formadapter.hxx
 dbaccess/source/ui/inc/imageprovider.hxx
 dbaccess/source/ui/inc/indexcollection.hxx
-dbaccess/source/ui/inc/indexdialog.hxx
 dbaccess/source/ui/inc/indexes.hxx
 dbaccess/source/ui/inc/indexfieldscontrol.hxx
 dbaccess/source/ui/inc/linkeddocuments.hxx
