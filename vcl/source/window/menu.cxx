@@ -1087,7 +1087,7 @@ void Menu::SetHelpText( sal_uInt16 nItemId, const OUString& rStr )
         pData->aHelpText = rStr;
 }
 
-OUString Menu::ImplGetHelpText( sal_uInt16 nItemId ) const
+OUString Menu::GetHelpText( sal_uInt16 nItemId ) const
 {
     MenuItemData* pData = pItemList->GetData( nItemId );
 
@@ -1111,11 +1111,6 @@ OUString Menu::ImplGetHelpText( sal_uInt16 nItemId ) const
     if (pData->aHelpText.isEmpty())
         return pData->aAccessibleDescription;
     return pData->aHelpText;
-}
-
-OUString Menu::GetHelpText( sal_uInt16 nItemId ) const
-{
-    return ImplGetHelpText( nItemId );
 }
 
 void Menu::SetTipHelpText( sal_uInt16 nItemId, const OUString& rStr )

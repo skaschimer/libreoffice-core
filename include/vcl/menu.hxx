@@ -182,7 +182,6 @@ protected:
 
     SAL_DLLPRIVATE void ImplFillLayoutData() const;
     SAL_DLLPRIVATE SalMenu* ImplGetSalMenu() const { return mpSalMenu.get(); }
-    SAL_DLLPRIVATE OUString ImplGetHelpText( sal_uInt16 nItemId ) const;
 
     // returns native check and option menu symbol height in rCheckHeight and rRadioHeight
     // return value is maximum width and height of checkboxes and radiobuttons
