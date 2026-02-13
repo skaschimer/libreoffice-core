@@ -355,7 +355,6 @@ struct DialogImpl
     tools::Long    mnResult;
     bool    mbStartedModal;
     VclAbstractDialog::AsyncContext maEndCtx;
-    Link<const CommandEvent&, bool> m_aPopupMenuHdl;
     Link<void*, vcl::ILibreOfficeKitNotifier*> m_aInstallLOKNotifierHdl;
     bool    m_bLOKTunneling;
 
@@ -721,11 +720,6 @@ Size bestmaxFrameSizeForScreenSize(const Size &rScreenSize)
     const int n = std::min<CGFloat>([[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     return Size(n-10, n-10);
 #endif
-}
-
-void Dialog::SetPopupMenuHdl(const Link<const CommandEvent&, bool>& rLink)
-{
-    mpDialogImpl->m_aPopupMenuHdl = rLink;
 }
 
 void Dialog::SetInstallLOKNotifierHdl(const Link<void*, vcl::ILibreOfficeKitNotifier*>& rLink)
@@ -1646,13 +1640,6 @@ void Dialog::Activate()
         xEventBroadcaster->documentEventOccured(aObject);
     }
     SystemWindow::Activate();
-}
-
-void Dialog::Command(const CommandEvent& rCEvt)
-{
-    if (mpDialogImpl->m_aPopupMenuHdl.Call(rCEvt))
-        return;
-    SystemWindow::Command(rCEvt);
 }
 
 struct TopLevelWindowLockerImpl
