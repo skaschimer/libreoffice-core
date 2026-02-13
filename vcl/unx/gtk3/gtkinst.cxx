@@ -2584,6 +2584,14 @@ protected:
         }
     }
 
+    void ensurePopupMenuSignal()
+    {
+#if !GTK_CHECK_VERSION(4, 0, 0)
+        if (!m_nPopupMenuSignalId)
+            m_nPopupMenuSignalId = g_signal_connect(m_pWidget, "popup-menu", G_CALLBACK(signalPopupMenu), this);
+#endif
+    }
+
 #if !GTK_CHECK_VERSION(4, 0, 0)
     static gboolean signalPopupMenu(GtkWidget* pWidget, gpointer widget)
     {
@@ -3394,11 +3402,9 @@ public:
 
     virtual void connect_command(const Link<const CommandEvent&, bool>& rLink) override
     {
-#if !GTK_CHECK_VERSION(4, 0, 0)
-        if (!m_nPopupMenuSignalId)
-            m_nPopupMenuSignalId = g_signal_connect(m_pWidget, "popup-menu", G_CALLBACK(signalPopupMenu), this);
-#endif
+
         ensureButtonPressSignal();
+        ensurePopupMenuSignal();
         weld::Widget::connect_command(rLink);
     }
 
