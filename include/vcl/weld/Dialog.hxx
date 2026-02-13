@@ -27,8 +27,6 @@ private:
 protected:
     virtual bool signal_command(const CommandEvent& rCEvt);
 
-    void executeScreenshotAnnotationDialog();
-
 public:
     virtual void set_modal(bool bModal) = 0;
     virtual bool get_modal() const = 0;

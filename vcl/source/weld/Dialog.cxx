@@ -25,6 +25,7 @@ bool Dialog::signal_command(const CommandEvent& rCEvt)
     if (CommandEventId::ContextMenu == rCEvt.GetCommand()
         && officecfg::Office::Common::Misc::ScreenshotMode::get())
     {
+        // show menu to allow opening the screenshot annotation dialog
         std::unique_ptr<weld::Builder> xBuilder(
             Application::CreateBuilder(this, u"vcl/ui/screenshotmenu.ui"_ustr));
         std::unique_ptr<weld::Menu> pMenu = xBuilder->weld_menu(u"menu"_ustr);
@@ -37,22 +38,18 @@ bool Dialog::signal_command(const CommandEvent& rCEvt)
 
         if (pMenu->popup_at_rect(this, tools::Rectangle(rCEvt.GetMousePosPixel(), Size(1, 1)))
             == sMenuItemId)
-            executeScreenshotAnnotationDialog();
+        {
+            VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();
+            ScopedVclPtr<AbstractScreenshotAnnotationDlg> pDialog
+                = pFact->CreateScreenshotAnnotationDlg(*this);
+            assert(pDialog);
+            pDialog->Execute();
+        }
 
         return true;
     }
 
     return Window::signal_command(rCEvt);
-}
-
-void Dialog::executeScreenshotAnnotationDialog()
-{
-    // open screenshot annotation dialog
-    VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();
-    ScopedVclPtr<AbstractScreenshotAnnotationDlg> pDialog
-        = pFact->CreateScreenshotAnnotationDlg(*this);
-    assert(pDialog);
-    pDialog->Execute();
 }
 
 void Dialog::set_default_response(int nResponse)
