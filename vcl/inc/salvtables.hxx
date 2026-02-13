@@ -516,8 +516,6 @@ private:
     tools::Long m_nOldEditWidthReq; // Original width request of the input field
     sal_Int32 m_nOldBorderWidth; // border width for expanded dialog
 
-    DECL_LINK(PopupScreenShotMenuHdl, const CommandEvent&, bool);
-
     void recursively_unset_default_buttons();
 
     void implResetDefault(const vcl::Window* _pWindow);

@@ -112,7 +112,7 @@ protected:
     bool notify_events_disabled() const { return m_nBlockNotify != 0; }
     void enable_notify_events() { --m_nBlockNotify; }
 
-    bool signal_command(const CommandEvent& rCEvt) { return m_aCommandHdl.Call(rCEvt); }
+    virtual bool signal_command(const CommandEvent& rCEvt) { return m_aCommandHdl.Call(rCEvt); }
     void signal_focus_in() { m_aFocusInHdl.Call(*this); }
     void signal_focus_out() { m_aFocusOutHdl.Call(*this); }
     bool signal_mnemonic_activate() { return m_aMnemonicActivateHdl.Call(*this); }

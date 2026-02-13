@@ -1756,11 +1756,6 @@ SalInstanceDialog::SalInstanceDialog(::Dialog* pDialog, SalInstanceBuilder* pBui
     , m_nOldEditWidthReq(0)
     , m_nOldBorderWidth(0)
 {
-    const bool bScreenshotMode(officecfg::Office::Common::Misc::ScreenshotMode::get());
-    if (bScreenshotMode)
-    {
-        m_xDialog->SetPopupMenuHdl(LINK(this, SalInstanceDialog, PopupScreenShotMenuHdl));
-    }
 }
 
 bool SalInstanceDialog::runAsync(std::shared_ptr<weld::DialogController> const& rxOwner,
@@ -1976,33 +1971,6 @@ bool SalInstanceDialog::is_default_button(const weld::Button* pCandidate) const
     const SalInstanceWidget* pVclCandidate = dynamic_cast<const SalInstanceWidget*>(pCandidate);
     vcl::Window* pWidget = pVclCandidate ? pVclCandidate->getWidget() : nullptr;
     return pWidget && pWidget->GetStyle() & WB_DEFBUTTON;
-}
-
-IMPL_LINK(SalInstanceDialog, PopupScreenShotMenuHdl, const CommandEvent&, rCEvt, bool)
-{
-    if (CommandEventId::ContextMenu == rCEvt.GetCommand())
-    {
-        std::unique_ptr<weld::Builder> xBuilder(
-            Application::CreateBuilder(this, u"vcl/ui/screenshotmenu.ui"_ustr));
-        std::unique_ptr<weld::Menu> pMenu = xBuilder->weld_menu(u"menu"_ustr);
-        static constexpr OUString sMenuItemId = u"screenshot"_ustr;
-        pMenu->append(sMenuItemId, VclResId(SV_BUTTONTEXT_SCREENSHOT));
-        // set tooltip if extended tips are enabled
-        if (ImplGetSVHelpData().mbBalloonHelp)
-            pMenu->set_tooltip_text(sMenuItemId, VclResId(SV_HELPTEXT_SCREENSHOT));
-        pMenu->set_item_help_id(sMenuItemId, u"InteractiveScreenshotMode"_ustr);
-
-        if (pMenu->popup_at_rect(this, tools::Rectangle(rCEvt.GetMousePosPixel(), Size(1, 1)))
-            == sMenuItemId)
-            executeScreenshotAnnotationDialog();
-
-        // consume event when:
-        // - CommandEventId::ContextMenu
-        // - bScreenshotMode
-        return true;
-    }
-
-    return false;
 }
 
 SalInstanceMessageDialog::SalInstanceMessageDialog(::MessageDialog* pDialog,
