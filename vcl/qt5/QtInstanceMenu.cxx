@@ -116,6 +116,16 @@ OUString QtInstanceMenu::get_label(const OUString& rIdent) const
     return sLabel;
 }
 
+void QtInstanceMenu::set_tooltip_text(const OUString& rIdent, const OUString& rTip)
+{
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        if (QAction* pAction = getAction(rIdent))
+            pAction->setToolTip(toQString(rTip));
+    });
+}
+
 void QtInstanceMenu::set_active(const OUString& rIdent, bool bActive)
 {
     SolarMutexGuard g;

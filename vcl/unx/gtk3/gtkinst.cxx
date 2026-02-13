@@ -11397,6 +11397,16 @@ public:
         return get_item_label(rIdent);
     }
 
+    virtual void set_tooltip_text(const OUString& rIdent, const OUString& rTip) override
+    {
+#if !GTK_CHECK_VERSION(4, 0, 0)
+        gtk_widget_set_tooltip_text(GTK_WIDGET(m_aMap[rIdent]), rTip.toUtf8().getStr());
+#else
+    (void)rIdent;
+    (void)rTip;
+#endif
+    }
+
     virtual void insert_separator(int pos, const OUString& rId) override
     {
         MenuHelper::insert_separator(pos, rId);

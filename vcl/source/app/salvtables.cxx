@@ -940,6 +940,12 @@ OUString SalInstanceMenu::get_label(const OUString& rIdent) const
 {
     return m_xMenu->GetItemText(m_xMenu->GetItemId(rIdent));
 }
+
+void SalInstanceMenu::set_tooltip_text(const OUString& rIdent, const OUString& rTip)
+{
+    m_xMenu->SetTipHelpText(m_xMenu->GetItemId(rIdent), rTip);
+}
+
 void SalInstanceMenu::set_visible(const OUString& rIdent, bool bShow)
 {
     m_xMenu->ShowItem(m_xMenu->GetItemId(rIdent), bShow);

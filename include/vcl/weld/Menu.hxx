@@ -34,6 +34,7 @@ public:
     virtual bool get_sensitive(const OUString& rIdent) const = 0;
     virtual void set_label(const OUString& rIdent, const OUString& rLabel) = 0;
     virtual OUString get_label(const OUString& rIdent) const = 0;
+    virtual void set_tooltip_text(const OUString& rIdent, const OUString& rTip) = 0;
     virtual void set_active(const OUString& rIdent, bool bActive) = 0;
     virtual bool get_active(const OUString& rIdent) const = 0;
     virtual void set_visible(const OUString& rIdent, bool bVisible) = 0;

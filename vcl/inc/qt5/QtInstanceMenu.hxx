@@ -32,6 +32,7 @@ public:
     virtual bool get_sensitive(const OUString& rIdent) const override;
     virtual void set_label(const OUString& rIdent, const OUString& rLabel) override;
     virtual OUString get_label(const OUString& rIdent) const override;
+    virtual void set_tooltip_text(const OUString& rIdent, const OUString& rTip) override;
     virtual void set_active(const OUString& rIdent, bool bActive) override;
     virtual bool get_active(const OUString& rIdent) const override;
     virtual void set_visible(const OUString& rIdent, bool bVisible) override;
