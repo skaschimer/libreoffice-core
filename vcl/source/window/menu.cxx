@@ -1094,8 +1094,10 @@ OUString Menu::GetHelpText( sal_uInt16 nItemId ) const
     if (!pData)
         return OUString();
 
-    if ( pData->aHelpText.isEmpty() &&
-         (( !pData->aHelpId.isEmpty()  ) || ( !pData->aCommandStr.isEmpty() )))
+    if (!pData->aHelpText.isEmpty())
+        return pData->aHelpText;
+
+    if (!pData->aHelpId.isEmpty() || !pData->aCommandStr.isEmpty())
     {
         Help* pHelp = Application::GetHelp();
         if ( pHelp )
@@ -1108,9 +1110,7 @@ OUString Menu::GetHelpText( sal_uInt16 nItemId ) const
     }
 
     //Fallback to Menu::GetAccessibleDescription without reentry to GetHelpText()
-    if (pData->aHelpText.isEmpty())
-        return pData->aAccessibleDescription;
-    return pData->aHelpText;
+    return pData->aAccessibleDescription;
 }
 
 void Menu::SetTipHelpText( sal_uInt16 nItemId, const OUString& rStr )
