@@ -1982,19 +1982,18 @@ IMPL_LINK(SalInstanceDialog, PopupScreenShotMenuHdl, const CommandEvent&, rCEvt,
 {
     if (CommandEventId::ContextMenu == rCEvt.GetCommand())
     {
-        const Point aMenuPos(rCEvt.GetMousePosPixel());
-        ScopedVclPtrInstance<PopupMenu> aMenu;
-        sal_uInt16 nLocalID(1);
+        std::unique_ptr<weld::Builder> xBuilder(
+            Application::CreateBuilder(this, u"vcl/ui/screenshotmenu.ui"_ustr));
+        std::unique_ptr<weld::Menu> pMenu = xBuilder->weld_menu(u"menu"_ustr);
+        static constexpr OUString sMenuItemId = u"screenshot"_ustr;
+        pMenu->append(sMenuItemId, VclResId(SV_BUTTONTEXT_SCREENSHOT));
+        // set tooltip if extended tips are enabled
+        if (ImplGetSVHelpData().mbBalloonHelp)
+            pMenu->set_tooltip_text(sMenuItemId, VclResId(SV_HELPTEXT_SCREENSHOT));
+        pMenu->set_item_help_id(sMenuItemId, u"InteractiveScreenshotMode"_ustr);
 
-        aMenu->InsertItem(nLocalID, VclResId(SV_BUTTONTEXT_SCREENSHOT));
-        aMenu->SetHelpText(nLocalID, VclResId(SV_HELPTEXT_SCREENSHOT));
-        aMenu->SetHelpId(nLocalID, u"InteractiveScreenshotMode"_ustr);
-        aMenu->EnableItem(nLocalID);
-
-        const sal_uInt16 nId(aMenu->Execute(m_xDialog, aMenuPos));
-
-        // 0 == no selection (so not usable as ID)
-        if (0 != nId)
+        if (pMenu->popup_at_rect(this, tools::Rectangle(rCEvt.GetMousePosPixel(), Size(1, 1)))
+            == sMenuItemId)
             executeScreenshotAnnotationDialog();
 
         // consume event when:
