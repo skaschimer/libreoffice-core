@@ -829,27 +829,6 @@ enum class Placement
     End
 };
 
-class VCL_DLLPUBLIC Popover : virtual public Container
-{
-    friend class ::LOKTrigger;
-
-private:
-    Link<weld::Popover&, void> m_aCloseHdl;
-
-protected:
-    void signal_closed() { m_aCloseHdl.Call(*this); }
-
-public:
-    virtual void popup_at_rect(weld::Widget* pParent, const tools::Rectangle& rRect,
-                               Placement ePlace = Placement::Under)
-        = 0;
-    virtual void popdown() = 0;
-
-    virtual void resize_to_request() = 0;
-
-    void connect_closed(const Link<weld::Popover&, void>& rLink) { m_aCloseHdl = rLink; }
-};
-
 class VCL_DLLPUBLIC SizeGroup
 {
 public:

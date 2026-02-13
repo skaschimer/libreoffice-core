@@ -24,6 +24,7 @@
 #include <utility>
 #include <vcl/taskpanelist.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/weld/Popover.hxx>
 
 #include <framestatuslistener.hxx>
 #include <svtools/toolbarmenu.hxx>

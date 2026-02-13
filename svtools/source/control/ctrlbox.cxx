@@ -36,6 +36,7 @@
 #include <vcl/vclevent.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
+#include <vcl/weld/Popover.hxx>
 #include <vcl/weld/customweld.hxx>
 #include <vcl/weld/weldutils.hxx>
 #include <rtl/math.hxx>

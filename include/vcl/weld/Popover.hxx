@@ -9,24 +9,31 @@
 
 #pragma once
 
-#include "QtInstanceContainer.hxx"
+#include <vcl/dllapi.h>
+#include <vcl/weld/weld.hxx>
 
-#include <vcl/weld/Popover.hxx>
-
-class QtInstancePopover : public QtInstanceContainer, public virtual weld::Popover
+namespace weld
 {
-    Q_OBJECT
+class VCL_DLLPUBLIC Popover : virtual public Container
+{
+    friend class ::LOKTrigger;
+
+private:
+    Link<weld::Popover&, void> m_aCloseHdl;
+
+protected:
+    void signal_closed() { m_aCloseHdl.Call(*this); }
 
 public:
-    explicit QtInstancePopover(QWidget* pWidget);
-
     virtual void popup_at_rect(weld::Widget* pParent, const tools::Rectangle& rRect,
-                               weld::Placement ePlace = weld::Placement::Under) override;
-    virtual void popdown() override;
+                               Placement ePlace = Placement::Under)
+        = 0;
+    virtual void popdown() = 0;
 
-    virtual void resize_to_request() override;
+    virtual void resize_to_request() = 0;
 
-    virtual bool eventFilter(QObject* pObject, QEvent* pEvent) override;
+    void connect_closed(const Link<weld::Popover&, void>& rLink) { m_aCloseHdl = rLink; }
 };
+}
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

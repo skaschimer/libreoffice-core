@@ -30,6 +30,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/virdev.hxx>
 #include <vcl/weld/Menu.hxx>
+#include <vcl/weld/Popover.hxx>
 #include <rtl/math.hxx>
 #include <unotools/charclass.hxx>
 #include <comphelper/lok.hxx>
