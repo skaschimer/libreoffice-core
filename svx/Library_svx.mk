@@ -202,7 +202,6 @@ $(eval $(call gb_Library_add_exception_objects,svx,\
 	svx/source/items/ehdl \
     svx/source/items/hlnkitem \
     svx/source/items/numfmtsh \
-    svx/source/items/legacyitem \
     svx/source/items/numinf \
     svx/source/items/ofaitem \
     svx/source/items/pageitem \

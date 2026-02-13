@@ -32,8 +32,6 @@ class HyperlinkTabPageBase;
 class SvxHlinkDlgMarkWnd : public weld::GenericDialogController
 {
 private:
-    HyperlinkTabPageBase* mpParent;
-
     sal_uInt16          mnError;
 
     std::unique_ptr<weld::Button> mxBtApply;

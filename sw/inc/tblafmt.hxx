@@ -101,7 +101,6 @@ class SW_DLLPUBLIC SwTableAutoFormat : public SvxAutoFormatData
     friend void FinitCore(); // To destroy default pointer.
 
     TableStyleName m_aName; // note that this could be a ProgName __or__ a UIName
-    sal_uInt16 m_nStrResId;
     bool m_bHidden;
     bool m_bUserDefined;
 

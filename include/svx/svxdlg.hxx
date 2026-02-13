@@ -201,9 +201,6 @@ class AbstractSvxHpLinkDlg : public VclAbstractDialog
 {
 protected:
     virtual ~AbstractSvxHpLinkDlg() override = default;
-public:
-    virtual std::shared_ptr<SfxDialogController> GetController()  = 0;
-    virtual bool       QueryClose() = 0;
 };
 
 struct FmFoundRecordInformation;

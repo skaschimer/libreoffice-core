@@ -235,27 +235,6 @@ void SfxControllerItem::GetControlState
 {
 }
 
-void SfxStatusForwarder::StateChangedAtToolBoxControl
-(
-    sal_uInt16          nSID,    // <SID> of the triggering slot
-    SfxItemState        eState,  // <SfxItemState> of 'pState'
-    const SfxPoolItem*  pState   // Slot-Status, NULL or IsInvalidItem()
-)
-
-{
-    pMaster->StateChangedAtToolBoxControl( nSID, eState, pState );
-}
-
-
-SfxStatusForwarder::SfxStatusForwarder(
-            sal_uInt16              nSlotId,
-            SfxControllerItem&  rMaster ):
-    SfxControllerItem( nSlotId, rMaster.GetBindings() ),
-    pMaster( &rMaster )
-{
-}
-
-
 SfxItemState SfxControllerItem::GetItemState
 (
     const SfxPoolItem* pState   /*  Pointer to  <SfxPoolItem>, which

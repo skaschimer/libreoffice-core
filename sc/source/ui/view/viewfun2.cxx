@@ -1916,27 +1916,6 @@ void ScViewFunc::TransliterateText( TransliterationFlags nType )
 
 //  AutoFormat
 
-ScAutoFormatData* ScViewFunc::CreateAutoFormatData()
-{
-    ScAutoFormatData* pData = nullptr;
-    SCCOL nStartCol;
-    SCROW nStartRow;
-    SCTAB nStartTab;
-    SCCOL nEndCol;
-    SCROW nEndRow;
-    SCTAB nEndTab;
-    if (GetViewData().GetSimpleArea(nStartCol,nStartRow,nStartTab,nEndCol,nEndRow,nEndTab) == SC_MARK_SIMPLE)
-    {
-        if ( nEndCol-nStartCol >= 3 && nEndRow-nStartRow >= 3 )
-        {
-            ScDocument& rDoc = GetViewData().GetDocument();
-            pData = new ScAutoFormatData;
-            rDoc.GetAutoFormatData( nStartTab, nStartCol,nStartRow,nEndCol,nEndRow, *pData );
-        }
-    }
-    return pData;
-}
-
 void ScViewFunc::AutoFormat( sal_uInt16 nFormatNo )
 {
     ScRange aRange;

@@ -256,11 +256,6 @@ void ScGlobal::ClearAutoFormat()
     }
 }
 
-ScAutoFormat* ScGlobal::GetAutoFormat()
-{
-    return xAutoFormat.get();
-}
-
 ScAutoFormat* ScGlobal::GetOrCreateAutoFormat()
 {
     assert(!bThreadedGroupCalcInProgress);

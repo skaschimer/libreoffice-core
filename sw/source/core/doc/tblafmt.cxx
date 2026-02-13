@@ -52,7 +52,6 @@
 #include <editeng/wghtitem.hxx>
 #include <svx/algitem.hxx>
 #include <svx/rotmodit.hxx>
-#include <legacyitem.hxx>
 #include <unostyle.hxx>
 #include <names.hxx>
 
@@ -218,7 +217,6 @@ void SwBoxAutoFormat::SetXObject(rtl::Reference<SwXTextCellStyle> const& xObject
 SwTableAutoFormat::SwTableAutoFormat(const TableStyleName& aName)
     : SvxAutoFormatData()
     , m_aName(aName)
-    , m_nStrResId(USHRT_MAX)
     , m_bHidden(false)
     , m_bUserDefined(true)
 {
@@ -244,7 +242,6 @@ SwTableAutoFormat::SwTableAutoFormat(const SwTableAutoFormat& rNew)
 SwTableAutoFormat::SwTableAutoFormat(const SvxAutoFormatData& rNew)
     : SvxAutoFormatData(rNew)
     , m_aName(rNew.GetName())
-    , m_nStrResId(USHRT_MAX)
     , m_bHidden(false)
     , m_bUserDefined(true)
 {
@@ -261,7 +258,6 @@ SwTableAutoFormat& SwTableAutoFormat::operator=(const SwTableAutoFormat& rNew)
         return *this;
 
     m_aName = rNew.m_aName;
-    m_nStrResId = USHRT_MAX;
     SetParent(rNew.GetParent());
     SetFont(rNew.IsFont());
     SetJustify(rNew.IsJustify());
@@ -285,7 +281,6 @@ void SwTableAutoFormat::SetName(const TableStyleName& rNew)
 {
     m_aName = rNew;
     SvxAutoFormatData::SetName(rNew.toString());
-    m_nStrResId = USHRT_MAX;
 }
 
 void SwTableAutoFormat::SetName(const OUString& rName)

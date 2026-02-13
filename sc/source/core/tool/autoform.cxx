@@ -309,13 +309,6 @@ void ScAutoFormatData::PutItem(size_t nIndex, const SfxPoolItem& rItem)
     }
 }
 
-void ScAutoFormatData::CopyItem( size_t nToIndex, size_t nFromIndex, sal_uInt16 nWhich )
-{
-    const SfxPoolItem* pItem = GetItem( nFromIndex, nWhich );
-    if( pItem )
-        PutItem( nToIndex, *pItem );
-}
-
 void ScAutoFormatData::FillToItemSet(size_t nIndex, SfxItemSet& rItemSet) const
 {
     SvxAutoFormatData::FillToItemSet(nIndex, rItemSet);
@@ -342,40 +335,6 @@ void ScAutoFormatData::FillToItemSet(size_t nIndex, SfxItemSet& rItemSet) const
             rItemSet.Put(aNewBox);
         }
     }
-}
-
-void ScAutoFormatData::GetFromItemSet(size_t nIndex, const SfxItemSet& rItemSet)
-{
-    ScAutoFormatDataField& rField = *GetField(nIndex);
-
-    rField.SetFont(rItemSet.Get(ATTR_FONT));
-    rField.SetHeight(rItemSet.Get(ATTR_FONT_HEIGHT));
-    rField.SetWeight(rItemSet.Get(ATTR_FONT_WEIGHT));
-    rField.SetPosture(rItemSet.Get(ATTR_FONT_POSTURE));
-    rField.SetCJKFont(rItemSet.Get(ATTR_CJK_FONT));
-    rField.SetCJKHeight(rItemSet.Get(ATTR_CJK_FONT_HEIGHT));
-    rField.SetCJKWeight(rItemSet.Get(ATTR_CJK_FONT_WEIGHT));
-    rField.SetCJKPosture(rItemSet.Get(ATTR_CJK_FONT_POSTURE));
-    rField.SetCTLFont(rItemSet.Get(ATTR_CTL_FONT));
-    rField.SetCTLHeight(rItemSet.Get(ATTR_CTL_FONT_HEIGHT));
-    rField.SetCTLWeight(rItemSet.Get(ATTR_CTL_FONT_WEIGHT));
-    rField.SetCTLPosture(rItemSet.Get(ATTR_CTL_FONT_POSTURE));
-    rField.SetUnderline(rItemSet.Get(ATTR_FONT_UNDERLINE));
-    rField.SetOverline(rItemSet.Get(ATTR_FONT_OVERLINE));
-    rField.SetCrossedOut(rItemSet.Get(ATTR_FONT_CROSSEDOUT));
-    rField.SetContour(rItemSet.Get(ATTR_FONT_CONTOUR));
-    rField.SetShadowed(rItemSet.Get(ATTR_FONT_SHADOWED));
-    rField.SetColor(rItemSet.Get(ATTR_FONT_COLOR));
-    rField.SetTLBR(rItemSet.Get(ATTR_BORDER_TLBR));
-    rField.SetBLTR(rItemSet.Get(ATTR_BORDER_BLTR));
-    rField.SetHorJustify(rItemSet.Get(ATTR_HOR_JUSTIFY));
-    rField.SetVerJustify(rItemSet.Get(ATTR_VER_JUSTIFY));
-    rField.SetStacked(rItemSet.Get(ATTR_STACKED));
-    rField.SetLinebreak(rItemSet.Get(ATTR_LINEBREAK));
-    rField.SetMargin(rItemSet.Get(ATTR_MARGIN));
-    rField.SetBackground(rItemSet.Get(ATTR_BACKGROUND));
-    rField.SetRotateAngle(rItemSet.Get(ATTR_ROTATE_VALUE));
-    rField.SetRotateMode(rItemSet.Get(ATTR_ROTATE_MODE));
 }
 
 struct ScAutoFormat::Impl

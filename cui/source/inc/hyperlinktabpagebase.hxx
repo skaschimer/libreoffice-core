@@ -89,7 +89,6 @@ public:
     bool FillItemSet(SfxItemSet* pItemSet) override;
 
     virtual void SetInitFocus();
-    virtual void SetMarkStr(const OUString& aStrMark);
 
     bool IsMarkWndVisible() const { return static_cast<bool>(mxMarkWnd); }
 };

@@ -72,8 +72,6 @@ class AbstractScAutoFormatDlg : public VclAbstractDialog
 protected:
     virtual             ~AbstractScAutoFormatDlg() override = default;
 public:
-    virtual sal_uInt16 GetIndex() const = 0 ;
-    virtual OUString GetCurrFormatName() = 0;
 };
 
 class AbstractScColRowLabelDlg : public VclAbstractDialog

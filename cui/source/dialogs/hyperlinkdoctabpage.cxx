@@ -145,12 +145,6 @@ OUString HyperlinkDocTabPage::GetCurrentURL() const
 
 void HyperlinkDocTabPage::SetInitFocus() { m_xCbbPath->grab_focus(); }
 
-void HyperlinkDocTabPage::SetMarkStr(const OUString& aStrMark)
-{
-    m_xEdTarget->set_text(aStrMark);
-    ModifiedTargetHdl_Impl(*m_xEdTarget);
-}
-
 bool HyperlinkDocTabPage::ShouldOpenMarkWnd() { return m_bMarkWndOpen; }
 
 void HyperlinkDocTabPage::SetMarkWndShouldOpen(bool bOpen) { m_bMarkWndOpen = bOpen; }

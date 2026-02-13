@@ -46,7 +46,6 @@ public:
     static std::unique_ptr<SfxTabPage>
     Create(weld::Container* pParent, weld::DialogController* pController, const SfxItemSet* pSet);
 
-    virtual void SetMarkStr(const OUString& aStrMark) override;
     virtual void SetInitFocus() override;
 };
 

@@ -444,8 +444,6 @@ public:
 
     // enable/disable undocking
     SAL_DLLPRIVATE void Lock( bool bLock );
-    // read configuration to determine locking behaviour
-    static bool         AlwaysLocked();
 
     void                EnableCustomize( bool bEnable = true );
     bool                IsCustomize() const { return mbCustomize; }

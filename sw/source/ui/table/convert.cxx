@@ -95,7 +95,6 @@ SwConvertTableDlg::SwConvertTableDlg(SwView& rView, bool bToTable)
     : SfxDialogController(rView.GetFrameWeld(), u"modules/swriter/ui/converttexttable.ui"_ustr,
                           u"ConvertTextTableDialog"_ustr)
     , m_nIndex(0)
-    , m_nDfltStylePos(0)
     , m_bCoreDataChanged(false)
     , m_xTableTable(new SwTableAutoFormatTable)
     , m_xTabBtn(m_xBuilder->weld_radio_button(u"tabs"_ustr))
@@ -197,7 +196,7 @@ void SwConvertTableDlg::Init()
     m_xBtnNumFormat->connect_toggled(aLk);
 
     m_xLbFormat->connect_selection_changed(LINK(this, SwConvertTableDlg, SelFormatHdl));
-    m_nIndex = m_nDfltStylePos;
+    m_nIndex = 0;
 
     for (sal_uInt8 i = 0, nCount = static_cast<sal_uInt8>(m_xTableTable->size()); i < nCount; i++)
     {

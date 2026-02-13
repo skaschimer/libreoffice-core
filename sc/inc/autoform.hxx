@@ -61,9 +61,7 @@ public:
     }
     void PutItem(size_t nIndex, const SfxPoolItem& rItem);
 
-    void CopyItem(size_t nToIndex, size_t nFromIndex, sal_uInt16 nWhich);
     void FillToItemSet(size_t nIndex, SfxItemSet& rItemSet) const;
-    void GetFromItemSet(size_t nIndex, const SfxItemSet& rItemSet);
 };
 
 class SAL_DLLPUBLIC_RTTI ScAutoFormat : public SvxAutoFormat

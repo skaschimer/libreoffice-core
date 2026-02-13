@@ -256,7 +256,6 @@ public:
     void CallAutomationApplicationEventSinks(const OUString& Method, css::uno::Sequence< css::uno::Any >& Arguments);
 
     SW_DLLPUBLIC const SwTableAutoFormatTable& GetAutoFormatTable();
-    void InvalidateAutoFormatTable();;
 
 //    Access to SwModule
     static auto get() { return static_cast<SwModule*>(SfxApplication::GetModule(SfxToolsModule::Writer)); }

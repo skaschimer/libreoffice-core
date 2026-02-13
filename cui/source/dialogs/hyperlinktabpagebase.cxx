@@ -155,8 +155,6 @@ void HyperlinkTabPageBase::SetInitFocus()
         m_xIndication->grab_focus();
 }
 
-void HyperlinkTabPageBase::SetMarkStr(const OUString&) {}
-
 void HyperlinkTabPageBase::Reset(const SfxItemSet* pItemSet)
 {
     // Get hyperlink item from the item set

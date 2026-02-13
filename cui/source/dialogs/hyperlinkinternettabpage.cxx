@@ -176,21 +176,6 @@ void HyperlinkInternetTP::RefreshMarkWindow()
     }
 }
 
-void HyperlinkInternetTP::SetMarkStr(const OUString& aStrMark)
-{
-    OUString aStrURL(m_xCbbTarget->get_active_text());
-
-    const sal_Unicode sUHash = '#';
-    sal_Int32 nPos = aStrURL.lastIndexOf(sUHash);
-
-    if (nPos != -1)
-        aStrURL = aStrURL.copy(0, nPos);
-
-    aStrURL += OUStringChar(sUHash) + aStrMark;
-
-    m_xCbbTarget->set_entry_text(aStrURL);
-}
-
 void HyperlinkInternetTP::SetInitFocus() { m_xCbbTarget->grab_focus(); }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

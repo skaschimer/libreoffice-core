@@ -2027,8 +2027,6 @@ public:
 
     void                 AutoFormat( SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SCROW nEndRow,
                                      sal_uInt16 nFormatNo, const ScMarkData& rMark );
-    void                 GetAutoFormatData( SCTAB nTab, SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SCROW nEndRow,
-                                            ScAutoFormatData& rData );
     bool                 SearchAndReplace( const SvxSearchItem& rSearchItem,
                                            SCCOL& rCol, SCROW& rRow, SCTAB& rTab,
                                            const ScMarkData& rMark, ScRangeList& rMatchedRanges,

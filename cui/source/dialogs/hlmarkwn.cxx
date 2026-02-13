@@ -71,7 +71,6 @@ struct TargetData
 // Constructor for new HyperlinkDialog
 SvxHlinkDlgMarkWnd::SvxHlinkDlgMarkWnd(weld::Window* pParentDialog)
     : GenericDialogController(pParentDialog, u"cui/ui/hyperlinkmarkdialog.ui"_ustr, u"HyperlinkMark"_ustr)
-    , mpParent(nullptr)
     , mnError(LERR_NOERROR)
 {
     mxBtApply = m_xBuilder->weld_button(u"ok"_ustr);
@@ -484,15 +483,7 @@ IMPL_LINK_NOARG(SvxHlinkDlgMarkWnd, ClickApplyHdl_Impl, weld::Button&, void)
         if (pData->bIsTarget)
         {
             maSelectedMark = pData->aUStrLinkname;
-
-            if (mpParent)
-            {
-                mpParent->SetMarkStr(pData->aUStrLinkname);
-            }
-            else
-            {
-                m_xDialog->response(RET_OK);
-            }
+            m_xDialog->response(RET_OK);
         }
     }
 }

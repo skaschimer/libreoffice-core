@@ -1242,17 +1242,6 @@ void ScDocument::AutoFormat( SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SC
     }
 }
 
-void ScDocument::GetAutoFormatData(SCTAB nTab, SCCOL nStartCol, SCROW nStartRow, SCCOL nEndCol, SCROW nEndRow,
-                                    ScAutoFormatData& rData)
-{
-    if (ScTable* pTable = FetchTable(nTab))
-    {
-        PutInOrder(nStartCol, nEndCol);
-        PutInOrder(nStartRow, nEndRow);
-        pTable->GetAutoFormatData(nStartCol, nStartRow, nEndCol, nEndRow, rData);
-    }
-}
-
 void ScDocument::GetSearchAndReplaceStart( const SvxSearchItem& rSearchItem,
         SCCOL& rCol, SCROW& rRow )
 {
