@@ -6480,7 +6480,15 @@ public:
 #if !GTK_CHECK_VERSION(4, 0, 0)
         gtk_window_get_size(m_pWindow, &current_width, &current_height);
 #else
-        gtk_window_get_default_size(m_pWindow, &current_width, &current_height);
+        if (gtk_widget_is_visible(GTK_WIDGET(m_pWindow)))
+        {
+            current_width = gtk_widget_get_width(GTK_WIDGET(m_pWindow));
+            current_height = gtk_widget_get_height(GTK_WIDGET(m_pWindow));
+        }
+        else
+        {
+            gtk_window_get_default_size(m_pWindow, &current_width, &current_height);
+        }
 #endif
         return Size(current_width, current_height);
     }
