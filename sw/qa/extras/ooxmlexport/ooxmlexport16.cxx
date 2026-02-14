@@ -203,7 +203,7 @@ DECLARE_OOXMLEXPORT_TEST(testTdf142486_LeftMarginShadowLeft, "tdf142486_LeftMarg
     CPPUNIT_ASSERT_DOUBLES_EQUAL(sal_Int32(953), getProperty<sal_Int32>(xFrame, u"LeftMargin"_ustr), 1);
 }
 
-DECLARE_OOXMLEXPORT_TEST(testTdf151384Hyperlink, "151384Hyperlink.odt")
+CPPUNIT_TEST_FIXTURE(Test, testTdf151384Hyperlink)
 {
     createSwDoc("151384Hyperlink.odt");
     save(TestFilter::DOCX);
