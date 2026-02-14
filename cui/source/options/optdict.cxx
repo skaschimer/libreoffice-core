@@ -91,21 +91,21 @@ static OUString fixSpace(OUString sText)
 namespace {
 
 // Compare Dictionary Entry  result
-enum CDE_RESULT { CDE_EQUAL, CDE_SIMILAR, CDE_DIFFERENT };
+enum class CdeResult { Equal, Similar, Different };
 
 }
 
-static CDE_RESULT cmpDicEntry_Impl( std::u16string_view rText1, std::u16string_view rText2 )
+static CdeResult cmpDicEntry_Impl( std::u16string_view rText1, std::u16string_view rText2 )
 {
-    CDE_RESULT eRes = CDE_DIFFERENT;
+    CdeResult eRes = CdeResult::Different;
 
     if (rText1 == rText2)
-        eRes = CDE_EQUAL;
+        eRes = CdeResult::Equal;
     else
     {   // similar = equal up to trailing '.' and hyphenation positions
         // marked with '=' and '[' + alternative spelling pattern + ']'
         if (getNormDicEntry_Impl( rText1 ) == getNormDicEntry_Impl( rText2 ))
-            eRes = CDE_SIMILAR;
+            eRes = CdeResult::Similar;
     }
 
     return eRes;
@@ -686,7 +686,7 @@ IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
         {
             bool bFound = false;
             bool bTmpSelEntry=false;
-            CDE_RESULT eCmpRes = CDE_DIFFERENT;
+            CdeResult eCmpRes = CdeResult::Different;
 
             bool bDoubleColumn = m_pWordsLB == m_xDoubleColumnLB.get();
 
@@ -694,7 +694,7 @@ IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
             {
                 OUString aTestStr(m_pWordsLB->get_text(i, 0));
                 eCmpRes = cmpDicEntry_Impl( rEntry, aTestStr );
-                if(CDE_DIFFERENT != eCmpRes)
+                if(CdeResult::Different != eCmpRes)
                 {
                     if(!aRepString.isEmpty())
                         bFirstSelect = true;
@@ -704,7 +704,7 @@ IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
                     if (bDoubleColumn)
                         m_xReplaceED->set_text(m_pWordsLB->get_text(i, 1));
 
-                    if (CDE_SIMILAR == eCmpRes)
+                    if (CdeResult::Similar == eCmpRes)
                     {
                         aNewReplaceText = sModify;
                         bEnableNewReplace = true;
@@ -732,7 +732,7 @@ IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
                 aNewReplaceText = sNew;
                 bEnableNewReplace = true;
             }
-            bEnableDelete = CDE_DIFFERENT != eCmpRes;
+            bEnableDelete = CdeResult::Different != eCmpRes;
         }
         else if (m_pWordsLB->n_children() > 0)
         {
@@ -755,8 +755,8 @@ IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
             bEnableDelete = true;
         }
         bool bIsChange =
-                CDE_EQUAL != cmpDicEntry_Impl(fixSpace(m_xWordED->get_text()), aWordText)
-             || CDE_EQUAL != cmpDicEntry_Impl(fixSpace(m_xReplaceED->get_text()), aReplaceText);
+                CdeResult::Equal != cmpDicEntry_Impl(fixSpace(m_xWordED->get_text()), aWordText)
+             || CdeResult::Equal != cmpDicEntry_Impl(fixSpace(m_xReplaceED->get_text()), aReplaceText);
         if (!fixSpace(m_xWordED->get_text()).isEmpty() && bIsChange)
             bEnableNewReplace = true;
     }
