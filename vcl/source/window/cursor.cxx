@@ -38,9 +38,9 @@ struct ImplCursorData
     Point           maPixRotOff;        // Pixel-Offset-Position
     Size            maPixSize;          // Pixel-Size
     Degree10        mnOrientation;      // Pixel-Orientation
-    CursorDirection mnDirection;        // indicates writing direction
-    sal_uInt16      mnStyle;            // Cursor-Style
-    bool            mbCurVisible;       // Is cursor currently visible
+    CursorDirection mnDirection = CursorDirection::NONE; // indicates writing direction
+    sal_uInt16      mnStyle = 0;        // Cursor-Style
+    bool            mbCurVisible = false; // Is cursor currently visible
     VclPtr<vcl::Window> mpWindow;           // assigned window
 };
 
@@ -178,8 +178,6 @@ void vcl::Cursor::ImplDraw()
 void vcl::Cursor::DrawToDevice(OutputDevice& rRenderContext)
 {
     ImplCursorData aData;
-    aData.mnStyle = 0;
-    aData.mbCurVisible = false;
     // calculate output area
     if (ImplPrepForDraw(&rRenderContext, aData))
     {
@@ -221,7 +219,6 @@ void vcl::Cursor::ImplDoShow( bool bDrawDirect, bool bRestore )
     if ( !mpData )
     {
         mpData.reset( new ImplCursorData );
-        mpData->mbCurVisible = false;
         mpData->maTimer.SetInvokeHandler( LINK( this, Cursor, ImplTimerHdl ) );
     }
 
