@@ -58,6 +58,7 @@ IMPL_LINK(CustomWeld, DoResize, const Size&, rSize, void)
 IMPL_LINK(CustomWeld, DoPaint, weld::DrawingArea::draw_args, aPayload, void)
 {
     m_rWidgetController.Paint(aPayload.first, aPayload.second);
+    m_rWidgetController.ClearInvalidateFlags();
 }
 
 IMPL_LINK(CustomWeld, DoMouseButtonDown, const MouseEvent&, rMEvt, bool)
