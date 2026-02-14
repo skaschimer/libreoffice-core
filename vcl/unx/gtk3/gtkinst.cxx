@@ -17052,22 +17052,25 @@ public:
             gtk_entry_set_text(GTK_ENTRY(m_pButton), OUStringToOString(rText, RTL_TEXTENCODING_UTF8).getStr());
 #endif
 
-            m_bBlockOutput = true;
-            gtk_spin_button_update(m_pButton);
+            // tdf#168434 skip gtk_spin_button_update when blanking, otherwise
+            // GTK parses the empty text and clamps the value to the minimum
             m_bBlank = rText.isEmpty();
-            m_bBlockOutput = false;
+            if (!m_bBlank)
+            {
+                m_bBlockOutput = true;
+                gtk_spin_button_update(m_pButton);
+                m_bBlockOutput = false;
+            }
         }
         else
         {
-            bool bKeepBlank = m_bBlank && get_value() == 0;
-            if (!bKeepBlank)
+            if (!m_bBlank)
             {
 #if GTK_CHECK_VERSION(4, 0, 0)
                 gtk_editable_set_text(m_pEditable, OUStringToOString(rText, RTL_TEXTENCODING_UTF8).getStr());
 #else
                 gtk_entry_set_text(GTK_ENTRY(m_pButton), OUStringToOString(rText, RTL_TEXTENCODING_UTF8).getStr());
 #endif
-                m_bBlank = false;
             }
         }
         enable_notify_events();
