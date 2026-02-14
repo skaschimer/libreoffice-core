@@ -456,7 +456,7 @@ CPPUNIT_TEST_FIXTURE(XmloffStyleTest, testMCGR_threeStops)
     loadFromFile(u"MCGR_threeStops.fodt");
 
     // saveAndReload includes validation and must not fail with the new elements and attributes.
-    saveAndReload(TestFilter::ODG);
+    saveAndReload(TestFilter::ODT);
 
     // Examine file markup
     // For compatibility the file should still have the old attributes 'start-color' and 'end-color'

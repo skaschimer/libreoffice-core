@@ -93,7 +93,7 @@ CPPUNIT_TEST_FIXTURE(XmloffDrawTest, testTextBoxLoss)
 {
     // Load a document that has a shape with a textbox in it. Save it to ODF and reload.
     loadFromFile(u"textbox-loss.docx");
-    saveAndReload(TestFilter::ODP);
+    saveAndReload(TestFilter::ODT);
 
     // Make sure that the shape is still a textbox.
     uno::Reference<drawing::XDrawPageSupplier> xDrawPageSupplier(mxComponent, uno::UNO_QUERY);
