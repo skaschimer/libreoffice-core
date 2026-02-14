@@ -1869,7 +1869,6 @@ void DocxAttributeOutput::EndRun(const SwTextNode* pNode, sal_Int32 nPos, sal_In
     // level down, to be able to prepend the actual run start attribute (just
     // before "postponed run start")
     m_pSerializer->mark(Tag_EndRun_1); // let's call it "actual run start"
-    bool bCloseEarlierSDT = false;
 
     if (m_bEndCharSdt)
     {
@@ -1877,12 +1876,7 @@ void DocxAttributeOutput::EndRun(const SwTextNode* pNode, sal_Int32 nPos, sal_In
         // This is NOT common anymore. Hardly any runSdt's are grabbagged nowadays,
         // but yes, if is is grabbagged, then this is the common way that it is closed.
 
-        // if another sdt starts in this run, then wait
-        // as closing the sdt now, might cause nesting of sdts
-        if (m_aRunSdt.m_oSdtPrToken.has_value())
-            bCloseEarlierSDT = true;
-        else
-            m_aRunSdt.EndSdtBlock(m_pSerializer);
+        m_aRunSdt.EndSdtBlock(m_pSerializer);
         m_bEndCharSdt = false;
     }
 
@@ -2127,13 +2121,6 @@ void DocxAttributeOutput::EndRun(const SwTextNode* pNode, sal_Int32 nPos, sal_In
         //These should be written out to the actual Node and not to the anchor.
         //Clear them as they will be repopulated when the node is processed.
         m_aRunSdt.clearGrabbagValues();
-    }
-
-    if (bCloseEarlierSDT)
-    {
-        m_pSerializer->mark(Tag_EndRun_2);
-        m_aRunSdt.EndSdtBlock(m_pSerializer);
-        m_pSerializer->mergeTopMarks(Tag_EndRun_2, sax_fastparser::MergeMarks::PREPEND);
     }
 
     m_pSerializer->mergeTopMarks(Tag_StartRun_1);
