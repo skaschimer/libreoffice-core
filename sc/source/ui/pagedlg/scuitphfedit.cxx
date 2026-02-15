@@ -740,6 +740,13 @@ IMPL_LINK( ScHFEditPage, ClickHdl, weld::Button&, rBtn, void )
 
     if (&rBtn == m_xBtnText.get())
     {
+        if ( !m_pEditFocus->HasSelection() )
+        {
+            ESelection aSel;
+            aSel.start.nIndex = 0;
+            aSel.end.nIndex = m_pEditFocus->GetEditEngine()->GetTextLen(0);
+            m_pEditFocus->GetEditView()->SetSelection(aSel);
+        }
         m_pEditFocus->SetCharAttributes();
     }
     else
