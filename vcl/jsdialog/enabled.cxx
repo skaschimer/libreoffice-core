@@ -766,7 +766,7 @@ std::vector<OUString> completeCommonDialogList(const o3tl::sorted_vector<OUStrin
             // work for me
             else if (entry == u"uui/ui/macrowarnmedium.ui")
                 continue;
-            // This, for the forumula dialog, are really only available in calc
+            // This, for the formula dialog, are really only available in calc
             else if (entry == u"formula/ui/formuladialog.ui" ||
                      entry == u"formula/ui/functionpage.ui" ||
                      entry == u"formula/ui/parameter.ui" ||
