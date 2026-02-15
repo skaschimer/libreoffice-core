@@ -1110,13 +1110,9 @@ CPPUNIT_TEST_FIXTURE(Test, testODF13)
         // export ODF 1.2 extended
         SetODFDefaultVersion(SvtSaveOptions::ODFDefaultVersion::ODFVER_012_EXTENDED);
 
-        // FIXME: it's not possible to use 'reload' here because the validation fails with
-        // Error: unexpected attribute "loext:contextual-spacing"
-        comphelper::SequenceAsHashMap aMediaDescriptor;
-        aMediaDescriptor[u"FilterName"_ustr] <<= u"writer8"_ustr;
-
-        uno::Reference<frame::XStorable> const xStorable(mxComponent, uno::UNO_QUERY);
-        xStorable->storeToURL(maTempFile.GetURL(), aMediaDescriptor.getAsConstPropertyValueList());
+        // FIXME: Error: unexpected attribute "loext:contextual-spacing"
+        skipValidation();
+        saveAndReload(TestFilter::ODT);
 
         // check XML
         xmlDocUniquePtr pContentXml = parseExport(u"content.xml"_ustr);
@@ -1132,9 +1128,6 @@ CPPUNIT_TEST_FIXTURE(Test, testODF13)
         assertXPath(pStylesXml, "/office:document-styles/office:master-styles/style:master-page/style:header-first", 0);
         assertXPath(pStylesXml, "/office:document-styles/office:master-styles/style:master-page/loext:footer-first");
         assertXPath(pStylesXml, "/office:document-styles/office:master-styles/style:master-page/style:footer-first", 0);
-
-        // reload
-        loadFromURL(maTempFile.GetURL());
 
         // check model
         verifyText13("1.2 Extended reload");
