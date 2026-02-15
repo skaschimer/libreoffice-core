@@ -1102,7 +1102,7 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf167254)
 
 CPPUNIT_TEST_FIXTURE(Test, testTdf169298_CrLfDontSpillToDocumentBody)
 {
-    // Given a document with a document variable value contailing foo\'0d\'0abar
+    // Given a document with a document variable value containing foo\'0d\'0abar
     createSwDoc("tdf169298.rtf");
 
     // The sequence must not cause newlines to appear in the beginning of the document text.
