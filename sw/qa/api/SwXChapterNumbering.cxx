@@ -43,7 +43,6 @@ public:
 
     Reference<XInterface> init() override
     {
-        loadFromURL(u"private:factory/swriter"_ustr);
         Reference<text::XTextDocument> xTextDocument(mxComponent, UNO_QUERY_THROW);
 
         Reference<text::XChapterNumberingSupplier> xCNSupplier(xTextDocument, UNO_QUERY_THROW);
@@ -60,6 +59,7 @@ public:
         }
         return Reference<XInterface>(xCNRules, UNO_QUERY_THROW);
     }
+    virtual void setUp() override;
 
     CPPUNIT_TEST_SUITE(SwXChapterNumbering);
     CPPUNIT_TEST(testGetCount);
@@ -74,6 +74,13 @@ public:
     CPPUNIT_TEST(testNumberingRulesProperties);
     CPPUNIT_TEST_SUITE_END();
 };
+
+void SwXChapterNumbering::setUp()
+{
+    UnoApiTest::setUp();
+    // create writer document
+    loadFromURL(u"private:factory/swriter"_ustr);
+}
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SwXChapterNumbering);
 }
