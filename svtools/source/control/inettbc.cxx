@@ -838,7 +838,7 @@ IMPL_LINK_NOARG(SvtURLBox, TryAutoComplete, Timer *, void)
         pCtx->launch();
     }
     else
-        m_xWidget->clear();
+        UpdatePicklistForSmartProtocol_Impl();
 }
 
 SvtURLBox::SvtURLBox(std::unique_ptr<weld::ComboBox> pWidget)
