@@ -6070,6 +6070,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPDFAttachmentsWithEncryptedFile)
         aOutputStream.WriteBytes(aBuffer.data(), aBuffer.size());
     }
 
+    dispose();
     // Load the attached document from the temp file
     UnoApiTest::loadFromURL(aTempFile.GetURL());
 
