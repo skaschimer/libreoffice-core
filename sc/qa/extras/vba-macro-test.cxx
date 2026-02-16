@@ -103,26 +103,26 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testSimpleCopyAndPaste)
     ScDocument& rDoc = pDocSh->GetDocument();
 
     // Check state
-    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(ScAddress(2, 3, 0)));
-    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(ScAddress(2, 4, 0)));
-    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(ScAddress(2, 5, 0)));
+    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(2, 3, 0));
+    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(2, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(2, 5, 0));
 
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 3, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 4, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 5, 0)));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 3, 0));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 5, 0));
 
     executeMacro(
         u"vnd.sun.Star.script:VBAProject.Module1.test?language=Basic&location=document"_ustr);
 
     // Copy from C4-C6
-    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(ScAddress(2, 3, 0)));
-    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(ScAddress(2, 4, 0)));
-    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(ScAddress(2, 5, 0)));
+    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(2, 3, 0));
+    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(2, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(2, 5, 0));
 
     // Paste to B4-B6
-    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(ScAddress(1, 3, 0)));
-    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(ScAddress(1, 4, 0)));
-    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(ScAddress(1, 5, 0)));
+    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(1, 3, 0));
+    CPPUNIT_ASSERT_EQUAL(20.0, rDoc.GetValue(1, 4, 0));
+    CPPUNIT_ASSERT_EQUAL(30.0, rDoc.GetValue(1, 5, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testMultiDocumentCopyAndPaste)
@@ -148,16 +148,16 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testMultiDocumentCopyAndPaste)
     ScDocShell* pDocSh = static_cast<ScDocShell*>(pFoundShell);
     ScDocument& rDoc = pDocSh->GetDocument();
 
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 2, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 3, 0)));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 2, 0));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 3, 0));
 
     executeMacro(
         u"vnd.sun.Star.script:VBAProject.Module1.test?language=Basic&location=document"_ustr);
 
-    CPPUNIT_ASSERT_EQUAL(200.0, rDoc.GetValue(ScAddress(1, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(100.0, rDoc.GetValue(ScAddress(1, 2, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(ScAddress(1, 3, 0)));
+    CPPUNIT_ASSERT_EQUAL(200.0, rDoc.GetValue(1, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(100.0, rDoc.GetValue(1, 2, 0));
+    CPPUNIT_ASSERT_EQUAL(0.0, rDoc.GetValue(1, 3, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testSheetAndColumnSelectAndHide)
@@ -582,9 +582,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf149579)
     CPPUNIT_ASSERT(pDocSh);
     ScDocument& rDoc = pDocSh->GetDocument();
 
-    rDoc.SetValue(ScAddress(0, 0, 0), 5.0);
-    rDoc.SetValue(ScAddress(0, 1, 0), 10.0);
-    rDoc.SetValue(ScAddress(0, 2, 0), 1.0);
+    rDoc.SetValue(0, 0, 0, 5.0);
+    rDoc.SetValue(0, 1, 0, 10.0);
+    rDoc.SetValue(0, 2, 0, 1.0);
 
     // Without the fix in place, this call would have crashed in debug builds with failed assertion
     executeMacro(
@@ -593,9 +593,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf149579)
     // Without the fix in place, this test would have failed with
     // - Expected: 1
     // - Actual  : 5
-    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(5.0, rDoc.GetValue(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(5.0, rDoc.GetValue(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(10.0, rDoc.GetValue(0, 2, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testVbaRangeSort)
@@ -617,18 +617,18 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testVbaRangeSort)
     CPPUNIT_ASSERT(pDocSh);
     ScDocument& rDoc = pDocSh->GetDocument();
 
-    rDoc.SetValue(ScAddress(0, 0, 0), 1.0);
-    rDoc.SetValue(ScAddress(0, 1, 0), 0.5);
-    rDoc.SetValue(ScAddress(0, 2, 0), 2.0);
+    rDoc.SetValue(0, 0, 0, 1.0);
+    rDoc.SetValue(0, 1, 0, 0.5);
+    rDoc.SetValue(0, 2, 0, 2.0);
 
     // Without the fix in place, this call would have crashed in debug builds with failed assertion
     executeMacro(
         u"vnd.sun.Star.script:TestLibrary.TestModule.TestRangeSort?language=Basic&location="
         "document"_ustr);
 
-    CPPUNIT_ASSERT_EQUAL(0.5, rDoc.GetValue(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(2.0, rDoc.GetValue(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(0.5, rDoc.GetValue(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(2.0, rDoc.GetValue(0, 2, 0));
 
     // Change sheet's first param sorting order
     ScSortParam aParam;
@@ -643,9 +643,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testVbaRangeSort)
     // Without the fix in place, this test would have failed in non-debug builds with
     // - Expected: 2
     // - Actual  : 0.5
-    CPPUNIT_ASSERT_EQUAL(2.0, rDoc.GetValue(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(0.5, rDoc.GetValue(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(2.0, rDoc.GetValue(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(1.0, rDoc.GetValue(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(0.5, rDoc.GetValue(0, 2, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf107885)
@@ -697,18 +697,18 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf52602)
     executeMacro(u"vnd.sun.Star.script:VBAProject.Modul1.Test_NumberFormat_DateTime?language=Basic&"
                  "location=document"_ustr);
 
-    CPPUNIT_ASSERT_EQUAL(u"15:20"_ustr, rDoc.GetString(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"15:20"_ustr, rDoc.GetString(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20"_ustr, rDoc.GetString(ScAddress(1, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20"_ustr, rDoc.GetString(ScAddress(1, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20:00"_ustr, rDoc.GetString(ScAddress(2, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20:00"_ustr, rDoc.GetString(ScAddress(2, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/3/12 15:20"_ustr, rDoc.GetString(ScAddress(3, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/3/12 15:20"_ustr, rDoc.GetString(ScAddress(3, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/ March 2012"_ustr, rDoc.GetString(ScAddress(4, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/ March 2012"_ustr, rDoc.GetString(ScAddress(4, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/ Mar 2012"_ustr, rDoc.GetString(ScAddress(5, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"1/ Mar 2012"_ustr, rDoc.GetString(ScAddress(5, 1, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"15:20"_ustr, rDoc.GetString(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"15:20"_ustr, rDoc.GetString(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20"_ustr, rDoc.GetString(1, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20"_ustr, rDoc.GetString(1, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20:00"_ustr, rDoc.GetString(2, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"03/01/2012 15:20:00"_ustr, rDoc.GetString(2, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/3/12 15:20"_ustr, rDoc.GetString(3, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/3/12 15:20"_ustr, rDoc.GetString(3, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/ March 2012"_ustr, rDoc.GetString(4, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/ March 2012"_ustr, rDoc.GetString(4, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/ Mar 2012"_ustr, rDoc.GetString(5, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"1/ Mar 2012"_ustr, rDoc.GetString(5, 1, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf107902)
@@ -914,9 +914,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testForEachInSelection)
     ScDocShell* pDocSh = static_cast<ScDocShell*>(pFoundShell);
     ScDocument& rDoc = pDocSh->GetDocument();
 
-    CPPUNIT_ASSERT_EQUAL(u"foo"_ustr, rDoc.GetString(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"bar"_ustr, rDoc.GetString(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"baz"_ustr, rDoc.GetString(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"foo"_ustr, rDoc.GetString(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"bar"_ustr, rDoc.GetString(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"baz"_ustr, rDoc.GetString(0, 2, 0));
 
     // tdf#153724: without the fix, this would fail with
     // assertion failed
@@ -927,9 +927,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testForEachInSelection)
     executeMacro(u"vnd.sun.Star.script:Standard.Module1.TestForEachInSelection?"
                  "language=Basic&location=document"_ustr);
 
-    CPPUNIT_ASSERT_EQUAL(u"oof"_ustr, rDoc.GetString(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"rab"_ustr, rDoc.GetString(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"zab"_ustr, rDoc.GetString(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"oof"_ustr, rDoc.GetString(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"rab"_ustr, rDoc.GetString(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"zab"_ustr, rDoc.GetString(0, 2, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testNonAsciiMacroIRI)
@@ -941,9 +941,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testNonAsciiMacroIRI)
     ScDocShell* pDocSh = static_cast<ScDocShell*>(pFoundShell);
     ScDocument& rDoc = pDocSh->GetDocument();
 
-    CPPUNIT_ASSERT_EQUAL(u"foo"_ustr, rDoc.GetString(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"bar"_ustr, rDoc.GetString(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"baz"_ustr, rDoc.GetString(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"foo"_ustr, rDoc.GetString(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"bar"_ustr, rDoc.GetString(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"baz"_ustr, rDoc.GetString(0, 2, 0));
 
     auto ret
         = dispatchCommand(mxComponent, u"macro://./Standard.Module1.NonAsciiName_αβγ"_ustr, {});
@@ -955,9 +955,9 @@ CPPUNIT_TEST_FIXTURE(VBAMacroTest, testNonAsciiMacroIRI)
     // - Actual  : 0
     CPPUNIT_ASSERT_EQUAL(css::frame::DispatchResultState::SUCCESS, retEvent.State);
 
-    CPPUNIT_ASSERT_EQUAL(u"oof"_ustr, rDoc.GetString(ScAddress(0, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"rab"_ustr, rDoc.GetString(ScAddress(0, 1, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"zab"_ustr, rDoc.GetString(ScAddress(0, 2, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"oof"_ustr, rDoc.GetString(0, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(u"rab"_ustr, rDoc.GetString(0, 1, 0));
+    CPPUNIT_ASSERT_EQUAL(u"zab"_ustr, rDoc.GetString(0, 2, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(VBAMacroTest, testTdf167378)

@@ -149,14 +149,14 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf146742)
     saveAndReload(TestFilter::ODS);
     ScDocument* pDoc = getScDoc();
 
-    CPPUNIT_ASSERT_EQUAL(u"1"_ustr, pDoc->GetString(ScAddress(0,0,0)));
-    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, pDoc->GetString(ScAddress(0,1,0)));
+    CPPUNIT_ASSERT_EQUAL(u"1"_ustr, pDoc->GetString(0,0,0));
+    CPPUNIT_ASSERT_EQUAL(u"2"_ustr, pDoc->GetString(0,1,0));
 
-    CPPUNIT_ASSERT_EQUAL(u"TRUE"_ustr, pDoc->GetString(ScAddress(1,0,0)));
+    CPPUNIT_ASSERT_EQUAL(u"TRUE"_ustr, pDoc->GetString(1,0,0));
     // Without the fix in place, this test would have failed with
     // - Expected: FALSE
     // - Actual  : TRUE
-    CPPUNIT_ASSERT_EQUAL(u"FALSE"_ustr, pDoc->GetString(ScAddress(1,1,0)));
+    CPPUNIT_ASSERT_EQUAL(u"FALSE"_ustr, pDoc->GetString(1,1,0));
 }
 
 CPPUNIT_TEST_FIXTURE(ScMacrosTest, testMacroButtonFormControlXlsxExport)
@@ -192,13 +192,13 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf104902)
     saveAndReload(TestFilter::ODS);
     ScDocument* pDoc = getScDoc();
 
-    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(ScAddress(0, 0, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(0, 0, 0));
 
     // Without the fix in place, this test would have failed with
     // - Expected: string with
     // newlines
     // - Actual  : string withnewlines
-    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(ScAddress(0, 1, 0)));
+    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(0, 1, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf64639)
@@ -235,15 +235,15 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf142033)
     saveAndReload(TestFilter::ODS);
     ScDocument* pDoc = getScDoc();
 
-    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(ScAddress(0,0,0)));
-    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(ScAddress(0,1,0)));
+    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(0,0,0));
+    CPPUNIT_ASSERT_EQUAL(u"string no newlines"_ustr, pDoc->GetString(0,1,0));
 
     // Without the fix in place, this test would have failed with
     // - Expected: string with
     // newlines
     // - Actual  : string withnewlines
-    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(ScAddress(1,0,0)));
-    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(ScAddress(1,1,0)));
+    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(1,0,0));
+    CPPUNIT_ASSERT_EQUAL(OUString(u"string with" + OUStringChar(u'\xA') + u"newlines"), pDoc->GetString(1,1,0));
 }
 
 CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf89920)
@@ -433,20 +433,20 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf46119)
 
     executeMacro(u"vnd.sun.Star.script:Standard.Module1.Main?language=Basic&location=document"_ustr);
 
-    CPPUNIT_ASSERT_EQUAL(u"0.074"_ustr, pDoc->GetString(ScAddress(2, 24, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.067"_ustr, pDoc->GetString(ScAddress(2, 25, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.273"_ustr, pDoc->GetString(ScAddress(2, 26, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.259"_ustr, pDoc->GetString(ScAddress(2, 27, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"0.074"_ustr, pDoc->GetString(2, 24, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.067"_ustr, pDoc->GetString(2, 25, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.273"_ustr, pDoc->GetString(2, 26, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.259"_ustr, pDoc->GetString(2, 27, 0));
 
-    CPPUNIT_ASSERT_EQUAL(u"0.097"_ustr, pDoc->GetString(ScAddress(3, 24, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.087"_ustr, pDoc->GetString(ScAddress(3, 25, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.311"_ustr, pDoc->GetString(ScAddress(3, 26, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.296"_ustr, pDoc->GetString(ScAddress(3, 27, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"0.097"_ustr, pDoc->GetString(3, 24, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.087"_ustr, pDoc->GetString(3, 25, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.311"_ustr, pDoc->GetString(3, 26, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.296"_ustr, pDoc->GetString(3, 27, 0));
 
-    CPPUNIT_ASSERT_EQUAL(u"0.149"_ustr, pDoc->GetString(ScAddress(4, 24, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.134"_ustr, pDoc->GetString(ScAddress(4, 25, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.386"_ustr, pDoc->GetString(ScAddress(4, 26, 0)));
-    CPPUNIT_ASSERT_EQUAL(u"0.366"_ustr, pDoc->GetString(ScAddress(4, 27, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"0.149"_ustr, pDoc->GetString(4, 24, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.134"_ustr, pDoc->GetString(4, 25, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.386"_ustr, pDoc->GetString(4, 26, 0));
+    CPPUNIT_ASSERT_EQUAL(u"0.366"_ustr, pDoc->GetString(4, 27, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf128218)
@@ -496,9 +496,9 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf43003)
     ScDocument* pDoc = getScDoc();
 
     // Without the fix in place, the values of the specified cells won't be changed
-    pDoc->SetValue(ScAddress(0, 0, 0), 2);
-    CPPUNIT_ASSERT_EQUAL(3.0, pDoc->GetValue(ScAddress(1, 0, 0)));
-    CPPUNIT_ASSERT_EQUAL(4.0, pDoc->GetValue(ScAddress(2, 0, 0)));
+    pDoc->SetValue(0, 0, 0, 2);
+    CPPUNIT_ASSERT_EQUAL(3.0, pDoc->GetValue(1, 0, 0));
+    CPPUNIT_ASSERT_EQUAL(4.0, pDoc->GetValue(2, 0, 0));
 }
 
 
@@ -511,7 +511,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf75263)
         pDoc->CalcAll();
 
         // A1 contains formula with user-defined function, and the function is defined in VBA.
-        CPPUNIT_ASSERT_EQUAL(u"проба"_ustr, pDoc->GetString(ScAddress(0, 0, 0)));
+        CPPUNIT_ASSERT_EQUAL(u"проба"_ustr, pDoc->GetString(0, 0, 0));
     }
 
     saveAndReload(TestFilter::XLSM);
@@ -523,7 +523,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf75263)
         // Without the accompanying fix in place, this test would have failed with:
         // - Expected: проба (sample)
         // - Actual  : ?????
-        CPPUNIT_ASSERT_EQUAL(u"проба"_ustr, pDoc->GetString(ScAddress(0, 0, 0)));
+        CPPUNIT_ASSERT_EQUAL(u"проба"_ustr, pDoc->GetString(0, 0, 0));
     }
 }
 
@@ -705,7 +705,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf105558)
     // Without the fix in place, this test would have failed with
     // - Expected: 5.5
     // - Actual  : 0
-    CPPUNIT_ASSERT_EQUAL(5.5, pDoc->GetValue(ScAddress(0, 0, 0)));
+    CPPUNIT_ASSERT_EQUAL(5.5, pDoc->GetValue(0, 0, 0));
 }
 
 CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf107572)
@@ -1053,7 +1053,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf161948NaturalSortDispatcher)
         = { u"ID"_ustr, u"K2"_ustr, u"K3"_ustr, u"K10"_ustr, u"K23"_ustr, u"K104"_ustr };
     for (SCROW nRow = 0; nRow <= 5; nRow++) // ScAddress(col, row, tab)
     {
-        CPPUNIT_ASSERT_EQUAL(aExpectedNaturalSort[nRow], pDoc->GetString(ScAddress(0, nRow, 0)));
+        CPPUNIT_ASSERT_EQUAL(aExpectedNaturalSort[nRow], pDoc->GetString(0, nRow, 0));
     }
 
     // Same test for alpha-numeric sort, that is NaturalSort=false.
@@ -1065,7 +1065,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf161948NaturalSortDispatcher)
         = { u"ID"_ustr, u"K10"_ustr, u"K104"_ustr, u"K2"_ustr, u"K23"_ustr, u"K3"_ustr };
     for (SCROW nRow = 0; nRow <= 5; nRow++)
     {
-        CPPUNIT_ASSERT_EQUAL(aExpectedAlphaNumeric[nRow], pDoc->GetString(ScAddress(0, nRow, 0)));
+        CPPUNIT_ASSERT_EQUAL(aExpectedAlphaNumeric[nRow], pDoc->GetString(0, nRow, 0));
     }
 }
 
@@ -1079,7 +1079,7 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testTdf168750)
     // Without the fix, this would fail with
     // - Unexpected dialog:  Error: BASIC runtime error. Argument is not optional.
     // Which indicates, that the class module function was unexpectedly called.
-    CPPUNIT_ASSERT_EQUAL(u"FALSE"_ustr, pDoc->GetString(ScAddress(1, 0, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"FALSE"_ustr, pDoc->GetString(1, 0, 0));
 }
 
 #if defined(_WIN32) // DDE calls work only on Windows currently
@@ -1090,15 +1090,15 @@ CPPUNIT_TEST_FIXTURE(ScMacrosTest, testDdePoke)
     createScDoc("DdePoke.fods");
     ScDocument* pDoc = getScDoc();
     // A1 has a text:
-    CPPUNIT_ASSERT_EQUAL(u"Hello from Sender"_ustr, pDoc->GetString(ScAddress(0, 0, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"Hello from Sender"_ustr, pDoc->GetString(0, 0, 0));
     // B2 is empty initially:
-    CPPUNIT_ASSERT(pDoc->GetString(ScAddress(1, 1, 0)).isEmpty());
+    CPPUNIT_ASSERT(pDoc->GetString(1, 1, 0).isEmpty());
 
     executeMacro(u"vnd.sun.star.script:Standard.Module1.SendDataWithDDEPoke"
                  "?language=Basic&location=document"_ustr);
 
     // B2 has the expected text now:
-    CPPUNIT_ASSERT_EQUAL(u"Hello from Sender"_ustr, pDoc->GetString(ScAddress(1, 1, 0)));
+    CPPUNIT_ASSERT_EQUAL(u"Hello from Sender"_ustr, pDoc->GetString(1, 1, 0));
 }
 #endif
 
