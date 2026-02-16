@@ -218,4 +218,19 @@ class HyperlinkDialog(UITestCase):
                     xVerticalRadio.executeAction("CLICK", tuple())
                     self.assertEqual(get_state_as_dict(xVerticalRadio)["Checked"], "true")
 
+    def test_tdf118042_target_in_document_button(self):
+        # Test clicking "Target in Document" button crash
+        with self.ui_test.create_doc_in_start_center("writer"):
+
+            with self.ui_test.execute_dialog_through_command(".uno:HyperlinkDialog", close_button="cancel") as xDialog:
+                xTab = xDialog.getChild("tabcontrol")
+                select_pos(xTab, "2")
+                self.assertEqual(get_state_as_dict(xTab)["CurrPageTitle"], "~Document")
+
+                # Without the fix this would crash here.
+                xBrowseBtn = xDialog.getChild("browse")
+                xBrowseBtn.executeAction("CLICK", tuple())
+
+                self.assertEqual(get_state_as_dict(xTab)["CurrPageTitle"], "~Document")
+
 # vim: set shiftwidth=4 softtabstop=4 expandtab:
