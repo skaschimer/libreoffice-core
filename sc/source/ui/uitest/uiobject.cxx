@@ -142,35 +142,31 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     if (rAction == "SELECT")
     {
         bool bExtend = false;
-        if ( rParameters.contains(u"EXTEND"_ustr) )
+        if (auto itr = rParameters.find(u"EXTEND"_ustr); itr != rParameters.end())
         {
-            auto itr = rParameters.find(u"EXTEND"_ustr);
             if (itr->second.equalsIgnoreAsciiCase("true") || itr->second == "1")
                 bExtend = true;
         }
 
-        if ( rParameters.contains(u"CELL"_ustr) )
+        if (auto itrCell = rParameters.find(u"CELL"_ustr); itrCell != rParameters.end())
         {
-            auto itr = rParameters.find(u"CELL"_ustr);
-            const OUString& rStr = itr->second;
+            const OUString& rStr = itrCell->second;
             ScAddress aAddr = get_address_from_string(mxGridWindow->getViewData().GetDocument(), rStr);
             ScDBFunc* pFunc = getDBFunc();
             pFunc->MarkRange(ScRange(aAddr), true, bExtend);
             mxGridWindow->CursorChanged();
         }
-        else if ( rParameters.contains(u"RANGE"_ustr) )
+        else if (auto itrRange = rParameters.find(u"RANGE"_ustr); itrRange != rParameters.end())
         {
-            auto itr = rParameters.find(u"RANGE"_ustr);
-            const OUString rStr = itr->second;
+            const OUString rStr = itrRange->second;
             ScRange aRange = get_range_from_string(mxGridWindow->getViewData().GetDocument(), rStr);
             ScDBFunc* pFunc = getDBFunc();
             pFunc->MarkRange(aRange, true, bExtend);
             mxGridWindow->CursorChanged();
         }
-        else if ( rParameters.contains(u"TABLE"_ustr) )
+        else if (auto itrTable = rParameters.find(u"TABLE"_ustr); itrTable != rParameters.end())
         {
-            auto itr = rParameters.find(u"TABLE"_ustr);
-            const OUString rStr = itr->second;
+            const OUString rStr = itrTable->second;
             sal_Int32 nTab = rStr.toUInt32();
             ScTabView* pTabView = mxGridWindow->getViewData().GetView();
             if (pTabView)
@@ -184,10 +180,9 @@ void ScGridWinUIObject::execute(const OUString& rAction,
                 }
             }
         }
-        else if ( rParameters.contains(u"OBJECT"_ustr) )
+        else if (auto itrObject = rParameters.find(u"OBJECT"_ustr); itrObject != rParameters.end())
         {
-            auto itr = rParameters.find(u"OBJECT"_ustr);
-            const OUString rStr = itr->second;
+            const OUString rStr = itrObject->second;
 
             ScDrawView* pDrawView = getDrawView();
             pDrawView->SelectObject(rStr);
@@ -304,9 +299,8 @@ void ScGridWinUIObject::execute(const OUString& rAction,
             ScViewData& rViewData = mxGridWindow->getViewData();
             rViewData.GetDispatcher().Execute( pDraw->GetSlotID() , SfxCallMode::SLOT | SfxCallMode::RECORD );
         }
-        else if ( rParameters.contains(u"SETTEXT"_ustr) )
+        else if (auto itr = rParameters.find(u"SETTEXT"_ustr); itr != rParameters.end())
         {
-            auto itr = rParameters.find(u"SETTEXT"_ustr);
             const OUString rStr = itr->second;
             ScDocument& rDoc = mxGridWindow->getViewData().GetDocument();
             ScAddress aPos( mxGridWindow->getViewData().GetCurX() , mxGridWindow->getViewData().GetCurY() , mxGridWindow->getViewData().CurrentTabForData() );
@@ -328,9 +322,8 @@ void ScGridWinUIObject::execute(const OUString& rAction,
     }
     else if (rAction == "SET")
     {
-        if ( rParameters.contains(u"ZOOM"_ustr) )
+        if (auto itr = rParameters.find(u"ZOOM"_ustr); itr != rParameters.end())
         {
-            auto itr = rParameters.find(u"ZOOM"_ustr);
             OUString aVal = itr->second;
             sal_Int32 nVal = aVal.toInt32();
             ScTabViewShell* pViewShell = getViewShell();
