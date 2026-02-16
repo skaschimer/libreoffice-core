@@ -55,6 +55,9 @@
 
 #include <sdpage.hxx>
 
+#include <sdresid.hxx>
+#include <strings.hrc>
+
 /**
  * SdNavigatorWin - FloatingWindow
  */
@@ -109,6 +112,24 @@ SdNavigatorWin::SdNavigatorWin(weld::Widget* pParent, SfxBindings* pInBindings, 
     {
         mxToolbox->hide();
         mxLbDocs->hide();
+    }
+}
+
+void SdNavigatorWin::SetToolBoxToolTips(const SdDrawDocument* pDoc)
+{
+    if (pDoc->GetDocumentType() == DocumentType::Impress)
+    {
+        mxToolbox->set_item_tooltip_text(u"first"_ustr, SdResId(STR_FIRST_SLIDE));
+        mxToolbox->set_item_tooltip_text(u"previous"_ustr, SdResId(STR_PREVIOUS_SLIDE));
+        mxToolbox->set_item_tooltip_text(u"next"_ustr, SdResId(STR_NEXT_SLIDE));
+        mxToolbox->set_item_tooltip_text(u"last"_ustr, SdResId(STR_LAST_SLIDE));
+    }
+    else
+    {
+        mxToolbox->set_item_tooltip_text(u"first"_ustr, SdResId(STR_FIRST_PAGE));
+        mxToolbox->set_item_tooltip_text(u"previous"_ustr, SdResId(STR_PREVIOUS_PAGE));
+        mxToolbox->set_item_tooltip_text(u"next"_ustr, SdResId(STR_NEXT_PAGE));
+        mxToolbox->set_item_tooltip_text(u"last"_ustr, SdResId(STR_LAST_PAGE));
     }
 }
 
