@@ -231,6 +231,7 @@ SwTableAutoFormat::SwTableAutoFormat(const SwTableAutoFormat& rNew)
     : SvxAutoFormatData(rNew)
     , m_aName(rNew.GetName())
     , m_bHidden(false)
+    , m_bUserDefined(rNew.m_bUserDefined)
 {
     SvxAutoFormatData::SetName(rNew.GetName().toString());
     for (size_t i = 0; i < ELEMENT_COUNT; i++)
