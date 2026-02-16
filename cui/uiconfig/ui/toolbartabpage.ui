@@ -138,9 +138,7 @@
             <property name="margin-end">3</property>
             <property name="label" translatable="yes" context="toolbartabpage|lbLockAll">_Lock all:</property>
             <property name="use-underline">True</property>
-            <accessibility>
-              <relation type="label-for" target="cbLockAll"/>
-            </accessibility>
+            <property name="mnemonic-widget">cbLockAll</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -159,9 +157,6 @@
             <child>
               <placeholder/>
             </child>
-            <accessibility>
-              <relation type="labelled-by" target="lbLockAll"/>
-            </accessibility>
           </object>
           <packing>
             <property name="expand">False</property>
