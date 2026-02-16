@@ -658,7 +658,7 @@ IMPL_LINK_NOARG(SvxTableStylesDlg, BorderLayoutSelHdl, ValueSet*, void)
         Color aCol = m_xBorderColor->GetSelectEntryColor();
         if (aCol.IsTransparent())
             aCol = COL_BLACK;
-        aBorder = *new editeng::SvxBorderLine(&aCol, THIN);
+        aBorder = editeng::SvxBorderLine(&aCol, THIN);
     }
 
     aBox.SetLine(nullptr, SvxBoxItemLine::TOP);
