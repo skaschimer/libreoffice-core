@@ -31,6 +31,7 @@
 #include <tools/contnr.hxx>
 
 #include <memory>
+#include <unordered_map>
 
 enum class SvListAction
 {
@@ -205,8 +206,12 @@ class UNLESS_MERGELIBS_MORE(VCL_DLLPUBLIC) SvListView
 {
     friend class SvTreeList;
 
-    struct SAL_DLLPRIVATE Impl;
-    std::unique_ptr<Impl> m_pImpl;
+    using SvDataTable = std::unordered_map<SvTreeListEntry*, std::unique_ptr<SvViewDataEntry>>;
+    SvDataTable m_DataTable; // Mapping SvTreeListEntry -> ViewData
+
+    sal_uInt32 m_nVisibleCount;
+    sal_uInt32 m_nSelectionCount;
+    bool m_bVisPositionsValid;
 
 protected:
     std::unique_ptr<SvTreeList> m_pModel;
@@ -313,6 +318,17 @@ public:
     virtual void        ModelIsRemoving( SvTreeListEntry* pEntry );
     virtual void        ModelHasRemoved( SvTreeListEntry* pEntry );
     virtual void        ModelHasEntryInvalidated( SvTreeListEntry* pEntry );
+
+private:
+    void InitTable();
+
+    void RemoveViewData(SvTreeListEntry* pParent);
+
+    void ActionMoving(SvTreeListEntry* pEntry);
+    void ActionMoved();
+    void ActionInserted(SvTreeListEntry* pEntry);
+    void ActionInsertedTree(SvTreeListEntry* pEntry);
+    void ActionRemoving(SvTreeListEntry* pEntry);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
