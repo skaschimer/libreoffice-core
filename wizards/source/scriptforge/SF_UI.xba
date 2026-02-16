@@ -131,6 +131,8 @@ Dim oComp As Object				&apos;	com.sun.star.lang.XComponent
 				ActiveWindow = &quot;&quot;
 			End If
 		End With
+	Else
+		ActiveWindow = &quot;&quot;
 	End If
 
 End Function	&apos;	ScriptForge.SF_UI.ActiveWindow
@@ -918,7 +920,7 @@ Try:
 		Loop
 	Else
 		vWindow = SF_UI._IdentifyWindow(StarDesktop.CurrentComponent)
-		bFound = True
+		bFound = Not IsNull(vWindow.Frame)
 	End If
 
 	If bFound Then
@@ -974,7 +976,7 @@ Try:
 		Loop
 	Else
 		vWindow = SF_UI._IdentifyWindow(StarDesktop.CurrentComponent)
-		bFound = True
+		bFound = Not IsNull(vWindow.Frame)
 	End If
 
 	If bFound Then
@@ -1317,7 +1319,7 @@ Try:
 	Next i
 	Set oDispatch = SF_Utils._GetUNOService(&quot;DispatchHelper&quot;)
 	If SF_String.StartsWith(Command, cstPrefix) Then sCommand = Command Else sCommand = cstPrefix &amp; Command
-	oDispatch.executeDispatch(StarDesktop.ActiveFrame, sCommand, &quot;&quot;, 0, vProps)
+	If Not IsNull (StarDesktop.ActiveFrame) Then oDispatch.executeDispatch(StarDesktop.ActiveFrame, sCommand, &quot;&quot;, 0, vProps)
 
 Finally:
 	SF_Utils._ExitFunction(cstThisSub)
