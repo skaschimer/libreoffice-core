@@ -1670,23 +1670,36 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testSecondsWithoutTruncateAndDecimals)
     lcl_TestNumberFormat(*getScDoc(), u"[SS].00"_ustr);
 }
 
-CPPUNIT_TEST_FIXTURE(ScExportTest4, testBlankWidthCharacter)
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf152724_BlankWidthCharacter_ODS)
 {
     createScDoc("ods/tdf152724-Blank-width-char.ods");
 
     // save to ODS and reload
     saveAndReload(TestFilter::ODS);
     lcl_TestNumberFormat(*getScDoc(), u"[>0]_-?0;[<0]-?0;_-?0;@"_ustr);
+}
+
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf152724_BlankWidthCharacter_XLSX)
+{
+    createScDoc("ods/tdf152724-Blank-width-char.ods");
 
     // save to XLSX and reload
     saveAndReload(TestFilter::XLSX);
     lcl_TestNumberFormat(*getScDoc(), u"_-?0;-?0;_-?0;@"_ustr);
+}
 
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf170670_BlankWidthCharacter_ODS)
+{
     createScDoc("ods/tdf170670-Blank-width-char.ods");
 
     // save to ODS and reload
     saveAndReload(TestFilter::ODS);
     lcl_TestNumberFormat(*getScDoc(), u"[>0]#,##0_);[<0](#,##0);\"-\"_)"_ustr);
+}
+
+CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf170670_BlankWidthCharacter_XLSX)
+{
+    createScDoc("ods/tdf170670-Blank-width-char.ods");
 
     // save to XLSX and reload
     saveAndReload(TestFilter::XLSX);
