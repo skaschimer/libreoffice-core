@@ -961,9 +961,10 @@ void SwDocShell::Edit(
         SwTableAutoFormatTable& rTableStyles = GetDoc()->GetTableStyles();
         const OUString sOldName = rName.toString();
         SwTableAutoFormat* pData = rTableStyles.FindAutoFormat(sOldName);
-        SwTableAutoFormat pOld(*pData);
         if (pData)
         {
+            SwTableAutoFormat pOld(*pData);
+
             if (!rParent.isEmpty())
                 pData->SetParent(rParent.toString());
             bool bRTL = pCurrShell->IsCursorInTable() ? pCurrShell->IsTableRightToLeft()
