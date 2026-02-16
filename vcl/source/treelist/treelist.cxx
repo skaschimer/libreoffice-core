@@ -968,10 +968,8 @@ SvListView::SvListView()
 {
     m_pModel.reset(new SvTreeList(*this));
 
-    SvTreeListEntry* pEntry;
-
     // insert root entry
-    pEntry = m_pModel->pRootItem.get();
+    SvTreeListEntry* pEntry = m_pModel->pRootItem.get();
     std::unique_ptr<SvViewDataEntry> pViewData(new SvViewDataEntry);
     pViewData->SetExpanded(true);
     m_DataTable.insert(std::make_pair(pEntry, std::move(pViewData)));
