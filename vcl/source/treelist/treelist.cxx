@@ -968,15 +968,6 @@ SvListView::SvListView()
 {
     m_pModel.reset(new SvTreeList(*this));
 
-    if (!m_DataTable.empty())
-    {
-        DBG_ASSERT(m_DataTable.size() == 1, "InitTable: TableCount != 1");
-        // Delete the view data allocated to the Clear in the root.
-        // Attention: The model belonging to the root entry (and thus the entry
-        // itself) might already be deleted.
-        m_DataTable.clear();
-    }
-
     SvTreeListEntry* pEntry;
 
     // insert root entry
