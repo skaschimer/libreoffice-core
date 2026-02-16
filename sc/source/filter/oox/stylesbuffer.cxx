@@ -2491,17 +2491,17 @@ ProtectionRef const & Dxf::createProtection( bool bAlwaysNew )
     return mxProtection;
 }
 
-void Dxf::setFill(FillRef xFill)
+void Dxf::setFill(const FillRef& xFill)
 {
     mxFill = xFill;
 }
 
-void Dxf::setBorder(BorderRef xBorder)
+void Dxf::setBorder(const BorderRef& xBorder)
 {
     mxBorder = xBorder;
 }
 
-void Dxf::setFont(FontRef xFont)
+void Dxf::setFont(const FontRef& xFont)
 {
     mxFont = xFont;
 }

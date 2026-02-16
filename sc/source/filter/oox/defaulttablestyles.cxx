@@ -30,7 +30,7 @@ void DefaultOOXMLTableStyles::importColors()
     {
         oox::xls::XlsColor aColor;
         aColor.setTheme(aThemeColors[i].nThemeId, aThemeColors[i].fTint);
-        maColors.push_back(aColor);
+        maColors.push_back(std::move(aColor));
     }
 }
 
@@ -41,7 +41,7 @@ void DefaultOOXMLTableStyles::importFills()
     {
         auto xFill = std::make_shared<oox::xls::Fill>(*this, true);
         xFill->setFillColors(maColors[aFills[i].nFgColorId], maColors[aFills[i].nBgColorId]);
-        maFills.push_back(xFill);
+        maFills.push_back(std::move(xFill));
     }
 }
 
@@ -97,7 +97,7 @@ void DefaultOOXMLTableStyles::importBorders()
         if (rBorderInfo.nHorizontalId >= 0)
             importBorderElement(xBorder, XLS_TOKEN(horizontal), rBorderInfo.nHorizontalId);
 
-        maBorders.push_back(xBorder);
+        maBorders.push_back(std::move(xBorder));
     }
 }
 
@@ -111,7 +111,7 @@ void DefaultOOXMLTableStyles::importFonts()
         const Font& rFontInfo = aFonts[i];
         xFont->setFontElements(maColors[rFontInfo.nThemeColorId], rFontInfo.bBold);
 
-        maFonts.push_back(xFont);
+        maFonts.push_back(std::move(xFont));
     }
 }
 
@@ -133,7 +133,7 @@ void DefaultOOXMLTableStyles::importDxfs()
             xDxf->setFont(maFonts[aDxfInfo.nFontId]);
 
         xDxf->finalizeImport();
-        maDxfs.push_back(xDxf);
+        maDxfs.push_back(std::move(xDxf));
     }
 }
 

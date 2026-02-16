@@ -1240,7 +1240,7 @@ void ScDBData::UpdateMoveTab(SCTAB nOldPos, SCTAB nNewPos)
         SetArea(nTab, aRange.aStart.Col(), aRange.aStart.Row(), aRange.aEnd.Col(),
                 aRange.aEnd.Row());
         // Do not use SetTableColumnNames() because that resets mbTableColumnNamesDirty.
-        maTableColumnNames = aNames;
+        maTableColumnNames = std::move(aNames);
         mbTableColumnNamesDirty = bTableColumnNamesDirty;
     }
 
@@ -1283,7 +1283,7 @@ bool ScDBData::UpdateReference(const ScDocument& rDoc, UpdateRefMode eUpdateRefM
         else
             MoveTo( theTab1, theCol1, theRow1, theCol2, theRow2 );
         // Do not use SetTableColumnNames() because that resets mbTableColumnNamesDirty.
-        maTableColumnNames = aNames;
+        maTableColumnNames = std::move(aNames);
         mbTableColumnNamesDirty = bTableColumnNamesDirty;
     }
 

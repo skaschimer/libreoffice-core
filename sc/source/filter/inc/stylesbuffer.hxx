@@ -717,9 +717,9 @@ public:
     ProtectionRef const & createProtection( bool bAlwaysNew = true );
 
     // methods for OOXML default table style import
-    void setFill(FillRef xFill);
-    void setBorder(BorderRef xBorder);
-    void setFont(FontRef xFont);
+    void setFill(const FillRef& xFill);
+    void setBorder(const BorderRef& xBorder);
+    void setFont(const FontRef& xFont);
 
     /** Inserts a new number format code. */
     void                importNumFmt( const AttributeList& rAttribs );
