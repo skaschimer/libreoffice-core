@@ -234,6 +234,9 @@ public:
     const OUString& getDiagramDataModelID() const;
 
 private:
+    // check if a ObjectName is set and it is in DiagramModelID syntax
+    bool ObjectNameIsDiagramModelID();
+
     friend class                SdrObjListIter;
     friend class                SdrObjList;
     friend class                SdrVirtObj;
