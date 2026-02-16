@@ -339,27 +339,12 @@ public:
     virtual ~SvTreeListBox() override;
     virtual void dispose() override;
 
-    SvTreeList* GetModel() const
-    {
-        return pModel.get();
-    }
+    SvTreeList* GetModel() const { return m_pModel.get(); }
 
-    sal_uInt32 GetEntryCount() const
-    {
-        return pModel ? pModel->GetEntryCount() : 0;
-    }
-    SvTreeListEntry* First() const
-    {
-        return pModel ? pModel->First() : nullptr;
-    }
-    SvTreeListEntry* Next( SvTreeListEntry* pEntry ) const
-    {
-         return pModel->Next(pEntry);
-    }
-    SvTreeListEntry* Last() const
-    {
-        return pModel ? pModel->Last() : nullptr;
-    }
+    sal_uInt32 GetEntryCount() const { return m_pModel ? m_pModel->GetEntryCount() : 0; }
+    SvTreeListEntry* First() const { return m_pModel ? m_pModel->First() : nullptr; }
+    SvTreeListEntry* Next(SvTreeListEntry* pEntry) const { return m_pModel->Next(pEntry); }
+    SvTreeListEntry* Last() const { return m_pModel ? m_pModel->Last() : nullptr; }
 
     SvTreeListEntry* FirstChild(const SvTreeListEntry* pParent) const;
 

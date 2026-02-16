@@ -996,14 +996,11 @@ void SvTreeList::InvalidateEntry( SvTreeListEntry* pEntry )
 SvListView::SvListView()
     : m_pImpl(new Impl(*this))
 {
-    pModel.reset(new SvTreeList(*this));
+    m_pModel.reset(new SvTreeList(*this));
     m_pImpl->InitTable();
 }
 
-void SvListView::dispose()
-{
-    pModel.reset();
-}
+void SvListView::dispose() { m_pModel.reset(); }
 
 SvListView::~SvListView()
 {
@@ -1019,7 +1016,7 @@ bool SvListView::HasViewData() const
 
 void SvListView::Impl::InitTable()
 {
-    DBG_ASSERT(m_rThis.pModel,"InitTable:No Model");
+    DBG_ASSERT(m_rThis.m_pModel, "InitTable:No Model");
     DBG_ASSERT(!m_nSelectionCount && !m_nVisibleCount && !m_bVisPositionsValid,
             "InitTable: Not cleared!");
 
@@ -1035,18 +1032,18 @@ void SvListView::Impl::InitTable()
     SvTreeListEntry* pEntry;
 
     // insert root entry
-    pEntry = m_rThis.pModel->pRootItem.get();
+    pEntry = m_rThis.m_pModel->pRootItem.get();
     std::unique_ptr<SvViewDataEntry> pViewData(new SvViewDataEntry);
     pViewData->SetExpanded(true);
     m_DataTable.insert(std::make_pair(pEntry, std::move(pViewData)));
     // now all the other entries
-    pEntry = m_rThis.pModel->First();
+    pEntry = m_rThis.m_pModel->First();
     while( pEntry )
     {
         pViewData = std::make_unique<SvViewDataEntry>();
         m_rThis.InitViewData( pViewData.get(), pEntry );
         m_DataTable.insert(std::make_pair(pEntry, std::move(pViewData)));
-        pEntry = m_rThis.pModel->Next( pEntry );
+        pEntry = m_rThis.m_pModel->Next(pEntry);
     }
 }
 
@@ -1056,10 +1053,10 @@ void SvListView::Clear()
     m_pImpl->m_nSelectionCount = 0;
     m_pImpl->m_nVisibleCount = 0;
     m_pImpl->m_bVisPositionsValid = false;
-    if( pModel )
+    if (m_pModel)
     {
         // insert root entry
-        SvTreeListEntry* pEntry = pModel->pRootItem.get();
+        SvTreeListEntry* pEntry = m_pModel->pRootItem.get();
         std::unique_ptr<SvViewDataEntry> pViewData(new SvViewDataEntry);
         pViewData->SetExpanded(true);
         m_pImpl->m_DataTable.insert(std::make_pair(pEntry, std::move(pViewData)));
@@ -1106,7 +1103,7 @@ void SvListView::Impl::ActionMoving( SvTreeListEntry* pEntry )
 {
     SvTreeListEntry* pParent = pEntry->pParent;
     assert(pParent && "Model not consistent");
-    if (pParent != m_rThis.pModel->pRootItem.get() && pParent->m_Children.size() == 1)
+    if (pParent != m_rThis.m_pModel->pRootItem.get() && pParent->m_Children.size() == 1)
     {
         const auto iter = m_DataTable.find(pParent);
         assert(iter != m_DataTable.end());
@@ -1132,7 +1129,7 @@ void SvListView::Impl::ActionInserted( SvTreeListEntry* pEntry )
     std::pair<SvDataTable::iterator, bool> aSuccess =
         m_DataTable.insert(std::make_pair(pEntry, std::move(pData)));
     DBG_ASSERT(aSuccess.second,"Entry already in View");
-    if (m_nVisibleCount && m_rThis.pModel->IsEntryVisible(&m_rThis, pEntry))
+    if (m_nVisibleCount && m_rThis.m_pModel->IsEntryVisible(&m_rThis, pEntry))
     {
         m_nVisibleCount = 0;
         m_bVisPositionsValid = false;
@@ -1141,22 +1138,22 @@ void SvListView::Impl::ActionInserted( SvTreeListEntry* pEntry )
 
 void SvListView::Impl::ActionInsertedTree( SvTreeListEntry* pEntry )
 {
-    if (m_rThis.pModel->IsEntryVisible(&m_rThis, pEntry))
+    if (m_rThis.m_pModel->IsEntryVisible(&m_rThis, pEntry))
     {
         m_nVisibleCount = 0;
         m_bVisPositionsValid = false;
     }
     // iterate over entry and its children
     SvTreeListEntry* pCurEntry = pEntry;
-    sal_uInt16 nRefDepth = m_rThis.pModel->GetDepth( pCurEntry );
+    sal_uInt16 nRefDepth = m_rThis.m_pModel->GetDepth(pCurEntry);
     while( pCurEntry )
     {
         DBG_ASSERT(m_DataTable.find(pCurEntry) != m_DataTable.end(),"Entry already in Table");
         std::unique_ptr<SvViewDataEntry> pViewData(new SvViewDataEntry());
         m_rThis.InitViewData( pViewData.get(), pEntry );
         m_DataTable.insert(std::make_pair(pCurEntry, std::move(pViewData)));
-        pCurEntry = m_rThis.pModel->Next( pCurEntry );
-        if ( pCurEntry && m_rThis.pModel->GetDepth(pCurEntry) <= nRefDepth)
+        pCurEntry = m_rThis.m_pModel->Next(pCurEntry);
+        if (pCurEntry && m_rThis.m_pModel->GetDepth(pCurEntry) <= nRefDepth)
             pCurEntry = nullptr;
     }
 }
@@ -1181,11 +1178,11 @@ void SvListView::Impl::ActionRemoving( SvTreeListEntry* pEntry )
     SvViewDataEntry* pViewData = iter->second.get();
     sal_uInt32 nSelRemoved = 0;
     if ( pViewData->IsSelected() )
-        nSelRemoved = 1 + m_rThis.pModel->GetChildSelectionCount(&m_rThis, pEntry);
+        nSelRemoved = 1 + m_rThis.m_pModel->GetChildSelectionCount(&m_rThis, pEntry);
     m_nSelectionCount -= nSelRemoved;
     sal_uInt32 nVisibleRemoved = 0;
-    if (m_rThis.pModel->IsEntryVisible(&m_rThis, pEntry))
-        nVisibleRemoved = 1 + m_rThis.pModel->GetVisibleChildCount(&m_rThis, pEntry);
+    if (m_rThis.m_pModel->IsEntryVisible(&m_rThis, pEntry))
+        nVisibleRemoved = 1 + m_rThis.m_pModel->GetVisibleChildCount(&m_rThis, pEntry);
     if( m_nVisibleCount )
     {
 #ifdef DBG_UTIL
@@ -1202,7 +1199,8 @@ void SvListView::Impl::ActionRemoving( SvTreeListEntry* pEntry )
     RemoveViewData( pEntry );
 
     SvTreeListEntry* pCurEntry = pEntry->pParent;
-    if (pCurEntry && pCurEntry != m_rThis.pModel->pRootItem.get() && pCurEntry->m_Children.size() == 1)
+    if (pCurEntry && pCurEntry != m_rThis.m_pModel->pRootItem.get()
+        && pCurEntry->m_Children.size() == 1)
     {
         SvDataTable::iterator itr = m_DataTable.find(pCurEntry);
         assert(itr != m_DataTable.end() && "Entry not in Table");
