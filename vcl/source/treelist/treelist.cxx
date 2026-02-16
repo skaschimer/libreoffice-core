@@ -967,25 +967,6 @@ SvListView::SvListView()
     , m_bVisPositionsValid(false)
 {
     m_pModel.reset(new SvTreeList(*this));
-    InitTable();
-}
-
-void SvListView::dispose() { m_pModel.reset(); }
-
-SvListView::~SvListView()
-{
-    m_DataTable.clear();
-}
-
-sal_uInt32 SvListView::GetSelectionCount() const { return m_nSelectionCount; }
-
-bool SvListView::HasViewData() const { return m_DataTable.size() > 1; } // There's always a ROOT
-
-void SvListView::InitTable()
-{
-    DBG_ASSERT(m_pModel, "InitTable:No Model");
-    DBG_ASSERT(!m_nSelectionCount && !m_nVisibleCount && !m_bVisPositionsValid,
-            "InitTable: Not cleared!");
 
     if (!m_DataTable.empty())
     {
@@ -1013,6 +994,17 @@ void SvListView::InitTable()
         pEntry = m_pModel->Next(pEntry);
     }
 }
+
+void SvListView::dispose() { m_pModel.reset(); }
+
+SvListView::~SvListView()
+{
+    m_DataTable.clear();
+}
+
+sal_uInt32 SvListView::GetSelectionCount() const { return m_nSelectionCount; }
+
+bool SvListView::HasViewData() const { return m_DataTable.size() > 1; } // There's always a ROOT
 
 void SvListView::Clear()
 {

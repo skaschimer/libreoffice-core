@@ -320,8 +320,6 @@ public:
     virtual void        ModelHasEntryInvalidated( SvTreeListEntry* pEntry );
 
 private:
-    void InitTable();
-
     void RemoveViewData(SvTreeListEntry* pParent);
 
     void ActionMoving(SvTreeListEntry* pEntry);
