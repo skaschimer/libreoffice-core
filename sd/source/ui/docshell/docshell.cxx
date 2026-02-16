@@ -321,7 +321,7 @@ void DrawDocShell::GetState(SfxItemSet &rSet)
                     if(bImpress)
                     {
                         // tdf#170719 only bother with NotebookBar
-                        // stuff, if this is not the runing SlideShow
+                        // stuff, if this is not the running SlideShow
                         if(!sd::SlideShow::IsRunning(mpViewShell->GetViewShellBase()))
                             bVisible = sfx2::SfxNotebookBar::StateMethod(mpViewShell->GetFrame()->GetBindings(),
                                                                          u"modules/simpress/ui/");
