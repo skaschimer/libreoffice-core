@@ -149,36 +149,24 @@ static void lcl_SetDfltBoxAttr( SwFrameFormat& rFormat, sal_uInt8 nId )
 typedef std::map<SwFrameFormat *, SwTableBoxFormat *> DfltBoxAttrMap_t;
 typedef std::vector<DfltBoxAttrMap_t *> DfltBoxAttrList_t;
 
-static void lcl_SetDfltBoxAttr(SwTableBox& rBox, size_t row,
-                               size_t col, size_t nRows, size_t nCols, sal_uInt8 const nId,
+static void lcl_SetDfltBoxAttr(SwTableBox& rBox, size_t row, size_t col, size_t nRows, size_t nCols,
+                               sal_uInt8 const nId,
                                SwTableAutoFormat const* const pAutoFormat = nullptr)
 {
-    DfltBoxAttrMap_t* pMap = new DfltBoxAttrMap_t;
-
-    SwTableBoxFormat* pNewTableBoxFormat = nullptr;
     SwFrameFormat* pBoxFrameFormat = rBox.GetFrameFormat();
-    DfltBoxAttrMap_t::iterator const iter(pMap->find(pBoxFrameFormat));
-    if (pMap->end() != iter)
-    {
-        pNewTableBoxFormat = iter->second;
-    }
+
+    SwDoc& rDoc = pBoxFrameFormat->GetDoc();
+    SwTableBoxFormat* pNewTableBoxFormat = rDoc.MakeTableBoxFormat();
+    pNewTableBoxFormat->SetFormatAttr(pBoxFrameFormat->GetAttrSet().Get(RES_FRM_SIZE));
+
+    if (pAutoFormat)
+        pAutoFormat->UpdateToSet(const_cast<SfxItemSet&>(static_cast<SfxItemSet const&>(
+                                     pNewTableBoxFormat->GetAttrSet())),
+                                 row, col, nRows, nCols, rDoc.GetNumberFormatter());
     else
-    {
-        SwDoc& rDoc = pBoxFrameFormat->GetDoc();
-        // format does not exist, so create it
-        pNewTableBoxFormat = rDoc.MakeTableBoxFormat();
-        pNewTableBoxFormat->SetFormatAttr( pBoxFrameFormat->GetAttrSet().Get( RES_FRM_SIZE ) );
+        ::lcl_SetDfltBoxAttr(*pNewTableBoxFormat, nId);
 
-        if( pAutoFormat )
-            pAutoFormat->UpdateToSet(const_cast<SfxItemSet&>(static_cast<SfxItemSet const&>(
-                                         pNewTableBoxFormat->GetAttrSet())),
-                                     row, col, nRows, nCols, rDoc.GetNumberFormatter());
-        else
-            ::lcl_SetDfltBoxAttr( *pNewTableBoxFormat, nId );
-
-        (*pMap)[pBoxFrameFormat] = pNewTableBoxFormat;
-    }
-    rBox.ChgFrameFormat( pNewTableBoxFormat );
+    rBox.ChgFrameFormat(pNewTableBoxFormat);
 }
 
 static SwTableBoxFormat *lcl_CreateDfltBoxFormat( SwDoc &rDoc, std::vector<SwTableBoxFormat*> &rBoxFormatArr,
