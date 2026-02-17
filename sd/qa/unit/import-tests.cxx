@@ -1890,11 +1890,6 @@ CPPUNIT_TEST_FIXTURE(SdImportTest, testPDFImportShared)
         CPPUNIT_ASSERT_EQUAL_MESSAGE("Page number doesn't match expected", sal_Int32(i),
                                      rGraphic.getPageNumber());
     }
-
-    mxComponent->dispose();
-    mxComponent.clear();
-
-    comphelper::LibreOfficeKit::setActive(false);
 }
 
 #if defined(IMPORT_PDF_ELEMENTS)

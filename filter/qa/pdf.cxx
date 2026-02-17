@@ -41,7 +41,6 @@ public:
     }
 
     void setUp() override;
-    void tearDown() override;
     void doTestCommentsInMargin(bool commentsInMarginEnabled);
 };
 
@@ -50,14 +49,6 @@ void Test::setUp()
     UnoApiTest::setUp();
 
     MacrosTest::setUpX509(m_directories, u"filter_pdf"_ustr);
-}
-
-void Test::tearDown()
-{
-    UnoApiTest::tearDown();
-
-    if (comphelper::LibreOfficeKit::isActive())
-        comphelper::LibreOfficeKit::setActive(false);
 }
 
 CPPUNIT_TEST_FIXTURE(Test, testSignCertificateSubjectName)

@@ -14,6 +14,7 @@
 #include <com/sun/star/beans/NamedValue.hpp>
 #include <com/sun/star/frame/Desktop.hpp>
 #include <com/sun/star/frame/XStorable.hpp>
+#include <comphelper/lok.hxx>
 #include <comphelper/processfactory.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <comphelper/sequence.hxx>
@@ -59,6 +60,9 @@ void UnoApiTest::tearDown()
 
     if (mxComponent.is())
         dispose();
+
+    if (comphelper::LibreOfficeKit::isActive())
+        comphelper::LibreOfficeKit::setActive(false);
 
     test::BootstrapFixture::tearDown();
 }
