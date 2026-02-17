@@ -2673,16 +2673,16 @@ bool SvNumberformat::GetOutputString(double fNumber,
         case SvNumFormatType::NUMBER:
         case SvNumFormatType::PERCENT:
         case SvNumFormatType::CURRENCY:
-            bRes |= ImpGetNumberOutput(fNumber, nIx, bStarFlag, rNatNum, sBuff);
+            bRes |= ImpGetNumberOutput(fNumber, nIx, bStarFlag, rNatNum, rCurrentLang, sBuff);
             break;
         case SvNumFormatType::LOGICAL:
             bRes |= ImpGetLogicalOutput(fNumber, nIx, rNatNum, rCurrentLang, sBuff);
             break;
         case SvNumFormatType::FRACTION:
-            bRes |= ImpGetFractionOutput(fNumber, nIx, bStarFlag, rNatNum, sBuff);
+            bRes |= ImpGetFractionOutput(fNumber, nIx, bStarFlag, rNatNum, rCurrentLang, sBuff);
             break;
         case SvNumFormatType::SCIENTIFIC:
-            bRes |= ImpGetScientificOutput(fNumber, nIx, bStarFlag, rNatNum, sBuff);
+            bRes |= ImpGetScientificOutput(fNumber, nIx, bStarFlag, rNatNum, rCurrentLang, sBuff);
             break;
         default: break;
         }
@@ -2695,6 +2695,7 @@ bool SvNumberformat::ImpGetScientificOutput(double fNumber,
                                             sal_uInt16 nIx,
                                             bool bStarFlag,
                                             const NativeNumberWrapper& rNatNum,
+                                            const SvNFLanguageData& rCurrentLang,
                                             OUStringBuffer& sStr) const
 {
     bool bRes = false;
@@ -2798,7 +2799,7 @@ bool SvNumberformat::ImpGetScientificOutput(double fNumber,
     }
 
     // restore leading zeros or blanks according to format '0' or '?' tdf#156449
-    bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), ExpStr, fNumber, k, j, nIx, NF_SYMBOLTYPE_EXP, bStarFlag);
+    bRes |= ImpNumberFill(rNatNum, rCurrentLang, ExpStr, fNumber, k, j, nIx, NF_SYMBOLTYPE_EXP, bStarFlag);
 
     bool bCont = true;
 
@@ -2830,7 +2831,7 @@ bool SvNumberformat::ImpGetScientificOutput(double fNumber,
     }
     else
     {
-        bRes |= ImpDecimalFill(rNatNum, GetCurrentLanguageData(), sStr, fNumber, nDecPos, j, nIx, false, bStarFlag);
+        bRes |= ImpDecimalFill(rNatNum, rCurrentLang, sStr, fNumber, nDecPos, j, nIx, false, bStarFlag);
     }
 
     if (bSign)
@@ -2930,6 +2931,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
                                           sal_uInt16 nIx,
                                           bool bStarFlag,
                                           const NativeNumberWrapper& rNatNum,
+                                          const SvNFLanguageData& rCurrentLang,
                                           OUStringBuffer& sBuff) const
 {
     bool bRes = false;
@@ -2996,7 +2998,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     sal_uInt16 j = nCnt-1; // Last symbol -> backwards
     sal_Int32 k;           // Denominator
 
-    bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), sDiv, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRAC, bStarFlag, true);
+    bRes |= ImpNumberFill(rNatNum, rCurrentLang, sDiv, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRAC, bStarFlag, true);
 
     bool bCont = true;
     if (rInfo.nTypeArray[j] == NF_SYMBOLTYPE_FRAC)
@@ -3027,7 +3029,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     }
     else
     {
-        bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), sFrac, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRACBLANK, bStarFlag);
+        bRes |= ImpNumberFill(rNatNum, rCurrentLang, sFrac, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRACBLANK, bStarFlag);
         bCont = false;  // there is no integer part?
         if (rInfo.nTypeArray[j] == NF_SYMBOLTYPE_FRACBLANK)
         {
@@ -3072,7 +3074,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     else
     {
         k = sStr.getLength(); // After last figure
-        bRes |= ImpNumberFillWithThousands(rNatNum, GetCurrentLanguageData(), sStr, fNumber, k, j, nIx,
+        bRes |= ImpNumberFillWithThousands(rNatNum, rCurrentLang, sStr, fNumber, k, j, nIx,
                                            rInfo.nCntPre, bStarFlag);
     }
     if (bSign && (nFrac != 0 || fNum != 0.0))
@@ -4405,6 +4407,7 @@ bool SvNumberformat::ImpGetNumberOutput(double fNumber,
                                         sal_uInt16 nIx,
                                         bool bStarFlag,
                                         const NativeNumberWrapper& rNatNum,
+                                        const SvNFLanguageData& rCurrentLang,
                                         OUStringBuffer& sStr) const
 {
     bool bRes = false;
@@ -4511,7 +4514,7 @@ bool SvNumberformat::ImpGetNumberOutput(double fNumber,
                                         // Edit backwards:
     j = NumFor[nIx].GetCount()-1;       // Last symbol
                                         // Decimal places:
-    bRes |= ImpDecimalFill(rNatNum, GetCurrentLanguageData(), sStr, fNumber, nDecPos, j, nIx, bInteger, bStarFlag);
+    bRes |= ImpDecimalFill(rNatNum, rCurrentLang, sStr, fNumber, nDecPos, j, nIx, bInteger, bStarFlag);
     if (bSign)
     {
         sStr.insert(0, '-');

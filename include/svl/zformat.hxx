@@ -696,11 +696,13 @@ private:
                                              sal_uInt16 nIx,
                                              bool bStarFlag,
                                              const NativeNumberWrapper& rNatNum,
+                                             const SvNFLanguageData& rCurrentLang,
                                              OUStringBuffer& OutString) const;
     SVL_DLLPRIVATE bool ImpGetScientificOutput(double fNumber,
                                                sal_uInt16 nIx,
                                                bool bStarFlag,
                                                const NativeNumberWrapper& rNatNum,
+                                               const SvNFLanguageData& rCurrentLang,
                                                OUStringBuffer& OutString) const;
 
     SVL_DLLPRIVATE bool ImpGetDateOutput( double fNumber,
@@ -747,6 +749,7 @@ private:
                                             sal_uInt16 nIx,
                                             bool bStarFlag,
                                             const NativeNumberWrapper& rNatNum,
+                                            const SvNFLanguageData& rCurrentLang,
                                             OUStringBuffer& OutString) const;
 
     SVL_DLLPRIVATE void ImpCopyNumberformat( const SvNumberformat& rFormat );
