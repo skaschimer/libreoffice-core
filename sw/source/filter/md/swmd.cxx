@@ -921,8 +921,12 @@ ErrCode SwMarkdownParser::CallParser()
         if (sUtf8Data.getLength())
         {
             m_nFilesize = sUtf8Data.getLength();
-            m_pArr.reset(new char[m_nFilesize]);
+            m_pArr.reset(new char[m_nFilesize + 1]);
             memcpy(m_pArr.get(), sUtf8Data.getStr(), m_nFilesize);
+            //HACK: At least the implementation of md4c 0.5.2 apparently expects the passed-in
+            // memory to be null-terminated (it calls e.g. strcspn on it), so pass in an additional
+            // byte:
+            m_pArr[m_nFilesize] = 0;
         }
         else
         {
