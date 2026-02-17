@@ -1436,6 +1436,7 @@ void FillFontSubsetInfo(const AbstractTrueTypeFont* ttf, FontSubsetInfo& rInfo)
 
     rInfo.m_bFilled = true;
 }
+}
 
 bool CreateCFFfontSubset(const unsigned char* pFontBytes, int nByteLength,
                          std::vector<sal_uInt8>& rOutBuffer, const sal_GlyphId* pGlyphIds,
@@ -1461,7 +1462,6 @@ bool CreateCFFfontSubset(const unsigned char* pFontBytes, int nByteLength,
     }
 
     return bRet;
-}
 }
 
 bool CreateTTFfontSubset(vcl::AbstractTrueTypeFont& rTTF, std::vector<sal_uInt8>& rOutBuffer,
