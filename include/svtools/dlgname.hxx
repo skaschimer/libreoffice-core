@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include <svtools/svtdllapi.h>
 #include <vcl/formatter.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/Entry.hxx>
@@ -28,7 +29,7 @@
 #include <vcl/weld/weld.hxx>
 
 /// Dialog for editing a name
-class SvxNameDialog final : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxNameDialog final : public weld::GenericDialogController
 {
 private:
     std::unique_ptr<weld::Entry> m_xEdtName;
@@ -78,7 +79,7 @@ public:
 };
 
 /// Dialog for editing a number
-class SvxNumberDialog final : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxNumberDialog final : public weld::GenericDialogController
 {
 private:
     std::unique_ptr<weld::SpinButton> m_xEdtNumber;
@@ -91,7 +92,7 @@ public:
     sal_Int64 GetNumber() const { return m_xEdtNumber->get_value(); }
 };
 
-class SvxDecimalNumberDialog final : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxDecimalNumberDialog final : public weld::GenericDialogController
 {
 private:
     std::unique_ptr<weld::FormattedSpinButton> m_xEdtNumber;
@@ -106,7 +107,7 @@ public:
 /** #i68101#
     Dialog for editing Object name
     plus uniqueness-callback-linkHandler */
-class SvxObjectNameDialog final : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxObjectNameDialog final : public weld::GenericDialogController
 {
 private:
     // name
@@ -133,7 +134,7 @@ public:
 
 /** #i68101#
     Dialog for editing Object Title and Description */
-class SvxObjectTitleDescDialog final : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxObjectTitleDescDialog final : public weld::GenericDialogController
 {
 private:
     // title
@@ -168,7 +169,7 @@ enum class ListMode
 };
 
 /** Generic dialog to edit lists */
-class SvxListDialog : public weld::GenericDialogController
+class SVT_DLLPUBLIC SvxListDialog : public weld::GenericDialogController
 {
 private:
     ListMode m_aMode;

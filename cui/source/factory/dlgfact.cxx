@@ -26,11 +26,11 @@
 #include "dlgfact.hxx"
 
 #include <about.hxx>
-#include <dlgname.hxx>
 #include <securityoptions.hxx>
 #include <AdditionsDialog.hxx>
 #include <sfx2/app.hxx>
 #include <sfx2/pageids.hxx>
+#include <svtools/dlgname.hxx>
 #include <svx/dialogs.hrc>
 #include <svx/svxids.hrc>
 #include <numfmt.hxx>

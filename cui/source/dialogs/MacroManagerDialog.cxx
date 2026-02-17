@@ -33,6 +33,7 @@
 #include <sfx2/sfxsids.hrc>
 #include <svl/itemset.hxx>
 #include <svl/stritem.hxx>
+#include <svtools/dlgname.hxx>
 #include <svx/passwd.hxx>
 #include <unotools/viewoptions.hxx>
 #include <vcl/commandevent.hxx>
@@ -42,7 +43,6 @@
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/Menu.hxx>
-#include <dlgname.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/frame/XFrame.hpp>
