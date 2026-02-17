@@ -2676,7 +2676,7 @@ bool SvNumberformat::GetOutputString(double fNumber,
             bRes |= ImpGetNumberOutput(fNumber, nIx, bStarFlag, rNatNum, sBuff);
             break;
         case SvNumFormatType::LOGICAL:
-            bRes |= ImpGetLogicalOutput(fNumber, nIx, rNatNum, sBuff);
+            bRes |= ImpGetLogicalOutput(fNumber, nIx, rNatNum, rCurrentLang, sBuff);
             break;
         case SvNumFormatType::FRACTION:
             bRes |= ImpGetFractionOutput(fNumber, nIx, bStarFlag, rNatNum, sBuff);
@@ -4379,6 +4379,7 @@ bool SvNumberformat::ImpGetDateTimeOutput(double fNumber,
 bool SvNumberformat::ImpGetLogicalOutput(double fNumber,
                                          sal_uInt16 nIx,
                                          const NativeNumberWrapper& rNatNum,
+                                         const SvNFLanguageData& rCurrentLang,
                                          OUStringBuffer& sStr) const
 {
     bool bRes = false;
@@ -4389,7 +4390,7 @@ bool SvNumberformat::ImpGetLogicalOutput(double fNumber,
         switch (rInfo.nTypeArray[j])
         {
             case NF_KEY_BOOLEAN:
-                sStr.append( fNumber ? rScan.GetTrueString() : rScan.GetFalseString());
+                sStr.append( fNumber ? rCurrentLang.GetTrueString() : rCurrentLang.GetFalseString());
             break;
             case NF_SYMBOLTYPE_STRING:
                 sStr.append( rInfo.sStrArray[j]);

@@ -736,6 +736,7 @@ private:
     SVL_DLLPRIVATE bool ImpGetLogicalOutput( double fNumber,
                                              sal_uInt16 nIx,
                                              const NativeNumberWrapper& rNatNum,
+                                             const SvNFLanguageData& rCurrentLang,
                                              OUStringBuffer& OutString) const;
 
     SVL_DLLPRIVATE bool ImpGetNumberOutput( double fNumber,
