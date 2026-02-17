@@ -755,6 +755,7 @@
 #define STR_DELETE_FOOTNOTE                     NC_("STR_DELETE_FOOTNOTE", "Delete Footnote")
 #define STR_DELETE_ENDNOTE                      NC_("STR_DELETE_ENDNOTE", "Delete Endnote")
 #define STR_DELETE_ENTRY                        NC_("STR_DELETE_ENTRY", "~Delete")
+#define STR_FOR_SELECTED_ENTRY                  NC_("STR_FOR_SELECTED_ENTRY", "For Selected Entry")
 #define STR_UPDATE_SEL                          NC_("STR_UPDATE_SEL", "Selection")
 #define STR_UPDATE_INDEX                        NC_("STR_UPDATE_INDEX", "Indexes")
 #define STR_UPDATE_LINK                         NC_("STR_UPDATE_LINK", "Links")
