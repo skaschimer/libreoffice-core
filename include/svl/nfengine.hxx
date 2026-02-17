@@ -20,6 +20,7 @@
 
 #include <svl/svldllapi.h>
 #include <i18nlangtag/lang.h>
+#include <svl/nfkeytab.hxx>
 #include <svl/ondemand.hxx>
 #include <svl/zforlist.hxx>
 
@@ -136,6 +137,11 @@ public:
 
     void ChangeStandardPrec(short nPrec);
     sal_uInt16 GetStandardPrec() const;
+
+    const OUString& GetTrueString() const;
+    const OUString& GetFalseString() const;
+    const OUString& GetCurAbbrev() const;
+    const NfKeywordTable& GetKeywords() const;
 
     sal_uInt16 ExpandTwoDigitYear(sal_uInt16 nYear) const;
 
