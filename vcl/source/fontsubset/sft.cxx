@@ -346,8 +346,7 @@ int CountTTCFonts(const char* fname)
 }
 
 #if !defined(_WIN32) || defined(DO_USE_TTF_ON_WIN32)
-SFErrCodes OpenTTFontFile(const char* fname, sal_uInt32 facenum, TrueTypeFont** ttf,
-                          const FontCharMapRef xCharMap)
+SFErrCodes OpenTTFontFile(const char* fname, sal_uInt32 facenum, TrueTypeFont** ttf)
 {
     SFErrCodes ret;
     int fd = -1;
@@ -355,7 +354,7 @@ SFErrCodes OpenTTFontFile(const char* fname, sal_uInt32 facenum, TrueTypeFont** 
 
     if (!fname || !*fname) return SFErrCodes::BadFile;
 
-    *ttf = new TrueTypeFont(fname, xCharMap);
+    *ttf = new TrueTypeFont(fname);
     if( ! *ttf )
         return SFErrCodes::Memory;
 
@@ -416,10 +415,9 @@ cleanup:
 }
 #endif
 
-SFErrCodes OpenTTFontBuffer(const void* pBuffer, sal_uInt32 nLen, sal_uInt32 facenum, TrueTypeFont** ttf,
-                            const FontCharMapRef xCharMap)
+SFErrCodes OpenTTFontBuffer(const void* pBuffer, sal_uInt32 nLen, sal_uInt32 facenum, TrueTypeFont** ttf)
 {
-    *ttf = new TrueTypeFont(nullptr, xCharMap);
+    *ttf = new TrueTypeFont(nullptr);
     if( *ttf == nullptr )
         return SFErrCodes::Memory;
 
@@ -448,12 +446,11 @@ bool withinBounds(sal_uInt32 tdoffset, sal_uInt32 moreoffset, sal_uInt32 len, sa
 }
 }
 
-AbstractTrueTypeFont::AbstractTrueTypeFont(const char* pFileName, const FontCharMapRef xCharMap)
+AbstractTrueTypeFont::AbstractTrueTypeFont(const char* pFileName)
     : m_nGlyphs(0xFFFFFFFF)
     , m_nHorzMetrics(0)
     , m_nVertMetrics(0)
     , m_nUnitsPerEm(0)
-    , m_xCharMap(xCharMap)
     , m_bMicrosoftSymbolEncoded(false)
 {
     if (pFileName)
@@ -464,8 +461,8 @@ AbstractTrueTypeFont::~AbstractTrueTypeFont()
 {
 }
 
-TrueTypeFont::TrueTypeFont(const char* pFileName, const FontCharMapRef xCharMap)
-    : AbstractTrueTypeFont(pFileName, xCharMap)
+TrueTypeFont::TrueTypeFont(const char* pFileName)
+    : AbstractTrueTypeFont(pFileName)
     , fsize(-1)
     , mmhandle(0)
     , ptr(nullptr)
@@ -554,13 +551,8 @@ SFErrCodes AbstractTrueTypeFont::indexGlyphData()
     table = this->table(O_vhea, table_size);
     m_nVertMetrics = (table && table_size >= 36) ? GetUInt16(table, 34) : 0;
 
-    if (!m_xCharMap.is())
-    {
-        table = this->table(O_cmap, table_size);
-        m_bMicrosoftSymbolEncoded = HasMicrosoftSymbolCmap(table, table_size);
-    }
-    else
-        m_bMicrosoftSymbolEncoded = m_xCharMap->isMicrosoftSymbolMap();
+    table = this->table(O_cmap, table_size);
+    m_bMicrosoftSymbolEncoded = HasMicrosoftSymbolCmap(table, table_size);
 
     return SFErrCodes::Ok;
 }
