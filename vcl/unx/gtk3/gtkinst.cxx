@@ -14686,6 +14686,10 @@ public:
             m_Clear = list_store_clear;
         }
 
+        SAL_WARN_IF(gtk_tree_view_get_show_expanders(m_pTreeView) != gtk_tree_view_get_enable_tree_lines(m_pTreeView),
+                "vcl.gtk", "GtkTreeView " << get_buildable_id(GTK_BUILDABLE(m_pTreeView)) <<
+                " has likely mismatching expander/tree-lists attributes.");
+
         /* The outside concept of a column maps to a gtk CellRenderer, rather than
            a TreeViewColumn. If the first TreeViewColumn has a leading Toggle Renderer
            and/or a leading Image Renderer, those are considered special expander
