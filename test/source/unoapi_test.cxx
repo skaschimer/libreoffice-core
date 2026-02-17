@@ -386,4 +386,17 @@ void UnoApiTest::createTempCopy(std::u16string_view fileName)
     CPPUNIT_ASSERT_EQUAL(osl::FileBase::E_None, e);
 }
 
+xmlDocUniquePtr UnoApiTest::parseExport(OUString const& rStreamName)
+{
+    std::unique_ptr<SvStream> const pStream(parseExportStream(maTempFile.GetURL(), rStreamName));
+    xmlDocUniquePtr pXmlDoc = parseXmlStream(pStream.get());
+    return pXmlDoc;
+}
+
+xmlDocUniquePtr UnoApiTest::parseExportedFile()
+{
+    auto stream(SvFileStream(maTempFile.GetURL(), StreamMode::READ | StreamMode::TEMPORARY));
+    return parseXmlStream(&stream);
+}
+
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

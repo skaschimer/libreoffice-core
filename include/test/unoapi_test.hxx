@@ -17,6 +17,7 @@
 #include <rtl/ref.hxx>
 #include <test/bootstrapfixture.hxx>
 #include <test/testinteractionhandler.hxx>
+#include <test/xmltesttools.hxx>
 #include <tools/stream.hxx>
 #include <unotest/macros_test.hxx>
 #include <com/sun/star/lang/XComponent.hpp>
@@ -128,7 +129,9 @@ const std::unordered_map<TestFilter, OUString> TestFilterNames{
 
 // basic uno api test class
 
-class OOO_DLLPUBLIC_TEST UnoApiTest : public test::BootstrapFixture, public unotest::MacrosTest
+class OOO_DLLPUBLIC_TEST UnoApiTest : public test::BootstrapFixture,
+                                      public unotest::MacrosTest,
+                                      public XmlTestTools
 {
 public:
     UnoApiTest(OUString path);
@@ -158,6 +161,15 @@ public:
     std::unique_ptr<vcl::pdf::PDFiumDocument> parsePDFExport(const OString& rPassword = OString());
 
     void createTempCopy(std::u16string_view fileName);
+
+    xmlDocUniquePtr parseExport(OUString const& rStreamName);
+
+    /**
+     * Returns an xml stream of an exported file.
+     * To be used when the exporter doesn't create zip archives, but single files
+     * (like Flat ODF Export)
+     */
+    xmlDocUniquePtr parseExportedFile();
 
     void skipValidation() { mbSkipValidation = true; }
 

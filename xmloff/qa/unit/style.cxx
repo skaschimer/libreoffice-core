@@ -10,7 +10,7 @@
 #include <tools/color.hxx>
 #include <sal/config.h>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/awt/ColorStop.hpp>
 #include <com/sun/star/awt/Gradient2.hpp>
@@ -27,7 +27,7 @@
 using namespace ::com::sun::star;
 
 /// Covers xmloff/source/style/ fixes.
-class XmloffStyleTest : public UnoApiXmlTest
+class XmloffStyleTest : public UnoApiTest
 {
 public:
     XmloffStyleTest();
@@ -35,7 +35,7 @@ public:
 };
 
 XmloffStyleTest::XmloffStyleTest()
-    : UnoApiXmlTest(u"/xmloff/qa/unit/data/"_ustr)
+    : UnoApiTest(u"/xmloff/qa/unit/data/"_ustr)
 {
 }
 

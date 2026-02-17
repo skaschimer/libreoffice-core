@@ -10,7 +10,7 @@
 #include <sal/config.h>
 #include <config_fonts.h>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
 #include <com/sun/star/beans/XPropertySet.hpp>
@@ -37,11 +37,11 @@ using namespace css::graphic;
 using drawinglayer::primitive2d::Primitive2DSequence;
 using drawinglayer::primitive2d::Primitive2DContainer;
 
-class Test : public UnoApiXmlTest
+class Test : public UnoApiTest
 {
 public:
     Test()
-        : UnoApiXmlTest(u"/emfio/qa/cppunit/emf/data/"_ustr)
+        : UnoApiTest(u"/emfio/qa/cppunit/emf/data/"_ustr)
     {
     }
 

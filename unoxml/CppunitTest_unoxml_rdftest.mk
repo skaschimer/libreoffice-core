@@ -19,6 +19,7 @@ $(eval $(call gb_CppunitTest_use_rdb,unoxml_rdftest,services))
 
 $(eval $(call gb_CppunitTest_use_externals,unoxml_rdftest, \
     boost_headers \
+    libxml2 \
 ))
 
 $(eval $(call gb_CppunitTest_use_libraries,unoxml_rdftest, \

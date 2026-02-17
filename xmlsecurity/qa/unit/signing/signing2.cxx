@@ -16,7 +16,7 @@
 #include <nss.h>
 #endif
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/embed/XStorage.hpp>
@@ -37,7 +37,7 @@
 using namespace css;
 
 /// Testsuite for the document signing feature.
-class SigningTest2 : public UnoApiXmlTest
+class SigningTest2 : public UnoApiTest
 {
 protected:
     uno::Reference<xml::crypto::XSEInitializer> mxSEInitializer;
@@ -51,13 +51,13 @@ public:
 };
 
 SigningTest2::SigningTest2()
-    : UnoApiXmlTest(u"/xmlsecurity/qa/unit/signing/data/"_ustr)
+    : UnoApiTest(u"/xmlsecurity/qa/unit/signing/data/"_ustr)
 {
 }
 
 void SigningTest2::setUp()
 {
-    UnoApiXmlTest::setUp();
+    UnoApiTest::setUp();
 
     MacrosTest::setUpX509(m_directories, u"xmlsecurity_signing2"_ustr);
     MacrosTest::setUpGpg(m_directories, std::u16string_view(u"xmlsecurity_signing2"));
@@ -80,7 +80,7 @@ void SigningTest2::tearDown()
 {
     MacrosTest::tearDownGpg();
 
-    UnoApiXmlTest::tearDown();
+    UnoApiTest::tearDown();
 }
 
 /// Test if a macro signature from a ODF Database is preserved when saving

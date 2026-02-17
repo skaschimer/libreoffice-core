@@ -11,13 +11,13 @@
 
 #include <comphelper/propertyvalue.hxx>
 #include <test/htmltesttools.hxx>
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
-class ScHTMLExportTest : public UnoApiXmlTest, public HtmlTestTools
+class ScHTMLExportTest : public UnoApiTest, public HtmlTestTools
 {
 public:
     ScHTMLExportTest()
-        : UnoApiXmlTest(u"/sc/qa/extras/testdocuments/"_ustr)
+        : UnoApiTest(u"/sc/qa/extras/testdocuments/"_ustr)
     {}
 
     void testHtmlSkipImage()

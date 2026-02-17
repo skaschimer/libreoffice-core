@@ -9,7 +9,7 @@
 
 #include <sal/config.h>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <string_view>
 
@@ -37,12 +37,12 @@ using namespace ::com::sun::star;
 namespace
 {
 /// Tests the EPUB export filter.
-class EPUBExportTest : public UnoApiXmlTest
+class EPUBExportTest : public UnoApiTest
 {
 protected:
 public:
     EPUBExportTest()
-        : UnoApiXmlTest(u"/writerperfect/qa/unit/data/writer/epubexport/"_ustr)
+        : UnoApiTest(u"/writerperfect/qa/unit/data/writer/epubexport/"_ustr)
     {
     }
 

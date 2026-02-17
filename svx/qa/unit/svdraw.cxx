@@ -8,7 +8,7 @@
  */
 
 #include <config_poppler.h>
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
@@ -53,7 +53,7 @@ using namespace ::com::sun::star;
 namespace
 {
 /// Tests for svx/source/svdraw/ code.
-class SvdrawTest : public UnoApiXmlTest
+class SvdrawTest : public UnoApiTest
 {
 private:
     uno::Reference<xml::crypto::XSEInitializer> mxSEInitializer;
@@ -61,7 +61,7 @@ private:
 
 public:
     SvdrawTest()
-        : UnoApiXmlTest(u"svx/qa/unit/data/"_ustr)
+        : UnoApiTest(u"svx/qa/unit/data/"_ustr)
     {
     }
 

@@ -18,7 +18,7 @@
 #include <nss.h>
 #endif
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/document/BrokenPackageRequest.hpp>
@@ -66,7 +66,7 @@
 using namespace com::sun::star;
 
 /// Testsuite for the document signing feature.
-class SigningTest : public UnoApiXmlTest
+class SigningTest : public UnoApiTest
 {
 protected:
     uno::Reference<xml::crypto::XSEInitializer> mxSEInitializer;
@@ -93,13 +93,13 @@ protected:
 };
 
 SigningTest::SigningTest()
-    : UnoApiXmlTest(u"/xmlsecurity/qa/unit/signing/data/"_ustr)
+    : UnoApiTest(u"/xmlsecurity/qa/unit/signing/data/"_ustr)
 {
 }
 
 void SigningTest::setUp()
 {
-    UnoApiXmlTest::setUp();
+    UnoApiTest::setUp();
 
     MacrosTest::setUpX509(m_directories, u"xmlsecurity_signing"_ustr);
     MacrosTest::setUpGpg(m_directories, std::u16string_view(u"xmlsecurity_signing"));
@@ -122,7 +122,7 @@ void SigningTest::tearDown()
 {
     MacrosTest::tearDownGpg();
 
-    UnoApiXmlTest::tearDown();
+    UnoApiTest::tearDown();
 }
 
 uno::Reference<security::XCertificate>

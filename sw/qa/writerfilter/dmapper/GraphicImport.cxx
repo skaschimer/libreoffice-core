@@ -10,7 +10,7 @@
 #include <sal/config.h>
 
 #include <test/commontesttools.hxx>
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/awt/Point.hpp>
 #include <com/sun/star/awt/Size.hpp>
@@ -33,11 +33,11 @@ using namespace ::com::sun::star;
 namespace
 {
 /// Tests for sw/source/writerfilter/dmapper/GraphicImport.cxx.
-class Test : public UnoApiXmlTest
+class Test : public UnoApiTest
 {
 public:
     Test()
-        : UnoApiXmlTest(u"/sw/qa/writerfilter/dmapper/data/"_ustr)
+        : UnoApiTest(u"/sw/qa/writerfilter/dmapper/data/"_ustr)
     {
     }
 };

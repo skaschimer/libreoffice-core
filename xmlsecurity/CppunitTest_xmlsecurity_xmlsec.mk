@@ -13,6 +13,7 @@ $(eval $(call gb_CppunitTest_CppunitTest,xmlsecurity_xmlsec))
 
 $(eval $(call gb_CppunitTest_use_externals,xmlsecurity_xmlsec,\
     boost_headers \
+    libxml2 \
 ))
 
 ifneq ($(OS),WNT)

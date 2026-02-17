@@ -12,7 +12,7 @@
 #include <memory>
 #include <string_view>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 #include <test/xmldiff.hxx>
 
 #include <drawdoc.hxx>
@@ -40,11 +40,11 @@
 
 using namespace ::com::sun::star;
 
-class SdModelTestBase : public UnoApiXmlTest
+class SdModelTestBase : public UnoApiTest
 {
 public:
     SdModelTestBase(const OUString& path)
-        : UnoApiXmlTest(path)
+        : UnoApiTest(path)
     {
     }
 

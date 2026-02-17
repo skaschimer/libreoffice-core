@@ -42,7 +42,7 @@
 #include <com/sun/star/util/XModifyListener.hpp>
 #include <com/sun/star/util/XModifyBroadcaster.hpp>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <unotools/ucbstreamhelper.hxx>
 #include <comphelper/propertysequence.hxx>
@@ -58,11 +58,11 @@ using namespace ::com::sun::star;
 namespace {
 
 class MiscTest
-    : public UnoApiXmlTest
+    : public UnoApiTest
 {
 public:
     MiscTest()
-        : UnoApiXmlTest(u"/sfx2/qa/cppunit/data/"_ustr)
+        : UnoApiTest(u"/sfx2/qa/cppunit/data/"_ustr)
     {
     }
 

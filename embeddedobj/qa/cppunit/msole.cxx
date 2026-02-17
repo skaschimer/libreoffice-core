@@ -7,7 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/frame/Desktop.hpp>
 #include <com/sun/star/embed/XStorage.hpp>
@@ -35,11 +35,11 @@ using namespace ::com::sun::star;
 namespace
 {
 /// Covers embeddedobj/source/msole/ fixes.
-class Test : public UnoApiXmlTest
+class Test : public UnoApiTest
 {
 public:
     Test()
-        : UnoApiXmlTest("/embeddedobj/qa/cppunit/data/")
+        : UnoApiTest("/embeddedobj/qa/cppunit/data/")
     {
     }
 };

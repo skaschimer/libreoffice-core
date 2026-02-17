@@ -22,7 +22,7 @@
 #include <com/sun/star/xml/AttributeData.hpp>
 
 #include "swqahelperdllapi.h"
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 #include <unotools/tempfile.hxx>
 
 #include <doc.hxx>
@@ -56,7 +56,7 @@ class PDFiumDocument;
 }
 
 /// Base class for filter tests loading or roundtripping a document, then asserting the document model.
-class SWQAHELPER_DLLPUBLIC SwModelTestBase : public UnoApiXmlTest
+class SWQAHELPER_DLLPUBLIC SwModelTestBase : public UnoApiTest
 {
 protected:
     xmlBufferPtr mpXmlBuffer;

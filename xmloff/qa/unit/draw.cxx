@@ -7,7 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/drawing/XDrawPageSupplier.hpp>
@@ -39,7 +39,7 @@
 using namespace ::com::sun::star;
 
 /// Covers xmloff/source/draw/ fixes.
-class XmloffDrawTest : public UnoApiXmlTest
+class XmloffDrawTest : public UnoApiTest
 {
 public:
     XmloffDrawTest();
@@ -74,7 +74,7 @@ public:
 };
 
 XmloffDrawTest::XmloffDrawTest()
-    : UnoApiXmlTest(u"/xmloff/qa/unit/data/"_ustr)
+    : UnoApiTest(u"/xmloff/qa/unit/data/"_ustr)
 {
 }
 

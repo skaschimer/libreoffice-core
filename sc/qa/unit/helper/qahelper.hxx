@@ -14,7 +14,7 @@
 
 #include <cppunit/SourceLine.h>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 #include <test/bootstrapfixture.hxx>
 #include <comphelper/documentconstants.hxx>
 
@@ -145,11 +145,11 @@ protected:
     ScDocument* m_pDoc;
 };
 
-class SCQAHELPER_DLLPUBLIC ScModelTestBase : public UnoApiXmlTest
+class SCQAHELPER_DLLPUBLIC ScModelTestBase : public UnoApiTest
 {
 public:
     ScModelTestBase(const OUString& path)
-        : UnoApiXmlTest(path)
+        : UnoApiTest(path)
     {
     }
 

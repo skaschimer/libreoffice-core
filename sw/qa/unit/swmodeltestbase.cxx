@@ -54,7 +54,7 @@ void SwModelTestBase::paste(std::u16string_view aFilename, const OUString& aInst
 }
 
 SwModelTestBase::SwModelTestBase(const OUString& pTestDocumentPath)
-    : UnoApiXmlTest(pTestDocumentPath)
+    : UnoApiTest(pTestDocumentPath)
     , mpXmlBuffer(nullptr)
 {
 }

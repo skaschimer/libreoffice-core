@@ -7,7 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/text/ControlCharacter.hpp>
 #include <com/sun/star/text/XTextDocument.hpp>
@@ -17,11 +17,11 @@ using namespace ::com::sun::star;
 namespace
 {
 /// Covers ooox/source/export/ fixes.
-class Test : public UnoApiXmlTest
+class Test : public UnoApiTest
 {
 public:
     Test()
-        : UnoApiXmlTest(u"/oox/qa/unit/data/"_ustr)
+        : UnoApiTest(u"/oox/qa/unit/data/"_ustr)
     {
     }
 };

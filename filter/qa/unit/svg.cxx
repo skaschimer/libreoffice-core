@@ -9,7 +9,7 @@
 
 #include <sal/config.h>
 
-#include <test/unoapixml_test.hxx>
+#include <test/unoapi_test.hxx>
 
 #include <com/sun/star/frame/XStorable.hpp>
 #include <com/sun/star/io/XOutputStream.hpp>
@@ -30,7 +30,7 @@
 using namespace ::com::sun::star;
 
 /// SVG filter tests.
-class SvgFilterTest : public UnoApiXmlTest
+class SvgFilterTest : public UnoApiTest
 {
 public:
     SvgFilterTest();
@@ -38,7 +38,7 @@ public:
 };
 
 SvgFilterTest::SvgFilterTest()
-    : UnoApiXmlTest(u"/filter/qa/unit/data/"_ustr)
+    : UnoApiTest(u"/filter/qa/unit/data/"_ustr)
 {
 }
 
