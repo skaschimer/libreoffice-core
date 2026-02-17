@@ -14649,8 +14649,21 @@ public:
         , m_pVAdjustment(gtk_scrollable_get_vadjustment(GTK_SCROLLABLE(pTreeView)))
         , m_pChangeEvent(nullptr)
     {
+        /*
+           Note: tdf#136559 and see https://gitlab.gnome.org/GNOME/gtk/-/issues/2693
+           If we only need a list and not a tree we can get a performance boost
+           from using a ListStore.
+
+           If we lock in that all TreeViews that are hierarchical have
+           expanders (or tree lines) then we can assume that should use
+           GtkTreeStore, and those without should use GtkListStore.
+         */
+
         if (GTK_IS_TREE_STORE(m_pTreeModel))
         {
+            SAL_WARN_IF(!gtk_tree_view_get_show_expanders(m_pTreeView),
+                "vcl.gtk", "GtkTreeView " << get_buildable_id(GTK_BUILDABLE(m_pTreeView)) <<
+                " could use GtkListStore for better performance.");
             m_Setter = tree_store_set;
             m_InsertWithValues = tree_store_insert_with_values;
             m_Insert = tree_store_insert;
@@ -14662,10 +14675,6 @@ public:
         }
         else
         {
-            /*
-               tdf#136559 see: https://gitlab.gnome.org/GNOME/gtk/-/issues/2693
-               If we only need a list and not a tree we can get a performance boost from using a ListStore
-             */
             assert(!gtk_tree_view_get_show_expanders(m_pTreeView) && "a liststore can only be used if no tree structure is needed");
             m_Setter = list_store_set;
             m_InsertWithValues = list_store_insert_with_values;
