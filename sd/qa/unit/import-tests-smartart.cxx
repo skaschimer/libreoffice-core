@@ -445,26 +445,6 @@ CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testCycle)
     CPPUNIT_ASSERT_EQUAL(u"ooxml-rightArrow"_ustr, aType);
 }
 
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testHierarchy)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testmatrix)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testvenndiagram)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testInvertedPyramid)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
 CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testMultidirectional)
 {
     // similar document as cycle, but arrows are pointing in both directions
@@ -482,26 +462,6 @@ CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testMultidirectional)
     CPPUNIT_ASSERT(aCustomShapeGeometry[u"Type"_ustr].has<OUString>());
     OUString aType = aCustomShapeGeometry[u"Type"_ustr].get<OUString>();
     CPPUNIT_ASSERT_EQUAL(u"ooxml-leftRightArrow"_ustr, aType);
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testHorizontalBulletList)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testEquation)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testBasicRadicals)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
-}
-
-CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testSegmentedCycle)
-{
-    //FIXME : so far this only introduce the test document, but the actual importer was not fixed yet.
 }
 
 CPPUNIT_TEST_FIXTURE(SdImportTestSmartArt, testBaseRtoL)
