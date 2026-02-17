@@ -636,6 +636,7 @@ private:
     // append string symbols, insert leading 0 or ' ', or ...
     SVL_DLLPRIVATE bool ImpNumberFill(
                     const NativeNumberWrapper& rNatNum,
+                    const SvNFLanguageData& rCurrentLang,
                     OUStringBuffer& sStr,
                     double& rNumber,
                     sal_Int32& k,
@@ -648,6 +649,7 @@ private:
     // Helper function to fill in the integer part and the group (AKA thousand) separators
     SVL_DLLPRIVATE bool ImpNumberFillWithThousands(
                                  const NativeNumberWrapper& rNatNum,
+                                 const SvNFLanguageData& rCurrentLang,
                                  OUStringBuffer& sStr,
                                  double& rNumber,
                                  sal_Int32 k,
@@ -659,7 +661,8 @@ private:
 
     // Helper function to fill in the group (AKA thousand) separators
     // or to skip additional digits
-    SVL_DLLPRIVATE void ImpDigitFill( OUStringBuffer& sStr,
+    SVL_DLLPRIVATE void ImpDigitFill( const SvNFLanguageData& rCurrentLang,
+                                      OUStringBuffer& sStr,
                                       sal_Int32 nStart,
                                       sal_Int32& k,
                                       sal_uInt16 nIx,
@@ -667,6 +670,7 @@ private:
                                       utl::DigitGroupingIterator & ) const;
 
     SVL_DLLPRIVATE bool ImpDecimalFill(const NativeNumberWrapper& rNatNum,
+                                 const SvNFLanguageData& rCurrentLang,
                                  OUStringBuffer& sStr,
                                  double& rNumber,
                                  sal_Int32 nDecPos,

@@ -2798,7 +2798,7 @@ bool SvNumberformat::ImpGetScientificOutput(double fNumber,
     }
 
     // restore leading zeros or blanks according to format '0' or '?' tdf#156449
-    bRes |= ImpNumberFill(rNatNum, ExpStr, fNumber, k, j, nIx, NF_SYMBOLTYPE_EXP, bStarFlag);
+    bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), ExpStr, fNumber, k, j, nIx, NF_SYMBOLTYPE_EXP, bStarFlag);
 
     bool bCont = true;
 
@@ -2830,7 +2830,7 @@ bool SvNumberformat::ImpGetScientificOutput(double fNumber,
     }
     else
     {
-        bRes |= ImpDecimalFill(rNatNum, sStr, fNumber, nDecPos, j, nIx, false, bStarFlag);
+        bRes |= ImpDecimalFill(rNatNum, GetCurrentLanguageData(), sStr, fNumber, nDecPos, j, nIx, false, bStarFlag);
     }
 
     if (bSign)
@@ -2996,7 +2996,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     sal_uInt16 j = nCnt-1; // Last symbol -> backwards
     sal_Int32 k;           // Denominator
 
-    bRes |= ImpNumberFill(rNatNum, sDiv, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRAC, bStarFlag, true);
+    bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), sDiv, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRAC, bStarFlag, true);
 
     bool bCont = true;
     if (rInfo.nTypeArray[j] == NF_SYMBOLTYPE_FRAC)
@@ -3027,7 +3027,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     }
     else
     {
-        bRes |= ImpNumberFill(rNatNum, sFrac, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRACBLANK, bStarFlag);
+        bRes |= ImpNumberFill(rNatNum, GetCurrentLanguageData(), sFrac, fNumber, k, j, nIx, NF_SYMBOLTYPE_FRACBLANK, bStarFlag);
         bCont = false;  // there is no integer part?
         if (rInfo.nTypeArray[j] == NF_SYMBOLTYPE_FRACBLANK)
         {
@@ -3072,7 +3072,7 @@ bool SvNumberformat::ImpGetFractionOutput(double fNumber,
     else
     {
         k = sStr.getLength(); // After last figure
-        bRes |= ImpNumberFillWithThousands(rNatNum, sStr, fNumber, k, j, nIx,
+        bRes |= ImpNumberFillWithThousands(rNatNum, GetCurrentLanguageData(), sStr, fNumber, k, j, nIx,
                                            rInfo.nCntPre, bStarFlag);
     }
     if (bSign && (nFrac != 0 || fNum != 0.0))
@@ -4511,7 +4511,7 @@ bool SvNumberformat::ImpGetNumberOutput(double fNumber,
                                         // Edit backwards:
     j = NumFor[nIx].GetCount()-1;       // Last symbol
                                         // Decimal places:
-    bRes |= ImpDecimalFill(rNatNum, sStr, fNumber, nDecPos, j, nIx, bInteger, bStarFlag);
+    bRes |= ImpDecimalFill(rNatNum, GetCurrentLanguageData(), sStr, fNumber, nDecPos, j, nIx, bInteger, bStarFlag);
     if (bSign)
     {
         sStr.insert(0, '-');
@@ -4521,6 +4521,7 @@ bool SvNumberformat::ImpGetNumberOutput(double fNumber,
 }
 
 bool SvNumberformat::ImpDecimalFill(const NativeNumberWrapper& rNatNum,
+                                   const SvNFLanguageData& rCurrentLang,
                                    OUStringBuffer& sStr,  // number string
                                    double& rNumber,       // number
                                    sal_Int32 nDecPos,     // decimals start
@@ -4620,12 +4621,12 @@ bool SvNumberformat::ImpDecimalFill(const NativeNumberWrapper& rNatNum,
                 break;
             } // of case digi
             case NF_KEY_CCC: // CCC currency
-                sStr.insert(k, rScan.GetCurAbbrev());
+                sStr.insert(k, rCurrentLang.GetCurAbbrev());
                 break;
             case NF_KEY_GENERAL: // Standard in the String
             {
                 OUStringBuffer sNum;
-                ImpGetOutputStandard(rNumber, sNum, rNatNum, GetCurrentLanguageData());
+                ImpGetOutputStandard(rNumber, sNum, rNatNum, rCurrentLang);
                 sNum.stripStart('-');
                 sStr.insert(k, sNum);
                 break;
@@ -4637,13 +4638,14 @@ bool SvNumberformat::ImpDecimalFill(const NativeNumberWrapper& rNatNum,
         } // of while
     } // of decimal places
 
-    bRes |= ImpNumberFillWithThousands(rNatNum, sStr, rNumber, k, j, nIx, // Fill with . if needed
+    bRes |= ImpNumberFillWithThousands(rNatNum, rCurrentLang, sStr, rNumber, k, j, nIx, // Fill with . if needed
                                        rInfo.nCntPre, bStarFlag, bFilled );
 
     return bRes;
 }
 
 bool SvNumberformat::ImpNumberFillWithThousands( const NativeNumberWrapper& rNatNum,
+                                                 const SvNFLanguageData& rCurrentLang,
                                                  OUStringBuffer& sBuff,  // number string
                                                  double& rNumber,       // number
                                                  sal_Int32 k,           // position within string
@@ -4660,7 +4662,7 @@ bool SvNumberformat::ImpNumberFillWithThousands( const NativeNumberWrapper& rNat
     const ImpSvNumberformatInfo& rInfo = NumFor[nIx].Info();
     // no normal thousands separators if number divided by thousands
     bool bDoThousands = (rInfo.nThousand == 0);
-    utl::DigitGroupingIterator aGrouping( GetCurrentLanguageData().GetLocaleData()->getDigitGrouping());
+    utl::DigitGroupingIterator aGrouping( rCurrentLang.GetLocaleData()->getDigitGrouping());
 
     while (!bStop) // backwards
     {
@@ -4782,18 +4784,18 @@ bool SvNumberformat::ImpNumberFillWithThousands( const NativeNumberWrapper& rNat
                 if (nDigitCount == nDigCnt && k > 0)
                 {
                     // more digits than specified
-                    ImpDigitFill(sBuff, 0, k, nIx, nDigitCount, aGrouping);
+                    ImpDigitFill(rCurrentLang, sBuff, 0, k, nIx, nDigitCount, aGrouping);
                 }
             }
             break;
         }
         case NF_KEY_CCC: // CCC currency
-            sBuff.insert(k, rScan.GetCurAbbrev());
+            sBuff.insert(k, rCurrentLang.GetCurAbbrev());
             break;
         case NF_KEY_GENERAL: // "General" in string
         {
             OUStringBuffer sNum;
-            ImpGetOutputStandard(rNumber, sNum, rNatNum, GetCurrentLanguageData());
+            ImpGetOutputStandard(rNumber, sNum, rNatNum, rCurrentLang);
             sNum.stripStart('-');
             sBuff.insert(k, sNum);
             break;
@@ -4807,12 +4809,13 @@ bool SvNumberformat::ImpNumberFillWithThousands( const NativeNumberWrapper& rNat
     k = k + nLeadingStringChars;    // MSC converts += to int and then warns, so ...
     if (k > nLeadingStringChars)
     {
-        ImpDigitFill(sBuff, nLeadingStringChars, k, nIx, nDigitCount, aGrouping);
+        ImpDigitFill(rCurrentLang, sBuff, nLeadingStringChars, k, nIx, nDigitCount, aGrouping);
     }
     return bRes;
 }
 
-void SvNumberformat::ImpDigitFill(OUStringBuffer& sStr,     // number string
+void SvNumberformat::ImpDigitFill(const SvNFLanguageData& rCurrentLang,
+                                  OUStringBuffer& sStr,     // number string
                                   sal_Int32 nStart,         // start of digits
                                   sal_Int32 & k,            // position within string
                                   sal_uInt16 nIx,           // subformat index
@@ -4821,7 +4824,7 @@ void SvNumberformat::ImpDigitFill(OUStringBuffer& sStr,     // number string
 {
     if (NumFor[nIx].Info().bThousand) // Only if grouping fill in separators
     {
-        const OUString& rThousandSep = GetCurrentLanguageData().GetNumThousandSep();
+        const OUString& rThousandSep = rCurrentLang.GetNumThousandSep();
         while (k > nStart)
         {
             if (nDigitCount == rGrouping.getPos())
@@ -4840,6 +4843,7 @@ void SvNumberformat::ImpDigitFill(OUStringBuffer& sStr,     // number string
 }
 
 bool SvNumberformat::ImpNumberFill( const NativeNumberWrapper& rNatNum,
+                                    const SvNFLanguageData& rCurrentLang,
                                     OUStringBuffer& sBuff, // number string
                                     double& rNumber,       // number for "General" format
                                     sal_Int32& k,          // position within string
@@ -4925,13 +4929,13 @@ bool SvNumberformat::ImpNumberFill( const NativeNumberWrapper& rNatNum,
         }
         break;
         case NF_KEY_CCC:                // CCC currency
-            sBuff.insert(k, rScan.GetCurAbbrev());
+            sBuff.insert(k, rCurrentLang.GetCurAbbrev());
             break;
         case NF_KEY_GENERAL: // Standard in the String
         {
             OUStringBuffer sNum;
             bFoundNumber = true;
-            ImpGetOutputStandard(rNumber, sNum, rNatNum, GetCurrentLanguageData());
+            ImpGetOutputStandard(rNumber, sNum, rNatNum, rCurrentLang);
             sNum.stripStart('-');
             sBuff.insert(k, sNum);
         }
