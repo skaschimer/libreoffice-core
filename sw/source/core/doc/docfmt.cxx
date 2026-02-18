@@ -116,10 +116,14 @@ static bool lcl_RstAttr( SwNode* pNd, void* pArgs )
 
         // remove unused attribute RES_LR_SPACE
         // add list attributes, except RES_PARATR_LIST_AUTOFMT
+        // tdf#151857: Frame direction is conceptually an aspect of language, rather than text
+        // formatting. Preserve paragraph direction across resets.
         SfxItemSetFixed<
                 RES_PARATR_NUMRULE, RES_PARATR_NUMRULE,
+                RES_PARATR_AUTOFRAMEDIR, RES_PARATR_AUTOFRAMEDIR,
                 RES_PARATR_LIST_BEGIN, RES_PARATR_LIST_AUTOFMT - 1,
                 RES_PAGEDESC, RES_BREAK,
+                RES_FRAMEDIR, RES_FRAMEDIR,
                 RES_FRMATR_STYLE_NAME, RES_FRMATR_CONDITIONAL_STYLE_NAME> aSavedAttrsSet(rDoc.GetAttrPool());
         const SfxItemSet* pAttrSetOfNode = pNode->GetpSwAttrSet();
 
@@ -171,6 +175,18 @@ static bool lcl_RstAttr( SwNode* pNd, void* pArgs )
             aSavedAttrsSet.Put(*pItem);
             aClearWhichIds.push_back(RES_FRMATR_CONDITIONAL_STYLE_NAME);
         }
+        if (auto pItem = pAttrSetOfNode->GetItemIfSet(RES_PARATR_AUTOFRAMEDIR);
+            pItem && !pItem->GetValue())
+        {
+            aSavedAttrsSet.Put(*pItem);
+            aClearWhichIds.push_back(RES_PARATR_AUTOFRAMEDIR);
+        }
+        if (auto pItem = pAttrSetOfNode->GetItemIfSet(RES_FRAMEDIR, false);
+            pItem && pItem->GetValue() != SvxFrameDirection::Environment)
+        {
+            aSavedAttrsSet.Put(*pItem);
+            aClearWhichIds.push_back(RES_FRAMEDIR);
+        }
 
         // do not clear items directly from item set and only clear to be kept
         // attributes, if no deletion item set is found.
@@ -199,7 +215,8 @@ static bool lcl_RstAttr( SwNode* pNd, void* pArgs )
                            pItem->Which() != RES_BREAK &&
                            pItem->Which() != RES_FRMATR_STYLE_NAME &&
                            pItem->Which() != RES_FRMATR_CONDITIONAL_STYLE_NAME &&
-                           pItem->Which() != RES_PARATR_NUMRULE ) ||
+                           pItem->Which() != RES_PARATR_NUMRULE &&
+                           pItem->Which() != RES_FRAMEDIR ) ||
                          ( aSavedAttrsSet.GetItemState( pItem->Which(), false ) != SfxItemState::SET ) )
                     {
                         pNode->ResetAttr( pItem->Which() );

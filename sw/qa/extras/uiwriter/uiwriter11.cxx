@@ -14,6 +14,7 @@
 #include <vcl/pdf/PDFPageObjectType.hxx>
 #include <vcl/scheduler.hxx>
 
+#include <comphelper/propertysequence.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <comphelper/sequence.hxx>
 #include <comphelper/scopeguard.hxx>
@@ -644,6 +645,35 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf169651)
 
     // Without the patch this test would crash during the following
     pWrtShell->UnfloatFlyFrame();
+}
+
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf151857ParaStylePreservesWritingMode)
+{
+    createSwDoc();
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    CPPUNIT_ASSERT(pWrtShell);
+
+    // Initially, paragraphs have environment writing mode and automatic writing mode enabled
+    CPPUNIT_ASSERT_EQUAL(short(4),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
+    CPPUNIT_ASSERT(getProperty<bool>(getRun(getParagraph(1), 1), u"WritingModeAutomatic"_ustr));
+
+    dispatchCommand(mxComponent, u".uno:ParaRightToLeft"_ustr, {});
+
+    CPPUNIT_ASSERT_EQUAL(short(1),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
+    CPPUNIT_ASSERT(!getProperty<bool>(getRun(getParagraph(1), 1), u"WritingModeAutomatic"_ustr));
+
+    uno::Sequence<beans::PropertyValue> aPropertyValues = comphelper::InitPropertySequence({
+        { "Style", uno::Any(u"Heading 1"_ustr) },
+        { "FamilyName", uno::Any(u"ParagraphStyles"_ustr) },
+    });
+    dispatchCommand(mxComponent, u".uno:StyleApply"_ustr, aPropertyValues);
+
+    // Verify that changing the paragraph style preserves the writing mode DF
+    CPPUNIT_ASSERT_EQUAL(short(1),
+                         getProperty<short>(getRun(getParagraph(1), 1), u"WritingMode"_ustr));
+    CPPUNIT_ASSERT(!getProperty<bool>(getRun(getParagraph(1), 1), u"WritingModeAutomatic"_ustr));
 }
 
 } // end of anonymous namespace
