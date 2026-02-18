@@ -59,7 +59,6 @@ public:
 
     /// Comparing based of boxes backgrounds.
     bool operator==(const SwBoxAutoFormat& rRight) const;
-    bool IsSameAs(const SwBoxAutoFormat& rBox) const;
 
     const SvxFrameDirectionItem& GetTextOrientation() const { return *m_aTextOrientation; }
     const SwFormatVertOrient& GetVerticalAlignment() const { return *m_aVerticalAlignment; }
@@ -145,8 +144,6 @@ public:
     void UpdateFromSet(size_t nPos, const SfxItemSet& rSet, SwTableAutoFormatUpdateFlags eFlags,
                        SvNumberFormatter const*);
     void FillToItemSet(size_t nIndex, SfxItemSet& rItemSet, SvNumberFormatter* pNFormatr) const;
-
-    bool NeedsExport();
 
     /// These methods returns what style (row or column) is applied first on given Cell
     bool FirstRowEndColumnIsRow();

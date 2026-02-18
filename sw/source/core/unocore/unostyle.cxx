@@ -4565,9 +4565,6 @@ sal_Bool SAL_CALL SwXTextTableStyle::isInUse()
     if (!m_bPhysical)
         return false;
 
-    if (m_pTableAutoFormat->NeedsExport())
-        return true;
-
     for (const SwTableFormat* pFormat : *m_pDocShell->GetDoc()->GetTableFrameFormats())
     {
         if(pFormat->IsUsed())
@@ -4937,7 +4934,7 @@ sal_Bool SAL_CALL SwXTextCellStyle::isInUse()
     if (!xStyle.is())
         return false;
 
-    return xStyle->isInUse();
+    return true;
 }
 
 OUString SAL_CALL SwXTextCellStyle::getParentStyle() { return m_sParentName; }
