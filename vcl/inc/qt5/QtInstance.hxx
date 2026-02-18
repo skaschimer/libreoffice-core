@@ -230,8 +230,11 @@ public:
     // for qt font options
     virtual const cairo_font_options_t* GetCairoFontOptions() override;
 
-    // whether to reduce animations; KFSalInstance overrides this to read Plasma settings
+#if QT_VERSION < QT_VERSION_CHECK(6, 12, 0)
+    // Helper to implement QtFrame::GetUseReducedAnimation for Qt < 6.12
+    // KFSalInstance overrides this to read Plasma settings
     virtual bool GetUseReducedAnimation() { return false; }
+#endif
     void UpdateStyle(bool bFontsChanged);
 
     void* CreateGStreamerSink(const SystemChildWindow*) override;

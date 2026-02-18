@@ -42,6 +42,9 @@
 #include <QtGui/QIcon>
 #include <QtGui/QWindow>
 #include <QtGui/QScreen>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 12, 0)
+#include <QtGui/QAccessibilityHints>
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
 #include <QtGui/QStyleHints>
 #endif
@@ -1287,7 +1290,22 @@ void QtFrame::ResolveWindowHandle(SystemEnvData& rData) const
     }
 }
 
-bool QtFrame::GetUseReducedAnimation() const { return GetQtInstance().GetUseReducedAnimation(); }
+bool QtFrame::GetUseReducedAnimation() const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 12, 0)
+    QStyleHints* pStyleHints = QGuiApplication::styleHints();
+    if (!pStyleHints)
+        return false;
+
+    const QAccessibilityHints* pAccessibilityHints = pStyleHints->accessibility();
+    if (!pAccessibilityHints)
+        return false;
+
+    return pAccessibilityHints->motionPreference() == Qt::MotionPreference::ReducedMotion;
+#else
+    return GetQtInstance().GetUseReducedAnimation();
+#endif
+}
 
 // Drag'n'drop foo
 
