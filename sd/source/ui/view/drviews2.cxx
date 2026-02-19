@@ -65,7 +65,7 @@
 #include <sfx2/zoomitem.hxx>
 #include <sfx2/lokhelper.hxx>
 #include <sfx2/lokunocmdlist.hxx>
-
+#include <svtools/dlgname.hxx>
 #include <svx/compressgraphicdialog.hxx>
 #include <svx/ClassificationDialog.hxx>
 #include <svx/ClassificationCommon.hxx>
@@ -1531,15 +1531,14 @@ void DrawViewShell::FuTemporary(SfxRequest& rReq)
                 }
                 else
                 {
-                    SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
-                    ScopedVclPtr<AbstractSvxNameDialog> aNameDlg(pFact->CreateSvxNameDialog(GetFrameWeld(), aPageName, aDescr));
-                    aNameDlg->SetText( aTitle );
-                    aNameDlg->SetCheckNameHdl( LINK( this, DrawViewShell, RenameSlideHdl ) );
-                    aNameDlg->SetEditHelpId( HID_SD_NAMEDIALOG_PAGE );
+                    SvxNameDialog aNameDlg(GetFrameWeld(), aPageName, aDescr);
+                    aNameDlg.set_title(aTitle);
+                    aNameDlg.SetCheckNameHdl(LINK(this, DrawViewShell, RenameSlideHdl));
+                    aNameDlg.SetEditHelpId(HID_SD_NAMEDIALOG_PAGE);
 
-                    if( aNameDlg->Execute() == RET_OK )
+                    if (aNameDlg.run() == RET_OK)
                     {
-                        OUString aNewName = aNameDlg->GetName();
+                        OUString aNewName = aNameDlg.GetName();
                         if (aNewName != aPageName)
                         {
                             bool bResult = RenameSlide( maTabControl->GetPageId(nPage), aNewName );

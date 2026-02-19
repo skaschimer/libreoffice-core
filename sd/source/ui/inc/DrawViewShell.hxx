@@ -44,9 +44,9 @@ class SdrObject;
 class SdrPageView;
 class TransferableDataHelper;
 class TransferableClipboardListener;
-class AbstractSvxNameDialog;
 class SdrLayer;
 class SvxClipboardFormatItem;
+class SvxNameDialog;
 struct ESelection;
 class AbstractSvxObjectNameDialog;
 
@@ -398,7 +398,7 @@ protected:
                     DECL_DLLPRIVATE_LINK( ClipboardChanged, TransferableDataHelper*, void );
                     DECL_DLLPRIVATE_LINK( TabSplitHdl, TabBar *, void );
                     DECL_DLLPRIVATE_LINK( NameObjectHdl, AbstractSvxObjectNameDialog&, bool );
-                    DECL_DLLPRIVATE_LINK( RenameSlideHdl, AbstractSvxNameDialog&, bool );
+                    DECL_DLLPRIVATE_LINK(RenameSlideHdl, SvxNameDialog&, bool);
 
     void            DeleteActualPage();
     void            DeleteActualLayer();
