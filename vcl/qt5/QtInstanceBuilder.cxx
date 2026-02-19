@@ -136,6 +136,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"fps/ui/foldernamedialog.ui",
     u"modules/BasicIDE/ui/colorscheme.ui",
     u"modules/BasicIDE/ui/defaultlanguage.ui",
+    u"modules/BasicIDE/ui/deletelangdialog.ui",
     u"modules/BasicIDE/ui/exportdialog.ui",
     u"modules/BasicIDE/ui/gotolinedialog.ui",
     u"modules/BasicIDE/ui/newlibdialog.ui",
