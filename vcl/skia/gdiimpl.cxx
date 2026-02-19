@@ -34,7 +34,7 @@
 
 #include <SkBitmap.h>
 #include <SkCanvas.h>
-#include <SkGradientShader.h>
+#include <SkGradient.h>
 #include <SkPathBuilder.h>
 #include <SkRegion.h>
 #include <SkPathEffect.h>
