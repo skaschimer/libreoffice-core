@@ -36,8 +36,8 @@
 #include <svx/xtable.hxx>
 #include <svx/xgrscit.hxx>
 #include <cuitabarea.hxx>
-#include <svx/svxdlg.hxx>
 #include <dialmgr.hxx>
+#include <svtools/dlgname.hxx>
 #include <svx/dialmgr.hxx>
 #include <svx/strings.hrc>
 #include <svx/svxids.hrc>
@@ -353,13 +353,12 @@ IMPL_LINK_NOARG(SvxGradientTabPage, ClickAddHdl_Impl, weld::Button&, void)
         bValidGradientName = (SearchGradientList(aName) == -1);
     }
 
-    SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
-    ScopedVclPtr<AbstractSvxNameDialog> pDlg(pFact->CreateSvxNameDialog(GetFrameWeld(), aName, aDesc));
+    SvxNameDialog aDlg(GetFrameWeld(), aName, aDesc);
     sal_uInt16 nError   = 1;
 
-    while (pDlg->Execute() == RET_OK)
+    while (aDlg.run() == RET_OK)
     {
-        aName = pDlg->GetName();
+        aName = aDlg.GetName();
 
         bValidGradientName = (SearchGradientList(aName) == -1);
 
@@ -374,7 +373,6 @@ IMPL_LINK_NOARG(SvxGradientTabPage, ClickAddHdl_Impl, weld::Button&, void)
         if (xWarnBox->run() != RET_OK)
             break;
     }
-    pDlg.disposeAndClear();
 
     if( !nError )
     {
@@ -488,13 +486,12 @@ IMPL_LINK_NOARG(SvxGradientTabPage, ClickRenameHdl_Impl, SvxPresetListBox*, void
     OUString aDesc( CuiResId( RID_CUISTR_DESC_GRADIENT ) );
     OUString aName( m_pGradientList->GetGradient( nPos )->GetName() );
 
-    SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
-    ScopedVclPtr<AbstractSvxNameDialog> pDlg(pFact->CreateSvxNameDialog(GetFrameWeld(), aName, aDesc));
+    SvxNameDialog aDlg(GetFrameWeld(), aName, aDesc);
 
     bool bLoop = true;
-    while( bLoop && pDlg->Execute() == RET_OK )
+    while (bLoop && aDlg.run() == RET_OK)
     {
-        aName = pDlg->GetName();
+        aName = aDlg.GetName();
         sal_Int32 nGradientPos = SearchGradientList(aName);
         bool bValidGradientName = (nGradientPos == static_cast<sal_Int32>(nPos) ) || (nGradientPos == -1);
 
