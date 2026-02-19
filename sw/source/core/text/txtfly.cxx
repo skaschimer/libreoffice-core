@@ -1378,16 +1378,19 @@ SwRect SwTextFly::AnchoredObjToRect( const SwAnchoredObject* pAnchoredObj,
 
     if (auto pFlyFrame = pAnchoredObj->DynCastFlyFrame())
     {
-        if (pFlyFrame->IsFlySplitAllowed() && pFlyFrame->Lower())
+        if (pFlyFrame->IsFlySplitAllowed())
         {
-            // The floating table could be too tall for its fly frame at this point, because the
-            // fly's Grow_ would limit to only available space. Take the excessive height into
-            // account here, so that the line can be forced to move to next page (via SwFlyPortion).
-
-            auto aLowerHeight = aRectFnSet.GetHeight(pFlyFrame->Lower()->getFrameArea());
-            if (aLowerHeight > aRectFnSet.GetHeight(aFly))
+            if (const SwFrame* pLower =  pFlyFrame->Lower())
             {
-                aRectFnSet.SetHeight(aFly, aLowerHeight);
+                // The floating table could be too tall for its fly frame at this point, because the
+                // fly's Grow_ would limit to only available space. Take the excessive height into
+                // account here, so that the line can be forced to move to next page (via SwFlyPortion).
+
+                auto aLowerHeight = aRectFnSet.GetHeight(pLower->getFrameArea());
+                if (aLowerHeight > aRectFnSet.GetHeight(aFly))
+                {
+                    aRectFnSet.SetHeight(aFly, aLowerHeight);
+                }
             }
         }
     }
