@@ -438,19 +438,13 @@ $(eval $(call gb_Library_add_generated_exception_objects,pdfium,\
     UnpackedTarball/pdfium/core/fxcrt/string_data_template \
     UnpackedTarball/pdfium/core/fxcrt/binary_buffer \
     UnpackedTarball/pdfium/core/fxcrt/cfx_read_only_span_stream \
+    UnpackedTarball/pdfium/core/fxcrt/cfx_read_only_string_stream \
+    UnpackedTarball/pdfium/core/fxcrt/cfx_read_only_vector_stream \
     UnpackedTarball/pdfium/core/fxcrt/fx_memory_malloc \
     UnpackedTarball/pdfium/core/fxcrt/widetext_buffer \
     UnpackedTarball/pdfium/core/fxcrt/debug/alias \
     UnpackedTarball/pdfium/core/fxcrt/string_template \
-    UnpackedTarball/pdfium/core/fxcrt/cfx_fileaccess_stream \
-    UnpackedTarball/pdfium/core/fxcrt/cfx_read_only_container_stream \
 ))
-
-ifneq ($(OS),WNT)
-$(eval $(call gb_Library_add_generated_exception_objects,pdfium,\
-    UnpackedTarball/pdfium/core/fxcrt/mapped_data_bytes \
-))
-endif
 
 # fxge
 $(eval $(call gb_Library_add_generated_exception_objects,pdfium,\
