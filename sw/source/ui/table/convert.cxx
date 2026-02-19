@@ -94,7 +94,7 @@ void SwConvertTableDlg::GetValues(sal_Unicode& rDelim, SwInsertTableOptions& rIn
 SwConvertTableDlg::SwConvertTableDlg(SwView& rView, bool bToTable)
     : SfxDialogController(rView.GetFrameWeld(), u"modules/swriter/ui/converttexttable.ui"_ustr,
                           u"ConvertTextTableDialog"_ustr)
-    , m_nIndex(0)
+    , m_nIndex(-1)
     , m_bCoreDataChanged(false)
     , m_xTableTable(new SwTableAutoFormatTable)
     , m_xTabBtn(m_xBuilder->weld_radio_button(u"tabs"_ustr))
@@ -196,9 +196,11 @@ void SwConvertTableDlg::Init()
     m_xBtnNumFormat->connect_toggled(aLk);
 
     m_xLbFormat->connect_selection_changed(LINK(this, SwConvertTableDlg, SelFormatHdl));
-    m_nIndex = 0;
 
-    for (sal_uInt8 i = 0, nCount = static_cast<sal_uInt8>(m_xTableTable->size()); i < nCount; i++)
+    size_t nCount = m_xTableTable->size();
+    m_nIndex = nCount ? 0 : -1;
+
+    for (size_t i = 0; i < nCount; ++i)
     {
         SwTableAutoFormat const& rFormat = (*m_xTableTable)[i];
         m_xLbFormat->append_text(rFormat.GetName().toString());
@@ -230,7 +232,7 @@ void SwConvertTableDlg::UpdateChecks(const SwTableAutoFormat& rFormat, bool bEna
 
 std::unique_ptr<SwTableAutoFormat> SwConvertTableDlg::FillAutoFormatOfIndex() const
 {
-    if (255 != m_nIndex)
+    if (m_nIndex != -1)
     {
         return std::make_unique<SwTableAutoFormat>((*m_xTableTable)[m_nIndex]);
     }
@@ -240,7 +242,7 @@ std::unique_ptr<SwTableAutoFormat> SwConvertTableDlg::FillAutoFormatOfIndex() co
 
 IMPL_LINK(SwConvertTableDlg, CheckHdl, weld::Toggleable&, rBtn, void)
 {
-    if (m_nIndex == 255)
+    if (m_nIndex != -1)
         return;
 
     SwTableAutoFormat& rData = (*m_xTableTable)[m_nIndex];
@@ -274,6 +276,11 @@ IMPL_LINK(SwConvertTableDlg, CheckHdl, weld::Toggleable&, rBtn, void)
 IMPL_LINK_NOARG(SwConvertTableDlg, SelFormatHdl, weld::TreeView&, void)
 {
     m_nIndex = m_xLbFormat->get_selected_index();
+    if (m_nIndex == -1)
+    {
+        SAL_WARN("sw.ui", "No entry selected");
+        return;
+    }
     m_aWndPreview.NotifyChange(m_xTableTable->GetResolvedStyle(m_xTableTable->GetData(m_nIndex)));
     UpdateChecks((*m_xTableTable)[m_nIndex], true);
     mxTAutoFormat = FillAutoFormatOfIndex();

@@ -38,7 +38,7 @@ struct SwInsertTableOptions;
 
 class SwConvertTableDlg final : public SfxDialogController
 {
-    sal_uInt8 m_nIndex;
+    int m_nIndex;
     bool m_bCoreDataChanged : 1;
 
     std::unique_ptr<SwTableAutoFormatTable> m_xTableTable;
