@@ -13,7 +13,6 @@ $(eval $(call gb_UnpackedTarball_set_tarball,skia,$(SKIA_TARBALL)))
 
 skia_patches := \
     fix-pch.patch.1 \
-    fix-ddi.patch \
     make-api-visible.patch.1 \
     no-trace-resources-on-exit.patch.1 \
     fix-alpha-difference-copy.patch.1 \
