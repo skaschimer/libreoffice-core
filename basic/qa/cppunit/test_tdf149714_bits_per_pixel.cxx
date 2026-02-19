@@ -17,11 +17,11 @@
 
 namespace
 {
-class TestTdf149714 : public CppUnit::TestFixture
+class TestTdf149714BitsPerPixelFromPng : public CppUnit::TestFixture
 {
     void testBitsPerPixel();
 
-    CPPUNIT_TEST_SUITE(TestTdf149714);
+    CPPUNIT_TEST_SUITE(TestTdf149714BitsPerPixelFromPng);
     CPPUNIT_TEST(testBitsPerPixel);
     CPPUNIT_TEST_SUITE_END();
 
@@ -63,7 +63,7 @@ End Function
     }
 };
 
-void TestTdf149714::testBitsPerPixel()
+void TestTdf149714BitsPerPixelFromPng::testBitsPerPixel()
 {
     auto m = Module();
     auto GetBitsPerPixelAsString
@@ -81,7 +81,7 @@ void TestTdf149714::testBitsPerPixel()
 }
 
 // Put the test suite in the registry
-CPPUNIT_TEST_SUITE_REGISTRATION(TestTdf149714);
+CPPUNIT_TEST_SUITE_REGISTRATION(TestTdf149714BitsPerPixelFromPng);
 
 } // namespace
 
