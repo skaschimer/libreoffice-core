@@ -745,63 +745,6 @@ VclPtr<VclAbstractDialog> AbstractDialogFactory_Impl::CreateSvxEditDictionaryDia
 
 namespace
 {
-class AbstractSvxNameDialog_Impl final
-    : public vcl::AbstractDialogImpl_Sync<AbstractSvxNameDialog, SvxNameDialog>
-{
-public:
-    using AbstractDialogImpl_BASE::AbstractDialogImpl_BASE;
-    OUString GetName() override { return m_pDlg->GetName(); }
-    void SetCheckNameHdl(const Link<AbstractSvxNameDialog&, bool>& rLink) override;
-    void SetCheckNameTooltipHdl(const Link<AbstractSvxNameDialog&, OUString>& rLink) override;
-    void SetEditHelpId(const OUString& rHelpId) override { m_pDlg->SetEditHelpId(rHelpId); }
-    //from class Window
-    void SetText(const OUString& rStr) override { m_pDlg->set_title(rStr); }
-
-private:
-    Link<AbstractSvxNameDialog&, bool> aCheckNameHdl;
-    Link<AbstractSvxNameDialog&, OUString> aCheckNameTooltipHdl;
-    DECL_LINK(CheckNameHdl, SvxNameDialog&, bool);
-    DECL_LINK(CheckNameTooltipHdl, SvxNameDialog&, OUString);
-};
-}
-
-void AbstractSvxNameDialog_Impl::SetCheckNameHdl(const Link<AbstractSvxNameDialog&, bool>& rLink)
-{
-    aCheckNameHdl = rLink;
-    if (rLink.IsSet())
-        m_pDlg->SetCheckNameHdl(LINK(this, AbstractSvxNameDialog_Impl, CheckNameHdl));
-    else
-        m_pDlg->SetCheckNameHdl(Link<SvxNameDialog&, bool>());
-}
-
-void AbstractSvxNameDialog_Impl::SetCheckNameTooltipHdl(
-    const Link<AbstractSvxNameDialog&, OUString>& rLink)
-{
-    aCheckNameTooltipHdl = rLink;
-    if (rLink.IsSet())
-        m_pDlg->SetCheckNameTooltipHdl(LINK(this, AbstractSvxNameDialog_Impl, CheckNameTooltipHdl));
-    else
-        m_pDlg->SetCheckNameTooltipHdl(Link<SvxNameDialog&, OUString>());
-}
-
-IMPL_LINK_NOARG(AbstractSvxNameDialog_Impl, CheckNameHdl, SvxNameDialog&, bool)
-{
-    return aCheckNameHdl.Call(*this);
-}
-
-IMPL_LINK_NOARG(AbstractSvxNameDialog_Impl, CheckNameTooltipHdl, SvxNameDialog&, OUString)
-{
-    return aCheckNameTooltipHdl.Call(*this);
-}
-
-VclPtr<AbstractSvxNameDialog> AbstractDialogFactory_Impl::CreateSvxNameDialog(weld::Window* pParent,
-                                    const OUString& rName, const OUString& rDesc, const OUString& rTitle)
-{
-    return VclPtr<AbstractSvxNameDialog_Impl>::Create(pParent, rName, rDesc, rTitle);
-}
-
-namespace
-{
 class AbstractSvxObjectNameDialog_Impl final
     : public vcl::AbstractDialogImpl_Async<AbstractSvxObjectNameDialog, SvxObjectNameDialog>
 {

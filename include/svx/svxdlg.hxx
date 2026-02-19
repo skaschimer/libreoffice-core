@@ -145,18 +145,6 @@ public:
     virtual css::uno::Reference< css::linguistic2::XDictionary >  GetNewDictionary() = 0;
 };
 
-class AbstractSvxNameDialog : public VclAbstractDialog
-{
-protected:
-    virtual ~AbstractSvxNameDialog() override = default;
-public:
-    virtual OUString GetName() = 0;
-    virtual void    SetCheckNameHdl( const Link<AbstractSvxNameDialog&,bool>& rLink ) = 0;
-    virtual void    SetCheckNameTooltipHdl( const Link<AbstractSvxNameDialog&,OUString>& rLink ) = 0;
-    virtual void    SetEditHelpId(const OUString&) = 0;
-    virtual void    SetText( const OUString& rStr ) = 0;
-};
-
 class AbstractSvxObjectNameDialog :public VclAbstractDialog
 {
 protected:
@@ -360,8 +348,6 @@ public:
     virtual VclPtr<AbstractFmInputRecordNoDialog> CreateFmInputRecordNoDialog(weld::Window* pParent) = 0;
     virtual VclPtr<AbstractSvxNewDictionaryDialog> CreateSvxNewDictionaryDialog(weld::Window* pParent) = 0;
     virtual VclPtr<VclAbstractDialog>     CreateSvxEditDictionaryDialog(weld::Window* pParent, const OUString& rName) = 0;
-    virtual VclPtr<AbstractSvxNameDialog> CreateSvxNameDialog(weld::Window* pParent,
-                                            const OUString& rName, const OUString& rDesc, const OUString& rTitle = u""_ustr ) = 0;
 
     // #i68101#
     virtual VclPtr<AbstractSvxObjectNameDialog> CreateSvxObjectNameDialog(weld::Window* pParent, const OUString& rName) = 0;
