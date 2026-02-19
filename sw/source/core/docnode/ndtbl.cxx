@@ -3921,6 +3921,7 @@ struct SetAFormatTabPara
         , pUndo(nullptr)
         , nEndBox(0)
         , nCurBox(0)
+        , nEndLine(0)
         , nAFormatLine(0)
         , nAFormatBox(0)
         , bSingleRowTable(false)
