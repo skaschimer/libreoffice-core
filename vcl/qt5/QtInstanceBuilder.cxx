@@ -266,6 +266,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"svx/ui/fileexporteddialog.ui",
     u"svx/ui/formpropertydialog.ui",
     u"svx/ui/gotopagedialog.ui",
+    u"svx/ui/linkwarndialog.ui",
     u"svx/ui/passwd.ui",
     u"svx/ui/querydeleteobjectdialog.ui",
     u"svx/ui/querydeletethemedialog.ui",
