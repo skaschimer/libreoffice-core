@@ -17,6 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
+#include <svtools/dlgname.hxx>
 #include <tools/debug.hxx>
 #include <tools/urlobj.hxx>
 #include <vcl/svapp.hxx>
@@ -38,7 +39,6 @@
 #include <svx/dlgctrl.hxx>
 #include <cuitabline.hxx>
 #include <defdlgname.hxx>
-#include <svx/svxdlg.hxx>
 #include <dialmgr.hxx>
 #include <svx/dlgutil.hxx>
 #include <svx/dialmgr.hxx>
@@ -507,13 +507,12 @@ IMPL_LINK_NOARG(SvxLineDefTabPage, ClickAddHdl_Impl, weld::Button&, void)
                 bDifferent = false;
     }
 
-    SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
-    ScopedVclPtr<AbstractSvxNameDialog> pDlg(pFact->CreateSvxNameDialog(GetFrameWeld(), aName, aDesc));
+    SvxNameDialog aDlg(GetFrameWeld(), aName, aDesc);
     bool bLoop = true;
 
-    while ( bLoop && pDlg->Execute() == RET_OK )
+    while (bLoop && aDlg.run() == RET_OK)
     {
-        aName = pDlg->GetName();
+        aName = aDlg.GetName();
         bDifferent = true;
 
         for( tools::Long i = 0; i < nCount && bDifferent; i++ )
@@ -553,7 +552,6 @@ IMPL_LINK_NOARG(SvxLineDefTabPage, ClickAddHdl_Impl, weld::Button&, void)
             xBox->run();
         }
     }
-    pDlg.disposeAndClear();
 
     // determine button state
     if ( pDashList->Count() )
@@ -574,15 +572,14 @@ IMPL_LINK_NOARG(SvxLineDefTabPage, ClickModifyHdl_Impl, weld::Button&, void)
     OUString aName( pDashList->GetDash( nPos )->GetName() );
     OUString aOldName = aName;
 
-    SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
-    ScopedVclPtr<AbstractSvxNameDialog> pDlg(pFact->CreateSvxNameDialog(GetFrameWeld(), aName, aDesc));
+    SvxNameDialog aDlg(GetFrameWeld(), aName, aDesc);
 
     tools::Long nCount = pDashList->Count();
     bool bLoop = true;
 
-    while ( bLoop && pDlg->Execute() == RET_OK )
+    while (bLoop && aDlg.run() == RET_OK)
     {
-        aName = pDlg->GetName();
+        aName = aDlg.GetName();
         bool bDifferent = true;
 
         for( tools::Long i = 0; i < nCount && bDifferent; i++ )
