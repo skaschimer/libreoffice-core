@@ -486,10 +486,10 @@ std::pair<OUString, DomMapFlags> DiagramData_svx::addDiagramNode()
     aPresPoint.msModelId = OStringToOUString(comphelper::xml::generateGUIDString(), RTL_TEXTENCODING_UTF8);
 
     aPresPoint.msPresentationAssociationId = aDataPoint.msModelId;
-    if (!sPresSibling.isEmpty())
+    const svx::diagram::Point* pSiblingPoint = !sPresSibling.isEmpty() ? getPointByModelID(sPresSibling) : nullptr;
+    if (pSiblingPoint)
     {
         // no idea where to get these values from, so copy from previous sibling
-        const svx::diagram::Point* pSiblingPoint(getPointByModelID(sPresSibling));
         aPresPoint.msPresentationLayoutName = pSiblingPoint->msPresentationLayoutName;
         aPresPoint.msPresentationLayoutStyleLabel = pSiblingPoint->msPresentationLayoutStyleLabel;
         aPresPoint.mnLayoutStyleIndex = pSiblingPoint->mnLayoutStyleIndex;
