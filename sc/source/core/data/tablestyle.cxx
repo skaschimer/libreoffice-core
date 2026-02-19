@@ -524,10 +524,7 @@ std::unique_ptr<SvxBoxItem> ScTableStyle::GetBoxItem(const ScDBData& rDBData, SC
                             pBLine = pBoxItem->GetLine(SvxBoxItemLine::BOTTOM);
                         if (pLLine || pBLine)
                         {
-                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem ? pPoolItem->Clone()
-                                                                              : nullptr);
-                            if (!pNewBoxItem)
-                                pNewBoxItem = std::make_unique<SvxBoxItem>(ATTR_BORDER);
+                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem->Clone());
                             if (pBLine)
                                 pNewBoxItem->SetLine(pBLine, SvxBoxItemLine::BOTTOM);
                             if (pLLine)
@@ -545,10 +542,7 @@ std::unique_ptr<SvxBoxItem> ScTableStyle::GetBoxItem(const ScDBData& rDBData, SC
                             pBLine = pBoxItem->GetLine(SvxBoxItemLine::BOTTOM);
                         if (pRLine || pBLine)
                         {
-                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem ? pPoolItem->Clone()
-                                                                              : nullptr);
-                            if (!pNewBoxItem)
-                                pNewBoxItem = std::make_unique<SvxBoxItem>(ATTR_BORDER);
+                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem->Clone());
                             if (pBLine)
                                 pNewBoxItem->SetLine(pBLine, SvxBoxItemLine::BOTTOM);
                             if (pRLine)
@@ -569,10 +563,7 @@ std::unique_ptr<SvxBoxItem> ScTableStyle::GetBoxItem(const ScDBData& rDBData, SC
 
                         if (pBLine || pVLine)
                         {
-                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem ? pPoolItem->Clone()
-                                                                              : nullptr);
-                            if (!pNewBoxItem)
-                                pNewBoxItem = std::make_unique<SvxBoxItem>(ATTR_BORDER);
+                            std::unique_ptr<SvxBoxItem> pNewBoxItem(pPoolItem->Clone());
                             if (pBLine)
                                 pNewBoxItem->SetLine(pBLine, SvxBoxItemLine::BOTTOM);
                             if (pVLine)
