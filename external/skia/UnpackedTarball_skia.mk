@@ -35,7 +35,6 @@ skia_patches := \
     0001-Added-missing-include-cstdio.patch \
     fix-SkDebugf-link-error.patch.1 \
     ubsan-missing-typeinfo.patch.1 \
-    help-msvc-analyzer.patch \
     windows-define-conflict.patch.1 \
 	0002-loong64-Honor-existing-LASX-LSX-settings.patch \
 	0003-loong64-Fix-missing-rounding-in-loong64-scaled_mult-.patch \
