@@ -51,19 +51,18 @@ namespace dbaui
 
 namespace
 {
-class ImageProvider
+OUString lcl_getImageName(SQLExceptionInfo::TYPE eType)
 {
-private:
-    OUString m_defaultImageID;
-
-public:
-    explicit ImageProvider(OUString defaultImageID)
-        : m_defaultImageID(std::move(defaultImageID))
+    switch (eType)
     {
+        case SQLExceptionInfo::TYPE::SQLWarning:
+            return u"dialog-warning"_ustr;
+        case SQLExceptionInfo::TYPE::SQLContext:
+            return u"dialog-information"_ustr;
+        default:
+            return u"dialog-error"_ustr;
     }
-
-    const OUString& getImage() const { return m_defaultImageID; }
-};
+}
 
 class LabelProvider
 {
@@ -82,41 +81,12 @@ public:
 class ProviderFactory
 {
 private:
-    mutable std::shared_ptr<ImageProvider> m_pErrorImage;
-    mutable std::shared_ptr<ImageProvider> m_pWarningsImage;
-    mutable std::shared_ptr<ImageProvider> m_pInfoImage;
     mutable std::shared_ptr<LabelProvider> m_pErrorLabel;
     mutable std::shared_ptr<LabelProvider> m_pWarningsLabel;
     mutable std::shared_ptr<LabelProvider> m_pInfoLabel;
 
 public:
     ProviderFactory() {}
-
-    std::shared_ptr<ImageProvider> const& getImageProvider(SQLExceptionInfo::TYPE _eType) const
-    {
-        std::shared_ptr<ImageProvider>* ppProvider(&m_pErrorImage);
-        OUString sNormalImageID(u"dialog-error"_ustr);
-
-        switch (_eType)
-        {
-            case SQLExceptionInfo::TYPE::SQLWarning:
-                ppProvider = &m_pWarningsImage;
-                sNormalImageID = "dialog-warning";
-                break;
-
-            case SQLExceptionInfo::TYPE::SQLContext:
-                ppProvider = &m_pInfoImage;
-                sNormalImageID = "dialog-information";
-                break;
-
-            default:
-                break;
-        }
-
-        if (!ppProvider->get())
-            (*ppProvider) = std::make_shared<ImageProvider>(sNormalImageID);
-        return *ppProvider;
-    }
 
     std::shared_ptr<LabelProvider> const& getLabelProvider(SQLExceptionInfo::TYPE _eType,
                                                            bool _bSubLabel) const
@@ -150,7 +120,7 @@ struct ExceptionDisplayInfo
 {
     SQLExceptionInfo::TYPE eType;
 
-    std::shared_ptr<ImageProvider> pImageProvider;
+    OUString sImage;
     std::shared_ptr<LabelProvider> pLabelProvider;
 
     bool bSubEntry;
@@ -228,7 +198,7 @@ void lcl_buildExceptionChain(const SQLExceptionInfo& _rErrorInfo, const Provider
             continue;
         }
 
-        aDisplayInfo.pImageProvider = _rFactory.getImageProvider(aCurrentElement.getType());
+        aDisplayInfo.sImage = lcl_getImageName(aCurrentElement.getType());
         aDisplayInfo.pLabelProvider = _rFactory.getLabelProvider(aCurrentElement.getType(), false);
 
         _out_rChain.push_back(std::move(aDisplayInfo));
@@ -241,7 +211,7 @@ void lcl_buildExceptionChain(const SQLExceptionInfo& _rErrorInfo, const Provider
                 ExceptionDisplayInfo aSubInfo(aCurrentElement.getType());
 
                 aSubInfo.sMessage = pContext->Details;
-                aSubInfo.pImageProvider = _rFactory.getImageProvider(aCurrentElement.getType());
+                aSubInfo.sImage = lcl_getImageName(aCurrentElement.getType());
                 aSubInfo.pLabelProvider
                     = _rFactory.getLabelProvider(aCurrentElement.getType(), true);
                 aSubInfo.bSubEntry = true;
@@ -311,7 +281,7 @@ OExceptionChainDialog::OExceptionChainDialog(weld::Window* pParent, ExceptionDis
         ExceptionDisplayInfo aInfo22018;
         aInfo22018.sMessage = DBA_RES( STR_EXPLAN_STRINGCONVERSION_ERROR );
         aInfo22018.pLabelProvider = aProviderFactory.getLabelProvider( SQLExceptionInfo::TYPE::SQLContext, false );
-        aInfo22018.pImageProvider = aProviderFactory.getImageProvider( SQLExceptionInfo::TYPE::SQLContext );
+        aInfo22018.sImage = lcl_getImageName(SQLExceptionInfo::TYPE::SQLContext);
         m_aExceptions.push_back( aInfo22018 );
 
         insertExceptionEntry(m_aExceptions.size() - 1, aInfo22018);
@@ -328,7 +298,7 @@ void OExceptionChainDialog::insertExceptionEntry(size_t nElementPos,
                                                  const ExceptionDisplayInfo& rEntry)
 {
     m_xExceptionList->append(OUString::number(nElementPos), rEntry.pLabelProvider->getLabel(),
-                             rEntry.pImageProvider->getImage());
+                             rEntry.sImage);
 }
 
 IMPL_LINK_NOARG(OExceptionChainDialog, OnExceptionSelected, weld::TreeView&, void)
