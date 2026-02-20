@@ -194,7 +194,7 @@ void SvxAutoFmtPreview::DrawString(vcl::RenderContext& rRenderContext, size_t nC
         return;
 
     // Output of the cell text:
-    sal_uLong nNum;
+    sal_uInt8 nNum;
     double nVal;
     OUString cellString;
     sal_uInt8 nIndex = static_cast<sal_uInt8>(maArray.GetCellIndex(nCol, nRow, mbRTL));
@@ -275,7 +275,7 @@ void SvxAutoFmtPreview::DrawString(vcl::RenderContext& rRenderContext, size_t nC
             {
                 OUString sFormat;
                 LanguageType eLng, eSys;
-                mpCurrentData->GetField(sal_uInt8(nNum))->GetValueFormat(sFormat, eLng, eSys);
+                mpCurrentData->GetField(nNum)->GetValueFormat(sFormat, eLng, eSys);
 
                 SvNumFormatType nType;
                 bool bNew;
