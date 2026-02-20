@@ -251,9 +251,6 @@ void lcl_buildExceptionChain(const SQLExceptionInfo& _rErrorInfo, const Provider
         }
     }
 }
-}
-
-namespace {
 
 class OExceptionChainDialog : public weld::GenericDialogController
 {
