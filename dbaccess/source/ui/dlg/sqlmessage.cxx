@@ -489,14 +489,21 @@ void OSQLMessageBox::Construct(weld::Window* pParent, MessBoxStyle _nStyle, Mess
 {
     // init the image
     MessageType eType( _eImage );
-    if ( eType == AUTO )
+    if (eType == MessageType::AUTO)
     {
         switch ( m_pImpl->aDisplayInfo[0].eType )
         {
-        case SQLExceptionInfo::TYPE::SQLException: eType = Error;    break;
-        case SQLExceptionInfo::TYPE::SQLWarning:   eType = Warning;  break;
-        case SQLExceptionInfo::TYPE::SQLContext:   eType = Info;     break;
-        default: OSL_FAIL( "OSQLMessageBox::Construct: invalid type!" );
+            case SQLExceptionInfo::TYPE::SQLException:
+                eType = MessageType::Error;
+                break;
+            case SQLExceptionInfo::TYPE::SQLWarning:
+                eType = MessageType::Warning;
+                break;
+            case SQLExceptionInfo::TYPE::SQLContext:
+                eType = MessageType::Info;
+                break;
+            default:
+                OSL_FAIL("OSQLMessageBox::Construct: invalid type!");
         }
     }
     VclMessageType eMessageType;
@@ -505,16 +512,16 @@ void OSQLMessageBox::Construct(weld::Window* pParent, MessBoxStyle _nStyle, Mess
         default:
             OSL_FAIL( "OSQLMessageBox::impl_initImage: unsupported image type!" );
             [[fallthrough]];
-        case Info:
+        case MessageType::Info:
             eMessageType = VclMessageType::Info;
             break;
-        case Warning:
+        case MessageType::Warning:
             eMessageType = VclMessageType::Warning;
             break;
-        case Error:
+        case MessageType::Error:
             eMessageType = VclMessageType::Error;
             break;
-        case Query:
+        case MessageType::Query:
             eMessageType = VclMessageType::Question;
             break;
     }
@@ -533,7 +540,7 @@ OSQLMessageBox::OSQLMessageBox(weld::Window* pParent, const SQLExceptionInfo& rE
     : m_pImpl(new SQLMessageBox_Impl(rException))
     , m_sHelpURL(std::move(sHelpURL))
 {
-    Construct(pParent, nStyle, AUTO);
+    Construct(pParent, nStyle, MessageType::AUTO);
 }
 
 OSQLMessageBox::OSQLMessageBox(weld::Window* pParent, const OUString& rTitle, const OUString& rMessage, MessBoxStyle nStyle, MessageType eType, const ::dbtools::SQLExceptionInfo* pAdditionalErrorInfo )
