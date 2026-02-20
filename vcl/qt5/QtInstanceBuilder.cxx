@@ -206,6 +206,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/swriter/ui/bibliographyentry.ui",
     u"modules/swriter/ui/captiondialog.ui",
     u"modules/swriter/ui/captionoptions.ui",
+    u"modules/swriter/ui/ccdialog.ui",
     u"modules/swriter/ui/columndialog.ui",
     u"modules/swriter/ui/columnwidth.ui",
     u"modules/swriter/ui/createaddresslist.ui",
