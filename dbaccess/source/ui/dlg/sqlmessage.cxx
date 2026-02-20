@@ -120,7 +120,6 @@ struct ExceptionDisplayInfo
 {
     SQLExceptionInfo::TYPE eType;
 
-    OUString sImage;
     std::shared_ptr<LabelProvider> pLabelProvider;
 
     bool bSubEntry;
@@ -198,7 +197,6 @@ void lcl_buildExceptionChain(const SQLExceptionInfo& _rErrorInfo, const Provider
             continue;
         }
 
-        aDisplayInfo.sImage = lcl_getImageName(aCurrentElement.getType());
         aDisplayInfo.pLabelProvider = _rFactory.getLabelProvider(aCurrentElement.getType(), false);
 
         _out_rChain.push_back(std::move(aDisplayInfo));
@@ -211,7 +209,6 @@ void lcl_buildExceptionChain(const SQLExceptionInfo& _rErrorInfo, const Provider
                 ExceptionDisplayInfo aSubInfo(aCurrentElement.getType());
 
                 aSubInfo.sMessage = pContext->Details;
-                aSubInfo.sImage = lcl_getImageName(aCurrentElement.getType());
                 aSubInfo.pLabelProvider
                     = _rFactory.getLabelProvider(aCurrentElement.getType(), true);
                 aSubInfo.bSubEntry = true;
@@ -281,7 +278,6 @@ OExceptionChainDialog::OExceptionChainDialog(weld::Window* pParent, ExceptionDis
         ExceptionDisplayInfo aInfo22018;
         aInfo22018.sMessage = DBA_RES( STR_EXPLAN_STRINGCONVERSION_ERROR );
         aInfo22018.pLabelProvider = aProviderFactory.getLabelProvider( SQLExceptionInfo::TYPE::SQLContext, false );
-        aInfo22018.sImage = lcl_getImageName(SQLExceptionInfo::TYPE::SQLContext);
         m_aExceptions.push_back( aInfo22018 );
 
         insertExceptionEntry(m_aExceptions.size() - 1, aInfo22018);
@@ -298,7 +294,7 @@ void OExceptionChainDialog::insertExceptionEntry(size_t nElementPos,
                                                  const ExceptionDisplayInfo& rEntry)
 {
     m_xExceptionList->append(OUString::number(nElementPos), rEntry.pLabelProvider->getLabel(),
-                             rEntry.sImage);
+                             lcl_getImageName(rEntry.eType));
 }
 
 IMPL_LINK_NOARG(OExceptionChainDialog, OnExceptionSelected, weld::TreeView&, void)
