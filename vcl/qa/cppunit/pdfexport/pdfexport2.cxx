@@ -1681,6 +1681,20 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152231)
     CPPUNIT_ASSERT_EQUAL(12, nPara);
 }
 
+CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf136805)
+{
+    uno::Sequence<beans::PropertyValue> aFilterData(comphelper::InitPropertySequence({
+        { "SelectPdfVersion", uno::Any(static_cast<sal_Int32>(1)) },
+    }));
+    comphelper::SequenceAsHashMap aMediaDescriptor;
+    aMediaDescriptor[u"FilterData"_ustr] <<= aFilterData;
+    vcl::filter::PDFDocument aDocument;
+    loadFromFile(u"tdf136805.pdf");
+    save(TestFilter::PDF_WRITER, aMediaDescriptor.getAsConstPropertyValueList());
+    // Without the fix in place, the validation would have failed
+    validate(TestFilter::PDF_WRITER);
+}
+
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf152235)
 {
     // Enable PDF/UA
