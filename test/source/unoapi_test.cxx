@@ -214,7 +214,11 @@ void UnoApiTest::validate(TestFilter eFilter)
         xmlDocUniquePtr pXmlDoc = parseXmlStream(&aStream);
         // Make sure the output is well-formed.
         CPPUNIT_ASSERT(pXmlDoc);
-        assertXPath(pXmlDoc, "/report/jobs/job/validationReport", "isCompliant", u"true");
+        int nCount = countXPathNodes(pXmlDoc, "/report/jobs/job/validationReport");
+        CPPUNIT_ASSERT(nCount);
+        for (int i = 1; i <= nCount; ++i)
+            assertXPath(pXmlDoc, "/report/jobs/job/validationReport[" + OString::number(i) + "]",
+                        "isCompliant", u"true");
     }
     else
     {
