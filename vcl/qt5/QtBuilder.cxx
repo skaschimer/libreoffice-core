@@ -298,6 +298,7 @@ QObject* QtBuilder::makeObject(QObject* pParent, std::u16string_view sName, std:
     else if (sName == u"GtkLabel")
     {
         QLabel* pLabel = new QLabel(pParentWidget);
+        pLabel->setTextFormat(Qt::TextFormat::PlainText);
         setLabelProperties(*pLabel, rMap);
         extractMnemonicWidget(rId, rMap);
         pObject = pLabel;
