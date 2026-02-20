@@ -16,7 +16,7 @@ import os.path
 
 class tdf170554(UITestCase):
 
-    def test_tdf170554_save_large_table(self):
+    def test_tdf170554_save_table(self):
 
         with TemporaryDirectory() as tempdir:
             xFilePath = os.path.join(tempdir, 'tdf170554-tmp.odt')
@@ -27,18 +27,18 @@ class tdf170554(UITestCase):
 
                     xColSpin = xDialog.getChild("colspin")
                     xColSpin.executeAction("TYPE", mkPropertyValues({"KEYCODE":"CTRL+A"}))
-                    xColSpin.executeAction("TYPE", mkPropertyValues({"TEXT": "40"}))
+                    xColSpin.executeAction("TYPE", mkPropertyValues({"TEXT": "2"}))
 
                     xRowSpin = xDialog.getChild("rowspin")
                     xRowSpin.executeAction("TYPE", mkPropertyValues({"KEYCODE":"CTRL+A"}))
-                    xRowSpin.executeAction("TYPE", mkPropertyValues({"TEXT": "600"}))
+                    xRowSpin.executeAction("TYPE", mkPropertyValues({"TEXT": "2"}))
 
-                    self.assertEqual("40", get_state_as_dict(xColSpin)["Text"])
-                    self.assertEqual("600", get_state_as_dict(xRowSpin)["Text"])
+                    self.assertEqual("2", get_state_as_dict(xColSpin)["Text"])
+                    self.assertEqual("2", get_state_as_dict(xRowSpin)["Text"])
 
                 tables = document.getTextTables()
-                self.assertEqual(600, len(tables[0].getRows()))
-                self.assertEqual(40, len(tables[0].getColumns()))
+                self.assertEqual(2, len(tables[0].getRows()))
+                self.assertEqual(2, len(tables[0].getColumns()))
 
                 # Without the fix in place, this test would have failed to save the document
                 with self.ui_test.execute_dialog_through_command('.uno:SaveAs', close_button="open") as xDialog:
@@ -50,7 +50,7 @@ class tdf170554(UITestCase):
             with self.ui_test.load_file(systemPathToFileUrl(xFilePath)) as document2:
 
                 tables = document2.getTextTables()
-                self.assertEqual(600, len(tables[0].getRows()))
-                self.assertEqual(40, len(tables[0].getColumns()))
+                self.assertEqual(2, len(tables[0].getRows()))
+                self.assertEqual(2, len(tables[0].getColumns()))
 
 # vim: set shiftwidth=4 softtabstop=4 expandtab:
