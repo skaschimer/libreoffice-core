@@ -6,7 +6,7 @@ Contains common code for all projects on Android to bootstrap LibreOffice. In
 addition it is a home to `LibreOfficeKit` (LOK - see `libreofficekit/README.md`) JNI
 classes.
 
-## Stuff in Source Directory
+## Stuff in App Directory
 
 LibreOffice Android application - the code is based on Fennec (Firefox for Android).
 It uses OpenGL ES 2 for rendering of the document tiles which are gathered from
@@ -163,7 +163,7 @@ For instructions on how to build for Android, see `README.cross`.
 
 Attach your device, so 'adb devices' shows it. Then run:
 
-        cd android/source
+        cd android/app
         make install
         adb logcat
 
@@ -236,7 +236,7 @@ Using `lldb` from within Android Studio is more comfortable though and works lik
 - open `android` directory in Android Studio via File|Open...
 - make sure you select the right build variant (`strippedUIDebug` is what you want)
 - use Run|Edit Configurations to create a new configuration of type "Android Native"
-	- on tab "General" pick module "source"
+	- on tab "General" pick module "app"
 	- on tab "Native Debugger" add `android/obj/local/<hostarch>` to
 	the Symbol directories
 	- on the LLDB startup commands tab add
@@ -323,7 +323,7 @@ heavy lifting.
 
 ## Triple-T metadata for F-Droid
 
-The subdirectory `source/src/main/play` contains data in the Triple-T
+The subdirectory `app/src/main/play` contains data in the Triple-T
 structure that F-Droid evaluates to extract metadata.
 
 More information:

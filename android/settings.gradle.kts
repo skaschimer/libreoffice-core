@@ -26,4 +26,4 @@ dependencyResolutionManagement {
     }
 }
 
-include(":source")
+include(":app")
