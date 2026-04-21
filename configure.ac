@@ -1117,6 +1117,7 @@ darwin*) # macOS
         mac_sanitize_path
         AC_MSG_NOTICE([sanitized the PATH to $PATH])
     fi
+    test_qt6=yes
     _os=Darwin
     INSTROOTBASESUFFIX=/$PRODUCTNAME_WITHOUT_SPACES.app
     INSTROOTCONTENTSUFFIX=/Contents
@@ -14140,7 +14141,7 @@ then
     if test "$QMAKE6" = "no"; then
         AC_MSG_ERROR([Qmake not found.  Please specify the root of your Qt6 installation by exporting QT6DIR before running "configure".])
     else
-        qmake6_test_ver="`$QMAKE6 -v 2>&1 | $SED -n -e 's/^Using Qt version \(6\.[[0-9.]]\+\).*$/\1/p'`"
+        qmake6_test_ver="`$QMAKE6 -v 2>&1 | $SED -n -e 's/^Using Qt version \(6\..*\) in.*$/\1/p'`"
         if test -z "$qmake6_test_ver"; then
             AC_MSG_ERROR([Wrong qmake for Qt6 found. Please specify the root of your Qt6 installation by exporting QT6DIR before running "configure".])
         fi
@@ -14175,18 +14176,26 @@ then
     CPPFLAGS=$save_CPPFLAGS
     AC_LANG_POP([C++])
 
-    if test "$_os" = "Emscripten"; then
+    case "$_os" in
+    Emscripten)
         qt6_library_prefix="lib"
         qt6_library_suffixes=".a"
-    elif test "$_os" = "WINNT"; then
+        ;;
+    WINNT)
         qt6_library_prefix=""
         # file names of libraries built in debug mode have an additional
         # "d" suffix in the file name, e.g. "Qt6Widgetsd.lib"
         qt6_library_suffixes=".lib d.lib"
-    else
+        ;;
+    Darwin)
+        qt6_library_prefix="lib"
+        qt6_library_suffixes=".dylib"
+        ;;
+    *)
         qt6_library_prefix="lib"
         qt6_library_suffixes=".so"
-    fi
+        ;;
+    esac
 
     qt6_test_library="Qt6Widgets"
     AC_MSG_CHECKING([for Qt6 libraries])
@@ -14219,6 +14228,8 @@ then
     QT6_CFLAGS=$(printf '%s' "$QT6_CFLAGS" | sed -e "s/-I/${ISYSTEM?}/g")
     if test "$_os" = "WINNT"; then
         QT6_LIBS="-LIBPATH:${qt6_libdir} Qt6Core${qt6_library_suffix} Qt6Gui${qt6_library_suffix} Qt6Widgets${qt6_library_suffix}"
+    elif test "$_os" = "Darwin"; then
+        QT6_LIBS="-rpath ${qt6_libdir} -L${qt6_libdir} -lQt6Core -lQt6Gui -lQt6Widgets"
     else
         QT6_LIBS="-L$qt6_libdir -lQt6Core -lQt6Gui -lQt6Widgets"
     fi
