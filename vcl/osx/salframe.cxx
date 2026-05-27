@@ -1052,10 +1052,7 @@ void AquaSalFrame::StartPresentation( bool bStart )
     if( bStart )
     {
         GetSalData()->maPresentationFrames.push_back( this );
-        IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
-                                    kIOPMAssertionLevelOn,
-                                    CFSTR("LibreOffice presentation running"),
-                                    &mnAssertionID);
+        mSessionManagerInhibitor.inhibit(true);
         [mpNSWindow setLevel: NSPopUpMenuWindowLevel];
         if( mbShown )
             [mpNSWindow makeMainWindow];
@@ -1063,7 +1060,7 @@ void AquaSalFrame::StartPresentation( bool bStart )
     else
     {
         GetSalData()->maPresentationFrames.remove( this );
-        IOPMAssertionRelease(mnAssertionID);
+        mSessionManagerInhibitor.inhibit(false);
         [mpNSWindow setLevel: NSNormalWindowLevel];
     }
 }
