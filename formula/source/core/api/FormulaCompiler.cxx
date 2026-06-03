@@ -1219,7 +1219,14 @@ bool FormulaCompiler::IsOpCodeVolatile( OpCode eOp )
             // ocRandArray is a volatile function.
         case ocRandArray:
             // ocCall could wind up calling any of the above
+            // as could any higher-order function that uses callables
         case ocCall:
+        case ocByCol:
+        case ocByRow:
+        case ocMakeArray:
+        case ocMap:
+        case ocReduce:
+        case ocScan:
             bRet = true;
             break;
         default:
@@ -1300,6 +1307,7 @@ bool FormulaCompiler::IsMatrixFunction( OpCode eOpCode )
         case ocLet :
         case ocWrapCols :
         case ocWrapRows :
+        case ocMakeArray :
             return true;
         default:
         {
@@ -1804,6 +1812,11 @@ void FormulaCompiler::Factor()
                     case ocToRow:
                     case ocWrapCols:
                     case ocWrapRows:
+                    case ocByCol:
+                    case ocByRow:
+                    case ocMakeArray:
+                    case ocMap:
+                    case ocScan:
                         mpArr->SetDynamicArrayFunction( true);
                     break;
                     default:
