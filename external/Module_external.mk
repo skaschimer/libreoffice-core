@@ -66,7 +66,6 @@ $(eval $(call gb_Module_add_moduledirs,external,\
 	$(call gb_Helper_optional,LIBWEBP,libwebp) \
 	$(call gb_Helper_optional,LIBXML2,libxml2) \
 	$(call gb_Helper_optional,LIBXSLT,libxslt) \
-	$(call gb_Helper_optional,LPSOLVE,lpsolve) \
 	$(call gb_Helper_optional,LIBTOMMATH,libtommath) \
 	$(call gb_Helper_optional,LXML,lxml) \
 	$(call gb_Helper_optional,LZMA,lzma) \

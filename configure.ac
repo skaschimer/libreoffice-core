@@ -1156,7 +1156,6 @@ ios*) # iOS
     enable_lotuswordpro=no
     disable_database_connectivity_dependencies
     enable_coinmp=no
-    enable_lpsolve=no
     enable_extension_integration=no
     enable_xmlhelp=no
     with_ppds=no
@@ -1249,7 +1248,6 @@ linux-android*)
     enable_mpl_subset=yes
     enable_cairo_canvas=no
     enable_coinmp=yes
-    enable_lpsolve=no
     enable_odk=no
     enable_python=no
     enable_xmlhelp=no
@@ -1674,10 +1672,6 @@ libo_FUZZ_ARG_ENABLE(ext-wiki-publisher,
         [Enable the Wiki Publisher extension.])
 )
 
-libo_FUZZ_ARG_ENABLE(lpsolve,
-    AS_HELP_STRING([--disable-lpsolve],
-        [Disable compilation of the lp solve solver ])
-)
 libo_FUZZ_ARG_ENABLE(coinmp,
     AS_HELP_STRING([--disable-coinmp],
         [Disable compilation of the CoinMP solver ])
@@ -2860,16 +2854,6 @@ AC_ARG_WITH(system-altlinuxhyph,
         [Use ALTLinuxhyph already on system.]),,
     [with_system_altlinuxhyph="$with_system_libs"])
 
-AC_ARG_WITH(system-lpsolve,
-    AS_HELP_STRING([--with-system-lpsolve],
-        [Use lpsolve already on system.]),,
-    [with_system_lpsolve="$with_system_libs"])
-
-AC_ARG_WITH(system-colamd,
-    AS_HELP_STRING([--with-system-colamd],
-        [Use COLAMD already on system.]),,
-    [with_system_colamd="$with_system_libs"])
-
 AC_ARG_WITH(system-coinmp,
     AS_HELP_STRING([--with-system-coinmp],
         [Use CoinMP already on system.]),,
@@ -3470,7 +3454,6 @@ if test "$enable_wasm_strip" = "yes"; then
     enable_gpgmepp=no
     enable_ldap=no
     enable_lotuswordpro=no
-    enable_lpsolve=no
     enable_nss=no
     enable_odk=no
     enable_online_update=no
@@ -12350,64 +12333,6 @@ AC_SUBST(SYSTEM_COINMP)
 AC_SUBST(COINMP_CFLAGS)
 AC_SUBST(COINMP_LIBS)
 
-ENABLE_LPSOLVE=
-AC_MSG_CHECKING([whether to build with lpsolve])
-if test "$enable_lpsolve" != "no"; then
-    ENABLE_LPSOLVE=TRUE
-    AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([no])
-fi
-AC_SUBST(ENABLE_LPSOLVE)
-
-if test "$ENABLE_LPSOLVE" = TRUE; then
-    AC_MSG_CHECKING([which lpsolve to use])
-    if test "$with_system_lpsolve" = "yes"; then
-        AC_MSG_RESULT([external])
-        SYSTEM_LPSOLVE=TRUE
-        AC_CHECK_HEADER(lpsolve/lp_lib.h, [],
-           [ AC_MSG_ERROR(lpsolve headers not found.)], [])
-        save_LIBS=$LIBS
-        # some systems need this. Like Ubuntu...
-        AC_CHECK_LIB(m, floor)
-        AC_CHECK_LIB(dl, dlopen)
-        AC_CHECK_LIB([lpsolve55], [make_lp], [:],
-            [ AC_MSG_ERROR(lpsolve library not found or too old.)], [])
-        LIBS=$save_LIBS
-    else
-        AC_MSG_RESULT([internal])
-        SYSTEM_LPSOLVE=
-        BUILD_TYPE="$BUILD_TYPE LPSOLVE"
-        AC_MSG_CHECKING([which colamd to use])
-        if test "$with_system_colamd" = "yes"; then
-               AC_MSG_RESULT([external])
-               SYSTEM_COLAMD=TRUE
-               # This assumes suitesparse, which has
-               # /usr/lib/x86_64-linux-gnu/pkgconfig/COLAMD.pc
-               PKG_CHECK_MODULES([COLAMD], [COLAMD],
-                      [],
-                      [
-                       # older versions don't. Look in /usr/include/suitesparse
-                       COLAMD_CFLAGS=-I/usr/include/suitesparse
-                       save_CFLAGS=$CFLAGS
-                       CFLAGS="$CFLAGS $COLAMD_CFLAGS"
-                       AC_CHECK_HEADER(colamd.h, [],
-                               [ AC_MSG_ERROR(colamd.h header not found.)], [])
-                       CFLAGS=$save_CFLAGS
-                       AC_CHECK_LIB(colamd, colamd)
-                       COLAMD_LIBS=-lcolamd
-                     ])
-       else
-               AC_MSG_RESULT([internal])
-               SYSTEM_COLAMD=
-       fi
-    fi
-fi
-AC_SUBST(SYSTEM_COLAMD)
-AC_SUBST(COLAMD_CFLAGS)
-AC_SUBST(COLAMD_LIBS)
-AC_SUBST(SYSTEM_LPSOLVE)
-
 dnl ===================================================================
 dnl Checking for libexttextcat
 dnl ===================================================================
@@ -16076,10 +16001,6 @@ if test "$enable_mpl_subset" = "yes"; then
     fi
 
     ENABLE_OPENGL_TRANSITIONS=
-
-    if test "$enable_lpsolve" != "no" -o "x$ENABLE_LPSOLVE" = "xTRUE"; then
-        mpl_error_string="$mpl_error_string$newline Need to --disable-lpsolve - calc linear programming solver."
-    fi
 
     if test "x$mpl_error_string" != "x"; then
         AC_MSG_ERROR([$mpl_error_string])
