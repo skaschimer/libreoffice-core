@@ -334,7 +334,6 @@ bool includeProject(std::string_view rProject) {
         "reportdesign",
         "sc",
         "scaddins",
-        "sccomp",
         "scp2",
         "sd",
         "sdext",
