@@ -3795,6 +3795,8 @@ void ScInterpreter::DispatchOpCode( OpCode eOp )
         case ocLet              : ScLet();                      break;
         case ocWrapCols         : ScWrapCols();                 break;
         case ocWrapRows         : ScWrapRows();                 break;
+        case ocLambda           : ScLambda();                   break;
+        case ocIsOmitted        : ScIsOmitted();                break;
         case ocTrue             : ScTrue();                     break;
         case ocFalse            : ScFalse();                    break;
         case ocGetActDate       : ScGetActDate();               break;
