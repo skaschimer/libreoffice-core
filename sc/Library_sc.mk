@@ -227,6 +227,7 @@ $(eval $(call gb_Library_add_exception_objects,sc,\
     sc/source/core/tool/arraysumSSE2 \
     sc/source/core/tool/autoform \
     sc/source/core/tool/calcconfig \
+    sc/source/core/tool/callable \
     sc/source/core/tool/callform \
     sc/source/core/tool/cellform \
     sc/source/core/tool/cellkeytranslator \
