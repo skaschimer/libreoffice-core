@@ -1273,7 +1273,7 @@ void SbRtl_RTrim(StarBASIC *, SbxArray & rPar, bool)
 
 void SbRtl_Sgn(StarBASIC *, SbxArray & rPar, bool)
 {
-    if (rPar.Count() < 2)
+    if (rPar.Count() != 2)
         return StarBASIC::Error( ERRCODE_BASIC_BAD_ARGUMENT );
 
     double aDouble = rPar.Get(1)->GetDouble();
