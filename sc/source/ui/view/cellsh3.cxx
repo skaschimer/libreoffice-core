@@ -192,7 +192,7 @@ void ScCellShell::Execute( SfxRequest& rReq )
                     ScInputHandler* pInputHandler = pScMod->GetInputHdl(pTabViewShell);
                     if (bCommit)
                     {
-                        pTabViewShell->EnterDataToCurrentCell(aInputString, nullptr, true /*bMatrixExpand*/);
+                        pTabViewShell->EnterDataToCurrentCell(aInputString, nullptr, true /*bAutoDynamicArray*/);
                     }
                     else if (pInputHandler)
                     {
@@ -258,10 +258,20 @@ void ScCellShell::Execute( SfxRequest& rReq )
                     {
                         pTabViewShell->EnterBlock( aString, pData );
                     }
+                    else if (nSlot == FID_INPUTLINE_MATRIX
+                             && !aString.isEmpty()
+                             && (aString[0] == '=' || aString[0] == '+' || aString[0] == '-'))
+                    {
+                        // Ctrl+Shift+Enter authored a classic static array
+                        // formula. Route to EnterMatrix so the cell becomes
+                        // a static array master.
+                        ScDocument& rDoc = GetViewData().GetDocument();
+                        pTabViewShell->EnterMatrix(aString, rDoc.GetGrammar());
+                    }
                     else if ( !aString.isEmpty() && ( aString[0] == '=' || aString[0] == '+' || aString[0] == '-' ) )
                     {
                         pTabViewShell->EnterData( aCursorPos.Col(), aCursorPos.Row(), aCursorPos.Tab(),
-                                aString, pData, true /*bMatrixExpand*/);
+                                aString, pData, true /*bAutoDynamicArray*/);
                     }
                     else
                     {
@@ -291,7 +301,7 @@ void ScCellShell::Execute( SfxRequest& rReq )
                                                     aCursorPos.Row(),
                                                     aCursorPos.Tab(),
                                                     aString, nullptr,
-                                                    true /*bMatrixExpand*/);
+                                                    true /*bAutoDynamicArray*/);
                             rReq.Done();
                         }
                     }
