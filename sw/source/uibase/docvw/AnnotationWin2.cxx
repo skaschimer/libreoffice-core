@@ -1376,7 +1376,7 @@ void SwAnnotationWin::SetViewState(ViewState bViewState)
                 }
             }
             if (mpShadow)
-                mpShadow->SetShadowState(SS_EDIT);
+                mpShadow->SetShadowState(ShadowState::Edit);
             break;
         }
         case ViewState::VIEW:
@@ -1390,7 +1390,7 @@ void SwAnnotationWin::SetViewState(ViewState bViewState)
                 }
             }
             if (mpShadow)
-                mpShadow->SetShadowState(SS_VIEW);
+                mpShadow->SetShadowState(ShadowState::View);
             break;
         }
         case ViewState::NORMAL:
@@ -1430,7 +1430,7 @@ void SwAnnotationWin::SetViewState(ViewState bViewState)
             }
             if ( mpShadow )
             {
-                mpShadow->SetShadowState(SS_NORMAL);
+                mpShadow->SetShadowState(ShadowState::Normal);
             }
             break;
         }

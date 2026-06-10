@@ -29,11 +29,11 @@ class SwView;
 
 namespace sw::sidebarwindows {
 
-enum ShadowState
+enum class ShadowState
 {
-    SS_NORMAL,
-    SS_VIEW,
-    SS_EDIT
+    Normal,
+    View,
+    Edit
 };
 
 class ShadowOverlayObject: public sdr::overlay::OverlayObjectWithBasePosition

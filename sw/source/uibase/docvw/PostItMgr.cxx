@@ -2146,12 +2146,12 @@ void SwPostItMgr::SetShadowState(const SwPostItField* pField,bool bCursor)
                 // TODO: does not work properly if mouse and cursor was set
                 sw::annotation::SwAnnotationWin* pOldPostIt =
                                     GetAnnotationWin(mShadowState.mpShadowField);
-                if (pOldPostIt && pOldPostIt->Shadow() && (pOldPostIt->Shadow()->GetShadowState() != SS_EDIT))
+                if (pOldPostIt && pOldPostIt->Shadow() && (pOldPostIt->Shadow()->GetShadowState() != ShadowState::Edit))
                     pOldPostIt->SetViewState(ViewState::NORMAL);
             }
             //set new one, if it is not currently edited
             sw::annotation::SwAnnotationWin* pNewPostIt = GetAnnotationWin(pField);
-            if (pNewPostIt && pNewPostIt->Shadow() && (pNewPostIt->Shadow()->GetShadowState() != SS_EDIT))
+            if (pNewPostIt && pNewPostIt->Shadow() && (pNewPostIt->Shadow()->GetShadowState() != ShadowState::Edit))
             {
                 pNewPostIt->SetViewState(ViewState::VIEW);
                 //remember our new field
@@ -2177,7 +2177,7 @@ void SwPostItMgr::SetShadowState(const SwPostItField* pField,bool bCursor)
             {
                 // reset old one if still alive
                 sw::annotation::SwAnnotationWin* pOldPostIt = GetAnnotationWin(mShadowState.mpShadowField);
-                if (pOldPostIt && pOldPostIt->Shadow() && (pOldPostIt->Shadow()->GetShadowState() != SS_EDIT))
+                if (pOldPostIt && pOldPostIt->Shadow() && (pOldPostIt->Shadow()->GetShadowState() != ShadowState::Edit))
                 {
                     pOldPostIt->SetViewState(ViewState::NORMAL);
                     mShadowState.mpShadowField = nullptr;

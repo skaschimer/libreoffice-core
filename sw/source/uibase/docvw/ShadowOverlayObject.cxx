@@ -80,7 +80,7 @@ drawinglayer::primitive2d::Primitive2DReference ShadowPrimitive::create2DDecompo
     drawinglayer::primitive2d::Primitive2DReference xRet;
     switch(maShadowState)
     {
-        case SS_NORMAL:
+        case ShadowState::Normal:
         {
             aRange.expand(basegfx::B2DTuple(getSecondPosition().getX(), getSecondPosition().getY() + (1.0 * getDiscreteUnit())));
 
@@ -97,7 +97,7 @@ drawinglayer::primitive2d::Primitive2DReference ShadowPrimitive::create2DDecompo
                     std::move(aFillGradientAttribute));
             break;
         }
-        case SS_VIEW:
+        case ShadowState::View:
         {
             aRange.expand(basegfx::B2DTuple(getSecondPosition().getX(), getSecondPosition().getY() + (2.0 * getDiscreteUnit())));
             drawinglayer::attribute::FillGradientAttribute aFillGradientAttribute(
@@ -113,7 +113,7 @@ drawinglayer::primitive2d::Primitive2DReference ShadowPrimitive::create2DDecompo
                     std::move(aFillGradientAttribute));
             break;
         }
-        case SS_EDIT:
+        case ShadowState::Edit:
         {
             aRange.expand(basegfx::B2DTuple(getSecondPosition().getX(), getSecondPosition().getY() + (4.0 * getDiscreteUnit())));
             drawinglayer::attribute::FillGradientAttribute aFillGradientAttribute(
@@ -185,7 +185,7 @@ ShadowOverlayObject::ShadowOverlayObject( const basegfx::B2DPoint& rBasePos,
                                           Color aBaseColor )
     : OverlayObjectWithBasePosition(rBasePos, aBaseColor)
     , maSecondPosition(rSecondPosition)
-    , mShadowState(SS_NORMAL)
+    , mShadowState(ShadowState::Normal)
 {
 }
 
