@@ -120,6 +120,7 @@
 #define RID_STR_OB_FORWARD_BUTTON           NC_("RID_STR_OB_FORWARD_BUTTON", "Forward")
 // For Details Pane Formatting and Symbol Types
 #define RID_STR_OB_ACCESS                   NC_("RID_STR_OB_ACCESS", "Access: ")
+// This a verb as if it was short for “This function returns: <TYPE>”
 #define RID_STR_OB_RETURNS                  NC_("RID_STR_OB_RETURNS", "Returns: ")
 #define RID_STR_OB_TYPE                     NC_("RID_STR_OB_TYPE", "Type: ")
 #define RID_STR_OB_PARAMETERS               NC_("RID_STR_OB_PARAMETERS", "\nParameters:\n")
