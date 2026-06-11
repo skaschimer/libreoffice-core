@@ -5882,7 +5882,7 @@ dnl Target-specific options
 dnl ===================================================================
 
 ENABLE_LASX="TRUE"
-if test "$CPUNAME" == LOONGARCH64; then
+if test "$CPUNAME" = LOONGARCH64; then
     AC_ARG_ENABLE(lasx,
         AS_HELP_STRING([--enable-lasx],
             [build with LASX vectorization])
