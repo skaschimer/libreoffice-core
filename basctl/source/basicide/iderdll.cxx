@@ -111,6 +111,12 @@ OUString IDEResId(TranslateId aId)
     return Translate::get(aId, SfxApplication::GetModule(SfxToolsModule::Basic)->GetResLocale());
 }
 
+OUString IDEResId(TranslateNId aContextSingularPlural, int nCardinality)
+{
+    return Translate::nget(aContextSingularPlural, nCardinality,
+                           SfxApplication::GetModule(SfxToolsModule::Basic)->GetResLocale());
+}
+
 namespace
 {
 

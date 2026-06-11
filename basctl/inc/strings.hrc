@@ -21,6 +21,7 @@
 #define BASCTL_INC_BASIDESH_HRC
 
 #define NC_(Context, String) TranslateId(Context, u8##String)
+#define NNC_(Context, StringSingular, StringPlural) TranslateNId(Context, reinterpret_cast<char const *>(u8##StringSingular), reinterpret_cast<char const *>(u8##StringPlural))
 
 #define RID_STR_FILTER_ALLFILES             NC_("RID_STR_FILTER_ALLFILES", "<All>")
 #define RID_STR_NOMODULE                    NC_("RID_STR_NOMODULE", "< No Module >")
@@ -130,13 +131,13 @@
 #define RID_STR_OB_FULLNAME_HEADER          NC_("RID_STR_OB_FULLNAME_HEADER", "\nFull Name\n")
 #define RID_STR_OB_CONTENTS_HEADER          NC_("RID_STR_OB_CONTENTS_HEADER", "Contents\n")
 #define RID_STR_OB_TOTAL_MEMBERS            NC_("RID_STR_OB_TOTAL_MEMBERS", "Total members: ")
-#define RID_STR_OB_CONTAINS_ITEMS           NC_("RID_STR_OB_CONTAINS_ITEMS", "Contains %1 items")
+#define RID_STR_OB_CONTAINS_ITEMS           NNC_("RID_STR_OB_CONTAINS_ITEMS", "Contains 1 item", "Contains %1 items")
 // For Access Modifiers
 #define RID_STR_OB_ACCESS_PUBLIC            NC_("RID_STR_OB_ACCESS_PUBLIC", "Public")
 #define RID_STR_OB_ACCESS_PRIVATE           NC_("RID_STR_OB_ACCESS_PRIVATE", "Private")
 // For Status Bar
-#define RID_STR_OB_MEMBERS_COUNT            NC_("RID_STR_OB_MEMBERS_COUNT", "%1 members")
-#define RID_STR_OB_ITEMS_COUNT              NC_("RID_STR_OB_ITEMS_COUNT", "%1 items")
+#define RID_STR_OB_MEMBERS_COUNT            NNC_("RID_STR_OB_MEMBERS_COUNT", "1 member", "%1 members")
+#define RID_STR_OB_ITEMS_COUNT              NNC_("RID_STR_OB_ITEMS_COUNT", "1 item", "%1 items")
 #define RID_STR_OB_READY                    NC_("RID_STR_OB_READY", "Ready")
 #define RID_STR_OB_READY_LOADED             NC_("RID_STR_OB_READY_LOADED", "✅ Ready (loaded in %1s)")
 // For Symbol Type Names

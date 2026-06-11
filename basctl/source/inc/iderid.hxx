@@ -25,6 +25,7 @@
 namespace basctl
 {
 OUString IDEResId(TranslateId aId);
+OUString IDEResId(TranslateNId aContextSingularPlural, int nCardinality);
 
 } // namespace basctl
 

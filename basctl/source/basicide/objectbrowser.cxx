@@ -415,9 +415,9 @@ OUString FormatContainerSignature(const IdeSymbolInfo& rSymbol,
     {
         auto aChildren = pDataProvider->GetChildNodes(rSymbol);
         sal_Int64 nChildren = static_cast<sal_Int64>(aChildren.size());
-        sInfo.append(
-            IDEResId(RID_STR_OB_CONTENTS_HEADER)
-            + IDEResId(RID_STR_OB_CONTAINS_ITEMS).replaceFirst(u"%1", OUString::number(nChildren)));
+        sInfo.append(IDEResId(RID_STR_OB_CONTENTS_HEADER)
+                     + IDEResId(RID_STR_OB_CONTAINS_ITEMS, nChildren)
+                           .replaceFirst(u"%1", OUString::number(nChildren)));
     }
 
     if (!rSymbol.sQualifiedName.isEmpty() && rSymbol.sQualifiedName != rSymbol.sName)
@@ -1004,16 +1004,15 @@ void ObjectBrowser::UpdateStatusBar(const IdeSymbolInfo* pLeftSymbol,
             for (const auto& pair : aMembers)
                 nTotalMembers += pair.second.size();
             sStatusText
-                = IDEResId(RID_STR_OB_MEMBERS_COUNT)
+                = IDEResId(RID_STR_OB_MEMBERS_COUNT, nTotalMembers)
                       .replaceFirst(u"%1", OUString::number(static_cast<sal_Int64>(nTotalMembers)));
         }
         else if (IsExpandable(*pLeftSymbol))
         {
-            auto aChildren = m_pDataProvider->GetChildNodes(*pLeftSymbol);
+            size_t nChildren = m_pDataProvider->GetChildNodes(*pLeftSymbol).size();
             sStatusText
-                = IDEResId(RID_STR_OB_ITEMS_COUNT)
-                      .replaceFirst(u"%1",
-                                    OUString::number(static_cast<sal_Int64>(aChildren.size())));
+                = IDEResId(RID_STR_OB_ITEMS_COUNT, nChildren)
+                      .replaceFirst(u"%1", OUString::number(static_cast<sal_Int64>(nChildren)));
         }
         else
         {
