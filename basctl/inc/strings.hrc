@@ -140,6 +140,7 @@
 #define RID_STR_OB_MEMBERS_COUNT            NNC_("RID_STR_OB_MEMBERS_COUNT", "1 member", "%1 members")
 #define RID_STR_OB_ITEMS_COUNT              NNC_("RID_STR_OB_ITEMS_COUNT", "1 item", "%1 items")
 #define RID_STR_OB_READY                    NC_("RID_STR_OB_READY", "Ready")
+// %1 will be replaced with a fractional number of seconds, eg, “1.456s”
 #define RID_STR_OB_READY_LOADED             NC_("RID_STR_OB_READY_LOADED", "✅ Ready (loaded in %1s)")
 // For Symbol Type Names
 #define RID_STR_OB_TYPE_UNO_APIS_ROOT       NC_("RID_STR_OB_TYPE_UNO_APIS_ROOT", "UNO APIs Root")

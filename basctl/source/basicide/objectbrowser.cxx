@@ -29,6 +29,7 @@
 #include <svl/itemset.hxx>
 #include <sfx2/sfxsids.hrc>
 #include <sfx2/viewfrm.hxx>
+#include <unotools/localedatawrapper.hxx>
 #include <vcl/taskpanelist.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -787,10 +788,13 @@ void ObjectBrowser::Show(bool bVisible)
 
             if (!m_bFirstLoadComplete)
             {
+                const LocaleDataWrapper& rLocaleData
+                    = Application::GetSettings().GetUILocaleDataWrapper();
+                OUString sElapsedSeconds
+                    = rLocaleData.getNum(aTotalInitTimer.getElapsedTimeMs(), 3, false);
                 m_bFirstLoadComplete = true;
-                double fElapsedSeconds = aTotalInitTimer.getElapsedTimeMs() / 1000.0;
-                OUString sStatus = IDEResId(RID_STR_OB_READY_LOADED)
-                                       .replaceFirst(u"%1", OUString::number(fElapsedSeconds));
+                OUString sStatus
+                    = IDEResId(RID_STR_OB_READY_LOADED).replaceFirst(u"%1", sElapsedSeconds);
                 m_xStatusLabel->set_label(sStatus);
             }
         }
