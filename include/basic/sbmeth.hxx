@@ -57,7 +57,7 @@ public:
     SbModule*  GetModule()                         { return pMod;        }
     BasicDebugFlags GetDebugFlags() const          { return nDebugFlags; }
     void       SetDebugFlags( BasicDebugFlags n )  { nDebugFlags = n;    }
-    void       GetLineRange( sal_uInt16&, sal_uInt16& );
+    void       GetLineRange( sal_uInt16&, sal_uInt16& ) const;
 
     // Interface to execute a method from the applications
     ErrCode         Call( SbxValue* pRet,  SbxVariable* pCaller = nullptr );

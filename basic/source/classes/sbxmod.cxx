@@ -2038,7 +2038,7 @@ std::pair<bool, sal_uInt32> SbMethod::StoreData( SvStream& rStrm ) const
     return { true, nVersion };
 }
 
-void SbMethod::GetLineRange( sal_uInt16& l1, sal_uInt16& l2 )
+void SbMethod::GetLineRange( sal_uInt16& l1, sal_uInt16& l2 ) const
 {
     l1 = nLine1; l2 = nLine2;
 }
