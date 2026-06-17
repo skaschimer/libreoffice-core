@@ -26,6 +26,7 @@
 #include <basic/codecompletecache.hxx>
 #include <basic/sbx.hxx>
 #include <basic/sbuno.hxx>
+#include <basic/sbutil.hxx>
 #include <sbjsmeth.hxx>
 #include <sbjsmod.hxx>
 #include <sbintern.hxx>
@@ -1899,6 +1900,62 @@ void SbModule::handleProcedureProperties( SfxBroadcaster& rBC, const SfxHint& rH
 
     if( !bDone )
         SbModule::Notify( rBC, rHint );
+}
+
+OUString SbModule::GetSourceWithoutMethod(const SbMethod& rMethod) const
+{
+    sal_uInt16 nStartRange, nEndRange;
+    rMethod.GetLineRange(nStartRange, nEndRange);
+
+    sal_Int32 nStartLine = nStartRange - 1;
+    sal_Int32 nLines = nEndRange - nStartRange + 1;
+
+    sal_Int32 nStartPos = 0;
+    sal_Int32 nLine = 0;
+    while ( nLine < nStartLine )
+    {
+        nStartPos = sb::searchEOL( aOUSource, nStartPos );
+        if( nStartPos == -1 )
+            break;
+        nStartPos++;    // not the \n.
+        nLine++;
+    }
+
+    SAL_WARN_IF( nStartPos == -1, "basic.sbx",
+                 "GetSourceWithoutMethod: Start line not found!" );
+
+    if ( nStartPos == -1 )
+        return aOUSource;
+
+    sal_Int32 nEndPos = nStartPos;
+
+    for ( sal_Int32 i = 0; i < nLines; i++ )
+        nEndPos = sb::searchEOL( aOUSource, nEndPos+1 );
+
+    if ( nEndPos == -1 ) // might happen at the last line
+        nEndPos = aOUSource.getLength();
+    else
+        nEndPos++;
+
+    OUString sRet = OUString::Concat(aOUSource.subView( 0, nStartPos ))
+        + aOUSource.subView( nEndPos );
+
+    // erase trailing empty lines
+    {
+        sal_Int32 n = nStartPos;
+        sal_Int32 nLen = sRet.getLength();
+        while ( ( n < nLen ) && ( sRet[ n ] == '\n' || sRet[ n ] == '\r' ) )
+        {
+            n++;
+        }
+
+        if ( n > nStartPos )
+        {
+            sRet = OUString::Concat(sRet.subView( 0, nStartPos )) + sRet.subView( n );
+        }
+    }
+
+    return sRet;
 }
 
 

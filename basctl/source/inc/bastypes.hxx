@@ -283,7 +283,6 @@ private:
     Map m_aMap;
 };
 
-void            CutLines( OUString& rStr, sal_Int32 nStartLine, sal_Int32 nLines );
 OUString CreateMgrAndLibStr( std::u16string_view rMgrName, std::u16string_view rLibName );
 sal_uInt32           CalcLineCount( SvStream& rStream );
 

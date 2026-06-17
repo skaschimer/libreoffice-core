@@ -3104,53 +3104,6 @@ void SfxViewFrame::Resize( bool bForce )
     }
 }
 
-#if HAVE_FEATURE_SCRIPTING
-
-#define LINE_SEP 0x0A
-
-static void CutLines( OUString& rStr, sal_Int32 nStartLine, sal_Int32 nLines )
-{
-    sal_Int32 nStartPos = 0;
-    sal_Int32 nLine = 0;
-    while ( nLine < nStartLine )
-    {
-        nStartPos = rStr.indexOf( LINE_SEP, nStartPos );
-        if( nStartPos == -1 )
-            break;
-        nStartPos++;    // not the \n.
-        nLine++;
-    }
-
-    SAL_WARN_IF(nStartPos == -1, "sfx.view", "CutLines: Start row not found!");
-
-    if ( nStartPos != -1 )
-    {
-        sal_Int32 nEndPos = nStartPos;
-        for ( sal_Int32 i = 0; i < nLines; i++ )
-            nEndPos = rStr.indexOf( LINE_SEP, nEndPos+1 );
-
-        if ( nEndPos == -1 ) // Can happen at the last row.
-            nEndPos = rStr.getLength();
-        else
-            nEndPos++;
-
-        rStr = OUString::Concat(rStr.subView( 0, nStartPos )) + rStr.subView( nEndPos );
-    }
-    // erase trailing lines
-    if ( nStartPos != -1 )
-    {
-        sal_Int32 n = nStartPos;
-        sal_Int32 nLen = rStr.getLength();
-        while ( ( n < nLen ) && ( rStr[ n ] == LINE_SEP ) )
-            n++;
-
-        if ( n > nStartPos )
-            rStr = OUString::Concat(rStr.subView( 0, nStartPos )) + rStr.subView( n );
-    }
-}
-
-#endif
-
 /*
     add new recorded dispatch macro script into the application global basic
     lib container. It generates a new unique id for it and insert the macro
@@ -3227,12 +3180,7 @@ void SfxViewFrame::AddDispatchMacroToBasic_Impl( const OUString& sMacro )
                 SbMethod* pMethod = pModule ? pModule->FindMethod(aMacroName, SbxClassType::Method) : nullptr;
                 if (pMethod)
                 {
-                    aOUSource = pModule->GetSource();
-                    sal_uInt16 nStart, nEnd;
-                    pMethod->GetLineRange( nStart, nEnd );
-                    sal_uInt16 nlStart = nStart;
-                    sal_uInt16 nlEnd = nEnd;
-                    CutLines( aOUSource, nlStart-1, nlEnd-nlStart+1 );
+                    aOUSource = pModule->GetSourceWithoutMethod(*pMethod);
                 }
             }
         }

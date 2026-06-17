@@ -308,11 +308,8 @@ void DeleteMacro(SbMethod& rMethod)
 
     SbModule* pModule = rMethod.GetModule();
     assert(pModule && "DeleteMacro: No Module?!");
-    OUString aSource( pModule->GetSource() );
-    sal_uInt16 nStart, nEnd;
-    rMethod.GetLineRange( nStart, nEnd );
+    OUString aSource( pModule->GetSourceWithoutMethod(rMethod) );
     pModule->GetMethods()->Remove( &rMethod );
-    CutLines( aSource, nStart-1, nEnd-nStart+1 );
     pModule->SetSource( aSource );
 
     // update module in library

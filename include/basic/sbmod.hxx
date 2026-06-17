@@ -107,6 +107,9 @@ public:
     const OUString&  GetSource() const { return aOUSource;}
     void             SetSource( const OUString& r );
 
+    // Gets a copy of the module source but within the given method removed
+    OUString GetSourceWithoutMethod(const SbMethod& rMethod) const;
+
     bool Compile();
     bool IsCompiled() const;
     SAL_DLLPRIVATE const SbxObject* FindType( const OUString& aTypeName ) const;
