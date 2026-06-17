@@ -18,6 +18,7 @@ $(eval $(call gb_Module_add_l10n_targets,basic,\
 $(eval $(call gb_Module_add_check_targets,basic,\
 	CppunitTest_basic_scanner \
 	CppunitTest_basic_macros \
+	CppunitTest_basic_util \
 ))
 
 endif

@@ -36,6 +36,7 @@
 #include <basctl/basctldllpublic.hxx>
 #include <basic/sbmeth.hxx>
 #include <basic/sbuno.hxx>
+#include <basic/sbutil.hxx>
 #include <com/sun/star/beans/XMultiPropertySet.hpp>
 #include <com/sun/star/beans/XPropertiesChangeListener.hpp>
 #include <com/sun/star/container/XHierarchicalNameAccess.hpp>
@@ -1047,18 +1048,6 @@ void EditorWindow::SetSourceInBasic()
     }
 }
 
-// Returns the position of the last character of any of the following
-// EOL char combinations: CR, CR/LF, LF, return -1 if no EOL is found
-sal_Int32 searchEOL( std::u16string_view rStr, sal_Int32 fromIndex )
-{
-    size_t iLF = rStr.find( LINE_SEP, fromIndex );
-    if( iLF != std::u16string_view::npos )
-        return iLF;
-
-    size_t iCR = rStr.find( LINE_SEP_CR, fromIndex );
-    return iCR == std::u16string_view::npos ? -1 : iCR;
-}
-
 void EditorWindow::CreateEditEngine()
 {
     if (pEditEngine)
@@ -1082,7 +1071,7 @@ void EditorWindow::CreateEditEngine()
     do
     {
         nLines++;
-        nIndex = searchEOL( aOUSource, nIndex+1 );
+        nIndex = sb::searchEOL( aOUSource, nIndex+1 );
     }
     while (nIndex >= 0);
 

@@ -33,6 +33,7 @@
 
 #include <com/sun/star/script/XLibraryContainer.hpp>
 #include <com/sun/star/script/XLibraryContainerPassword.hpp>
+#include <basic/sbutil.hxx>
 #include <basctl/basctldllpublic.hxx>
 #include <sal/log.hxx>
 #include <sfx2/dispatch.hxx>
@@ -619,7 +620,7 @@ void CutLines( OUString& rStr, sal_Int32 nStartLine, sal_Int32 nLines )
     sal_Int32 nLine = 0;
     while ( nLine < nStartLine )
     {
-        nStartPos = searchEOL( rStr, nStartPos );
+        nStartPos = sb::searchEOL( rStr, nStartPos );
         if( nStartPos == -1 )
             break;
         nStartPos++;    // not the \n.
@@ -634,7 +635,7 @@ void CutLines( OUString& rStr, sal_Int32 nStartLine, sal_Int32 nLines )
     sal_Int32 nEndPos = nStartPos;
 
     for ( sal_Int32 i = 0; i < nLines; i++ )
-        nEndPos = searchEOL( rStr, nEndPos+1 );
+        nEndPos = sb::searchEOL( rStr, nEndPos+1 );
 
     if ( nEndPos == -1 ) // might happen at the last line
         nEndPos = rStr.getLength();
