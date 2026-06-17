@@ -25,12 +25,15 @@ namespace sb
 {
 sal_Int32 searchEOL(std::u16string_view rStr, sal_Int32 fromIndex)
 {
-    size_t iLF = rStr.find('\n', fromIndex);
-    if (iLF != std::u16string_view::npos)
-        return iLF;
+    size_t nPos = rStr.find_first_of(u"\r\n", fromIndex);
 
-    size_t iCR = rStr.find('\r', fromIndex);
-    return iCR == std::u16string_view::npos ? -1 : iCR;
+    if (nPos == std::u16string_view::npos)
+        return -1;
+
+    if (rStr.substr(nPos).starts_with(u"\r\n"))
+        return nPos + 1;
+    else
+        return nPos;
 }
 }
 

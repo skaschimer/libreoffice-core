@@ -33,6 +33,8 @@ void TestUtil::testSearchEOL()
     CPPUNIT_ASSERT_EQUAL(sal_Int32(3), sb::searchEOL(u"one\ntwo\r\three\r\n"));
     // Find the ending when \r\n is the first one
     CPPUNIT_ASSERT_EQUAL(sal_Int32(4), sb::searchEOL(u"one\r\ntwo\r\three\n"));
+    // Find the ending when \r is the first one
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(3), sb::searchEOL(u"one\rtwo\n\three\r\n"));
 
     // The three types of ending at at the end of the string
     CPPUNIT_ASSERT_EQUAL(sal_Int32(3), sb::searchEOL(u"one\n"));
