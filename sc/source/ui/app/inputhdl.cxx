@@ -2392,6 +2392,9 @@ void ScInputHandler::UpdateActiveView()
         // tdf#71409: Always create the edit engine instance for the input
         // window, in order to properly manage accessibility events.
         pTopView = pInputWin->GetEditView();
+        // tdf#82599 - sync pTableView to keep insert/overwrite mode consistent
+        if (pTopView && pTableView)
+            pTableView->SetInsertMode(pTopView->IsInsertMode());
         if (eMode != SC_INPUT_TOP)
             pTopView = nullptr;
     }
