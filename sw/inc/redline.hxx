@@ -228,6 +228,8 @@ public:
     SW_DLLPUBLIC RedlineType GetType( sal_uInt16 nPos = 0 ) const;
     // Returns true if any redline in the stack matches nType
     bool ContainsType( RedlineType nType ) const;
+    /// Like GetType(), but looks through "format" on top of delete.
+    SW_DLLPUBLIC RedlineType GetTypeIgnoringAdditonalFormat() const;
     // text content of the redline is only an annotation placeholder
     // (i.e. a comment, but don't confuse it with comment of the redline)
     bool IsAnnotation() const;
