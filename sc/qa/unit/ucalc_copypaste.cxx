@@ -10129,8 +10129,8 @@ CPPUNIT_TEST_FIXTURE(TestCopyPaste, testCopyFromClipCrossDocSameNameNoBind)
     auto pTable = std::make_unique<ScDBData>(u"MyTable"_ustr, 0, 0, 0, 2, 3, true, true);
     pTable->SetTableColumnNames(std::vector<OUString>{ u"H1"_ustr, u"H2"_ustr, u"H3"_ustr });
     CPPUNIT_ASSERT(m_pDoc->GetDBCollection()->getNamedDBs().insert(std::move(pTable)));
-    m_pDoc->SetValue(0, 1, 0, 1.0);  // A2
-    m_pDoc->SetValue(0, 2, 0, 4.0);  // A3
+    m_pDoc->SetValue(0, 1, 0, 1.0); // A2
+    m_pDoc->SetValue(0, 2, 0, 4.0); // A3
     m_pDoc->SetValue(0, 3, 0, 16.0); // A4
     m_pDoc->SetString(2, 1, 0, u"=SUM(MyTable[H1])"_ustr); // C2
     m_pDoc->CalcAll();
@@ -10148,7 +10148,8 @@ CPPUNIT_TEST_FIXTURE(TestCopyPaste, testCopyFromClipCrossDocSameNameNoBind)
     // Destination document with its OWN unrelated MyTable at F11:H14
     // carrying distinct H1 data.
     ScDocShellRef xDestDocSh = new ScDocShell;
-    xDestDocSh->DoLoad(new SfxMedium(u"file:///crossdocnameclash.fake"_ustr, StreamMode::STD_READWRITE));
+    xDestDocSh->DoLoad(
+        new SfxMedium(u"file:///crossdocnameclash.fake"_ustr, StreamMode::STD_READWRITE));
     ScDocument& rDestDoc = xDestDocSh->GetDocument();
     rDestDoc.InsertTab(0, u"Dest"_ustr);
     auto pDestTable = std::make_unique<ScDBData>(u"MyTable"_ustr, 0, 5, 10, 7, 13, true, true);
@@ -10166,8 +10167,7 @@ CPPUNIT_TEST_FIXTURE(TestCopyPaste, testCopyFromClipCrossDocSameNameNoBind)
     rDestDoc.CalcAll();
 
     // The pasted formula resolves to FormulaError::NoRef.
-    CPPUNIT_ASSERT_EQUAL(int(FormulaError::NoRef),
-                         int(rDestDoc.GetErrCode(ScAddress(2, 1, 0))));
+    CPPUNIT_ASSERT_EQUAL(int(FormulaError::NoRef), int(rDestDoc.GetErrCode(ScAddress(2, 1, 0))));
 
     // The source's H1 data landed in the destination at A2:A4.
     CPPUNIT_ASSERT_EQUAL(1.0, rDestDoc.GetValue(0, 1, 0));
@@ -10187,6 +10187,42 @@ CPPUNIT_TEST_FIXTURE(TestCopyPaste, testCopyFromClipCrossDocSameNameNoBind)
     CPPUNIT_ASSERT_EQUAL(400.0, rDestDoc.GetValue(5, 13, 0));
 
     xDestDocSh->DoClose();
+    m_pDoc->DeleteTab(0);
+}
+
+CPPUNIT_TEST_FIXTURE(TestCopyPaste, testCopyToClipMultiRangeGapTable)
+{
+    // A non-contiguous copy must carry only the tables that lie inside a copied
+    // range, not one sitting in the gap between two ranges. The gap table is
+    // inside the bounding box of the selection but none of its cells are copied.
+    m_pDoc->InsertTab(0, u"Test"_ustr);
+
+    // Column-direction multi-selection A1:B3 and E1:F3; the gap is columns C, D.
+
+    // InRangeTable at A1:B3 lies inside the first range. The clip carries it.
+    auto pInRange = std::make_unique<ScDBData>(u"InRangeTable"_ustr, 0, 0, 0, 1, 2, true, true);
+    CPPUNIT_ASSERT(m_pDoc->GetDBCollection()->getNamedDBs().insert(std::move(pInRange)));
+
+    // GapTable at C1:D3 lies in the gap. The clip leaves it out.
+    auto pGap = std::make_unique<ScDBData>(u"GapTable"_ustr, 0, 2, 0, 3, 2, true, true);
+    CPPUNIT_ASSERT(m_pDoc->GetDBCollection()->getNamedDBs().insert(std::move(pGap)));
+
+    ScMarkData aMark(m_pDoc->GetSheetLimits());
+    aMark.SelectOneTable(0);
+    ScClipParam aClipParam;
+    aClipParam.meDirection = ScClipParam::Column;
+    aClipParam.maRanges.push_back(ScRange(0, 0, 0, 1, 2, 0)); // A1:B3
+    aClipParam.maRanges.push_back(ScRange(4, 0, 0, 5, 2, 0)); // E1:F3
+
+    ScDocument aClipDoc(SCDOCMODE_CLIP);
+    m_pDoc->CopyToClip(aClipParam, &aClipDoc, &aMark, false, false);
+
+    ScDBCollection::NamedDBs& rClipDBs = aClipDoc.GetDBCollection()->getNamedDBs();
+    CPPUNIT_ASSERT_MESSAGE("a table inside a copied range is carried",
+                           rClipDBs.findByUpperName(u"INRANGETABLE"_ustr));
+    CPPUNIT_ASSERT_MESSAGE("a table in the gap between copied ranges must not be carried",
+                           !rClipDBs.findByUpperName(u"GAPTABLE"_ustr));
+
     m_pDoc->DeleteTab(0);
 }
 
