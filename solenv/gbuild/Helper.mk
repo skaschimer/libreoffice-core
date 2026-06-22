@@ -397,4 +397,6 @@ Libs: $(4)
 $(5)
 endef
 
+gb_Helper_make_zip_deterministic = $(if $(SOURCE_DATE_EPOCH),&& $(if $(MSYSTEM),$(STRAWBERRY_PERL),$(PERL)) $(SRCDIR)/solenv/bin/rewrite_zip_timestamps.pl $(1) $(SOURCE_DATE_EPOCH))
+
 # vim: set noet sw=4 ts=4:

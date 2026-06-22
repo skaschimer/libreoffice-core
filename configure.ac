@@ -7057,7 +7057,12 @@ if test "$_os" = "WINNT"; then
         done
     fi
 fi
-if test "$with_system_hsqldb" = "yes"; then
+
+# required for solenv/bin/rewrite_zip_timestamps.pl/for reproducible builds
+# and also needed for --with-system-hsqldb
+if test -n "$WSL_ONLY_AS_HELPER"; then
+    perl_use_string_spp="$perl_use_string_spp ; use Archive::Zip"
+else
     perl_use_string="$perl_use_string ; use Archive::Zip"
 fi
 if test "$enable_openssl" = "yes" -a "$with_system_openssl" != "yes"; then

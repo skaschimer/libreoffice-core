@@ -54,6 +54,7 @@ $(call gb_Zip_get_target,%) :
 					$(call gb_Zip_get_target,$*)) && \
 			rm -f $${RESPONSEFILE} && \
 			touch $@\
+			$(call gb_Helper_make_zip_deterministic,$@) \
 		,	cp $(SRCDIR)/solenv/gbuild/empty.zip $@)\
 		$(if $(INSTALL_NAME),&& cp $(call gb_Zip_get_target,$*) $(INSTALL_NAME)) \
 	)

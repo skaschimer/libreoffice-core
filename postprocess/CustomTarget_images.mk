@@ -62,7 +62,8 @@ $(packimages_DIR)/images_%.zip : \
 			-L $(packimages_DIR)/$*_links.txt \
 			-s $< -o $@ \
 			$(if $(findstring s,$(MAKEFLAGS)),> /dev/null) && \
-		rm -rf $${ILSTFILE})
+		rm -rf $${ILSTFILE} \
+		$(call gb_Helper_make_zip_deterministic,$@))
 	$(call gb_Trace_EndRange,$(subst $(WORKDIR)/,,$@),PRL)
 
 # turn the #defines foo "resource.png" of hlst into the final ilst format
