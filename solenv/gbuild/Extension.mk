@@ -464,7 +464,7 @@ $(call gb_Extension_get_rootdir,$(1))/help/$(2).done : \
             -idxcontent $(SRCDIR)/xmlhelp/util/idxcontent.xsl \
             $$(HELPFILES) && \
         (cd $(gb_Extension_workdir)/$(1)/help/$(2) && \
-            $$(call gb_Helper_wsl_path,$(WSL) $$(gb_Extension_ZIPCOMMAND) -r $$(basename $$@)/help.jar \
+            $$(call gb_Helper_wsl_path,$(WSL) $$(gb_Extension_ZIPCOMMAND) -rX $$(basename $$@)/help.jar \
             $$(HELPFILES))) \
             $$(call gb_Helper_make_zip_deterministic,$$(basename $$@)/help.jar) && \
         $$(gb_Extension_HELPINDEXERCOMMAND) -lang $(2) -mod help \
