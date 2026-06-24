@@ -1,0 +1,23 @@
+diff -ur beanshell.org/build.xml beanshell/build.xml
+--- beanshell.org/build.xml	2026-06-24 14:37:04.303021292 +0000
++++ beanshell/build.xml	2026-06-24 14:42:15.878048543 +0000
+@@ -11,7 +11,9 @@
+ 		useful...
+ -->
+ <project name="beanshell" default="jarall" basedir=".">
+-
++   <tstamp>
++       <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
++   </tstamp>
+ <!-- Project Configuration -->
+ 
+ <property name="file" value=""/>
+@@ -433,7 +435,7 @@
+ 
+ 	<target name="jarall" depends="compile,_distdir">
+ 		<delete file="${all-jar}"/>
+-		<jar jarfile="${all-jar}">
++		<jar jarfile="${all-jar}" modificationtime="${jar.timestamp}">
+ 			<manifest>
+ 				<attribute name="Main-Class" value="bsh.Console" />
+ 				<attribute name="Specification-Title" value="${Specification-Title}" />

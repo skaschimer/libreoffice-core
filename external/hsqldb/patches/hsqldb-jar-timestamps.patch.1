@@ -1,0 +1,19 @@
+diff -ur hsqldb.org/build/build.xml hsqldb/build/build.xml
+--- hsqldb.org/build/build.xml	2026-06-24 11:33:53.281747718 +0000
++++ hsqldb/build/build.xml	2026-06-24 14:14:08.447370174 +0000
+@@ -19,6 +19,7 @@
+    <tstamp>
+        <format property="_tmpstamp" pattern="yyyy/MM/dd-hh:mm:ss"
+                locale="en"/>
++       <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
+    </tstamp>
+ 
+    <property name="build.label" value="private-${_tmpstamp}"/>
+@@ -626,6 +627,7 @@
+         <jar jarfile="lib/hsqldb.jar"
+              basedir="classes"
+              compress="true"
++             modificationtime="${jar.timestamp}"
+          >
+          <manifest>
+              <attribute name='Specification-Title' value='${hsqldb.title}'/>

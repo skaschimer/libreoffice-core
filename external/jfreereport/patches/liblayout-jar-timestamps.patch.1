@@ -1,0 +1,20 @@
+diff -ur jfreereport_liblayout.org/build.xml jfreereport_liblayout/build.xml
+--- jfreereport_liblayout.org/build.xml	2026-06-24 15:14:55.392091886 +0000
++++ jfreereport_liblayout/build.xml	2026-06-24 15:23:10.047571909 +0000
+@@ -1,4 +1,7 @@
+ <project name="liblayout" default="all" basedir=".">
++   <tstamp>
++       <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
++   </tstamp>
+ 
+    <!-- Properties -->
+    <property name="name" value="liblayout"/>
+@@ -60,7 +63,7 @@
+    <target name="jar" depends="classes">
+      <copy file="devresource/META-INF/MANIFEST.MF" tofile="${build}/manifest.tmp" failonerror="false"/>
+      <manifest file="${build}/manifest.tmp" mode="update"/>
+-     <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}" manifest="${build}/manifest.tmp"/>
++     <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}" manifest="${build}/manifest.tmp" modificationtime="${jar.timestamp}"/>
+    </target>
+ 
+    <!-- Build the full JavaDocs -->

@@ -22,6 +22,7 @@ $(eval $(call gb_UnpackedTarball_add_patches,beanshell,\
 	external/beanshell/beanshell-invoke.patch \
 	external/beanshell/java9.patch.0 \
 	external/beanshell/applet.patch.0 \
+	external/beanshell/beanshell-jar-timestamps.patch.1 \
 ))
 
 # vim: set noet sw=4 ts=4:

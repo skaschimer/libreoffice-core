@@ -20,10 +20,11 @@ $(eval $(call gb_ExternalProject_register_targets,jfreereport_flow_engine,\
 $(call gb_ExternalProject_get_state_target,jfreereport_flow_engine,build) :
 	$(call gb_Trace_StartRange,jfreereport_flow_engine,EXTERNAL)
 	$(call gb_ExternalProject_run,build,\
-		unset MSYS_NO_PATHCONV && JAVA_HOME=$(JAVA_HOME_FOR_BUILD) \
+		unset MSYS_NO_PATHCONV SOURCE_DATE_EPOCH && JAVA_HOME=$(JAVA_HOME_FOR_BUILD) \
 		$(ICECREAM_RUN) "$(ANT)" \
 			$(if $(verbose),-v,-q) \
 			-f build.xml \
+			$(if $(SOURCE_DATE_EPOCH),-Dant.tstamp.now=$(SOURCE_DATE_EPOCH)) \
 			-Dbuild.label="build-$(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR).$(LIBO_VERSION_MICRO).$(LIBO_VERSION_PATCH)" \
 			-Dlibbase.jar=$(gb_UnpackedTarball_workdir)/jfreereport_libbase/dist/libbase-$(LIBBASE_VERSION).jar \
 			-Dlibformula.jar=$(gb_UnpackedTarball_workdir)/jfreereport_libformula/dist/libformula-$(LIBFORMULA_VERSION).jar \

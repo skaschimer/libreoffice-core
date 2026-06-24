@@ -13,13 +13,18 @@ $(eval $(call gb_ExternalProject_register_targets,beanshell,\
 	build \
 ))
 
+# older versions of ant expect SOURCE_DATE_EPOCH to be in milliseconds, so if set in environment
+# that also would take precedence over the -Dant.tstam.now property and fail. That can be a problem
+# if the variable is overridden/provided by exporting it in the env instead of passing it to make
+# as a parameter. To counteract that problem, explicitly unset it here.
 $(call gb_ExternalProject_get_state_target,beanshell,build) :
 	$(call gb_Trace_StartRange,beanshell,EXTERNAL)
 	$(call gb_ExternalProject_run,build,\
-	unset MSYS_NO_PATHCONV && JAVA_HOME=$(JAVA_HOME_FOR_BUILD) \
+	unset MSYS_NO_PATHCONV SOURCE_DATE_EPOCH && JAVA_HOME=$(JAVA_HOME_FOR_BUILD) \
 	$(ICECREAM_RUN) "$(ANT)" \
 		$(if $(verbose),-v,-q) \
 		-f build.xml \
+		$(if $(SOURCE_DATE_EPOCH),-Dant.tstamp.now=$(SOURCE_DATE_EPOCH)) \
 		-Dbuild.label="build-$(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR).$(LIBO_VERSION_MICRO).$(LIBO_VERSION_PATCH)" \
 		-Dant.build.javac.source=$(JAVA_SOURCE_VER) \
 		-Dant.build.javac.target=$(JAVA_TARGET_VER) \

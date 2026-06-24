@@ -1,0 +1,20 @@
+diff -ur jfreereport_flow_engine.org/build.xml jfreereport_flow_engine/build.xml
+--- jfreereport_flow_engine.org/build.xml	2026-06-24 14:47:45.196052819 +0000
++++ jfreereport_flow_engine/build.xml	2026-06-24 14:50:20.231584057 +0000
+@@ -1,4 +1,7 @@
+ <project name="flow-engine" default="all" basedir=".">
++   <tstamp>
++       <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
++   </tstamp>
+ 
+    <!-- Properties -->
+    <property name="name" value="flow-engine"/>
+@@ -55,7 +58,7 @@
+    <target name="jar" depends="classes">
+      <copy file="devresource/META-INF/MANIFEST.MF" tofile="${build}/manifest.tmp" failonerror="false"/>
+      <manifest file="${build}/manifest.tmp" mode="update"/>
+-     <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}" manifest="${build}/manifest.tmp"/>
++     <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}" manifest="${build}/manifest.tmp" modificationtime="${jar.timestamp}"/>
+    </target>
+ 
+    <!-- Build the full JavaDocs -->

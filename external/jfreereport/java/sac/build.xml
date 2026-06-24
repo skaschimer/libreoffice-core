@@ -1,5 +1,7 @@
 <project name="sac" default="all" basedir=".">
-
+  <tstamp>
+    <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
+  </tstamp>
   <!-- Properties -->
 
   <property name="name" value="sac"/>
@@ -42,7 +44,7 @@
 
   <!-- Build jar archives -->
   <target name="jar" depends="classes">
-    <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}"/>
+    <jar jarfile="${build.lib}/${name}.jar" basedir="${build.classes}" modificationtime="${jar.timestamp}"/>
   </target>
 
   <!-- Build the full JavaDocs -->

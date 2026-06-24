@@ -15153,7 +15153,8 @@ EOF
         AC_MSG_RESULT([Ant lib directory found.])
     fi
 
-    ant_minver=1.6.0
+    # reproducible builds need the modificationtime parameter for the jar task introduced in 1.10.2
+    ant_minver=1.10.2
     ant_minminor1=`echo $ant_minver | cut -d"." -f2`
 
     AC_MSG_CHECKING([whether Ant is >= $ant_minver])

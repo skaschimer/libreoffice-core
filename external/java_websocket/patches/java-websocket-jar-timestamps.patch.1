@@ -1,0 +1,20 @@
+diff -ur java_websocket.org/build.xml java_websocket/build.xml
+--- java_websocket.org/build.xml	2026-06-24 15:32:09.431913892 +0000
++++ java_websocket/build.xml	2026-06-24 15:33:15.528712683 +0000
+@@ -1,4 +1,7 @@
+ <project default="all">
++    <tstamp>
++        <format property="jar.timestamp" pattern="yyyy-MM-dd'T'HH:mm:ssXXX" timezone="UTC"/>
++    </tstamp>
+     <target name="all" depends="jar" />
+ 
+     <target name="compile">
+@@ -11,7 +14,7 @@
+ 
+     <target name="jar" depends="compile">
+         <mkdir dir="dist"/>
+-        <jar destfile="dist/java_websocket.jar">
++        <jar destfile="dist/java_websocket.jar" modificationtime="${jar.timestamp}">
+             <fileset dir="build/classes" includes="**/*.class" />
+         </jar>
+     </target>
