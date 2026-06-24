@@ -19,7 +19,7 @@
 
 # Jar class
 
-gb_Jar_JARCOMMAND := jar
+gb_Jar_JARCOMMAND := jar $(if $(SOURCE_DATE_EPOCH),--date="$(shell date $(if $(filter $(OS),MACOSX),-r ,-d @)$(SOURCE_DATE_EPOCH) -u +'%FT%T+00:00')")
 
 gb_Jar_LAYER_DIRS := \
 	URE:$(INSTROOT)/$(LIBO_URE_SHARE_JAVA_FOLDER) \
@@ -61,9 +61,9 @@ define gb_Jar__command
 	echo "Solar-Version: $(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR).$(LIBO_VERSION_MICRO).$(LIBO_VERSION_PATCH)" >> $(call gb_Jar_get_manifest_target,$(1)) && \
 	$(if $(MANIFEST),cat $(MANIFEST) >> $(call gb_Jar_get_manifest_target,$(1)) &&) \
 	mkdir -p $(dir $(2)) && cd $(call gb_Jar_get_workdir,$(1)) && \
-	$(gb_Jar_JARCOMMAND) cfm $(2) $(call gb_Jar_get_manifest_target,$(1)) \
+	$(gb_Jar_JARCOMMAND) -c -f $(2) -m $(call gb_Jar_get_manifest_target,$(1)) \
 		META-INF $(PACKAGEROOTS) $(PACKAGEFILES) \
-	$(foreach root,$(PACKAGEDIRS),&& cd $(dir $(root)) && $(gb_Jar_JARCOMMAND) uf $(2) $(notdir $(root))) \
+	$(foreach root,$(PACKAGEDIRS),&& cd $(dir $(root)) && $(gb_Jar_JARCOMMAND) -u -f $(2) $(notdir $(root))) \
 	|| (rm -f $(2); false) )
 endef
 

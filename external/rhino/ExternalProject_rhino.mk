@@ -27,7 +27,7 @@ $(call gb_ExternalProject_get_state_target,rhino,build) :
 			$(gb_UnpackedTarball_workdir)/rhino/NOTICE-tools.txt \
 			$(gb_UnpackedTarball_workdir)/rhino/NOTICE.txt \
 			$(gb_UnpackedTarball_workdir)/rhino/build/content/META-INF/ \
-		&& $(gb_Jar_JARCOMMAND) -cf $(gb_UnpackedTarball_workdir)/rhino/build/js.jar \
+		&& $(gb_Jar_JARCOMMAND) -c -f $(gb_UnpackedTarball_workdir)/rhino/build/js.jar \
 			-C $(gb_UnpackedTarball_workdir)/rhino/build/content . \
 			-C $(gb_UnpackedTarball_workdir)/rhino/src \
 			org/mozilla/javascript/commonjs/module/package.html \

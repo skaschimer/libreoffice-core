@@ -9287,7 +9287,13 @@ if test "$ENABLE_JAVA" != "" -a "$cross_compiling" != "yes"; then
             if test "$_jdk_ver" -ge 180000 && test "$_jdk_ver" -lt 240000; then
                 JDK_SECURITYMANAGER_DISALLOWED=TRUE
             fi
-
+            # reproducible builds make use of jar --date and that was introduced in jdk19
+            # and backported to openJDK 17.0.3/oracle JDK 17.0.6 respectively
+            if test "$_jdk_ver" -lt 170006 || test "$_jdk_ver" -ge 180000 && test "$_jdk_ver" -lt 190000; then
+                AC_MSG_WARN([JDK too old for reproducible builds, needs jar --date support (see https://bugs.openjdk.org/browse/JDK-8276766 )])
+                add_warning "JDK too old for reproducible builds, needs jar --date support (see https://bugs.openjdk.org/browse/JDK-8276766 )"
+                SOURCE_DATE_EPOCH=""
+            fi
             JAVA_HOME=`echo $JAVAINTERPRETER | $SED -n "s,//*bin//*java,,p"`
             if test "$_os" = "WINNT"; then
                 JAVA_HOME=`echo $JAVA_HOME | $SED "s,\.[[eE]][[xX]][[eE]]$,,"`
