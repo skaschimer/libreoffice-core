@@ -100,7 +100,6 @@ class SvxScriptOrgDialog : public SfxDialogController
     DECL_LINK(ScriptSelectHdl, weld::ItemView&, void);
     DECL_LINK( ExpandingHdl, const weld::TreeIter&, bool );
     DECL_LINK( ButtonHdl, weld::Button&, void );
-    static bool         getBoolProperty( css::uno::Reference< css::beans::XPropertySet > const & xProps, OUString const & propName );
     void                CheckButtons(  css::uno::Reference< css::script::browse::XBrowseNode > const & node );
 
     void        createEntry(const weld::TreeIter& rEntry);

@@ -127,6 +127,7 @@ $(eval $(call gb_Library_add_exception_objects,comphelper,\
     comphelper/source/misc/traceevent \
     comphelper/source/misc/random \
     comphelper/source/misc/SelectionMultiplex \
+    comphelper/source/misc/scriptbrowse \
     comphelper/source/misc/sequenceashashmap \
     comphelper/source/misc/sharedmutex \
     comphelper/source/misc/simplefileaccessinteraction \

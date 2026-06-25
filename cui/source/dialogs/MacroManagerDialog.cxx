@@ -26,6 +26,7 @@
 #include <comphelper/diagnose_ex.hxx>
 #include <comphelper/documentinfo.hxx>
 #include <comphelper/processfactory.hxx>
+#include <comphelper/scriptbrowse.hxx>
 #include <osl/file.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <sfx2/app.hxx>
@@ -60,7 +61,6 @@
 #include <com/sun/star/script/XLibraryContainer2.hpp>
 #include <com/sun/star/script/XLibraryContainerPassword.hpp>
 #include <com/sun/star/script/XPersistentLibraryContainer.hpp>
-#include <com/sun/star/script/XInvocation.hpp>
 #include <com/sun/star/script/XStorageBasedLibraryContainer.hpp>
 #include <com/sun/star/uno/RuntimeException.hpp>
 
@@ -922,23 +922,6 @@ IMPL_LINK(MacroManagerDialog, ContextMenuHdl, const CommandEvent&, rCEvt, bool)
     return true;
 }
 
-// same as OUString SvxScriptOrgDialog::getBoolProperty((Reference<beans::XPropertySet> const& xProps, OUString const& propName)
-// cui/source/dialogs/scriptdlg.cxx
-bool MacroManagerDialog::getBoolProperty(
-    css::uno::Reference<css::beans::XPropertySet> const& xProps, OUString const& propName)
-{
-    bool result = false;
-    try
-    {
-        xProps->getPropertyValue(propName) >>= result;
-    }
-    catch (css::uno::Exception&)
-    {
-        return result;
-    }
-    return result;
-}
-
 css::uno::Reference<css::script::browse::XBrowseNode>
 MacroManagerDialog::getBrowseNode(const weld::TreeView& rTreeView, const weld::TreeIter& rTreeIter)
 {
@@ -1051,14 +1034,9 @@ void MacroManagerDialog::CheckButtons()
                             rScriptContainersTreeView, *xScriptContainersSelectedIter);
                         if (node.is())
                         {
-                            css::uno::Reference<css::beans::XPropertySet> xProps(
-                                node, css::uno::UNO_QUERY);
-                            if (xProps.is())
+                            if (comphelper::scriptbrowse::isCreatable(node))
                             {
-                                if (getBoolProperty(xProps, "Creatable"))
-                                {
-                                    bSensitiveNewLibraryButton = true;
-                                }
+                                bSensitiveNewLibraryButton = true;
                             }
                         }
                     }
@@ -1147,28 +1125,23 @@ void MacroManagerDialog::CheckButtons()
                     = getBrowseNode(rScriptContainersTreeView, *xScriptContainersSelectedIter);
                 if (node.is())
                 {
-                    css::uno::Reference<css::beans::XPropertySet> xProps(node, css::uno::UNO_QUERY);
-                    if (xProps.is())
+                    if (comphelper::scriptbrowse::isCreatable(node)
+                        && rScriptContainersTreeView.get_iter_depth(*xScriptContainersSelectedIter)
+                               == 2) // library entry
                     {
-                        if (getBoolProperty(xProps, "Creatable")
-                            && rScriptContainersTreeView.get_iter_depth(
-                                   *xScriptContainersSelectedIter)
-                                   == 2) // library entry
-                        {
-                            bSensitiveMacroCreateButton = true;
-                        }
-                        if (getBoolProperty(xProps, "Editable"))
-                        {
-                            bSensitiveLibraryModuleDialogEditButton = true;
-                        }
-                        if (getBoolProperty(xProps, "Deletable"))
-                        {
-                            bSensitiveLibraryModuleDialogDeleteButton = true;
-                        }
-                        if (getBoolProperty(xProps, "Renamable"))
-                        {
-                            bSensitiveLibraryModuleDialogRenameButton = true;
-                        }
+                        bSensitiveMacroCreateButton = true;
+                    }
+                    if (comphelper::scriptbrowse::isEditable(node))
+                    {
+                        bSensitiveLibraryModuleDialogEditButton = true;
+                    }
+                    if (comphelper::scriptbrowse::isDeletable(node))
+                    {
+                        bSensitiveLibraryModuleDialogDeleteButton = true;
+                    }
+                    if (comphelper::scriptbrowse::isRenamable(node))
+                    {
+                        bSensitiveLibraryModuleDialogRenameButton = true;
                     }
                 }
             }
@@ -1189,23 +1162,19 @@ void MacroManagerDialog::CheckButtons()
                 {
                     bSensitiveMacroRunButton = true;
 
-                    css::uno::Reference<css::beans::XPropertySet> xProps(node, css::uno::UNO_QUERY);
-                    if (xProps.is())
+                    if (comphelper::scriptbrowse::isEditable(node))
                     {
-                        if (getBoolProperty(xProps, "Editable"))
+                        bSensitiveMacroEditButton = true;
+                    }
+                    if (!bSharedLocationContainer)
+                    {
+                        if (comphelper::scriptbrowse::isDeletable(node))
                         {
-                            bSensitiveMacroEditButton = true;
+                            bSensitiveMacroDeleteButton = true;
                         }
-                        if (!bSharedLocationContainer)
+                        if (comphelper::scriptbrowse::isRenamable(node))
                         {
-                            if (getBoolProperty(xProps, "Deletable"))
-                            {
-                                bSensitiveMacroDeleteButton = true;
-                            }
-                            if (getBoolProperty(xProps, "Renamable"))
-                            {
-                                bSensitiveMacroRenameButton = true;
-                            }
+                            bSensitiveMacroRenameButton = true;
                         }
                     }
                 }
@@ -1624,21 +1593,17 @@ IMPL_LINK(MacroManagerDialog, ClickHdl, weld::Button&, rButton, void)
             return; // should never happen
         css::uno::Reference<css::script::browse::XBrowseNode> node
             = getBrowseNode(rTreeView, *xSelectedIter);
-        css::uno::Reference<css::script::XInvocation> xInv(node, css::uno::UNO_QUERY);
-        if (xInv.is())
+        if (node.is())
         {
             m_xDialog->response(RET_CANCEL);
-            css::uno::Sequence<css::uno::Any> args(0);
-            css::uno::Sequence<css::uno::Any> outArgs(0);
-            css::uno::Sequence<sal_Int16> outIndex;
             try
             {
                 // ISSUE need code to run script here
-                xInv->invoke(u"Editable"_ustr, args, outIndex, outArgs);
+                comphelper::scriptbrowse::editNode(node);
             }
             catch (css::uno::Exception const&)
             {
-                TOOLS_WARN_EXCEPTION("cui.dialogs", "Caught exception trying to invoke");
+                TOOLS_WARN_EXCEPTION("cui.dialogs", "Caught exception trying to edit");
             }
         }
     }
@@ -2079,9 +2044,8 @@ void MacroManagerDialog::ScriptingFrameworkScriptsRenameEntry(weld::TreeView& rT
 {
     css::uno::Reference<css::script::browse::XBrowseNode> xBrowseNode
         = getBrowseNode(rTreeView, rEntry);
-    css::uno::Reference<css::script::XInvocation> xInv(xBrowseNode, css::uno::UNO_QUERY);
 
-    if (xInv.is())
+    if (xBrowseNode.is())
     {
         OUString aNewName = xBrowseNode->getName();
         sal_Int32 extnPos = aNewName.lastIndexOf('.');
@@ -2112,17 +2076,14 @@ void MacroManagerDialog::ScriptingFrameworkScriptsRenameEntry(weld::TreeView& rT
 
         aNewName = aNameDialog.GetName();
 
-        css::uno::Sequence<css::uno::Any> args{ css::uno::Any(aNewName) };
-        css::uno::Sequence<css::uno::Any> outArgs;
-        css::uno::Sequence<sal_Int16> outIndex;
         try
         {
-            css::uno::Any aResult = xInv->invoke(u"Renamable"_ustr, args, outIndex, outArgs);
-            xBrowseNode.set(aResult, css::uno::UNO_QUERY);
+            xBrowseNode = comphelper::scriptbrowse::renameNode(xBrowseNode, aNewName);
         }
         catch (css::uno::Exception const&)
         {
             TOOLS_WARN_EXCEPTION("cui.dialogs", "Caught exception trying to Rename");
+            xBrowseNode.clear();
         }
     }
     if (xBrowseNode.is())
@@ -2218,16 +2179,12 @@ void MacroManagerDialog::ScriptingFrameworkScriptsDeleteEntry(weld::TreeView& rT
         return;
     }
 
-    css::uno::Reference<css::script::XInvocation> xInv(node, css::uno::UNO_QUERY);
-    if (xInv.is())
+    if (node.is())
     {
-        css::uno::Sequence<css::uno::Any> args(0);
-        css::uno::Sequence<css::uno::Any> outArgs(0);
-        css::uno::Sequence<sal_Int16> outIndex;
         try
         {
-            css::uno::Any aResult = xInv->invoke(u"Deletable"_ustr, args, outIndex, outArgs);
-            aResult >>= result; // or do we just assume true if no exception ?
+            result = comphelper::scriptbrowse::deleteNode(node);
+            // or do we just assume true if no exception ?
         }
         catch (css::uno::Exception const&)
         {
@@ -2270,10 +2227,8 @@ void MacroManagerDialog::ScriptingFrameworkScriptsCreateEntry(InputDialogMode eI
     css::uno::Reference<css::script::browse::XBrowseNode> aChildNode;
     css::uno::Reference<css::script::browse::XBrowseNode> xBrowseNode
         = getBrowseNode(rTreeView, *xSelectedIter);
-    css::uno::Reference<css::script::XInvocation> xInv(xBrowseNode, css::uno::UNO_QUERY);
 
-    // Currently, invocation is not implemented for python, only beanshell, javascript, and java.
-    if (xInv.is())
+    if (xBrowseNode.is())
     {
         OUString aNewName;
         OUString aNewStdName;
@@ -2394,13 +2349,9 @@ void MacroManagerDialog::ScriptingFrameworkScriptsCreateEntry(InputDialogMode eI
         // open up parent node (which ensures it's loaded)
         rTreeView.expand_row(*xSelectedIter);
 
-        css::uno::Sequence<css::uno::Any> args{ css::uno::Any(aNewName) };
-        css::uno::Sequence<css::uno::Any> outArgs;
-        css::uno::Sequence<sal_Int16> outIndex;
         try
         {
-            css::uno::Any aResult = xInv->invoke(u"Creatable"_ustr, args, outIndex, outArgs);
-            aChildNode.set(aResult, css::uno::UNO_QUERY);
+            aChildNode = comphelper::scriptbrowse::createNode(xBrowseNode, aNewName);
         }
         catch (css::uno::Exception const&)
         {
