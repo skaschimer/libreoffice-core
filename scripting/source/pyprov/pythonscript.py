@@ -39,11 +39,10 @@ from com.sun.star.beans import XPropertySet, Property
 from com.sun.star.container import XNameContainer
 from com.sun.star.xml.sax import XDocumentHandler, InputSource
 from com.sun.star.uno import Exception as UnoException
-from com.sun.star.script import XInvocation
 from com.sun.star.awt import XActionListener
 
 from com.sun.star.script.provider import XScriptProvider, XScript, ScriptFrameworkErrorException
-from com.sun.star.script.browse import XBrowseNode
+from com.sun.star.script.browse import XBrowseNode, XCreatableBrowseNode, XEditableBrowseNode
 from com.sun.star.script.browse.BrowseNodeTypes import SCRIPT, CONTAINER
 from com.sun.star.system import SystemShellExecuteFlags
 
@@ -585,7 +584,7 @@ def isScript(candidate):
 
 # -------------------------------------------------------
 # A mixin class for nodes that have a uri property so that an editor can be used on it
-class EditableNode(XInvocation, XActionListener):
+class EditableNode(XActionListener, XEditableBrowseNode):
     def _edit_with_dialog(self):
         servicename = "com.sun.star.awt.DialogProvider"
         ctx = self.provCtx.scriptContext.getComponentContext()
@@ -606,14 +605,13 @@ class EditableNode(XInvocation, XActionListener):
 
         self.editor.execute()
 
-    def invoke(self, name, params, outparamindex, outparams):
-        if name == "Editable":
-            if ENABLE_EDIT_DIALOG:
-                self._edit_with_dialog()
-            else:
-                openExternalEditor(self.provCtx.scriptContext.getComponentContext(), self.uri)
+    def editNode(self):
+        if ENABLE_EDIT_DIALOG:
+            self._edit_with_dialog()
+        else:
+            openExternalEditor(self.provCtx.scriptContext.getComponentContext(), self.uri)
 
-        return None
+        return True
 
     def setValue(self, name, value):
         return None
@@ -630,7 +628,7 @@ class EditableNode(XInvocation, XActionListener):
     def getIntrospection(self):
         return None
 
-    def isEditable(self):
+    def isEditableNode(self):
         if self.provCtx.sfa.isReadOnly(self.uri):
             return False
         if urllib.parse.urlsplit(self.uri).scheme != 'file':
@@ -700,8 +698,6 @@ class ScriptBrowseNode(unohelper.Base, XBrowseNode, XPropertySet, EditableNode):
                 ret = self.provCtx.uriHelper.getScriptURI(
                     self.provCtx.getPersistentUrlFromStorageUrl(self.uri + "$" + self.funcName)
                 )
-            elif name == "Editable":
-                ret = self.isEditable()
 
             log.debug("ScriptBrowseNode.getPropertyValue called for " + name + ", returning " + str(ret))
         except Exception:
@@ -719,7 +715,7 @@ class ScriptBrowseNode(unohelper.Base, XBrowseNode, XPropertySet, EditableNode):
 
 
 # -------------------------------------------------------
-class FileBrowseNode(unohelper.Base, XBrowseNode, EditableNode, XPropertySet):
+class FileBrowseNode(unohelper.Base, XBrowseNode, EditableNode):
     def __init__(self, provCtx, uri, name):
         self.provCtx = provCtx
         self.uri = uri
@@ -754,24 +750,8 @@ class FileBrowseNode(unohelper.Base, XBrowseNode, EditableNode, XPropertySet):
     def getType(self):
         return CONTAINER
 
-    def getPropertyValue(self, name):
-        ret = None
-        if name == "Editable":
-            ret = self.isEditable()
 
-        log.debug("FileBrowseNode.getPropertyValue called for " + name + ", returning " + str(ret))
-
-        return ret
-
-    def setPropertyValue(self, name, value):
-        log.debug("FileBrowseNode.setPropertyValue called " + name + "=" + str(value))
-
-    def getPropertySetInfo(self):
-        log.debug("FileBrowseNode.getPropertySetInfo called ")
-        return None
-
-
-class DirBrowseNode(unohelper.Base, XBrowseNode, XPropertySet, XInvocation):
+class DirBrowseNode(unohelper.Base, XBrowseNode, XCreatableBrowseNode):
     def __init__(self, provCtx, name, rootUrl):
         self.provCtx = provCtx
         self.name = name
@@ -810,66 +790,30 @@ class DirBrowseNode(unohelper.Base, XBrowseNode, XPropertySet, XInvocation):
         log.debug("DirBrowseNode getScript " + uri + " invoked")
         raise IllegalArgumentException("DirBrowseNode couldn't instantiate script " + uri, self, 0)
 
-    def getPropertyValue(self, name):
-        ret = None
-        try:
-            if name == "Creatable":
-                ret = urllib.parse.urlsplit(self.rootUrl).scheme == 'file'
+    def isCreatableNode(self):
+        return urllib.parse.urlsplit(self.rootUrl).scheme == 'file'
 
-            log.debug(f"DirBrowseNode.getPropertyValue called for {name} returning {str(ret)}")
-        except Exception:
-            log.error(f"DirBrowseNode.getPropertyValue error {lastException2String()}")
+    def createNode(self, scriptName):
+        uri = f"{self.rootUrl}/{scriptName}.py"
+
+        # Create the file with an example macro
+        try:
+            filePath = uno.fileUrlToSystemPath(uri)
+
+            os.makedirs(os.path.dirname(filePath), exist_ok=True)
+
+            with open(filePath, "x", encoding="utf-8") as f:
+                f.write(EXAMPLE_MACRO)
+
+        except OSError as e:
+            log.error(f"DirBrowseNode Creatable error {e}")
             raise
 
-        return ret
+        except Exception:
+            log.error(f"DirBrowseNode Creatable error {lastException2String()}")
+            raise
 
-    def setPropertyValue(self, name, value):
-        log.debug(f"DirBrowseNode.setPropertyValue called {name}={str(value)}")
-
-    def getPropertySetInfo(self):
-        log.debug("DirBrowseNode.getPropertySetInfo called ")
-        return None
-
-    def invoke(self, name, params, outparamindex, outparams):
-        if name == "Creatable":
-            scriptName = params[0]
-            uri = f"{self.rootUrl}/{scriptName}.py"
-
-            # Create the file with an example macro
-            try:
-                filePath = uno.fileUrlToSystemPath(uri)
-
-                os.makedirs(os.path.dirname(filePath), exist_ok=True)
-
-                with open(filePath, "x", encoding="utf-8") as f:
-                    f.write(EXAMPLE_MACRO)
-
-            except OSError as e:
-                log.error(f"DirBrowseNode Creatable error {e}")
-                raise
-
-            except Exception:
-                log.error(f"DirBrowseNode Creatable error {lastException2String()}")
-                raise
-
-            return (FileBrowseNode(self.provCtx, uri, scriptName), [], [])
-
-        return None
-
-    def setValue(self, name, value):
-        return None
-
-    def getValue(self, name):
-        return None
-
-    def hasMethod(self, name):
-        return False
-
-    def hasProperty(self, name):
-        return False
-
-    def getIntrospection(self):
-        return None
+        return FileBrowseNode(self.provCtx, uri, scriptName)
 
 
 class ManifestHandler(XDocumentHandler, unohelper.Base):
@@ -1150,7 +1094,7 @@ def expandUri(uri):
 
 # --------------------------------------------------------------
 class PythonScriptProvider(unohelper.Base, XBrowseNode, XScriptProvider, XNameContainer,
-                           XPropertySet, XInvocation):
+                           XPropertySet, XCreatableBrowseNode, XEditableBrowseNode):
     def __init__(self, ctx, *args):
         if log.isDebugLevel():
             mystr = ""
@@ -1237,25 +1181,29 @@ class PythonScriptProvider(unohelper.Base, XBrowseNode, XScriptProvider, XNameCo
         if hasattr(self.dirBrowseNode, "getPropertySetInfo"):
             return self.dirBrowseNode.getPropertySetInfo()
 
-    def invoke(self, name, params, outparamindex, outparams):
-        if hasattr(self.dirBrowseNode, "invoke"):
-            return self.dirBrowseNode.invoke(name, params, outparamindex, outparams)
+    def isEditableNode(self):
+        if hasattr(self.dirBrowseNode, "isEditableNode"):
+            return self.dirBrowseNode.isEditableNode()
+        else:
+            return False
 
-    def getValue(self, name):
-        if hasattr(self.dirBrowseNode, "getValue"):
-            return self.dirBrowseNode.getValue(name)
+    def editNode(self):
+        if hasattr(self.dirBrowseNode, "editNode"):
+            return self.dirBrowseNode.editNode()
+        else:
+            return False
 
-    def hasMethod(self, name):
-        if hasattr(self.dirBrowseNode, "hasMethod"):
-            return self.dirBrowseNode.hasMethod(name)
+    def isCreatableNode(self):
+        if hasattr(self.dirBrowseNode, "isCreatableNode"):
+            return self.dirBrowseNode.isCreatableNode()
+        else:
+            return False
 
-    def hasProperty(self, name):
-        if hasattr(self.dirBrowseNode, "hasProperty"):
-            return self.dirBrowseNode.hasProperty(name)
-
-    def getIntrospection(self):
-        if hasattr(self.dirBrowseNode, "getIntrospection"):
-            return self.dirBrowseNode.getIntrospection()
+    def createNode(self, name):
+        if hasattr(self.dirBrowseNode, "createNode"):
+            return self.dirBrowseNode.createNode(name)
+        else:
+            return None
 
     # retrieve function args in parenthesis
     def getFunctionArguments(self, func_signature):
