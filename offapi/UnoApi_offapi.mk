@@ -3095,6 +3095,10 @@ $(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/script/browse,\
 	BrowseNodeTypes \
 	XBrowseNode \
 	XBrowseNodeFactory \
+	XCreatableBrowseNode \
+	XDeletableBrowseNode \
+	XEditableBrowseNode \
+	XRenamableBrowseNode \
 ))
 $(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/script/provider,\
 	ScriptErrorRaisedException \
