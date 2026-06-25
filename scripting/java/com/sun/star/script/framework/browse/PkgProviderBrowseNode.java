@@ -37,8 +37,6 @@ public class PkgProviderBrowseNode extends ProviderBrowseNode {
                        container.getParcelContainerDir());
         LogUtils.DEBUG("*** PkgProviderBrowseNode ctor, container has num parcels = " +
                        container.getElementNames().length);
-        deletable = false;
-        editable  = false;
         creatable = false;
     }
 

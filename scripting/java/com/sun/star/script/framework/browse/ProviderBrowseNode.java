@@ -22,11 +22,11 @@ import com.sun.star.beans.XIntrospectionAccess;
 
 import com.sun.star.lang.XMultiComponentFactory;
 
-import com.sun.star.lib.uno.helper.PropertySet;
+import com.sun.star.lib.uno.helper.ComponentBase;
 
-import com.sun.star.script.XInvocation;
 import com.sun.star.script.browse.BrowseNodeTypes;
 import com.sun.star.script.browse.XBrowseNode;
+import com.sun.star.script.browse.XCreatableBrowseNode;
 import com.sun.star.script.framework.container.ParcelContainer;
 import com.sun.star.script.framework.log.LogUtils;
 import com.sun.star.script.framework.provider.ScriptProvider;
@@ -44,18 +44,15 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
-public class ProviderBrowseNode extends PropertySet implements
-    XBrowseNode, XInvocation {
+public class ProviderBrowseNode extends ComponentBase implements
+    XBrowseNode, XCreatableBrowseNode {
 
     private final ScriptProvider provider;
     private Collection<XBrowseNode> browsenodes;
     private final String name;
     protected ParcelContainer container;
     private final XComponentContext m_xCtx;
-    // these are properties, they are accessed by reflection
-    public boolean deletable = true;
-    public boolean creatable = true;
-    public boolean editable = false;
+    protected boolean creatable = true;
 
     public ProviderBrowseNode(ScriptProvider provider, ParcelContainer container,
                               XComponentContext xCtx) {
@@ -66,9 +63,6 @@ public class ProviderBrowseNode extends PropertySet implements
         this.provider = provider;
         this.m_xCtx = xCtx;
 
-        registerProperty("Deletable", new Type(boolean.class), (short)0, "deletable");
-        registerProperty("Creatable", new Type(boolean.class), (short)0, "creatable");
-        registerProperty("Editable", new Type(boolean.class), (short)0, "editable");
         XMultiComponentFactory xFac = m_xCtx.getServiceManager();
 
         try {
@@ -78,7 +72,6 @@ public class ProviderBrowseNode extends PropertySet implements
                                              xCtx));
             if (  container.isUnoPkg() || xSFA.isReadOnly( container.getParcelContainerDir() ) )
             {
-                deletable = false;
                 creatable = false;
             }
         }
@@ -165,100 +158,36 @@ public class ProviderBrowseNode extends PropertySet implements
         return getName();
     }
 
-    // implementation of XInvocation interface
-    public XIntrospectionAccess getIntrospection() {
-        return null;
+    @Override
+    public boolean isCreatableNode() {
+        return creatable;
     }
 
-    public Object invoke(String aFunctionName, Object[] aParams,
-                         short[][] aOutParamIndex, Object[][] aOutParam) throws
-        com.sun.star.lang.IllegalArgumentException,
-        com.sun.star.script.CannotConvertException,
-        com.sun.star.reflection.InvocationTargetException {
+    @Override
+    public ParcelBrowseNode createNode(String name) {
+        try {
+            if (name == null || name.length() == 0)
+                return null;
 
-        // Initialise the out parameters - not used but prevents error in
-        // UNO bridge
-        aOutParamIndex[0] = new short[0];
-        aOutParam[0] = new Object[0];
+            Object newParcel  = container.createParcel(name);
+            LogUtils.DEBUG("Parcel created " + name + " " + newParcel);
 
-        Any result = new Any(new Type(Boolean.class), Boolean.TRUE);
+            if (newParcel == null)
+                return null;
 
-        if (aFunctionName.equals("Creatable")) {
-            try {
-                String name;
+            ParcelBrowseNode parcel = new ParcelBrowseNode(provider, container, name);
+            LogUtils.DEBUG("created parcel node ");
 
-                if (aParams == null || aParams.length < 1 ||
-                    !AnyConverter.isString(aParams[0])) {
-
-                    String prompt = "Enter name for new Parcel";
-                    String title = "Create Parcel";
-
-                    // try to get a DialogFactory instance, if it fails
-                    // just use a Swing JOptionPane to prompt for the name
-                    try {
-                        DialogFactory dialogFactory = DialogFactory.getDialogFactory();
-                        name = dialogFactory.showInputDialog(title, prompt);
-                    } catch (Exception e) {
-
-                        name = JOptionPane.showInputDialog(null, prompt, title,
-                                                           JOptionPane.QUESTION_MESSAGE);
-
-                    }
-                } else {
-                    name = AnyConverter.toString(aParams[0]);
-                }
-
-                if (name == null || name.length() == 0) {
-                    result =  new Any(new Type(Boolean.class), Boolean.FALSE);
-                } else {
-
-                    Object newParcel  = container.createParcel(name);
-                    LogUtils.DEBUG("Parcel created " + name + " " + newParcel);
-
-                    if (newParcel == null) {
-                        result =  new Any(new Type(Boolean.class), Boolean.FALSE);
-                    } else {
-                        ParcelBrowseNode parcel = new ParcelBrowseNode(provider, container, name);
-                        LogUtils.DEBUG("created parcel node ");
-
-                        if (browsenodes == null) {
-                            browsenodes = new ArrayList<XBrowseNode>(5);
-                        }
-
-                        browsenodes.add(parcel);
-                        result = new Any(new Type(XBrowseNode.class), parcel);
-                    }
-                }
-            } catch (Exception e) {
-                LogUtils.DEBUG("ProviderBrowseNode[create] failed with: " + e);
-                LogUtils.DEBUG(LogUtils.getTrace(e));
-                result = new Any(new Type(Boolean.class), Boolean.FALSE);
+            if (browsenodes == null) {
+                browsenodes = new ArrayList<XBrowseNode>(5);
             }
-        } else {
-            throw new com.sun.star.lang.IllegalArgumentException(
-                "Function " + aFunctionName + " not supported.");
+
+            browsenodes.add(parcel);
+            return parcel;
+        } catch (Exception e) {
+            LogUtils.DEBUG("ProviderBrowseNode[create] failed with: " + e);
+            LogUtils.DEBUG(LogUtils.getTrace(e));
+            return null;
         }
-
-        return result;
-    }
-
-    public void setValue(String aPropertyName, Object aValue) throws
-        com.sun.star.beans.UnknownPropertyException,
-        com.sun.star.script.CannotConvertException,
-        com.sun.star.reflection.InvocationTargetException {
-    }
-
-    public Object getValue(String aPropertyName) throws
-        com.sun.star.beans.UnknownPropertyException {
-
-        return null;
-    }
-
-    public boolean hasMethod(String aName) {
-        return false;
-    }
-
-    public boolean hasProperty(String aName) {
-        return false;
     }
 }

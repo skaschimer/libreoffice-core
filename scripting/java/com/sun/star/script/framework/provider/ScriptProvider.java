@@ -38,9 +38,12 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XTypeProvider;
 
-import com.sun.star.script.XInvocation;
 import com.sun.star.script.browse.BrowseNodeTypes;
 import com.sun.star.script.browse.XBrowseNode;
+import com.sun.star.script.browse.XCreatableBrowseNode;
+import com.sun.star.script.browse.XDeletableBrowseNode;
+import com.sun.star.script.browse.XEditableBrowseNode;
+import com.sun.star.script.browse.XRenamableBrowseNode;
 import com.sun.star.script.framework.browse.DialogFactory;
 import com.sun.star.script.framework.browse.ProviderBrowseNode;
 import com.sun.star.script.framework.container.ParcelContainer;
@@ -74,8 +77,9 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XMacroExpander;
 
 public abstract class ScriptProvider implements
-    XScriptProvider, XBrowseNode, XPropertySet, XInvocation, XInitialization,
-    XTypeProvider, XServiceInfo, XNameContainer {
+    XScriptProvider, XBrowseNode, XCreatableBrowseNode, XDeletableBrowseNode,
+    XEditableBrowseNode, XRenamableBrowseNode, XPropertySet, XInitialization, XTypeProvider,
+    XServiceInfo, XNameContainer {
 
     private final String[] __serviceNames = {
         "com.sun.star.script.provider.ScriptProviderFor",
@@ -94,10 +98,13 @@ public abstract class ScriptProvider implements
 
     // proxies to helper objects which implement interfaces
     private XPropertySet m_xPropertySetProxy;
-    private XInvocation m_xInvocationProxy;
 
     // TODO should this be implemented in this class
     private XBrowseNode m_xBrowseNodeProxy;
+    private XCreatableBrowseNode m_xCreatableBrowseNodeProxy;
+    private XDeletableBrowseNode m_xDeletableBrowseNodeProxy;
+    private XEditableBrowseNode m_xEditableBrowseNodeProxy;
+    private XRenamableBrowseNode m_xRenamableBrowseNodeProxy;
     private XScriptContext m_xScriptContext;
 
     public ScriptProvider(XComponentContext ctx, String language) {
@@ -243,9 +250,15 @@ public abstract class ScriptProvider implements
             // delegation????
             m_xBrowseNodeProxy =
                 new ProviderBrowseNode(this, m_container, m_xContext);
+            m_xCreatableBrowseNodeProxy =
+                UnoRuntime.queryInterface(XCreatableBrowseNode.class, m_xBrowseNodeProxy);
+            m_xDeletableBrowseNodeProxy =
+                UnoRuntime.queryInterface(XDeletableBrowseNode.class, m_xBrowseNodeProxy);
+            m_xEditableBrowseNodeProxy =
+                UnoRuntime.queryInterface(XEditableBrowseNode.class, m_xBrowseNodeProxy);
+            m_xRenamableBrowseNodeProxy =
+                UnoRuntime.queryInterface(XRenamableBrowseNode.class, m_xBrowseNodeProxy);
 
-            m_xInvocationProxy =
-                UnoRuntime.queryInterface(XInvocation.class, m_xBrowseNodeProxy);
             m_xPropertySetProxy =
                 UnoRuntime.queryInterface(XPropertySet.class, m_xBrowseNodeProxy);
         } else {
@@ -264,15 +277,18 @@ public abstract class ScriptProvider implements
      * @return    The types value
      */
     public com.sun.star.uno.Type[] getTypes() {
-        Type[] retValue = new Type[ 8 ];
+        Type[] retValue = new Type[ 11 ];
         retValue[ 0 ] = new Type(XScriptProvider.class);
         retValue[ 1 ] = new Type(XBrowseNode.class);
         retValue[ 2 ] = new Type(XInitialization.class);
         retValue[ 3 ] = new Type(XTypeProvider.class);
         retValue[ 4 ] = new Type(XServiceInfo.class);
         retValue[ 5 ] = new Type(XPropertySet.class);
-        retValue[ 6 ] = new Type(XInvocation.class);
-        retValue[ 7 ] = new Type(com.sun.star.container.XNameContainer.class);
+        retValue[ 6 ] = new Type(XCreatableBrowseNode.class);
+        retValue[ 7 ] = new Type(XDeletableBrowseNode.class);
+        retValue[ 8 ] = new Type(XEditableBrowseNode.class);
+        retValue[ 9 ] = new Type(XRenamableBrowseNode.class);
+        retValue[ 10 ] = new Type(com.sun.star.container.XNameContainer.class);
 
         return retValue;
     }
@@ -415,44 +431,80 @@ public abstract class ScriptProvider implements
         return getName();
     }
 
-    // implementation of XInvocation interface
-    public XIntrospectionAccess getIntrospection() {
-        return m_xInvocationProxy.getIntrospection();
+    @Override
+    public boolean isCreatableNode()
+    {
+        if (m_xCreatableBrowseNodeProxy != null)
+            return m_xCreatableBrowseNodeProxy.isCreatableNode();
+        else
+            return false;
     }
 
-    public Object invoke(String aFunctionName, Object[] aParams,
-                         short[][] aOutParamIndex, Object[][] aOutParam) throws
-        com.sun.star.lang.IllegalArgumentException,
-        com.sun.star.script.CannotConvertException,
-        com.sun.star.reflection.InvocationTargetException {
-
-        return m_xInvocationProxy.invoke(
-                   aFunctionName, aParams, aOutParamIndex, aOutParam);
+    @Override
+    public XBrowseNode createNode(String newName)
+    {
+        if (m_xCreatableBrowseNodeProxy != null)
+            return m_xCreatableBrowseNodeProxy.createNode(newName);
+        else
+            return null;
     }
 
-    public void setValue(String aPropertyName, Object aValue) throws
-        com.sun.star.beans.UnknownPropertyException,
-        com.sun.star.script.CannotConvertException,
-        com.sun.star.reflection.InvocationTargetException {
-
-        m_xInvocationProxy.setValue(aPropertyName, aValue);
+    @Override
+    public boolean isDeletableNode()
+    {
+        if (m_xDeletableBrowseNodeProxy != null)
+            return m_xDeletableBrowseNodeProxy.isDeletableNode();
+        else
+            return false;
     }
 
-    public Object getValue(String aPropertyName) throws
-        com.sun.star.beans.UnknownPropertyException {
-        return m_xInvocationProxy.getValue(aPropertyName);
+    @Override
+    public boolean deleteNode()
+    {
+        if (m_xDeletableBrowseNodeProxy != null)
+            return m_xDeletableBrowseNodeProxy.deleteNode();
+        else
+            return false;
     }
 
-    public boolean hasMethod(String aName) {
-        return m_xInvocationProxy.hasMethod(aName);
+    @Override
+    public boolean isEditableNode()
+    {
+        if (m_xEditableBrowseNodeProxy != null)
+            return m_xEditableBrowseNodeProxy.isEditableNode();
+        else
+            return false;
     }
 
-    public boolean hasProperty(String aName) {
-        return m_xInvocationProxy.hasProperty(aName);
+    @Override
+    public boolean editNode()
+    {
+        if (m_xEditableBrowseNodeProxy != null)
+            return m_xEditableBrowseNodeProxy.editNode();
+        else
+            return false;
+    }
+
+    @Override
+    public boolean isRenamableNode()
+    {
+        if (m_xRenamableBrowseNodeProxy != null)
+            return m_xRenamableBrowseNodeProxy.isRenamableNode();
+        else
+            return false;
+    }
+
+    @Override
+    public XBrowseNode renameNode(String newName)
+    {
+        if (m_xRenamableBrowseNodeProxy != null)
+            return m_xRenamableBrowseNodeProxy.renameNode(newName);
+        else
+            return null;
     }
 
     public XPropertySetInfo getPropertySetInfo() {
-        return m_xPropertySetProxy.getPropertySetInfo();
+        return m_xPropertySetProxy == null ? null : m_xPropertySetProxy.getPropertySetInfo();
     }
 
     public void setPropertyValue(String aPropertyName, Object aValue) throws
@@ -461,14 +513,18 @@ public abstract class ScriptProvider implements
         com.sun.star.lang.IllegalArgumentException,
         com.sun.star.lang.WrappedTargetException {
 
-        m_xPropertySetProxy.setPropertyValue(aPropertyName, aValue);
+        if (m_xPropertySetProxy != null)
+            m_xPropertySetProxy.setPropertyValue(aPropertyName, aValue);
     }
 
     public Object getPropertyValue(String PropertyName) throws
         com.sun.star.beans.UnknownPropertyException,
         com.sun.star.lang.WrappedTargetException {
 
-        return m_xPropertySetProxy.getPropertyValue(PropertyName);
+        if (m_xPropertySetProxy == null)
+            return null;
+        else
+            return m_xPropertySetProxy.getPropertyValue(PropertyName);
     }
 
     public void addPropertyChangeListener(String aPropertyName,
@@ -476,7 +532,8 @@ public abstract class ScriptProvider implements
         com.sun.star.beans.UnknownPropertyException,
         com.sun.star.lang.WrappedTargetException {
 
-        m_xPropertySetProxy.addPropertyChangeListener(aPropertyName, xListener);
+        if (m_xPropertySetProxy != null)
+            m_xPropertySetProxy.addPropertyChangeListener(aPropertyName, xListener);
     }
 
     public void removePropertyChangeListener(
@@ -484,8 +541,8 @@ public abstract class ScriptProvider implements
         com.sun.star.beans.UnknownPropertyException,
         com.sun.star.lang.WrappedTargetException {
 
-        m_xPropertySetProxy.removePropertyChangeListener(
-            aPropertyName, aListener);
+        if (m_xPropertySetProxy != null)
+            m_xPropertySetProxy.removePropertyChangeListener(aPropertyName, aListener);
     }
 
     public void addVetoableChangeListener(
@@ -493,7 +550,8 @@ public abstract class ScriptProvider implements
         com.sun.star.beans.UnknownPropertyException,
         com.sun.star.lang.WrappedTargetException {
 
-        m_xPropertySetProxy.addVetoableChangeListener(PropertyName, aListener);
+        if (m_xPropertySetProxy != null)
+            m_xPropertySetProxy.addVetoableChangeListener(PropertyName, aListener);
     }
 
     public void removeVetoableChangeListener(String PropertyName,
@@ -501,9 +559,8 @@ public abstract class ScriptProvider implements
         com.sun.star.beans.UnknownPropertyException,
         com.sun.star.lang.WrappedTargetException {
 
-        m_xPropertySetProxy.removeVetoableChangeListener(
-            PropertyName, aListener);
-
+        if (m_xPropertySetProxy != null)
+            m_xPropertySetProxy.removeVetoableChangeListener(PropertyName, aListener);
     }
     public java.lang.Object getByName(String aName) throws
         com.sun.star.container.NoSuchElementException,

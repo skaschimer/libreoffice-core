@@ -13,7 +13,8 @@
 
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
-#include <com/sun/star/script/XInvocation.hpp>
+#include <com/sun/star/script/browse/XCreatableBrowseNode.hpp>
+#include <com/sun/star/script/browse/XRenamableBrowseNode.hpp>
 #include <com/sun/star/ucb/UniversalContentBroker.hpp>
 
 namespace
@@ -51,25 +52,23 @@ void BeanShellTest::setUp()
     xUcb->registerContentProvider(xExpandProvider, u"vnd.sun.star.expand"_ustr, true);
 }
 
-void createChild(css::uno::Reference<css::script::XInvocation>& xInvocation, const OUString& sName)
+void createChild(css::uno::Reference<css::script::browse::XBrowseNode>& xNode,
+                 const OUString& sName)
 {
-    css::uno::Sequence<css::uno::Any> aArgs = { css::uno::Any(sName) };
-    css::uno::Sequence<sal_Int16> aOutParamIndex;
-    css::uno::Sequence<css::uno::Any> aOutParam;
-    xInvocation->invoke("Creatable", aArgs, aOutParamIndex, aOutParam);
+    css::uno::Reference<css::script::browse::XCreatableBrowseNode> xCreatable(
+        xNode, css::uno::UNO_QUERY_THROW);
+    css::uno::Reference<css::script::browse::XBrowseNode> xResult = xCreatable->createNode(sName);
+    CPPUNIT_ASSERT(xResult.is());
 }
 
-void renameLibrary(css::uno::Reference<css::script::XInvocation>& xInvocation,
+void renameLibrary(css::uno::Reference<css::script::browse::XBrowseNode>& xNode,
                    const OUString& sName)
 {
-    css::uno::Sequence<css::uno::Any> aArgs = { css::uno::Any(sName) };
-    css::uno::Sequence<sal_Int16> aOutParamIndex;
-    css::uno::Sequence<css::uno::Any> aOutParam;
-    css::uno::Any xResult = xInvocation->invoke("Renamable", aArgs, aOutParamIndex, aOutParam);
+    css::uno::Reference<css::script::browse::XRenamableBrowseNode> xRenamable(
+        xNode, css::uno::UNO_QUERY_THROW);
+    css::uno::Reference<css::script::browse::XBrowseNode> xResult = xRenamable->renameNode(sName);
 
-    css::uno::Reference<css::script::XInvocation> xRenamedInvocation;
-    CPPUNIT_ASSERT(xResult >>= xRenamedInvocation);
-    CPPUNIT_ASSERT_EQUAL(xInvocation, xRenamedInvocation);
+    CPPUNIT_ASSERT_EQUAL(xResult, xNode);
 }
 
 css::uno::Reference<css::script::browse::XBrowseNode>
@@ -96,14 +95,12 @@ void BeanShellTest::testRenameEmptyLibrary()
             u"com.sun.star.script.provider.ScriptProviderForBeanShell"_ustr, aArgs, m_xContext),
         css::uno::UNO_QUERY_THROW);
 
-    css::uno::Reference<css::script::XInvocation> xInvocation(xRoot, css::uno::UNO_QUERY_THROW);
-
     // Create an empty library
-    createChild(xInvocation, "EmptyLibrary");
+    createChild(xRoot, "EmptyLibrary");
 
     // Make sure the library we just created exists in the hierarchy
-    css::uno::Reference<css::script::XInvocation> xEmptyLibrary(findChild(xRoot, u"EmptyLibrary"),
-                                                                css::uno::UNO_QUERY_THROW);
+    css::uno::Reference<css::script::browse::XBrowseNode> xEmptyLibrary
+        = findChild(xRoot, u"EmptyLibrary");
 
     // Try renaming it
     renameLibrary(xEmptyLibrary, "RenamedEmptyLibrary");
@@ -121,14 +118,12 @@ void BeanShellTest::testRenameNonEmptyLibrary()
             u"com.sun.star.script.provider.ScriptProviderForBeanShell"_ustr, aArgs, m_xContext),
         css::uno::UNO_QUERY_THROW);
 
-    css::uno::Reference<css::script::XInvocation> xInvocation(xRoot, css::uno::UNO_QUERY_THROW);
-
     // Create an empty library
-    createChild(xInvocation, "NonEmptyLibrary");
+    createChild(xRoot, "NonEmptyLibrary");
 
     // Make sure the library we just created exists in the hierarchy
-    css::uno::Reference<css::script::XInvocation> xNewLibrary(findChild(xRoot, u"NonEmptyLibrary"),
-                                                              css::uno::UNO_QUERY_THROW);
+    css::uno::Reference<css::script::browse::XBrowseNode> xNewLibrary
+        = findChild(xRoot, u"NonEmptyLibrary");
 
     // Create a script within the new library
     createChild(xNewLibrary, "SomeScript");
