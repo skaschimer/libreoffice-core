@@ -78,7 +78,7 @@ else
 $(call gb_ExternalProject_get_state_target,openssl,build):
 	$(call gb_Trace_StartRange,openssl,EXTERNAL)
 	$(call gb_ExternalProject_run,build,\
-		unset MAKEFLAGS && \
+		unset MAKEFLAGS && $(if $(SOURCE_DATE_EPOCH),export SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) &&) \
 		$(if $(filter LINUX MACOSX FREEBSD ANDROID SOLARIS iOS,$(OS)), \
 			./Configure, \
 		$(if $(filter WNT,$(OS)), \

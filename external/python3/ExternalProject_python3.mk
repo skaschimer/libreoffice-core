@@ -89,6 +89,7 @@ endif
 $(call gb_ExternalProject_get_state_target,python3,build) :
 	$(call gb_Trace_StartRange,python3,EXTERNAL)
 	$(call gb_ExternalProject_run,build,\
+		$(if $(SOURCE_DATE_EPOCH),export SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) &&) \
 		$(if $(filter MACOSX,$(OS)), \
 			$(if $(filter 10.8 10.9 10.10 10.11,$(MACOSX_DEPLOYMENT_TARGET)), \
 				ac_cv_func_getentropy=no \
