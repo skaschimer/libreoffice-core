@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <com/sun/star/script/XInvocation.hpp>
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
+#include <com/sun/star/script/browse/XEditableBrowseNode.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
 
 #include <comphelper/propcontainerimplhelper.hxx>
@@ -35,7 +35,7 @@ namespace basprov
         : public comphelper::OPropertyContainerImplHelper<
               comphelper::WeakImplHelper<
                   css::script::browse::XBrowseNode,
-                  css::script::XInvocation>,
+                  css::script::browse::XEditableBrowseNode>,
               BasicMethodNodeImpl>
     {
     private:
@@ -46,7 +46,6 @@ namespace basprov
 
         // properties
         OUString m_sURI;
-        bool m_bEditable;
 
     protected:
         // OPropertyArrayUsageHelper
@@ -64,17 +63,9 @@ namespace basprov
         virtual sal_Bool SAL_CALL hasChildNodes(  ) override;
         virtual sal_Int16 SAL_CALL getType(  ) override;
 
-        // XInvocation
-        virtual css::uno::Reference< css::beans::XIntrospectionAccess > SAL_CALL getIntrospection(  ) override;
-        virtual css::uno::Any SAL_CALL invoke(
-            const OUString& aFunctionName,
-            const css::uno::Sequence< css::uno::Any >& aParams,
-            css::uno::Sequence< sal_Int16 >& aOutParamIndex,
-            css::uno::Sequence< css::uno::Any >& aOutParam ) override;
-        virtual void SAL_CALL setValue( const OUString& aPropertyName, const css::uno::Any& aValue ) override;
-        virtual css::uno::Any SAL_CALL getValue( const OUString& aPropertyName ) override;
-        virtual sal_Bool SAL_CALL hasMethod( const OUString& aName ) override;
-        virtual sal_Bool SAL_CALL hasProperty( const OUString& aName ) override;
+        // XEditableBrowseNode
+        virtual sal_Bool SAL_CALL isEditableNode(  ) override;
+        virtual sal_Bool SAL_CALL editNode(  ) override;
     };
 
 

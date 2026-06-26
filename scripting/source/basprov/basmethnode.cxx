@@ -42,10 +42,8 @@ using namespace ::com::sun::star::script;
 using namespace ::sf_misc;
 
 #define BASPROV_PROPERTY_ID_URI         1
-#define BASPROV_PROPERTY_ID_EDITABLE    2
 
 constexpr OUStringLiteral BASPROV_PROPERTY_URI = u"URI";
-constexpr OUString BASPROV_PROPERTY_EDITABLE = u"Editable"_ustr;
 
 #define BASPROV_DEFAULT_ATTRIBS()       PropertyAttribute::BOUND | PropertyAttribute::TRANSIENT | PropertyAttribute::READONLY
 
@@ -64,7 +62,6 @@ namespace basprov
         ,m_sScriptingContext(std::move( sScriptingContext ))
         ,m_pMethod( pMethod )
         ,m_bIsAppScript( isAppScript )
-        ,m_bEditable( true )
     {
         if ( m_pMethod )
         {
@@ -90,7 +87,6 @@ namespace basprov
         }
 
         registerProperty( BASPROV_PROPERTY_URI,      BASPROV_PROPERTY_ID_URI,      BASPROV_DEFAULT_ATTRIBS(), &m_sURI,      cppu::UnoType<decltype(m_sURI)>::get() );
-        registerProperty( BASPROV_PROPERTY_EDITABLE, BASPROV_PROPERTY_ID_EDITABLE, BASPROV_DEFAULT_ATTRIBS(), &m_bEditable, cppu::UnoType<decltype(m_bEditable)>::get() );
     }
 
 
@@ -143,25 +139,11 @@ namespace basprov
     }
 
 
-    // XInvocation
+    sal_Bool BasicMethodNodeImpl::isEditableNode( ) { return true; }
 
 
-    Reference< XIntrospectionAccess > BasicMethodNodeImpl::getIntrospection(  )
+    sal_Bool BasicMethodNodeImpl::editNode( )
     {
-        return Reference< XIntrospectionAccess >();
-    }
-
-
-    Any BasicMethodNodeImpl::invoke( const OUString& aFunctionName, const Sequence< Any >&,
-        Sequence< sal_Int16 >&, Sequence< Any >& )
-    {
-        if ( aFunctionName != BASPROV_PROPERTY_EDITABLE )
-        {
-            throw IllegalArgumentException(
-                u"BasicMethodNodeImpl::invoke: function name not supported!"_ustr,
-                Reference< XInterface >(), 1 );
-        }
-
         OUString sDocURL, sLibName, sModName;
         sal_uInt16 nLine1 = 0;
 
@@ -220,37 +202,7 @@ namespace basprov
         }
 
 
-        return Any();
-    }
-
-
-    void BasicMethodNodeImpl::setValue( const OUString&, const Any& )
-    {
-        throw UnknownPropertyException(
-            u"BasicMethodNodeImpl::setValue: property name is unknown!"_ustr );
-    }
-
-
-    Any BasicMethodNodeImpl::getValue( const OUString& )
-    {
-        throw UnknownPropertyException(
-            u"BasicMethodNodeImpl::getValue: property name is unknown!"_ustr );
-    }
-
-
-    sal_Bool BasicMethodNodeImpl::hasMethod( const OUString& aName )
-    {
-        bool bReturn = false;
-        if ( aName == BASPROV_PROPERTY_EDITABLE )
-            bReturn = true;
-
-        return bReturn;
-    }
-
-
-    sal_Bool BasicMethodNodeImpl::hasProperty( const OUString& )
-    {
-        return false;
+        return true;
     }
 
 
