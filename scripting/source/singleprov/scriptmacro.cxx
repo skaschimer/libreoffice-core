@@ -19,10 +19,14 @@
 namespace singleprovider
 {
 ScriptMacro::ScriptMacro(const std::shared_ptr<ProviderContext>& pProviderContext,
-                         const OUString& sName, const OUString& sUri)
-    : ScriptBrowser(pProviderContext, sName, sUri)
+                         const OUString& sName, const OUString& sBaseUri)
+    : m_pProviderContext(pProviderContext)
+    , m_sName(sName)
+    , m_sBaseUri(sBaseUri)
 {
 }
+
+OUString SAL_CALL ScriptMacro::getName() { return m_sName; }
 
 css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
     SAL_CALL ScriptMacro::getChildNodes()
@@ -34,30 +38,63 @@ sal_Bool SAL_CALL ScriptMacro::hasChildNodes() { return false; }
 
 sal_Int16 SAL_CALL ScriptMacro::getType() { return css::script::browse::BrowseNodeTypes::SCRIPT; }
 
+sal_Bool SAL_CALL ScriptMacro::isEditableNode()
+{
+    return isEditable(m_pProviderContext, m_sBaseUri);
+}
+
+sal_Bool SAL_CALL ScriptMacro::editNode()
+{
+    externalEdit(m_pProviderContext, m_sBaseUri);
+    return true;
+}
+
+css::uno::Reference<css::beans::XPropertySetInfo> SAL_CALL ScriptMacro::getPropertySetInfo()
+{
+    return this;
+}
+
+void SAL_CALL ScriptMacro::setPropertyValue(const OUString&, const css::uno::Any&) {}
+
 css::uno::Any SAL_CALL ScriptMacro::getPropertyValue(const OUString& sPropertyName)
 {
     css::uno::Any xRet;
 
     if (sPropertyName == "URI")
         xRet <<= m_pProviderContext->m_xUriHelper->getScriptURI(m_sBaseUri);
-    else if (sPropertyName == "Editable")
-        xRet <<= isEditable(m_pProviderContext, m_sBaseUri);
     else
-        xRet = ScriptBrowser::getPropertyValue(sPropertyName);
+    {
+        throw css::beans::UnknownPropertyException("Tried to get unknown property "
+                                                   + sPropertyName);
+    }
 
     return xRet;
 }
 
+void SAL_CALL ScriptMacro::addPropertyChangeListener(
+    const OUString&, const css::uno::Reference<css::beans::XPropertyChangeListener>&)
+{
+}
+
+void SAL_CALL ScriptMacro::removePropertyChangeListener(
+    const OUString&, const css::uno::Reference<css::beans::XPropertyChangeListener>&)
+{
+}
+
+void SAL_CALL ScriptMacro::addVetoableChangeListener(
+    const OUString&, const css::uno::Reference<css::beans::XVetoableChangeListener>&)
+{
+}
+
+void SAL_CALL ScriptMacro::removeVetoableChangeListener(
+    const OUString&, const css::uno::Reference<css::beans::XVetoableChangeListener>&)
+{
+}
+
 css::uno::Sequence<css::beans::Property> SAL_CALL ScriptMacro::getProperties()
 {
-    const css::uno::Sequence<css::beans::Property> aParentProperties
-        = ScriptBrowser::getProperties();
-
-    css::uno::Sequence<css::beans::Property> aProperties(aParentProperties.getLength() + 1);
+    css::uno::Sequence<css::beans::Property> aProperties(1);
     aProperties.getArray()[0] = getUriProperty();
-
-    std::copy(aParentProperties.begin(), aParentProperties.end(), aProperties.getArray() + 1);
-
     return aProperties;
 }
 
@@ -66,42 +103,14 @@ css::beans::Property SAL_CALL ScriptMacro::getPropertyByName(const OUString& sNa
     if (sName == "URI")
         return getUriProperty();
     else
-        return ScriptBrowser::getPropertyByName(sName);
+        throw css::beans::UnknownPropertyException("Tried to retrieve unknown property " + sName);
 }
 
-sal_Bool SAL_CALL ScriptMacro::hasPropertyByName(const OUString& sName)
-{
-    if (sName == "URI")
-        return true;
-    else
-        return ScriptBrowser::hasPropertyByName(sName);
-}
+sal_Bool SAL_CALL ScriptMacro::hasPropertyByName(const OUString& sName) { return sName == "URI"; }
 
 css::beans::Property ScriptMacro::getUriProperty()
 {
     return css::beans::Property("URI", 0, cppu::UnoType<OUString>::get(), 0);
-}
-
-css::uno::Any SAL_CALL ScriptMacro::invoke(const OUString& sFunctionName,
-                                           const css::uno::Sequence<css::uno::Any>& aParams,
-                                           css::uno::Sequence<sal_Int16>& aOutParamIndex,
-                                           css::uno::Sequence<css::uno::Any>& aOutParam)
-{
-    if (sFunctionName == "Editable")
-    {
-        externalEdit(m_pProviderContext, m_sBaseUri);
-        return css::uno::Any();
-    }
-    else
-        return ScriptBrowser::invoke(sFunctionName, aParams, aOutParamIndex, aOutParam);
-}
-
-sal_Bool SAL_CALL ScriptMacro::hasMethod(const OUString& sFunctionName)
-{
-    if (sFunctionName == "Editable")
-        return true;
-    else
-        return ScriptBrowser::hasMethod(sFunctionName);
 }
 }
 

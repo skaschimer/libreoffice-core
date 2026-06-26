@@ -9,11 +9,17 @@
 
 #pragma once
 
-#include "scriptbrowser.hxx"
+#include <com/sun/star/script/browse/XBrowseNode.hpp>
+#include <com/sun/star/script/browse/XCreatableBrowseNode.hpp>
+#include <cppuhelper/implbase.hxx>
+#include <memory>
 
 namespace singleprovider
 {
-class ScriptDir : public ScriptBrowser
+class ProviderContext;
+
+class ScriptDir : public cppu::WeakImplHelper<css::script::browse::XBrowseNode,
+                                              css::script::browse::XCreatableBrowseNode>
 {
 public:
     ScriptDir(const std::shared_ptr<ProviderContext>& pProviderContext);
@@ -21,25 +27,24 @@ public:
               const OUString& sBaseUri);
 
     // XBrowseNode
+    OUString SAL_CALL getName() override;
     css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
         SAL_CALL getChildNodes() override;
     sal_Bool SAL_CALL hasChildNodes() override;
     sal_Int16 SAL_CALL getType() override;
 
-    // XPropertySet
-    css::uno::Any SAL_CALL getPropertyValue(const OUString& sPropertyName) override;
-
-    // XInvocation
-    css::uno::Any SAL_CALL invoke(const OUString& sFunctionName,
-                                  const css::uno::Sequence<css::uno::Any>& aParams,
-                                  css::uno::Sequence<sal_Int16>& aOutParamIndex,
-                                  css::uno::Sequence<css::uno::Any>& aOutParam) override;
-    sal_Bool SAL_CALL hasMethod(const OUString& sFunctionName) override;
+    // XCreatableBrowseNode
+    sal_Bool SAL_CALL isCreatableNode() override;
+    css::uno::Reference<css::script::browse::XBrowseNode>
+        SAL_CALL createNode(const OUString& sName) override;
 
 private:
-    css::uno::Reference<css::script::browse::XBrowseNode> createMacro(const OUString& sMacroName);
-
     OUString nameFromUrl(const OUString& sUrl);
+
+    std::shared_ptr<ProviderContext> m_pProviderContext;
+
+    OUString m_sName;
+    OUString m_sBaseUri;
 };
 }
 

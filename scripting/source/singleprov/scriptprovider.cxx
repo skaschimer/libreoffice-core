@@ -158,41 +158,50 @@ void SAL_CALL ScriptProvider::removeVetoableChangeListener(
 {
 }
 
-css::uno::Reference<css::beans::XIntrospectionAccess> SAL_CALL ScriptProvider::getIntrospection()
+sal_Bool SAL_CALL ScriptProvider::isCreatableNode()
 {
-    return css::uno::Reference<css::beans::XIntrospectionAccess>();
-}
+    css::uno::Reference<css::script::browse::XCreatableBrowseNode> xCreatable(m_xRootBrowser,
+                                                                              css::uno::UNO_QUERY);
 
-css::uno::Any SAL_CALL ScriptProvider::invoke(const OUString& sFunctionName,
-                                              const css::uno::Sequence<css::uno::Any>& aParams,
-                                              css::uno::Sequence<sal_Int16>& aOutParamIndex,
-                                              css::uno::Sequence<css::uno::Any>& aOutParam)
-{
-    css::uno::Any xRet;
-
-    css::uno::Reference<css::script::XInvocation> xInvocation(m_xRootBrowser, css::uno::UNO_QUERY);
-
-    if (xInvocation.is())
-        xRet = xInvocation->invoke(sFunctionName, aParams, aOutParamIndex, aOutParam);
-
-    return xRet;
-}
-
-void SAL_CALL ScriptProvider::setValue(const OUString&, const css::uno::Any&) {}
-
-css::uno::Any SAL_CALL ScriptProvider::getValue(const OUString&) { return css::uno::Any(); }
-
-sal_Bool SAL_CALL ScriptProvider::hasMethod(const OUString& sName)
-{
-    css::uno::Reference<css::script::XInvocation> xInvocation(m_xRootBrowser, css::uno::UNO_QUERY);
-
-    if (xInvocation.is())
-        return xInvocation->hasMethod(sName);
+    if (xCreatable.is())
+        return xCreatable->isCreatableNode();
     else
         return false;
 }
 
-sal_Bool SAL_CALL ScriptProvider::hasProperty(const OUString&) { return false; }
+css::uno::Reference<css::script::browse::XBrowseNode>
+    SAL_CALL ScriptProvider::createNode(const OUString& sName)
+{
+    css::uno::Reference<css::script::browse::XCreatableBrowseNode> xCreatable(m_xRootBrowser,
+                                                                              css::uno::UNO_QUERY);
+
+    if (xCreatable.is())
+        return xCreatable->createNode(sName);
+    else
+        return css::uno::Reference<css::script::browse::XBrowseNode>();
+}
+
+sal_Bool SAL_CALL ScriptProvider::isEditableNode()
+{
+    css::uno::Reference<css::script::browse::XEditableBrowseNode> xEditable(m_xRootBrowser,
+                                                                            css::uno::UNO_QUERY);
+
+    if (xEditable.is())
+        return xEditable->isEditableNode();
+    else
+        return false;
+}
+
+sal_Bool SAL_CALL ScriptProvider::editNode()
+{
+    css::uno::Reference<css::script::browse::XEditableBrowseNode> xEditable(m_xRootBrowser,
+                                                                            css::uno::UNO_QUERY);
+
+    if (xEditable.is())
+        return xEditable->editNode();
+    else
+        return false;
+}
 
 OUString SAL_CALL ScriptProvider::getImplementationName()
 {

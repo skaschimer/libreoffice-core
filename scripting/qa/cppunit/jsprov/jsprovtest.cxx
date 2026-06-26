@@ -12,9 +12,10 @@
 #include <com/sun/star/lang/XSingleComponentFactory.hpp>
 #include <com/sun/star/script/browse/BrowseNodeTypes.hpp>
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
+#include <com/sun/star/script/browse/XCreatableBrowseNode.hpp>
+#include <com/sun/star/script/browse/XEditableBrowseNode.hpp>
 #include <com/sun/star/script/provider/ScriptURIHelper.hpp>
 #include <com/sun/star/script/provider/XScriptProvider.hpp>
-#include <com/sun/star/script/XInvocation.hpp>
 #include <com/sun/star/text/XText.hpp>
 #include <com/sun/star/text/XTextDocument.hpp>
 #include <com/sun/star/ucb/SimpleFileAccess.hpp>
@@ -124,21 +125,20 @@ css::uno::Reference<css::script::provider::XScriptProvider> JsProvTest::createSc
                  "implementation");
 }
 
-bool getBooleanProperty(const css::uno::Reference<css::uno::XInterface>& xInterface,
-                        const OUString& sPropertyName)
+bool isEditable(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode)
 {
-    css::uno::Reference<css::beans::XPropertySet> xPropertySet(xInterface,
-                                                               css::uno::UNO_QUERY_THROW);
-    css::uno::Any xAnyResult = xPropertySet->getPropertyValue(sPropertyName);
+    css::uno::Reference<css::script::browse::XEditableBrowseNode> xEditable(xNode,
+                                                                            css::uno::UNO_QUERY);
 
-    CPPUNIT_ASSERT_EQUAL(css::uno::TypeClass_BOOLEAN, xAnyResult.getValueTypeClass());
+    return xEditable.is() && xEditable->isEditableNode();
+}
 
-    bool bBoolResult = false;
-    bool bConversionResult = xAnyResult >>= bBoolResult;
+bool isCreatable(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode)
+{
+    css::uno::Reference<css::script::browse::XCreatableBrowseNode> xCreatable(xNode,
+                                                                              css::uno::UNO_QUERY);
 
-    CPPUNIT_ASSERT(bConversionResult);
-
-    return bBoolResult;
+    return xCreatable.is() && xCreatable->isCreatableNode();
 }
 
 void JsProvTest::testEditableCreatable()
@@ -147,12 +147,10 @@ void JsProvTest::testEditableCreatable()
     m_xFileAccess->openFileWrite(m_xUriHelper->getRootStorageURI() + "/MyScript.js");
 
     // The root node should be creatable but not editable
-    CPPUNIT_ASSERT(getBooleanProperty(m_xScriptProvider, "Creatable"));
-    CPPUNIT_ASSERT(!getBooleanProperty(m_xScriptProvider, "Editable"));
-    css::uno::Reference<css::script::XInvocation> xInvocation(m_xScriptProvider,
-                                                              css::uno::UNO_QUERY_THROW);
-    CPPUNIT_ASSERT(xInvocation->hasMethod("Creatable"));
-    CPPUNIT_ASSERT(!xInvocation->hasMethod("Editable"));
+    css::uno::Reference<css::script::browse::XBrowseNode> xRootNode(m_xScriptProvider,
+                                                                    css::uno::UNO_QUERY_THROW);
+    CPPUNIT_ASSERT(isCreatable(xRootNode));
+    CPPUNIT_ASSERT(!isEditable(xRootNode));
 
     css::uno::Reference<css::script::browse::XBrowseNode> xBrowseNode(m_xScriptProvider,
                                                                       css::uno::UNO_QUERY_THROW);
@@ -174,11 +172,8 @@ void JsProvTest::testEditableCreatable()
     CPPUNIT_ASSERT_EQUAL(u"MyScript"_ustr, xBrowseNode->getName());
 
     // The module should be editable but not creatable
-    CPPUNIT_ASSERT(!getBooleanProperty(xBrowseNode, "Creatable"));
-    CPPUNIT_ASSERT(getBooleanProperty(xBrowseNode, "Editable"));
-    xInvocation.set(xBrowseNode, css::uno::UNO_QUERY_THROW);
-    CPPUNIT_ASSERT(!xInvocation->hasMethod("Creatable"));
-    CPPUNIT_ASSERT(xInvocation->hasMethod("Editable"));
+    CPPUNIT_ASSERT(!isCreatable(xBrowseNode));
+    CPPUNIT_ASSERT(isEditable(xBrowseNode));
 
     // The module should have exactly one child to represent the macro
     CPPUNIT_ASSERT(xBrowseNode->hasChildNodes());
@@ -192,11 +187,8 @@ void JsProvTest::testEditableCreatable()
     CPPUNIT_ASSERT_EQUAL(u"MyScript"_ustr, xBrowseNode->getName());
 
     // The macro should be editable but not creatable
-    CPPUNIT_ASSERT(!getBooleanProperty(xBrowseNode, "Creatable"));
-    CPPUNIT_ASSERT(getBooleanProperty(xBrowseNode, "Editable"));
-    xInvocation.set(xBrowseNode, css::uno::UNO_QUERY_THROW);
-    CPPUNIT_ASSERT(!xInvocation->hasMethod("Creatable"));
-    CPPUNIT_ASSERT(xInvocation->hasMethod("Editable"));
+    CPPUNIT_ASSERT(!isCreatable(xBrowseNode));
+    CPPUNIT_ASSERT(isEditable(xBrowseNode));
 
     // The macro should have no children
     CPPUNIT_ASSERT(!xBrowseNode->hasChildNodes());
@@ -220,19 +212,12 @@ void JsProvTest::testCreate()
     CPPUNIT_ASSERT_EQUAL(sal_Int32(0), xBrowseNode->getChildNodes().getLength());
 
     // The root node should be creatable
-    CPPUNIT_ASSERT(getBooleanProperty(xBrowseNode, "Creatable"));
+    CPPUNIT_ASSERT(isCreatable(xBrowseNode));
 
-    // and have the Creatable method
-    css::uno::Reference<css::script::XInvocation> xInvocation(m_xScriptProvider,
-                                                              css::uno::UNO_QUERY_THROW);
-    CPPUNIT_ASSERT(xInvocation->hasMethod("Creatable"));
-
-    // Invoke the method
-    css::uno::Sequence<css::uno::Any> aInArgs(1);
-    aInArgs.getArray()[0] <<= u"My Script"_ustr;
-    css::uno::Sequence<sal_Int16> aOutParamIndex;
-    css::uno::Sequence<css::uno::Any> aOutParam;
-    xInvocation->invoke("Creatable", aInArgs, aOutParamIndex, aOutParam);
+    // Invoke the create method
+    css::uno::Reference<css::script::browse::XCreatableBrowseNode> xCreatable(
+        xBrowseNode, css::uno::UNO_QUERY_THROW);
+    xCreatable->createNode(u"My Script"_ustr);
 
     // That should have created the file
     CPPUNIT_ASSERT(m_xFileAccess->exists(m_xUriHelper->getRootStorageURI() + "/My Script.js"));
@@ -332,12 +317,8 @@ void JsProvTest::testFolder()
         CPPUNIT_ASSERT_EQUAL(sPart, xBrowseNode->getName());
 
         // Folders should be creatable but not editable
-        CPPUNIT_ASSERT(getBooleanProperty(xBrowseNode, "Creatable"));
-        CPPUNIT_ASSERT(!getBooleanProperty(xBrowseNode, "Editable"));
-        css::uno::Reference<css::script::XInvocation> xInvocation(xBrowseNode,
-                                                                  css::uno::UNO_QUERY_THROW);
-        CPPUNIT_ASSERT(xInvocation->hasMethod("Creatable"));
-        CPPUNIT_ASSERT(!xInvocation->hasMethod("Editable"));
+        CPPUNIT_ASSERT(isCreatable(xBrowseNode));
+        CPPUNIT_ASSERT(!isEditable(xBrowseNode));
     }
 
     CPPUNIT_ASSERT_EQUAL(sal_Int32(1), xBrowseNode->getChildNodes().getLength());

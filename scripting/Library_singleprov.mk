@@ -26,7 +26,6 @@ $(eval $(call gb_Library_use_libraries,singleprov,\
 $(eval $(call gb_Library_add_exception_objects,singleprov,\
     scripting/source/singleprov/externaledit \
     scripting/source/singleprov/provcontext \
-    scripting/source/singleprov/scriptbrowser \
     scripting/source/singleprov/scriptdir \
     scripting/source/singleprov/scriptfile \
     scripting/source/singleprov/scriptmacro \

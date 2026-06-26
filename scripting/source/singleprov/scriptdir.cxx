@@ -23,16 +23,21 @@
 namespace singleprovider
 {
 ScriptDir::ScriptDir(const std::shared_ptr<ProviderContext>& pProviderContext)
-    : ScriptDir(pProviderContext, pProviderContext->m_pSingleScriptFactory->getLanguageName(),
-                pProviderContext->m_xUriHelper->getRootStorageURI())
+    : m_pProviderContext(pProviderContext)
+    , m_sName(pProviderContext->m_pSingleScriptFactory->getLanguageName())
+    , m_sBaseUri(pProviderContext->m_xUriHelper->getRootStorageURI())
 {
 }
 
 ScriptDir::ScriptDir(const std::shared_ptr<ProviderContext>& pProviderContext,
                      const OUString& sName, const OUString& sBaseUri)
-    : ScriptBrowser(pProviderContext, sName, sBaseUri)
+    : m_pProviderContext(pProviderContext)
+    , m_sName(sName)
+    , m_sBaseUri(sBaseUri)
 {
 }
+
+OUString SAL_CALL ScriptDir::getName() { return m_sName; }
 
 css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
     SAL_CALL ScriptDir::getChildNodes()
@@ -89,17 +94,7 @@ sal_Bool SAL_CALL ScriptDir::hasChildNodes() { return true; }
 
 sal_Int16 SAL_CALL ScriptDir::getType() { return css::script::browse::BrowseNodeTypes::CONTAINER; }
 
-css::uno::Any SAL_CALL ScriptDir::getPropertyValue(const OUString& sPropertyName)
-{
-    css::uno::Any xRet;
-
-    if (sPropertyName == "Creatable")
-        xRet <<= true;
-    else
-        xRet = ScriptBrowser::getPropertyValue(sPropertyName);
-
-    return xRet;
-}
+sal_Bool SAL_CALL ScriptDir::isCreatableNode() { return true; }
 
 OUString ScriptDir::nameFromUrl(const OUString& sUrl)
 {
@@ -117,36 +112,8 @@ OUString ScriptDir::nameFromUrl(const OUString& sUrl)
                             RTL_TEXTENCODING_UTF8);
 }
 
-css::uno::Any SAL_CALL ScriptDir::invoke(const OUString& sFunctionName,
-                                         const css::uno::Sequence<css::uno::Any>& aParams,
-                                         css::uno::Sequence<sal_Int16>& aOutParamIndex,
-                                         css::uno::Sequence<css::uno::Any>& aOutParam)
-{
-    css::uno::Any xRet;
-
-    if (sFunctionName == "Creatable")
-    {
-        OUString sMacroName;
-
-        if (aParams.getLength() > 0 && (aParams[0] >>= sMacroName))
-            xRet <<= createMacro(sMacroName);
-    }
-    else
-        xRet = ScriptBrowser::invoke(sFunctionName, aParams, aOutParamIndex, aOutParam);
-
-    return xRet;
-}
-
-sal_Bool SAL_CALL ScriptDir::hasMethod(const OUString& sFunctionName)
-{
-    if (sFunctionName == "Creatable")
-        return true;
-    else
-        return ScriptBrowser::hasMethod(sFunctionName);
-}
-
 css::uno::Reference<css::script::browse::XBrowseNode>
-ScriptDir::createMacro(const OUString& sMacroName)
+    SAL_CALL ScriptDir::createNode(const OUString& sMacroName)
 {
     OUString sEncodedFilename = rtl::Uri::encode(sMacroName, rtl_UriCharClassPchar,
                                                  rtl_UriEncodeIgnoreEscapes, RTL_TEXTENCODING_UTF8);

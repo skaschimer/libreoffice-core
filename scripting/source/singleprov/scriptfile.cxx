@@ -22,9 +22,13 @@ namespace singleprovider
 {
 ScriptFile::ScriptFile(const std::shared_ptr<ProviderContext>& pProviderContext,
                        const OUString& sName, const OUString& sBaseUri)
-    : ScriptBrowser(pProviderContext, sName, sBaseUri)
+    : m_pProviderContext(pProviderContext)
+    , m_sName(sName)
+    , m_sBaseUri(sBaseUri)
 {
 }
+
+OUString SAL_CALL ScriptFile::getName() { return m_sName; }
 
 css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
     SAL_CALL ScriptFile::getChildNodes()
@@ -41,38 +45,15 @@ sal_Bool SAL_CALL ScriptFile::hasChildNodes() { return true; }
 
 sal_Int16 SAL_CALL ScriptFile::getType() { return css::script::browse::BrowseNodeTypes::CONTAINER; }
 
-css::uno::Any SAL_CALL ScriptFile::getPropertyValue(const OUString& sPropertyName)
+sal_Bool SAL_CALL ScriptFile::isEditableNode()
 {
-    css::uno::Any xRet;
-
-    if (sPropertyName == "Editable")
-        xRet <<= isEditable(m_pProviderContext, m_sBaseUri);
-    else
-        xRet = ScriptBrowser::getPropertyValue(sPropertyName);
-
-    return xRet;
+    return isEditable(m_pProviderContext, m_sBaseUri);
 }
 
-css::uno::Any SAL_CALL ScriptFile::invoke(const OUString& sFunctionName,
-                                          const css::uno::Sequence<css::uno::Any>& aParams,
-                                          css::uno::Sequence<sal_Int16>& aOutParamIndex,
-                                          css::uno::Sequence<css::uno::Any>& aOutParam)
+sal_Bool SAL_CALL ScriptFile::editNode()
 {
-    if (sFunctionName == "Editable")
-    {
-        externalEdit(m_pProviderContext, m_sBaseUri);
-        return css::uno::Any();
-    }
-    else
-        return ScriptBrowser::invoke(sFunctionName, aParams, aOutParamIndex, aOutParam);
-}
-
-sal_Bool SAL_CALL ScriptFile::hasMethod(const OUString& sFunctionName)
-{
-    if (sFunctionName == "Editable")
-        return true;
-    else
-        return ScriptBrowser::hasMethod(sFunctionName);
+    externalEdit(m_pProviderContext, m_sBaseUri);
+    return true;
 }
 }
 
