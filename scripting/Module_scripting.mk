@@ -52,6 +52,10 @@ $(eval $(call gb_Module_add_check_targets,scripting,\
     $(if $(ENABLE_SCRIPTING_BEANSHELL),CppunitTest_scripting_beanshell) \
 ))
 
+$(eval $(call gb_Module_add_subsequentcheck_targets,scripting,\
+    PythonTest_scripting_provider \
+))
+
 endif
 
 # vim: set noet sw=4 ts=4:
