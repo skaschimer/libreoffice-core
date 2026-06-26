@@ -1260,8 +1260,8 @@ void SvxNumOptionsTabPage::SetMetric(FieldUnit eMetric)
         m_xWidthMF->set_digits(1);
         m_xHeightMF->set_digits(1);
     }
-    m_xWidthMF->set_unit(eMetric);
-    m_xHeightMF->set_unit(eMetric);
+    SetFieldUnit(*m_xWidthMF, eMetric);
+    SetFieldUnit(*m_xHeightMF, eMetric);
 }
 
 std::unique_ptr<SfxTabPage> SvxNumOptionsTabPage::Create(weld::Container* pPage, weld::DialogController* pController,
@@ -2783,12 +2783,12 @@ void SvxNumPositionTabPage::SetMetric(FieldUnit eMetric)
         m_xAlignedAtMF->set_digits(1);
         m_xIndentAtMF->set_digits(1);
     }
-    m_xDistBorderMF->set_unit(eMetric);
-    m_xDistNumMF->set_unit(eMetric);
-    m_xIndentMF->set_unit(eMetric);
-    m_xListtabMF->set_unit(eMetric);
-    m_xAlignedAtMF->set_unit(eMetric);
-    m_xIndentAtMF->set_unit(eMetric);
+    SetFieldUnit(*m_xDistBorderMF, eMetric);
+    SetFieldUnit(*m_xDistNumMF, eMetric);
+    SetFieldUnit(*m_xIndentMF, eMetric);
+    SetFieldUnit(*m_xListtabMF, eMetric);
+    SetFieldUnit(*m_xAlignedAtMF, eMetric);
+    SetFieldUnit(*m_xIndentAtMF, eMetric);
 }
 
 IMPL_LINK_NOARG(SvxNumPositionTabPage, EditModifyHdl_Impl, weld::ComboBox&, void)

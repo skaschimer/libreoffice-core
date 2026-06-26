@@ -83,10 +83,10 @@ class formatBulletsNumbering(UITestCase):
                     xatmf = xDialog.getChild("atmf")
                     xindentatmf = xDialog.getChild("indentatmf")
 
-                    self.assertEqual(get_state_as_dict(xalignedatmf)["Text"], "6.5 mm")
+                    self.assertEqual(get_state_as_dict(xalignedatmf)["Text"], "6.51 mm")
                     self.assertEqual(get_state_as_dict(xnum2alignlb)["SelectEntryText"], "Centered")
-                    self.assertEqual(get_state_as_dict(xatmf)["Text"], "12.8 mm")
-                    self.assertEqual(get_state_as_dict(xindentatmf)["Text"], "12.8 mm")
+                    self.assertEqual(get_state_as_dict(xatmf)["Text"], "13.00 mm")
+                    self.assertEqual(get_state_as_dict(xindentatmf)["Text"], "13.00 mm")
 
 
 

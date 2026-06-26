@@ -76,10 +76,10 @@ class WriterChapterNumbering(UITestCase):
                     self.assertEqual(get_state_as_dict(xsuffix)["Text"], "B")
                     self.assertEqual(get_state_as_dict(xstartat)["Text"], "2")
                     select_pos(xtab, "1") #second tab Position
-                    self.assertEqual(get_state_as_dict(xalignedatmf)["Text"], "0.1 mm")
+                    self.assertEqual(get_state_as_dict(xalignedatmf)["Text"], "0.49 mm")
                     self.assertEqual(get_state_as_dict(xnum2alignlb)["SelectEntryText"], "Centered")
                     self.assertEqual(get_state_as_dict(xnumfollowedbylb)["SelectEntryText"], "Tab stop")
-                    self.assertEqual(get_state_as_dict(xatmf)["Text"], "0.1 mm")
-                    self.assertEqual(get_state_as_dict(xindentatmf)["Text"], "0.1 mm")
+                    self.assertEqual(get_state_as_dict(xatmf)["Text"], "0.49 mm")
+                    self.assertEqual(get_state_as_dict(xindentatmf)["Text"], "0.49 mm")
 
 # vim: set shiftwidth=4 softtabstop=4 expandtab:

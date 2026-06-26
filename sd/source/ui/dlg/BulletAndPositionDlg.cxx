@@ -299,10 +299,10 @@ void SvxBulletAndPositionDlg::SetMetric(FieldUnit eMetric)
         m_xDistBorderMF->set_digits(1);
         m_xIndentMF->set_digits(1);
     }
-    m_xWidthMF->set_unit(eMetric);
-    m_xHeightMF->set_unit(eMetric);
-    m_xDistBorderMF->set_unit(eMetric);
-    m_xIndentMF->set_unit(eMetric);
+    SetFieldUnit(*m_xWidthMF, eMetric);
+    SetFieldUnit(*m_xHeightMF, eMetric);
+    SetFieldUnit(*m_xDistBorderMF, eMetric);
+    SetFieldUnit(*m_xIndentMF, eMetric);
 }
 
 SfxItemSet* SvxBulletAndPositionDlg::GetOutputItemSet(SfxItemSet* pSet)

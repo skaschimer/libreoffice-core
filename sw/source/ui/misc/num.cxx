@@ -36,6 +36,7 @@
 #include <svl/eitem.hxx>
 #include <svl/slstitm.hxx>
 #include <svl/intitem.hxx>
+#include <svtools/unitconv.hxx>
 #include <comphelper/lok.hxx>
 #include <osl/diagnose.h>
 
@@ -520,12 +521,12 @@ void SwNumPositionTabPage::SetWrtShell(SwWrtShell* pSh)
         m_xAlignedAtMF->set_digits(1);
         m_xIndentAtMF->set_digits(1);
     }
-    m_xDistBorderMF->set_unit( eMetric );
-    m_xDistNumMF->set_unit( eMetric );
-    m_xIndentMF->set_unit( eMetric );
-    m_xListtabMF->set_unit( eMetric );
-    m_xAlignedAtMF->set_unit( eMetric );
-    m_xIndentAtMF->set_unit( eMetric );
+    SetFieldUnit(*m_xDistBorderMF, eMetric );
+    SetFieldUnit(*m_xDistNumMF, eMetric );
+    SetFieldUnit(*m_xIndentMF, eMetric );
+    SetFieldUnit(*m_xListtabMF, eMetric );
+    SetFieldUnit(*m_xAlignedAtMF, eMetric );
+    SetFieldUnit(*m_xIndentAtMF, eMetric );
 }
 
 IMPL_LINK_NOARG(SwNumPositionTabPage, EditModifyHdl, weld::ComboBox&, void)
