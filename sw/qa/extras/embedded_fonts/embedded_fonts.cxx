@@ -343,7 +343,6 @@ CPPUNIT_TEST_FIXTURE(Test, testOpenDOCXWithRestrictedEmbeddedFont3)
     assertXPath(pXml, "/w:fonts/w:font[@w:name='Naftalene']/w:embedBoldItalic", 0);
 }
 
-#if !defined(MACOSX)
 CPPUNIT_TEST_FIXTURE(Test, testTdf167849)
 {
     // Given two documents with embedded fonts, that will not require substitution, if present:
@@ -352,12 +351,13 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf167849)
 
     // Load the first document
     createSwDoc("embed-unrestricted1.odt");
-    // At this point, 'Manbow Solid' embedded font is loaded
+    // At this point, the embedded 'Manbow Solid' font is loaded; its legacy name
+    // converts to the typographic identity 'Manbow'/'Solid'.
     std::swap(mxComponent, mxComponent2); // keep it from unloading upon the next load
 
     fontMappingData.checkpoint();
-    CPPUNIT_ASSERT(fontMappingData.wasUsed(u"Manbow Solid"));
-    CPPUNIT_ASSERT(!fontMappingData.wasSubstituted(u"Manbow Solid"));
+    CPPUNIT_ASSERT(fontMappingData.wasUsed(u"Manbow/Solid"));
+    CPPUNIT_ASSERT(!fontMappingData.wasSubstituted(u"Manbow/Solid"));
 
     // Load the second document
     createSwDoc("embed-unrestricted2.odt");
@@ -373,14 +373,13 @@ CPPUNIT_TEST_FIXTURE(Test, testTdf167849)
     calcLayout(true);
 
     fontMappingData.checkpoint();
-    CPPUNIT_ASSERT(fontMappingData.wasUsed(u"Manbow Solid"));
+    CPPUNIT_ASSERT(fontMappingData.wasUsed(u"Manbow/Solid"));
     // Without the fix, it would fail, because loading the second document unregistered
     // the embedded font from the first one.
-    CPPUNIT_ASSERT(!fontMappingData.wasSubstituted(u"Manbow Solid"));
+    CPPUNIT_ASSERT(!fontMappingData.wasSubstituted(u"Manbow/Solid"));
     CPPUNIT_ASSERT(fontMappingData.wasUsed(u"Unsteady Oversteer"));
     CPPUNIT_ASSERT(!fontMappingData.wasSubstituted(u"Unsteady Oversteer"));
 }
-#endif
 
 CPPUNIT_TEST_FIXTURE(Test, tdf166627)
 {
@@ -427,7 +426,7 @@ CPPUNIT_TEST_FIXTURE(Test, tdf166627)
 
 CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
 {
-#if HAVE_MORE_FONTS && !defined(MACOSX)
+#if HAVE_MORE_FONTS
     createSwDoc("testFontEmbedding.odt");
 
     // tdf#172647: "DejaVu Serif Condensed" is a legacy name for the "DejaVu Serif" family, so on
@@ -619,7 +618,6 @@ CPPUNIT_TEST_FIXTURE(Test, testEmbeddedFontProps)
 
     saveAndReload(TestFilter::ODT);
     CPPUNIT_ASSERT_EQUAL(1, getPages());
-#if !defined(MACOSX)
     // Test that font style/weight of embedded fonts is exposed.
     xmlDocUniquePtr pXmlDoc = parseExport(u"styles.xml"_ustr);
     // These failed, the attributes were missing.
@@ -656,7 +654,6 @@ CPPUNIT_TEST_FIXTURE(Test, testEmbeddedFontProps)
         pXmlDoc,
         "//style:font-face[@style:name='DejaVu Serif']/svg:font-face-src/svg:font-face-uri[4]",
         "font-weight", u"bold");
-#endif
 #endif
 }
 

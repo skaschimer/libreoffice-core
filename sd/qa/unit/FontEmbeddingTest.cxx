@@ -47,8 +47,6 @@ CPPUNIT_TEST_FIXTURE(FontEmbeddingTest, testRoundtripEmbeddedFontsPPTX)
     // Load the document
     createSdImpressDoc("BoldonseFontEmbedded.pptx");
 
-// FIXME: for some reason it doesn't work in macOS (see testSubsettedFullEmbeddedFont for a similar case)
-#if !defined(MACOSX)
     // Expect the font to be available now, if we imported the embedded fonts correctly
     {
         OUString aUrl = EmbeddedFontsManager::fontFileUrl(
@@ -57,7 +55,6 @@ CPPUNIT_TEST_FIXTURE(FontEmbeddingTest, testRoundtripEmbeddedFontsPPTX)
 
         CPPUNIT_ASSERT(!aUrl.isEmpty());
     }
-#endif
 
     // Check the document settings for embedded fonts are as expected
     {

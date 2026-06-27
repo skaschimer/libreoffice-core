@@ -46,7 +46,6 @@ CPPUNIT_TEST_FIXTURE(Test, testSubsettedEmbeddedFont)
 
 CPPUNIT_TEST_FIXTURE(Test, testSubsettedFullEmbeddedFont)
 {
-#if !defined(MACOSX) // FIXME fails on macOS
     // Given a document with an embedded font (marked as subsetted, but otherwise full in practice),
     // loaded for editing:
     loadFromFile(u"subsetted-full-embedded-font.docx");
@@ -59,7 +58,6 @@ CPPUNIT_TEST_FIXTURE(Test, testSubsettedFullEmbeddedFont)
     // Then make sure the subsetted font is available, given that it has the reasonable amount of
     // glyphs:
     CPPUNIT_ASSERT(!aUrl.isEmpty());
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(Test, testFontFamily)
