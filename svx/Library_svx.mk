@@ -29,6 +29,7 @@ $(eval $(call gb_Library_add_componentimpls,svx, \
 $(eval $(call gb_Library_set_include,svx,\
     -I$(SRCDIR)/svx/inc \
     -I$(SRCDIR)/svx/source/inc \
+    -I$(SRCDIR)/sc/inc \
     $$(INCLUDE) \
 ))
 

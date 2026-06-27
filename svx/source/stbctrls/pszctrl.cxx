@@ -40,19 +40,27 @@
 #include <svl/intitem.hxx>
 #include <sal/log.hxx>
 #include <tools/fldunit.hxx>
+#include <svtools/stringtransfer.hxx>
+#include <rtl/ref.hxx>
+#include <rtl/ustrbuf.hxx>
 
 #include <svx/pszctrl.hxx>
 
 #define PAINT_OFFSET    5
 
 #include <editeng/sizeitem.hxx>
-#include "stbctrls.h"
+
+
+#include <global.hxx>
 
 #include <svx/svxids.hrc>
 #include <bitmaps.hlst>
 #include <unotools/localedatawrapper.hxx>
-
+#include <globstr.hrc>
 #include <com/sun/star/beans/PropertyValue.hpp>
+
+// None sentinel bit (no ScSubTotalFunc counterpart)
+constexpr sal_uInt16 PSZ_FUNC_NONE_BIT = 16;
 
 /*  [Description]
 
@@ -104,15 +112,19 @@ class FunctionPopup_Impl
     std::unique_ptr<weld::Builder> m_xBuilder;
     std::unique_ptr<weld::Menu> m_xMenu;
     sal_uInt32        m_nSelected;
+    OUString          m_sFuncValuesStr;
     static sal_uInt16 id_to_function(std::u16string_view rIdent);
     static OUString function_to_id(sal_uInt16 nFunc);
+    OUString GetValueTextForFunction(sal_uInt16 nFunc) const;
+    void UpdateMenuLabels();
 public:
-    explicit FunctionPopup_Impl(sal_uInt32 nCheckEncoded);
+    explicit FunctionPopup_Impl(sal_uInt32 nCheckEncoded, const OUString& rFuncValuesStr);
     OUString Execute(weld::Window* pParent, const tools::Rectangle& rRect)
     {
         return m_xMenu->popup_at_rect(pParent, rRect);
     }
-    sal_uInt32 GetSelected(std::u16string_view curident) const;
+    sal_uInt32 GetSelected(std::u16string_view curident);
+    OUString GetClipboardText();
 };
 
 }
@@ -120,21 +132,21 @@ public:
 sal_uInt16 FunctionPopup_Impl::id_to_function(std::u16string_view rIdent)
 {
     if (rIdent == u"avg")
-        return PSZ_FUNC_AVG;
+        return SUBTOTAL_FUNC_AVE;
     else if (rIdent == u"counta")
-        return PSZ_FUNC_COUNT2;
+        return SUBTOTAL_FUNC_CNT2;
     else if (rIdent == u"count")
-        return PSZ_FUNC_COUNT;
+        return SUBTOTAL_FUNC_CNT;
     else if (rIdent == u"max")
-        return PSZ_FUNC_MAX;
+        return SUBTOTAL_FUNC_MAX;
     else if (rIdent == u"min")
-        return PSZ_FUNC_MIN;
+        return SUBTOTAL_FUNC_MIN;
     else if (rIdent == u"sum")
-        return PSZ_FUNC_SUM;
+        return SUBTOTAL_FUNC_SUM;
     else if (rIdent == u"selection")
-        return PSZ_FUNC_SELECTION_COUNT;
+        return SUBTOTAL_FUNC_SELECTION_COUNT;
     else if (rIdent == u"none")
-        return PSZ_FUNC_NONE;
+        return PSZ_FUNC_NONE_BIT;
     return 0;
 }
 
@@ -142,50 +154,120 @@ OUString FunctionPopup_Impl::function_to_id(sal_uInt16 nFunc)
 {
     switch (nFunc)
     {
-        case PSZ_FUNC_AVG:
+        case SUBTOTAL_FUNC_AVE:
             return u"avg"_ustr;
-        case PSZ_FUNC_COUNT2:
+        case SUBTOTAL_FUNC_CNT2:
             return u"counta"_ustr;
-        case PSZ_FUNC_COUNT:
+        case SUBTOTAL_FUNC_CNT:
             return u"count"_ustr;
-        case PSZ_FUNC_MAX:
+        case SUBTOTAL_FUNC_MAX:
             return u"max"_ustr;
-        case PSZ_FUNC_MIN:
+        case SUBTOTAL_FUNC_MIN:
             return u"min"_ustr;
-        case PSZ_FUNC_SUM:
+        case SUBTOTAL_FUNC_SUM:
             return u"sum"_ustr;
-        case PSZ_FUNC_SELECTION_COUNT:
+        case SUBTOTAL_FUNC_SELECTION_COUNT:
             return u"selection"_ustr;
-        case PSZ_FUNC_NONE:
+        case PSZ_FUNC_NONE_BIT:
             return u"none"_ustr;
     }
     return {};
 }
 
-FunctionPopup_Impl::FunctionPopup_Impl(sal_uInt32 nCheckEncoded)
+FunctionPopup_Impl::FunctionPopup_Impl(sal_uInt32 nCheckEncoded, const OUString& rFuncValuesStr)
     : m_xBuilder(Application::CreateBuilder(nullptr, u"svx/ui/functionmenu.ui"_ustr))
     , m_xMenu(m_xBuilder->weld_menu(u"menu"_ustr))
     , m_nSelected(nCheckEncoded)
+    , m_sFuncValuesStr(rFuncValuesStr)
 {
-    for ( sal_uInt16 nCheck = 1; nCheck < 32; ++nCheck )
+    for ( sal_uInt16 nCheck = SUBTOTAL_FUNC_AVE; nCheck < PSZ_FUNC_NONE_BIT; ++nCheck )
         if ( nCheckEncoded & (1u << nCheck) )
             m_xMenu->set_active(function_to_id(nCheck), true);
+
+    if (!m_sFuncValuesStr.isEmpty())
+        UpdateMenuLabels();
+
+    m_xMenu->append_separator(u"sep_copy"_ustr);
+    m_xMenu->append(u"copy_all"_ustr, SvxResId(RID_SVXSTR_COPY_VALUES));
 }
 
-sal_uInt32 FunctionPopup_Impl::GetSelected(std::u16string_view curident) const
+sal_uInt32 FunctionPopup_Impl::GetSelected(std::u16string_view curident)
 {
-    sal_uInt32 nSelected = m_nSelected;
     sal_uInt16 nCurItemId = id_to_function(curident);
-    if ( nCurItemId == PSZ_FUNC_NONE )
-        nSelected = ( 1 << PSZ_FUNC_NONE );
+    if ( nCurItemId == PSZ_FUNC_NONE_BIT )
+        m_nSelected = ( 1 << PSZ_FUNC_NONE_BIT );
     else
     {
-        nSelected &= (~( 1u << PSZ_FUNC_NONE )); // Clear the "None" bit
-        nSelected ^= ( 1u << nCurItemId ); // Toggle the bit corresponding to nCurItemId
-        if ( !nSelected )
-            nSelected = ( 1u << PSZ_FUNC_NONE );
+        m_nSelected &= (~( 1u << PSZ_FUNC_NONE_BIT )); // Clear the "None" bit
+        m_nSelected ^= ( 1u << nCurItemId ); // Toggle the bit corresponding to nCurItemId
+        if ( !m_nSelected )
+            m_nSelected = ( 1u << PSZ_FUNC_NONE_BIT );
     }
-    return nSelected;
+    return m_nSelected;
+}
+
+OUString FunctionPopup_Impl::GetValueTextForFunction(sal_uInt16 nFunc) const
+{
+    // Search by numeric function ID prefix (locale-independent)
+    OUString sSearch = OUString::number(nFunc) + ":";
+    sal_Int32 nIdx = m_sFuncValuesStr.indexOf(sSearch);
+
+    if (nIdx < 0)
+        return {};
+
+    // Locate where the value starts by finding the second ": "
+    sal_Int32 nNameEnd = m_sFuncValuesStr.indexOf(": ", nIdx + sSearch.getLength());
+    if (nNameEnd < 0)
+        return {};
+
+    // Return "Name: Value" without the ID prefix
+    sal_Int32 nNameStart = nIdx + sSearch.getLength();
+    sal_Int32 nEnd = m_sFuncValuesStr.indexOf("; ", nNameEnd + 2);
+    if (nEnd >= 0)
+        return m_sFuncValuesStr.copy(nNameStart, nEnd - nNameStart);
+    return m_sFuncValuesStr.copy(nNameStart);
+}
+
+void FunctionPopup_Impl::UpdateMenuLabels()
+{
+    for (sal_uInt16 nFunc = SUBTOTAL_FUNC_AVE; nFunc < PSZ_FUNC_NONE_BIT; ++nFunc)
+    {
+        OUString sFullText = GetValueTextForFunction(nFunc);
+        if (sFullText.isEmpty())
+            continue;
+
+        OUString sMenuId = function_to_id(nFunc);
+        if (sMenuId.isEmpty())
+            continue;
+
+        m_xMenu->set_label(sMenuId, sFullText);
+    }
+}
+
+OUString FunctionPopup_Impl::GetClipboardText()
+{
+    OUStringBuffer aBuf;
+    for (sal_uInt16 nCheck = SUBTOTAL_FUNC_AVE; nCheck < PSZ_FUNC_NONE_BIT; ++nCheck)
+    {
+        if ( !(m_nSelected & (1u << nCheck)) )
+            continue;
+
+        OUString sFullText = GetValueTextForFunction(nCheck);
+        if (sFullText.isEmpty())
+        {
+            // Fallback: use the menu label
+            OUString sId = function_to_id(nCheck);
+            sFullText = m_xMenu->get_label(sId);
+        }
+
+        if ( !sFullText.isEmpty() )
+        {
+            if ( !aBuf.isEmpty() )
+                aBuf.append("\n");
+            aBuf.append(sFullText);
+        }
+    }
+    return aBuf.makeStringAndClear();
 }
 
 struct SvxPosSizeStatusBarControl_Impl
@@ -204,6 +286,7 @@ struct SvxPosSizeStatusBarControl_Impl
     Point     aPos;       // valid when a position is shown
     Size      aSize;      // valid when a size is shown
     OUString  aStr;       // valid when a text is shown
+    OUString  aFuncValuesStr;  // function values like "9:Sum: 123; 4:Max: 456"
     bool      bPos;       // show position ?
     bool      bSize;      // set size ?
     bool      bTable;     // set table index ?
@@ -355,6 +438,36 @@ void SvxPosSizeStatusBarControl::StateChangedAtStatusBarControl( sal_uInt16 nSID
                     sTip = SvxResId(RID_SVXSTR_LIST_STYLE_HINT);
                     break;
                 case StatusCategory::Formula:
+                    pImpl->aFuncValuesStr = pStatusItem->GetValue();
+                    {
+                        // Strip numeric ID prefixes ("9:Sum: 123" → "Sum: 123") for display
+                        OUString sRaw = pStatusItem->GetValue();
+                        OUStringBuffer aBuf;
+                        sal_Int32 nStart = 0;
+                        while (nStart < sRaw.getLength())
+                        {
+                            sal_Int32 nSep = sRaw.indexOf("; ", nStart);
+                            OUString sSegment;
+                            if (nSep >= 0)
+                            {
+                                sSegment = sRaw.copy(nStart, nSep - nStart);
+                                nStart = nSep + 2;
+                            }
+                            else
+                            {
+                                sSegment = sRaw.copy(nStart);
+                                nStart = sRaw.getLength();
+                            }
+                            // Remove leading ID prefix like "9:"
+                            sal_Int32 nColon = sSegment.indexOf(':');
+                            if (nColon > 0 && nColon < 3) // ID is 1-2 digits
+                                sSegment = sSegment.copy(nColon + 1);
+                            if (!aBuf.isEmpty())
+                                aBuf.append("; ");
+                            aBuf.append(sSegment);
+                        }
+                        pImpl->aStr = aBuf.makeStringAndClear();
+                    }
                     sTip = SvxResId(RID_SVXSTR_FORMULA_HINT);
                     break;
                 case StatusCategory::RowColumn:
@@ -400,25 +513,35 @@ void SvxPosSizeStatusBarControl::Command( const CommandEvent& rCEvt )
     {
         sal_uInt32 nSelect = pImpl->nFunctionSet;
         if (!nSelect)
-            nSelect = ( 1 << PSZ_FUNC_NONE );
+            nSelect = ( 1 << PSZ_FUNC_NONE_BIT );
         tools::Rectangle aRect(rCEvt.GetMousePosPixel(), Size(1,1));
         weld::Window* pParent = weld::GetPopupParent(GetStatusBar(), aRect);
-        FunctionPopup_Impl aMenu(nSelect);
+        FunctionPopup_Impl aMenu(nSelect, pImpl->aFuncValuesStr);
         OUString sIdent = aMenu.Execute(pParent, aRect);
         if (!sIdent.isEmpty())
         {
-            nSelect = aMenu.GetSelected(sIdent);
-            if (nSelect)
+            if (sIdent == u"copy_all")
             {
-                if (nSelect == (1 << PSZ_FUNC_NONE))
-                    nSelect = 0;
+                OUString aClipText = aMenu.GetClipboardText();
+                rtl::Reference<svt::OStringTransferable> pTransfer
+                    = new svt::OStringTransferable(aClipText);
+                pTransfer->CopyToClipboard(pParent->get_clipboard());
+            }
+            else
+            {
+                nSelect = aMenu.GetSelected(sIdent);
+                if (nSelect)
+                {
+                    if (nSelect == (1 << PSZ_FUNC_NONE_BIT))
+                        nSelect = 0;
 
-                css::uno::Any a;
-                SfxUInt32Item aItem( SID_PSZ_FUNCTION, nSelect );
-                aItem.QueryValue( a );
-                css::uno::Sequence< css::beans::PropertyValue > aArgs{ comphelper::makePropertyValue(
-                    u"StatusBarFunc"_ustr, a) };
-                execute( u".uno:StatusBarFunc"_ustr, aArgs );
+                    css::uno::Any a;
+                    SfxUInt32Item aItem( SID_PSZ_FUNCTION, nSelect );
+                    aItem.QueryValue( a );
+                    css::uno::Sequence< css::beans::PropertyValue > aArgs{ comphelper::makePropertyValue(
+                        u"StatusBarFunc"_ustr, a) };
+                    execute( u".uno:StatusBarFunc"_ustr, aArgs );
+                }
             }
         }
     }

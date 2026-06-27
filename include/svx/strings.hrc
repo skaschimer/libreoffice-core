@@ -1904,6 +1904,11 @@
 #define STR_WARNING_GRAPHIC_PIXEL_COUNT_LOW   NC_("STR_WARNING_GRAPHIC_PIXEL_COUNT_LOW", "Image '%NAME%' has too few pixels for the current size (%DPIX% x %DPIY% DPI)")
 #define STR_WARNING_GRAPHIC_PIXEL_COUNT_HIGH  NC_("STR_WARNING_GRAPHIC_PIXEL_COUNT_HIGH", "Image '%NAME%' has too many pixels for the current size (%DPIX% x %DPIY% DPI)")
 
+/*--------------------------------------------------------------------
+    Description: Statusbar popup menu in Calc.
+ --------------------------------------------------------------------*/
+#define RID_SVXSTR_COPY_VALUES                      NC_("RID_SVXSTR_COPY_VALUES", "Copy values")
+
 #endif
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
