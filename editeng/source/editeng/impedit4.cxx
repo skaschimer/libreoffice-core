@@ -1427,6 +1427,19 @@ EditSelection ImpEditEngine::InsertTextObject( const EditTextObject& rTextObject
                     //TODO! Still true, still needed?
                 if ( rX.GetEnd() <= aPaM.GetNode()->Len() )
                 {
+                    // tdf#172647: this load path bypasses SetAttribs, so
+                    // convert to typographic names here too.
+                    const SfxPoolItem* pSrcItem = rX.GetItem();
+                    std::unique_ptr<SvxFontItem> pConvFont;
+                    const sal_uInt16 nFontWhich = pSrcItem->Which();
+                    if ((nFontWhich == EE_CHAR_FONTINFO || nFontWhich == EE_CHAR_FONTINFO_CJK
+                         || nFontWhich == EE_CHAR_FONTINFO_CTL)
+                        && GetRefDevice())
+                    {
+                        pConvFont.reset(static_cast<SvxFontItem*>(pSrcItem->Clone()));
+                        pConvFont->makeTypographic(*GetRefDevice());
+                        pSrcItem = pConvFont.get();
+                    }
                     if ( !bAllreadyHasAttribs || rX.IsFeature() )
                     {
                         // Normal attributes then go faster ...
@@ -1436,10 +1449,10 @@ EditSelection ImpEditEngine::InsertTextObject( const EditTextObject& rTextObject
                         DBG_ASSERT( rX.GetEnd() <= aPaM.GetNode()->Len(), "InsertBinTextObject: Attribute too large!" );
                         EditCharAttrib* pAttr;
                         if ( !bConvertMetricOfItems )
-                            pAttr = MakeCharAttrib( maEditDoc.GetItemPool(), *(rX.GetItem()), rX.GetStart()+nStartPos, rX.GetEnd()+nStartPos );
+                            pAttr = MakeCharAttrib( maEditDoc.GetItemPool(), *pSrcItem, rX.GetStart()+nStartPos, rX.GetEnd()+nStartPos );
                         else
                         {
-                            std::unique_ptr<SfxPoolItem> pNew(rX.GetItem()->Clone());
+                            std::unique_ptr<SfxPoolItem> pNew(pSrcItem->Clone());
                             ConvertItem( pNew, eSourceUnit, eDestUnit );
                             pAttr = MakeCharAttrib( maEditDoc.GetItemPool(), *pNew, rX.GetStart()+nStartPos, rX.GetEnd()+nStartPos );
                         }
@@ -1452,7 +1465,7 @@ EditSelection ImpEditEngine::InsertTextObject( const EditTextObject& rTextObject
                     {
                         DBG_ASSERT( rX.GetEnd()+nStartPos <= aPaM.GetNode()->Len(), "InsertBinTextObject: Attribute does not fit! (2)" );
                         // Tabs and other Features can not be inserted through InsertAttrib:
-                        maEditDoc.InsertAttrib( aPaM.GetNode(), rX.GetStart()+nStartPos, rX.GetEnd()+nStartPos, *rX.GetItem() );
+                        maEditDoc.InsertAttrib( aPaM.GetNode(), rX.GetStart()+nStartPos, rX.GetEnd()+nStartPos, *pSrcItem );
                     }
                 }
             }

@@ -143,6 +143,7 @@ public:
     void testFontVariationsItem();
     void testEscapementNotPreservedOnParaBreak();
     void testAutoDirNotPreservedOnParaBreak();
+    void testFontTypographicConversion();
 
     DECL_STATIC_LINK(Test, CalcFieldValueHdl, EditFieldInfo*, void);
 
@@ -181,6 +182,7 @@ public:
     CPPUNIT_TEST(testFontVariationsItem);
     CPPUNIT_TEST(testEscapementNotPreservedOnParaBreak);
     CPPUNIT_TEST(testAutoDirNotPreservedOnParaBreak);
+    CPPUNIT_TEST(testFontTypographicConversion);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -2581,6 +2583,24 @@ void Test::testAutoDirNotPreservedOnParaBreak()
     const auto* pNode2 = rDoc.GetObject(1);
     CPPUNIT_ASSERT(pNode2);
     CPPUNIT_ASSERT(!pNode2->GetContentAttribs().HasItem(EE_PARA_AUTOWRITINGDIR));
+}
+
+void Test::testFontTypographicConversion()
+{
+#if HAVE_MORE_FONTS
+    EditEngine aEditEngine(mpItemPool.get());
+
+    SfxItemSet aSet(aEditEngine.GetEmptyItemSet());
+    SvxFontItem aFont(EE_CHAR_FONTINFO);
+    aFont.SetFamilyName(u"DejaVu Sans Condensed"_ustr);
+    aSet.Put(aFont);
+    aEditEngine.QuickSetAttribs(aSet, ESelection(0, 0, 0, 1));
+
+    const SfxItemSet aStored = aEditEngine.GetAttribs(ESelection(0, 0, 0, 1));
+    const SvxFontItem& rStored = aStored.Get(EE_CHAR_FONTINFO);
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans"_ustr, rStored.GetFamilyName());
+    CPPUNIT_ASSERT_EQUAL(u"Condensed"_ustr, rStored.GetStyleName());
+#endif
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(Test);

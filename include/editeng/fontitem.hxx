@@ -24,6 +24,8 @@
 #include <tools/fontenum.hxx>
 #include <svl/poolitem.hxx>
 
+class OutputDevice;
+
 /** This item describes a Font.
 */
 class EDITENG_DLLPUBLIC SvxFontItem final : public SfxPoolItem
@@ -71,6 +73,9 @@ public:
     {
         return aStyleName;
     }
+
+    void makeTypographic(const OutputDevice& rDevice, FontWeight eWeight = WEIGHT_DONTKNOW,
+                         FontWidth eWidth = WIDTH_DONTKNOW, FontItalic eItalic = ITALIC_DONTKNOW);
 
     void SetFamily(FontFamily _eFamily);
     FontFamily GetFamily() const

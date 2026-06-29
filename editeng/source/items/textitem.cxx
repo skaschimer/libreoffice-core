@@ -323,6 +323,21 @@ void SvxFontItem::SetStyleName(const OUString &rStyleName)
     aStyleName = rStyleName;
 }
 
+void SvxFontItem::makeTypographic(const OutputDevice& rDevice, FontWeight eWeight, FontWidth eWidth,
+                                  FontItalic eItalic)
+{
+    OUString aTypoFamily, aTypoStyle;
+    // Only rewrite when the name resolves to a *different* typographic family, i.e. it was a
+    // legacy name.
+    if (rDevice.GetTypographicFontName(aFamilyName, eWeight, eWidth, eItalic, aTypoFamily,
+                                       aTypoStyle)
+        && !aTypoFamily.equalsIgnoreAsciiCase(aFamilyName))
+    {
+        SetFamilyName(aTypoFamily);
+        SetStyleName(aTypoStyle);
+    }
+}
+
 void SvxFontItem::SetFamily(FontFamily _eFamily)
 {
     if (eFamily == _eFamily)
