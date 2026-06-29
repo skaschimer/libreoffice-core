@@ -23,8 +23,15 @@
 #include <bookmark.hxx>
 #include <DocumentContentOperationsManager.hxx>
 #include <hintids.hxx>
+#include <IDocumentDeviceAccess.hxx>
+#include <vcl/outdev.hxx>
+#include <editeng/fontitem.hxx>
+#include <editeng/wghtitem.hxx>
+#include <editeng/postitem.hxx>
 #include <editeng/rsiditem.hxx>
 #include <editeng/nhypitem.hxx>
+
+#include <optional>
 #include <osl/diagnose.h>
 #include <svl/whiter.hxx>
 #include <svl/itemiter.hxx>
@@ -1182,11 +1189,57 @@ SwTextAttr* MakeTextAttr(
     return pNew;
 }
 
+std::optional<SfxItemSet> ConvertCharFontsToTypographic(const SfxItemSet& rSet, const SwDoc& rDoc)
+{
+    const TypedWhichId<SvxFontItem> aFontIds[3]
+        = { RES_CHRATR_FONT, RES_CHRATR_CJK_FONT, RES_CHRATR_CTL_FONT };
+    const TypedWhichId<SvxWeightItem> aWeightIds[3]
+        = { RES_CHRATR_WEIGHT, RES_CHRATR_CJK_WEIGHT, RES_CHRATR_CTL_WEIGHT };
+    const TypedWhichId<SvxPostureItem> aPostureIds[3]
+        = { RES_CHRATR_POSTURE, RES_CHRATR_CJK_POSTURE, RES_CHRATR_CTL_POSTURE };
+    OutputDevice* pRefDev = nullptr;
+    std::optional<SfxItemSet> oConverted;
+    for (int i = 0; i < 3; ++i)
+    {
+        const SvxFontItem* pFont = rSet.GetItemIfSet(aFontIds[i], false);
+        if (!pFont)
+            continue;
+        if (!pRefDev)
+        {
+            pRefDev = rDoc.getIDocumentDeviceAccess().getReferenceDevice(true);
+            if (!pRefDev)
+                break;
+        }
+        FontWeight eWeight = WEIGHT_DONTKNOW;
+        if (const SvxWeightItem* pWeight = rSet.GetItemIfSet(aWeightIds[i], false))
+            eWeight = pWeight->GetWeight();
+        FontItalic eItalic = ITALIC_DONTKNOW;
+        if (const SvxPostureItem* pPosture = rSet.GetItemIfSet(aPostureIds[i], false))
+            eItalic = pPosture->GetPosture();
+
+        SvxFontItem aFont(*pFont);
+        aFont.makeTypographic(*pRefDev, eWeight, WIDTH_DONTKNOW, eItalic);
+        if (aFont.GetFamilyName() != pFont->GetFamilyName()
+            || aFont.GetStyleName() != pFont->GetStyleName())
+        {
+            if (!oConverted)
+                oConverted.emplace(rSet);
+            oConverted->Put(aFont);
+        }
+    }
+    return oConverted;
+}
+
 SwTextAttr* MakeTextAttr( SwDoc & rDoc, const SfxItemSet& rSet,
                         sal_Int32 nStt, sal_Int32 nEnd )
 {
     IStyleAccess& rStyleAccess = rDoc.GetIStyleAccess();
-    const std::shared_ptr<SfxItemSet> pAutoStyle = rStyleAccess.getAutomaticStyle( rSet, IStyleAccess::AUTO_STYLE_CHAR );
+
+    // tdf#172647: store fonts by their typographic names.
+    std::optional<SfxItemSet> oConverted = ConvertCharFontsToTypographic(rSet, rDoc);
+    const SfxItemSet& rUseSet = oConverted ? *oConverted : rSet;
+
+    const std::shared_ptr<SfxItemSet> pAutoStyle = rStyleAccess.getAutomaticStyle( rUseSet, IStyleAccess::AUTO_STYLE_CHAR );
     SwFormatAutoFormat aNewAutoFormat;
     aNewAutoFormat.SetStyleHandle( pAutoStyle );
     SwTextAttr* pNew = MakeTextAttr( rDoc, aNewAutoFormat, nStt, nEnd );

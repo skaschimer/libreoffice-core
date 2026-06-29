@@ -21,7 +21,9 @@
 #include <svl/stylepool.hxx>
 #include <istyleaccess.hxx>
 #include <swatrset.hxx>
+#include <ndhints.hxx>
 #include <unordered_map>
+#include <optional>
 #include <osl/diagnose.h>
 #include <names.hxx>
 
@@ -91,6 +93,26 @@ void SwStyleManager::clearCaches()
     maParaCache.clear();
 }
 
+namespace
+{
+// tdf#172647: automatic styles bypass the SwFormat/hint conversion paths, so
+// convert legacy font names to their typographic form here, before the style is
+// pooled, keeping the whole model keyed by typographic identity. Clone() keeps
+// the concrete (SwAttrSet) type the paragraph autostyle pool requires.
+std::shared_ptr<SfxItemSet> insertTypographicItemSet(StylePool& rPool, const SfxItemSet& rSet,
+                                                     const OUString* pParentName)
+{
+    const auto* pPool = dynamic_cast<const SwAttrPool*>(rSet.GetPool());
+    std::optional<SfxItemSet> oConverted
+        = pPool ? ConvertCharFontsToTypographic(rSet, pPool->GetDoc()) : std::nullopt;
+    if (!oConverted)
+        return rPool.insertItemSet(rSet, pParentName);
+    std::unique_ptr<SfxItemSet> pConverted = rSet.Clone();
+    pConverted->Put(*oConverted);
+    return rPool.insertItemSet(*pConverted, pParentName);
+}
+}
+
 std::shared_ptr<SfxItemSet> SwStyleManager::getAutomaticStyle( const SfxItemSet& rSet,
                                                                    IStyleAccess::SwAutoStyleFamily eFamily,
                                                                    const OUString* pParentName )
@@ -98,7 +120,7 @@ std::shared_ptr<SfxItemSet> SwStyleManager::getAutomaticStyle( const SfxItemSet&
     assert(eFamily != IStyleAccess::AUTO_STYLE_PARA || dynamic_cast<const SwAttrSet*>(&rSet));
     StylePool& rAutoPool
         = eFamily == IStyleAccess::AUTO_STYLE_CHAR ? m_aAutoCharPool : m_aAutoParaPool;
-    return rAutoPool.insertItemSet( rSet, pParentName );
+    return insertTypographicItemSet( rAutoPool, rSet, pParentName );
 }
 
 std::shared_ptr<SwAttrSet> SwStyleManager::getAutomaticStyle( const SwAttrSet& rSet,
@@ -107,7 +129,7 @@ std::shared_ptr<SwAttrSet> SwStyleManager::getAutomaticStyle( const SwAttrSet& r
 {
     StylePool& rAutoPool
         = eFamily == IStyleAccess::AUTO_STYLE_CHAR ? m_aAutoCharPool : m_aAutoParaPool;
-    std::shared_ptr<SfxItemSet> pItemSet = rAutoPool.insertItemSet( rSet, pParentName ? &pParentName->toString() : nullptr );
+    std::shared_ptr<SfxItemSet> pItemSet = insertTypographicItemSet( rAutoPool, rSet, pParentName ? &pParentName->toString() : nullptr );
     std::shared_ptr<SwAttrSet> pAttrSet = std::dynamic_pointer_cast<SwAttrSet>(pItemSet);
     assert(bool(pItemSet) == bool(pAttrSet) && "types do not match");
     return pAttrSet;
@@ -119,7 +141,7 @@ std::shared_ptr<SfxItemSet> SwStyleManager::cacheAutomaticStyle( const SfxItemSe
     assert(eFamily != IStyleAccess::AUTO_STYLE_PARA || dynamic_cast<const SwAttrSet*>(&rSet));
     StylePool& rAutoPool
         = eFamily == IStyleAccess::AUTO_STYLE_CHAR ? m_aAutoCharPool : m_aAutoParaPool;
-    std::shared_ptr<SfxItemSet> pStyle = rAutoPool.insertItemSet( rSet );
+    std::shared_ptr<SfxItemSet> pStyle = insertTypographicItemSet( rAutoPool, rSet, nullptr );
     if (eFamily == IStyleAccess::AUTO_STYLE_CHAR)
     {
         maCharCache.addStyleName( pStyle );

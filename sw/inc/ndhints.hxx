@@ -21,6 +21,8 @@
 
 #include "swtypes.hxx"
 
+#include <optional>
+
 class SwTextNode;
 class SwRegHistory;                 // Is in RolBck.hxx.
 class SwTextAttr;
@@ -31,6 +33,8 @@ class SfxItemSet;
 class SwDoc;
 
 enum class CopyOrNewType { Copy, New };
+
+std::optional<SfxItemSet> ConvertCharFontsToTypographic(const SfxItemSet& rSet, const SwDoc& rDoc);
 
 /// if COPY then pTextNode must be given!
 SwTextAttr * MakeTextAttr(
