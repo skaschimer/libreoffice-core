@@ -9432,7 +9432,9 @@ void DocxAttributeOutput::ParaAdjust( const SvxAdjustItem& rAdjust )
             switch ( rAdjust.GetPropWordSpacingMinimum() )
             {
                 case 133:
-                    if ( rAdjust.GetPropWordSpacingMaximum() == 133 )
+                case 150:
+                    if ( rAdjust.GetPropWordSpacingMaximum() == 133 ||
+                            rAdjust.GetPropWordSpacingMaximum() == 150 )
                         pAdjustString = "lowKashida";
                     break;
                 case 200:
