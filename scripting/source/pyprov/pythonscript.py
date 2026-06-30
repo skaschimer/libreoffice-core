@@ -42,7 +42,8 @@ from com.sun.star.uno import Exception as UnoException
 from com.sun.star.awt import XActionListener
 
 from com.sun.star.script.provider import XScriptProvider, XScript, ScriptFrameworkErrorException
-from com.sun.star.script.browse import XBrowseNode, XCreatableBrowseNode, XEditableBrowseNode
+from com.sun.star.script.browse import XBrowseNode, XCreatableBrowseNode, XCopyableBrowseNode
+from com.sun.star.script.browse import XEditableBrowseNode
 from com.sun.star.script.browse.BrowseNodeTypes import SCRIPT, CONTAINER
 from com.sun.star.system import SystemShellExecuteFlags
 
@@ -715,7 +716,7 @@ class ScriptBrowseNode(unohelper.Base, XBrowseNode, XPropertySet, EditableNode):
 
 
 # -------------------------------------------------------
-class FileBrowseNode(unohelper.Base, XBrowseNode, EditableNode):
+class FileBrowseNode(unohelper.Base, XBrowseNode, XCopyableBrowseNode, EditableNode):
     def __init__(self, provCtx, uri, name):
         self.provCtx = provCtx
         self.uri = uri
@@ -749,6 +750,36 @@ class FileBrowseNode(unohelper.Base, XBrowseNode, EditableNode):
 
     def getType(self):
         return CONTAINER
+
+    def isCopyableNode(self):
+        return True
+
+    def getCopyDestinationUrl(self, xDest):
+        if isinstance(xDest, PythonScriptProvider):
+            xDest = xDest.dirBrowseNode
+        if not isinstance(xDest, DirBrowseNode):
+            return None
+
+        # Don’t allow copying into the same directory
+        if xDest.rootUrl == self.uri[0:self.uri.rfind('/')]:
+            return None
+
+        return xDest.rootUrl
+
+    def nodeCanBeCopiedTo(self, parentNode):
+        return self.getCopyDestinationUrl(parentNode) != None
+
+    def copyNode(self, parentNode):
+        dest_dir_url = self.getCopyDestinationUrl(parentNode)
+        if dest_dir_url is None:
+            raise IllegalArgumentException("Invalid parent node passed to copyNode", self, 0)
+
+        self.provCtx.sfa.createFolder(dest_dir_url)
+
+        target_url = f"{dest_dir_url}/{self.uri[self.uri.rfind('/') + 1:]}"
+        self.provCtx.sfa.copy(self.uri, target_url)
+
+        return FileBrowseNode(self.provCtx, target_url, self.name)
 
 
 class DirBrowseNode(unohelper.Base, XBrowseNode, XCreatableBrowseNode):
