@@ -26,13 +26,14 @@ module com {
 /**
     This service provides access to the Macros and Macro containers
     via the XBrowseNode interface. The optional interfaces are used to
-    create/delete/rename/edit macros or macro containers.
+    copy/create/delete/rename/edit macros or macro containers.
 
     @since OOo 2.0
 */
 service BrowseNode
 {
     interface ::com::sun::star::script::browse::XBrowseNode;
+    [ optional ] interface XCopyableBrowseNode;
     [ optional ] interface XCreatableBrowseNode;
     [ optional ] interface XDeletableBrowseNode;
     [ optional ] interface XEditableBrowseNode;

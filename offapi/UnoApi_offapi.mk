@@ -3095,6 +3095,7 @@ $(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/script/browse,\
 	BrowseNodeTypes \
 	XBrowseNode \
 	XBrowseNodeFactory \
+	XCopyableBrowseNode \
 	XCreatableBrowseNode \
 	XDeletableBrowseNode \
 	XEditableBrowseNode \
