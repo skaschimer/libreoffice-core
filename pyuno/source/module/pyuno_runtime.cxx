@@ -582,6 +582,11 @@ PyRef Runtime::any2PyObject (const Any &a ) const
         if (!tmp_interface.is ())
             return Py_None;
 
+        // If the interface is actually wrapping a Python object then reuse the underlying object
+        // instead
+        if (Adapter *pAdapter = comphelper::getFromUnoTunnel<Adapter>(tmp_interface))
+            return pAdapter->getWrappedObject();
+
         return PyUNO_new( a, getImpl()->cargo->xInvocation );
     }
     default:

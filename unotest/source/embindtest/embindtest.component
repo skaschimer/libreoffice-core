@@ -34,4 +34,10 @@
             single-instance="true">
         <singleton name="org.libreoffice.embindtest.theSingleton"/>
     </implementation>
+    <implementation
+            constructor="org_libreoffice_comp_embindtest_Passthrough_get_implementation"
+            name="org.libreoffice.comp.embindtest.thePassthrough"
+            single-instance="true">
+        <singleton name="org.libreoffice.embindtest.thePassthrough"/>
+    </implementation>
 </component>
