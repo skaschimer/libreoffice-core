@@ -60,6 +60,7 @@
 #define MID_HYPHEN_COMPOUND_MIN_LEAD 14
 #define MID_HYPHEN_COMPOUND_MIN_TRAIL 15
 #define MID_HYPHEN_KEEP_LINE    16
+#define MID_HYPHEN_LEVEL        17
 
 // SvxBoxInfoItem
 #define MID_HORIZONTAL          1

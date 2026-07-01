@@ -30,7 +30,7 @@
  </office:styles>
  <office:automatic-styles>
   <style:style style:name="P1" style:family="paragraph" style:parent-style-name="Text_20_body" style:master-page-name="">
-   <style:paragraph-properties fo:text-align="justify" style:justify-single-word="false" loext:word-spacing-maximum="101%" loext:letter-spacing-minimum="-25%" loext:letter-spacing-maximum="25%" fo:hyphenation-ladder-count="no-limit" fo:hyphenation-keep="auto" loext:hyphenation-keep-type="column" loext:hyphenation-keep-line="true" style:page-number="auto" style:writing-mode="lr-tb"/>
+   <style:paragraph-properties fo:text-align="justify" style:justify-single-word="false" loext:word-spacing-maximum="100%" loext:letter-spacing-minimum="-25%" loext:letter-spacing-maximum="25%" fo:hyphenation-ladder-count="no-limit" fo:hyphenation-keep="auto" loext:hyphenation-keep-type="column" loext:hyphenation-keep-line="true" style:page-number="auto" style:writing-mode="lr-tb"/>
    <style:text-properties style:font-name="Linux Libertine G:litt=0" fo:letter-spacing="0.018cm" officeooo:paragraph-rsid="001f2a0b" fo:hyphenate="false" fo:hyphenation-remain-char-count="2" fo:hyphenation-push-char-count="2" loext:hyphenation-no-caps="false" loext:hyphenation-no-last-word="false" loext:hyphenation-word-char-count="no-limit" loext:hyphenation-zone="no-limit"/>
   </style:style>
   <style:style style:name="T1" style:family="text">

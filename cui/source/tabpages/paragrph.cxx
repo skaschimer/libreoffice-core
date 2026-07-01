@@ -1883,6 +1883,7 @@ bool SvxExtParagraphTabPage::FillItemSet( SfxItemSet* rOutSet )
          m_xExtCompoundHyphenAfterBox->get_value_changed_from_saved() ||
          m_xMaxHyphenEdit->get_value_changed_from_saved() ||
          m_xMinWordLength->get_value_changed_from_saved() ||
+         m_xSliderHyphen->get_value() != nHyphenLevel ||
          m_aHyphenZone.get_value_changed_from_saved() ||
          m_aParagraphEndZone.get_value_changed_from_saved() ||
          m_aColumnEndZone.get_value_changed_from_saved() ||
@@ -1909,6 +1910,7 @@ bool SvxExtParagraphTabPage::FillItemSet( SfxItemSet* rOutSet )
             aHyphen.GetMinWordLength() = static_cast<sal_uInt8>(m_xMinWordLength->get_value());
         }
         aHyphen.GetMaxHyphens() = static_cast<sal_uInt8>(m_xMaxHyphenEdit->get_value());
+        aHyphen.GetLevel() = 100 - static_cast<sal_uInt8>(m_xSliderHyphen->get_value());
 
         SfxItemPool* pPool = GetItemSet().GetPool();
         DBG_ASSERT( pPool, "Where is the pool?" );
@@ -2169,6 +2171,8 @@ void SvxExtParagraphTabPage::Reset( const SfxItemSet* rSet )
         m_xExtCompoundHyphenAfterBox->set_value(rHyphen.GetCompoundMinTrail());
         m_xMaxHyphenEdit->set_value(rHyphen.GetMaxHyphens());
         m_xMinWordLength->set_value(rHyphen.GetMinWordLength());
+        m_xSliderHyphen->set_value(100 - rHyphen.GetLevel());
+        nHyphenLevel = 100 - rHyphen.GetLevel();
         m_aHyphenZone.SetFieldUnit(eFUnit);
         m_aHyphenZone.SetMetricValue(rHyphen.GetTextHyphenZone(), MapUnit::MapTwip);
         m_aParagraphEndZone.SetFieldUnit(eFUnit);
@@ -2224,6 +2228,9 @@ void SvxExtParagraphTabPage::Reset( const SfxItemSet* rSet )
     m_xMaxHyphenEdit->set_sensitive(bEnable);
     m_xMinWordLabel->set_sensitive(bEnable);
     m_xMinWordLength->set_sensitive(bEnable);
+    m_xBetterSpacingLabel->set_sensitive(bEnable);
+    m_xLessHyphenLabel->set_sensitive(bEnable);
+    m_xSliderHyphen->set_sensitive(bEnable);
     m_xHyphenZoneLabel->set_sensitive(bEnable);
     m_aHyphenZone.set_sensitive(bEnable);
     m_xParagraphEndZoneLabel->set_sensitive(bEnable);
@@ -2568,6 +2575,7 @@ SvxExtParagraphTabPage::SvxExtParagraphTabPage(weld::Container* pPage, weld::Dia
     , bPageBreak(true)
     , bHtmlMode(false)
     , nStdPos(0)
+    , nHyphenLevel(0)
     // Hyphenation
     , m_xHyphenBox(m_xBuilder->weld_check_button(u"checkAuto"_ustr))
     , m_xHyphenNoCapsBox(m_xBuilder->weld_check_button(u"checkNoCaps"_ustr))
@@ -2584,6 +2592,9 @@ SvxExtParagraphTabPage::SvxExtParagraphTabPage(weld::Container* pPage, weld::Dia
     , m_xMaxHyphenEdit(m_xBuilder->weld_spin_button(u"spinMaxNum"_ustr))
     , m_xMinWordLabel(m_xBuilder->weld_label(u"labelMinLen"_ustr))
     , m_xMinWordLength(m_xBuilder->weld_spin_button(u"spinMinLen"_ustr))
+    , m_xBetterSpacingLabel(m_xBuilder->weld_label(u"labelBetterSpacing"_ustr))
+    , m_xLessHyphenLabel(m_xBuilder->weld_label(u"labelLessHyphen"_ustr))
+    , m_xSliderHyphen(m_xBuilder->weld_scale(u"hyphenslider"_ustr))
     , m_xHyphenZoneLabel(m_xBuilder->weld_label(u"labelHyphenZone"_ustr))
     , m_aHyphenZone(m_xBuilder->weld_metric_spin_button(u"spinHyphenZone"_ustr, FieldUnit::CM))
     , m_xParagraphEndZoneLabel(m_xBuilder->weld_label(u"labelParagraphEndZone"_ustr))
@@ -2679,6 +2690,9 @@ SvxExtParagraphTabPage::SvxExtParagraphTabPage(weld::Container* pPage, weld::Dia
     m_xMaxHyphenEdit->set_sensitive(false);
     m_xMinWordLabel->set_sensitive(false);
     m_xMinWordLength->set_sensitive(false);
+    m_xBetterSpacingLabel->set_sensitive(false);
+    m_xLessHyphenLabel->set_sensitive(false);
+    m_xSliderHyphen->set_sensitive(false);
     m_xHyphenZoneLabel->set_sensitive(false);
     m_aHyphenZone.set_sensitive(false);
     m_xParagraphEndZoneLabel->set_sensitive(false);
@@ -2833,6 +2847,9 @@ void SvxExtParagraphTabPage::HyphenClickHdl()
     m_xMaxHyphenEdit->set_sensitive(bEnable);
     m_xMinWordLabel->set_sensitive(bEnable);
     m_xMinWordLength->set_sensitive(bEnable);
+    m_xBetterSpacingLabel->set_sensitive(bEnable);
+    m_xLessHyphenLabel->set_sensitive(bEnable);
+    m_xSliderHyphen->set_sensitive(bEnable);
     m_xHyphenZoneLabel->set_sensitive(bEnable);
     m_aHyphenZone.set_sensitive(bEnable);
     m_xAcrossText->set_sensitive(bEnable);

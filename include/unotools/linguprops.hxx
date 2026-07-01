@@ -50,6 +50,7 @@ inline constexpr OUString UPN_HYPH_ZONE_SPREAD                = u"HyphZoneSpread
 inline constexpr OUString UPN_HYPH_KEEP                       = u"HyphKeep"_ustr;
 inline constexpr OUString UPN_HYPH_KEEP_TYPE                  = u"HyphKeepType"_ustr;
 inline constexpr OUString UPN_HYPH_KEEP_LINE                  = u"HyphKeepLine"_ustr;
+inline constexpr OUString UPN_HYPH_LEVEL                      = u"HyphKeepLevel"_ustr;
 
 // UNO property names for Lingu
 // (those not covered by the SpellChecker and Hyphenator
@@ -125,6 +126,7 @@ inline constexpr OUString UPN_IS_GRAMMAR_INTERACTIVE          = u"IsInteractiveG
 #define UPH_HYPH_COMPOUND_MIN_LEADING       40
 #define UPH_HYPH_COMPOUND_MIN_TRAILING      41
 #define UPH_HYPH_KEEP_LINE                  42
+#define UPH_HYPH_LEVEL                      43
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

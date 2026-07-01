@@ -562,6 +562,13 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
            aAdjustItem.GetPropWordSpacingMinimum() < aAdjustItem.GetPropWordSpacing() ||
            aAdjustItem.GetPropWordSpacingMinimum() != 100 );
 
+    // "less hyphenation"-level:
+    // 0.0 -> force less hyphenation (break at spaces between minimum and maximum word spacing)
+    // 1.0 -> force hyphenation, i.e. better spacing
+    // 0.5 -> interoperability mode (set also 75% minimum and 150% maximum word spacing)
+    float fLevel = rInf.GetTextFrame()->GetTextNodeForParaProps()->
+                            GetSwAttrSet().GetHyphenZone().GetLevel() / 100.0;
+
     if ( ( bInteropSmartJustify || bWordSpacing || bWordSpacingMaximum || bWordSpacingMinimum ) &&
          // tdf#164499 no shrinking in tabulated line
          ( !rInf.GetLast() || !rInf.GetLast()->InTabGrp() ) &&
@@ -618,16 +625,38 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
 
             // calculate line breaking with desired word spacing, also
             // skip hyphenation, if the maximum word spacing allows it
+            // TODO complete it, when the desired word spacing is not 100%
             if ( bWordSpacing || ( bWordSpacingMaximum && bOrigHyphenated ) )
             {
                 std::optional<SwTextGuess> pGuess2(std::in_place);
-                bool bFull2 = !pGuess2->Guess( *this, rInf, Height(), nSpacesInLine, aAdjustItem.GetPropWordSpacing(), nSpaceWidth );
+
+                // hyphenation slider, when 0.0 < fLevel < 0.5,
+                // enlarge both desired and maximum word spacing:
+                // map desired word spacing into (desired, original maximum) range
+                // map maximum word spacing into (original maximum, original maximum + 100) range
+                // allowing to remove very large word spacing or too much hyphenation
+                // using only the hyphenation slider
+                sal_Int32 nWeightedSpacing = fLevel >= 0.5
+                        ? aAdjustItem.GetPropWordSpacing()
+                        : aAdjustItem.GetPropWordSpacing() * fLevel * 2 +
+                                   aAdjustItem.GetPropWordSpacingMaximum() * (0.5 - fLevel) * 2;
+                // add a full extra space, when fLevel = 0.0 (max. less hyphen)
+                sal_Int32 nExtraWordSpacing = fLevel >= 0.5
+                        ? 0
+                        : (0.5 - fLevel) * 200;
+
+                bool bFull2 = !pGuess2->Guess( *this, rInf, Height(), nSpacesInLine,
+                                nWeightedSpacing, nSpaceWidth, nExtraWordSpacing );
 
                 bool bOrigHyphenated2 = pGuess2->HyphWord().is() &&
                         pGuess2->BreakPos() > rInf.GetLineStart();
 
                 if ( !bOrigHyphenated2 &&
-                                ( aAdjustItem.GetPropLetterSpacingMinimum() < 0 ||
+                                // try to remove hyphenation in interoperability mode or
+                                // allow desired word spacing
+                                ( ( bOrigHyphenated && fLevel <= 0.5 ) || fLevel > 0.5 ||
+                                      aAdjustItem.GetPropWordSpacing() == nSpacingMaximum ) &&
+                                  ( aAdjustItem.GetPropLetterSpacingMinimum() < 0 ||
                                         rInf.GetBreakWidth() <= rInf.GetLineWidth() ) )
                 {
                     sal_Int32 nSpacesInLine2 = rInf.GetLineSpaceCount( pGuess2->BreakPos() );
@@ -644,7 +673,7 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
                     // desired one
                     // FIXME if the desired word spacing is not 100%, and maximum word spacing
                     // is not the same, but minimum word spacing is, the fallback is still 100%
-                    if ( z1NotWeighted <= nSpacingMaximum/100.0 ||
+                    if ( z1NotWeighted <= ( nSpacingMaximum + nExtraWordSpacing )/100.0 ||
                                     aAdjustItem.GetPropWordSpacing() == nSpacingMaximum )
                     {
                         pGuess.emplace();
@@ -684,7 +713,8 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
                     // * if maximum shrinking adds at least a new word to the line,
                     // * or it results a different hyphenation in the same word.
                     // I.e. skip the search, when maximum shrinking removes a hyphenation.
-                    const bool bNewBreak = nSpacesInLineShrink > nSpacesInLine || bShrunkHyphenated;
+                    const bool bNewBreak = nSpacesInLineShrink > nSpacesInLine ||
+                            bShrunkHyphenated || fLevel > 0.5;
                     // check i == j to update maximum shrinking TODO re-use the first result?
                     // FIXME Greek can hyphenate after the first letter, too. Is first ++i OK?
                     for (++i; i <= j && bNewBreak; ++i)
@@ -752,7 +782,9 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
                         float z1 = (nSpaceWidth/10.0+((fSpaceNormal-nSpaceWidth/10.0)*fExpansionWeight))/(nSpaceWidth/10.0);
                         float z1NotWeighted = ( nSpaceWidth/10.0 +
                                         ( fSpaceNormal - nSpaceWidth/10.0) ) / (nSpaceWidth/10.0);
-                        bool bRemoveHyphenation = bOrigHyphenated && !bShrunkHyphenated;
+                        // always shrink at average and lower hyphenation level,
+                        // if it removes hyphenation
+                        bool bRemoveHyphenation = bOrigHyphenated && !bShrunkHyphenated && fLevel <= 0.5;
                         // Prefer shrinking, if 1) this is a portion OR,
                         // TODO shrink line portions only if needed
                         if ( bIsPortion ||
@@ -761,7 +793,11 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
                             z1NotWeighted > nSpacingMaximum/100.0 || bRemoveHyphenation ||
                             // ... 4) * shrinking results better (weighted) spacing AND
                             //        * doesn't result in an extra hyphenation
-                            ( z1 >= z0 && !( !bOrigHyphenated && bShrunkHyphenated ) ) )
+                            ( z1 >= z0 && !( !bOrigHyphenated && bShrunkHyphenated ) ) ||
+                            // or allow more and more hyphenation choosing better and better spacing
+                            // when shrinking results in an extra hyphenation
+                            ( z1 >= z0 && !bOrigHyphenated && bShrunkHyphenated &&
+                                fLevel > 0.5 && z1 * ( fLevel - 0.5 ) >= z0 * ( 1 - fLevel ) ) )
                         {
                             pGuess = std::move(pGuess2);
                             SetSpacing(rInf, *pGuess, nSpacesInLineShrink, nSpaceWidth);

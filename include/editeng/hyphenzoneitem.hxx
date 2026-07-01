@@ -49,6 +49,7 @@ class EDITENG_DLLPUBLIC SvxHyphenZoneItem final : public SfxPoolItem
     bool      bKeepLine : 1;    // if bKeep, shift the hyphenated word (true), or the full line
     sal_uInt8 nCompoundMinLead; // min. characters between left compound word boundary and hyphenation
     sal_uInt8 nCompoundMinTrail; // min. characters between hyphenation and right compound word boundary
+    sal_uInt8 nLevel;           // level between Less Hyphen (0%) or Better Spacing (100%)
 
 public:
     static SfxPoolItem* CreateDefault();
@@ -118,6 +119,9 @@ public:
 
     void SetKeepLine( const bool bNew ) { bKeepLine = bNew; }
     bool IsKeepLine() const { return bKeepLine; }
+
+    sal_uInt8 &GetLevel() { return nLevel; }
+    sal_uInt8 GetLevel() const { return nLevel; }
 };
 
 #endif

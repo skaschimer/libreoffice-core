@@ -159,7 +159,8 @@ bool SwTextGuess::maybeAdjustPositionsForBlockAdjust(tools::Long& rMaxSizeDiff,
 // otherwise possible break or hyphenation position is determined
 bool SwTextGuess::Guess( const SwTextPortion& rPor, SwTextFormatInfo &rInf,
                             const sal_uInt16 nPorHeight, sal_Int32 nSpacesInLine,
-                            sal_uInt16 nPropWordSpacing, sal_Int16 nSpaceWidth )
+                            sal_uInt16 nPropWordSpacing, sal_Int16 nSpaceWidth,
+                            sal_uInt16 nExtraWordSpacing )
 {
     m_nCutPos = rInf.GetIdx();
 
@@ -202,9 +203,9 @@ bool SwTextGuess::Guess( const SwTextPortion& rPor, SwTextFormatInfo &rInf,
         SwTwips nExtraSpace = nSpacesInLine * nSpaceWidth/10.0 * (1.0 - nPropWordSpacing / 100.0);
         nLineWidth += nExtraSpace;
         // convert maximum word spacing to hyphenation zone, if defined
-        if ( nPropWordSpacing == aAdjustItem.GetPropWordSpacing() )
+        if ( nPropWordSpacing == aAdjustItem.GetPropWordSpacing() || nExtraWordSpacing )
         {
-            SwTwips nMaxDif = aAdjustItem.GetPropWordSpacingMaximum() - nPropWordSpacing;
+            SwTwips nMaxDif = aAdjustItem.GetPropWordSpacingMaximum() - 100.0 + nExtraWordSpacing;
             nWordSpacingMaximumZone = nSpacesInLine * nSpaceWidth/10.0 * nMaxDif / 100.0;
         }
 

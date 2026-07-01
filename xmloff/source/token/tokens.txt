@@ -999,6 +999,7 @@ hyphenation-zone-page
 hyphenation-zone-spread
 hyphenation-compound-remain-char-count
 hyphenation-compound-push-char-count
+hyphenation-level
 i
 icon
 icon-set

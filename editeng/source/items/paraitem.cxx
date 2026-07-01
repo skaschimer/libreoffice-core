@@ -631,7 +631,8 @@ SvxHyphenZoneItem::SvxHyphenZoneItem( const bool bHyph, const sal_uInt16 nId ) :
     nKeepType(css::text::ParagraphHyphenationKeepType::COLUMN),
     bKeepLine(false),
     nCompoundMinLead(2),
-    nCompoundMinTrail(2)
+    nCompoundMinTrail(2),
+    nLevel(50)
 {
 }
 
@@ -691,6 +692,9 @@ bool    SvxHyphenZoneItem::QueryValue( uno::Any& rVal, sal_uInt8 nMemberId ) con
         break;
         case MID_HYPHEN_COMPOUND_MIN_TRAIL:
             rVal <<= static_cast<sal_Int16>(nCompoundMinTrail);
+        break;
+        case MID_HYPHEN_LEVEL:
+            rVal <<= static_cast<sal_Int16>(nLevel);
         break;
     }
     return true;
@@ -762,6 +766,9 @@ bool SvxHyphenZoneItem::PutValue( const uno::Any& rVal, sal_uInt8 nMemberId )
         case MID_HYPHEN_COMPOUND_MIN_TRAIL:
             nCompoundMinTrail = static_cast<sal_uInt8>(nNewVal);
         break;
+        case MID_HYPHEN_LEVEL:
+            nLevel = static_cast<sal_uInt8>(nNewVal);
+        break;
     }
     return true;
 }
@@ -788,7 +795,8 @@ bool SvxHyphenZoneItem::operator==( const SfxPoolItem& rAttr ) const
             && rItem.nTextHyphenZonePage == nTextHyphenZonePage
             && rItem.nTextHyphenZoneSpread == nTextHyphenZoneSpread
             && rItem.bKeepLine == bKeepLine
-            && rItem.nKeepType == nKeepType );
+            && rItem.nKeepType == nKeepType
+            && rItem.nLevel == nLevel );
 }
 
 SvxHyphenZoneItem* SvxHyphenZoneItem::Clone( SfxItemPool * ) const
@@ -819,6 +827,7 @@ bool SvxHyphenZoneItem::GetPresentation
                     OUString::number( nCompoundMinTrail ) + cpDelimTmp +
                     OUString::number( nMaxHyphens ) + cpDelimTmp +
                     OUString::number( nMinWordLength ) + cpDelimTmp +
+                    OUString::number( 100 - nLevel ) + cpDelimTmp +
                     GetMetricText( nTextHyphenZone, eCoreUnit, ePresUnit, &rIntl ) +
                         " " + EditResId(GetMetricId(ePresUnit)) +
                     GetMetricText( nTextHyphenZoneAlways, eCoreUnit, ePresUnit, &rIntl ) +
@@ -869,7 +878,9 @@ bool SvxHyphenZoneItem::GetPresentation
                     cpDelimTmp +
                     EditResId(RID_SVXITEMS_HYPHEN_MAX).replaceAll("%1", OUString::number(nMaxHyphens)) +
                     cpDelimTmp +
-                    EditResId(RID_SVXITEMS_HYPHEN_MINWORDLEN).replaceAll("%1", OUString::number(nMinWordLength));
+                    EditResId(RID_SVXITEMS_HYPHEN_MINWORDLEN).replaceAll("%1", OUString::number(nMinWordLength)) +
+                    cpDelimTmp +
+                    EditResId(RID_SVXITEMS_HYPHEN_LEVEL).replaceAll("$(ARG1)", OUString::number(100 - nLevel));
 
             if ( nTextHyphenZone > 0 || nTextHyphenZoneAlways > 0 ||
                  nTextHyphenZoneColumn > 0 || nTextHyphenZonePage > 0 ||
