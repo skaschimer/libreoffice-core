@@ -247,6 +247,32 @@
                               </packing>
                             </child>
                             <child>
+                              <object class="GtkButton" id="modulecopy">
+                                <property name="label" translatable="yes" context="macromanagerdialog|modulecopy">Copy</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">6</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="modulepaste">
+                                <property name="label" translatable="yes" context="macromanagerdialog|modulepaste">Paste</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
                               <object class="GtkButton" id="librarypassword">
                                 <property name="label" translatable="yes" context="macromanagerdialog|librarypassword">Password...</property>
                                 <property name="visible">True</property>
@@ -262,7 +288,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">6</property>
+                                <property name="position">8</property>
                               </packing>
                             </child>
                             <child>
@@ -281,7 +307,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">7</property>
+                                <property name="position">9</property>
                               </packing>
                             </child>
                             <child>
@@ -295,7 +321,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">8</property>
+                                <property name="position">10</property>
                               </packing>
                             </child>
                           </object>

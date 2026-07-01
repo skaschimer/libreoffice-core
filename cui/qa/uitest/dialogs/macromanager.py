@@ -38,19 +38,23 @@ def MyMacro():
         pass
     """
 
+
 class MacroManagerTest(UITestCase):
+    def find_child_node(self, xNode, name):
+        # Find the child node with the given name
+        try:
+            return next(x for x in map(lambda name: xNode.getChild(name),
+                                       xNode.getChildren())
+                        if get_state_as_dict(x)["Text"] == name)
+        except StopIteration:
+            self.fail(f"Couldn’t find tree child {name}")
+
     def select_tree_node(self, xNode, *parts):
         for i, part in enumerate(parts):
             if i > 0:
                 xNode.executeAction("EXPAND", tuple())
 
-            # Find the node in the tree with this part name
-            try:
-                xNode = next(x for x in map(lambda name: xNode.getChild(name),
-                                            xNode.getChildren())
-                             if get_state_as_dict(x)["Text"] == part)
-            except StopIteration:
-                self.fail(f"Couldn’t find tree child {part}")
+            xNode = self.find_child_node(xNode, part)
 
             xNode.executeAction("SELECT", tuple())
 
@@ -210,6 +214,147 @@ class MacroManagerTest(UITestCase):
                         self.run_macro(os.path.basename(doc_file.name), "Python", "MyScript",
                                        "MyMacro")
                         self.assertTrue(os.path.exists(os.path.join(check_file_dir, 'script-ran')))
+
+    # Tests copying and pasting Python scripts into an empty node, an
+    # unexpanded node and an expanded node
+    def test_copy_paste(self):
+        with contextlib.ExitStack() as stack:
+            script_dir = get_user_script_directory(self.xContext)
+            os.makedirs(script_dir, exist_ok=True)
+
+            # Make a temporary directory with a script to copy from
+            src_dir = stack.enter_context(tempfile.TemporaryDirectory(dir=script_dir))
+            with open(os.path.join(src_dir, "MyScript.py"), "w", encoding='utf-8') as f:
+                print("def MyMacro():\n  pass", file=f)
+
+            # Make an empty directory
+            empty_dir = stack.enter_context(tempfile.TemporaryDirectory(dir=script_dir))
+
+            # Make a directory and script for the unexpanded node
+            unexpanded_dir = stack.enter_context(tempfile.TemporaryDirectory(dir=script_dir))
+            with open(os.path.join(unexpanded_dir, "MyOtherScript.py"), "w", encoding='utf-8') as f:
+                print("def MyMacro():\n  pass", file=f)
+
+            # Make a directory and script for the expanded node
+            expanded_dir = stack.enter_context(tempfile.TemporaryDirectory(dir=script_dir))
+            with open(os.path.join(expanded_dir, "MyOtherScript.py"), "w", encoding='utf-8') as f:
+                print("def MyMacro():\n  pass", file=f)
+
+            xDialog = stack.enter_context(
+                self.ui_test.execute_dialog_through_command(".uno:MacroManager",
+                                                            close_button="close"))
+            xContainers = xDialog.getChild("scriptcontainers")
+
+            # Copy the source script
+            source_node = self.select_tree_node(
+                xContainers, "My Macros", "Python", os.path.basename(src_dir), "MyScript")
+            copy_button = xDialog.getChild("modulecopy")
+            copy_button.executeAction("CLICK", tuple())
+
+            python_node = self.select_tree_node(xContainers, "My Macros", "Python")
+
+            # Paste into the empty node
+            empty_node = self.find_child_node(python_node, os.path.basename(empty_dir))
+            empty_node.executeAction("SELECT", tuple())
+            paste_button = xDialog.getChild("modulepaste")
+            paste_button.executeAction("CLICK", tuple())
+
+            # The new node should be selected
+            self.assertEqual(get_state_as_dict(xContainers)["SelectEntryText"], "MyScript")
+            # The empty node should now have exactly one child
+            empty_node = self.find_child_node(python_node, os.path.basename(empty_dir))
+            self.assertEqual(get_state_as_dict(empty_node)["Children"], "1")
+            pasted_node = empty_node.getChild("0")
+            self.assertEqual(get_state_as_dict(pasted_node)["Text"], "MyScript")
+            # The file should have been created
+            self.assertTrue(os.path.exists(os.path.join(empty_dir, "MyScript.py")))
+
+            # Paste into the unexpanded node
+            unexpanded_node = self.find_child_node(python_node, os.path.basename(unexpanded_dir))
+            unexpanded_node.executeAction("SELECT", tuple())
+            paste_button.executeAction("CLICK", tuple())
+
+            # The new node should be selected
+            self.assertEqual(get_state_as_dict(xContainers)["SelectEntryText"], "MyScript")
+            # The newly expanded node should now have exactly two children
+            unexpanded_node = self.find_child_node(python_node, os.path.basename(unexpanded_dir))
+            self.assertEqual(get_state_as_dict(unexpanded_node)["Children"], "2")
+            child_names = list(sorted(get_state_as_dict(unexpanded_node.getChild(str(i)))["Text"]
+                                      for i in range(2)))
+            self.assertEqual(child_names, ["MyOtherScript", "MyScript"])
+
+            # Make the expanded node live up to its name
+            expanded_node = self.find_child_node(python_node, os.path.basename(expanded_dir))
+            expanded_node.executeAction("EXPAND", tuple())
+
+            # Paste into the expanded node
+            expanded_node = self.find_child_node(python_node, os.path.basename(expanded_dir))
+            expanded_node.executeAction("SELECT", tuple())
+            paste_button.executeAction("CLICK", tuple())
+
+            # The new node should be selected
+            self.assertEqual(get_state_as_dict(xContainers)["SelectEntryText"], "MyScript")
+            # The expanded node should now have exactly two children
+            expanded_node = self.find_child_node(python_node, os.path.basename(expanded_dir))
+            self.assertEqual(get_state_as_dict(expanded_node)["Children"], "2")
+            child_names = list(sorted(get_state_as_dict(expanded_node.getChild(str(i)))["Text"]
+                                      for i in range(2)))
+            self.assertEqual(child_names, ["MyOtherScript", "MyScript"])
+
+    # Tests copying a Python script into a Writer document and back
+    def test_copy_to_document(self):
+        with self.ui_test.create_doc_in_start_center("writer") as xComponent:
+            script_dir = get_user_script_directory(self.xContext)
+            os.makedirs(script_dir, exist_ok=True)
+
+            # Make a temporary directory with a script to copy from
+            with tempfile.TemporaryDirectory(dir=script_dir) as src_dir:
+                with open(os.path.join(src_dir, "MyScript.py"), "w", encoding='utf-8') as f:
+                    print("def MyMacro():\n"
+                          "    XSCRIPTCONTEXT.getDocument().getText()."
+                          "setString(\"test_copy_to_document\")",
+                          file=f)
+
+                # Copy the script into the document using the dialog
+                with self.ui_test.execute_dialog_through_command(".uno:MacroManager",
+                                                                 close_button="close") as xDialog:
+                    xContainers = xDialog.getChild("scriptcontainers")
+                    self.select_tree_node(xContainers, "My Macros", "Python",
+                                          os.path.basename(src_dir), "MyScript")
+                    xDialog.getChild("modulecopy").executeAction("CLICK", tuple())
+
+                    self.select_tree_node(xContainers, "Untitled 1", "Python")
+                    xDialog.getChild("modulepaste").executeAction("CLICK", tuple())
+
+                    # Make sure the script now appears in the tree
+                    xDocumentNode = self.select_tree_node(xContainers, "Untitled 1", "Python")
+                    self.assertEqual(get_state_as_dict(xDocumentNode)["Children"], "1")
+                    xNewNode = xDocumentNode.getChild("0")
+                    self.assertEqual(get_state_as_dict(xNewNode)["Text"], "MyScript")
+
+            # The temporary script in the user directory should now be deleted, so the only
+            # remaining copy of it should be in the document. Let’s try running it.
+            with self.ui_test.execute_dialog_through_command(".uno:MacroManager",
+                                                             close_button="run") as xDialog:
+                xContainers = xDialog.getChild("scriptcontainers")
+                self.select_tree_node(xContainers, "Untitled 1", "Python", "MyScript")
+
+            # Make sure the macro successfully put text into the document
+            self.assertEqual(xComponent.getText().getString(), "test_copy_to_document")
+
+            # Make a temporary directory to copy the script back into
+            with tempfile.TemporaryDirectory(dir=script_dir) as dest_dir:
+                # Copy the script into the temporary directory using the dialog
+                with self.ui_test.execute_dialog_through_command(".uno:MacroManager",
+                                                                 close_button="close") as xDialog:
+                    xContainers = xDialog.getChild("scriptcontainers")
+                    self.select_tree_node(xContainers, "Untitled 1", "Python", "MyScript")
+                    xDialog.getChild("modulecopy").executeAction("CLICK", tuple())
+                    self.select_tree_node(xContainers, "My Macros", "Python",
+                                          os.path.basename(dest_dir))
+                    xDialog.getChild("modulepaste").executeAction("CLICK", tuple())
+
+                self.assertTrue(os.path.exists(os.path.join(dest_dir, "MyScript.py")))
 
 
 # vim: set shiftwidth=4 softtabstop=4 expandtab:

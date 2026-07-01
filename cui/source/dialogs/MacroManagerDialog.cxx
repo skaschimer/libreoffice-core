@@ -58,6 +58,7 @@
 #include <com/sun/star/script/browse/BrowseNodeTypes.hpp>
 #include <com/sun/star/script/browse/theBrowseNodeFactory.hpp>
 #include <com/sun/star/script/browse/BrowseNodeFactoryViewTypes.hpp>
+#include <com/sun/star/script/browse/XCopyableBrowseNode.hpp>
 #include <com/sun/star/script/XLibraryContainer2.hpp>
 #include <com/sun/star/script/XLibraryContainerPassword.hpp>
 #include <com/sun/star/script/XPersistentLibraryContainer.hpp>
@@ -675,6 +676,8 @@ MacroManagerDialog::MacroManagerDialog(weld::Window* pParent,
     , m_xMacroDeleteButton(m_xBuilder->weld_button(u"macrodelete"_ustr))
     , m_xMacroCreateButton(m_xBuilder->weld_button(u"macrocreate"_ustr))
     , m_xMacroRenameButton(m_xBuilder->weld_button(u"macrorename"_ustr))
+    , m_xModuleCopyButton(m_xBuilder->weld_button(u"modulecopy"_ustr))
+    , m_xModulePasteButton(m_xBuilder->weld_button(u"modulepaste"_ustr))
     , m_xAssignButton(m_xBuilder->weld_button(u"assign"_ustr))
 {
     m_aScriptsListBoxLabelBaseStr = m_xScriptsListBoxLabel->get_label();
@@ -705,6 +708,8 @@ MacroManagerDialog::MacroManagerDialog(weld::Window* pParent,
     m_xMacroEditButton->connect_clicked(LINK(this, MacroManagerDialog, ClickHdl));
     m_xMacroRenameButton->connect_clicked(LINK(this, MacroManagerDialog, ClickHdl));
     m_xMacroDeleteButton->connect_clicked(LINK(this, MacroManagerDialog, ClickHdl));
+    m_xModuleCopyButton->connect_clicked(LINK(this, MacroManagerDialog, ClickHdl));
+    m_xModulePasteButton->connect_clicked(LINK(this, MacroManagerDialog, ClickHdl));
 
     StartListening(*SfxGetpApp());
 }
@@ -991,6 +996,8 @@ void MacroManagerDialog::CheckButtons()
     bool bSensitiveLibraryPasswordButton = false;
     bool bSensitiveLibraryImportButton = false;
     bool bSensitiveLibraryExportButton = false;
+    bool bSensitiveModuleCopyButton = false;
+    bool bSensitiveModulePasteButton = false;
 
     bool bSensitiveMacroRunButton = false;
     bool bSensitiveMacroCreateButton = false;
@@ -1119,29 +1126,43 @@ void MacroManagerDialog::CheckButtons()
                 }
             }
 
-            if (!bSharedLocationContainer && nSelectedIterDepth > 1)
+            if (!bSharedLocationContainer)
             {
                 css::uno::Reference<css::script::browse::XBrowseNode> node
                     = getBrowseNode(rScriptContainersTreeView, *xScriptContainersSelectedIter);
                 if (node.is())
                 {
-                    if (comphelper::scriptbrowse::isCreatable(node)
-                        && rScriptContainersTreeView.get_iter_depth(*xScriptContainersSelectedIter)
-                               == 2) // library entry
+                    if (nSelectedIterDepth > 1)
                     {
-                        bSensitiveMacroCreateButton = true;
+                        if (comphelper::scriptbrowse::isCreatable(node)
+                            && rScriptContainersTreeView.get_iter_depth(
+                                   *xScriptContainersSelectedIter)
+                                   == 2) // library entry
+                        {
+                            bSensitiveMacroCreateButton = true;
+                        }
+                        if (comphelper::scriptbrowse::isEditable(node))
+                        {
+                            bSensitiveLibraryModuleDialogEditButton = true;
+                        }
+                        if (comphelper::scriptbrowse::isDeletable(node))
+                        {
+                            bSensitiveLibraryModuleDialogDeleteButton = true;
+                        }
+                        if (comphelper::scriptbrowse::isRenamable(node))
+                        {
+                            bSensitiveLibraryModuleDialogRenameButton = true;
+                        }
+
+                        css::uno::Reference<css::script::browse::XCopyableBrowseNode> xCopyableNode(
+                            node, css::uno::UNO_QUERY);
+                        if (xCopyableNode.is() && xCopyableNode->isCopyableNode())
+                            bSensitiveModuleCopyButton = true;
                     }
-                    if (comphelper::scriptbrowse::isEditable(node))
+
+                    if (m_xCopiedNode.is() && m_xCopiedNode->nodeCanBeCopiedTo(node))
                     {
-                        bSensitiveLibraryModuleDialogEditButton = true;
-                    }
-                    if (comphelper::scriptbrowse::isDeletable(node))
-                    {
-                        bSensitiveLibraryModuleDialogDeleteButton = true;
-                    }
-                    if (comphelper::scriptbrowse::isRenamable(node))
-                    {
-                        bSensitiveLibraryModuleDialogRenameButton = true;
+                        bSensitiveModulePasteButton = true;
                     }
                 }
             }
@@ -1196,6 +1217,8 @@ void MacroManagerDialog::CheckButtons()
     m_xMacroEditButton->set_sensitive(bSensitiveMacroEditButton);
     m_xMacroRenameButton->set_sensitive(bSensitiveMacroRenameButton);
     m_xMacroDeleteButton->set_sensitive(bSensitiveMacroDeleteButton);
+    m_xModuleCopyButton->set_sensitive(bSensitiveModuleCopyButton);
+    m_xModulePasteButton->set_sensitive(bSensitiveModulePasteButton);
     m_xAssignButton->set_sensitive(bSensitiveAssignButton);
 }
 
@@ -1655,6 +1678,26 @@ IMPL_LINK(MacroManagerDialog, ClickHdl, weld::Button&, rButton, void)
                 ScriptContainerType::LOCATION));
         aRequest.AppendItem(aMacroInfoItem);
         SfxGetpApp()->ExecuteSlot(aRequest);
+    }
+    else if (&rButton == m_xModuleCopyButton.get())
+    {
+        weld::TreeView& rTreeView = m_xScriptContainersListBox->get_widget();
+        std::unique_ptr<weld::TreeIter> xSelectedIter = rTreeView.get_selected();
+        if (!xSelectedIter)
+            return; // should never happen
+        m_xCopiedNode.set(getBrowseNode(rTreeView, *xSelectedIter), css::uno::UNO_QUERY);
+        CheckButtons();
+    }
+    else if (&rButton == m_xModulePasteButton.get())
+    {
+        if (!m_xCopiedNode.is())
+            return;
+
+        weld::TreeView& rTreeView = m_xScriptContainersListBox->get_widget();
+        std::unique_ptr<weld::TreeIter> xSelectedIter = rTreeView.get_selected();
+        if (!xSelectedIter)
+            return; // should never happen
+        ScriptingFrameworkScriptsPasteEntry(rTreeView, *xSelectedIter);
     }
 }
 
@@ -2126,6 +2169,50 @@ void MacroManagerDialog::ScriptingFrameworkScriptsRenameEntry(weld::TreeView& rT
             m_xDialog.get(), VclMessageType::Warning, VclButtonsType::Ok, aError));
         xErrorBox->set_title(CuiResId(RID_CUISTR_RENAMEFAILED_TITLE));
         xErrorBox->run();
+    }
+}
+
+void MacroManagerDialog::ScriptingFrameworkScriptsPasteEntry(weld::TreeView& rTreeView,
+                                                             const weld::TreeIter& rEntry)
+{
+    css::uno::Reference<css::script::browse::XBrowseNode> node = getBrowseNode(rTreeView, rEntry);
+    if (!node.is() || !m_xCopiedNode->nodeCanBeCopiedTo(node))
+        return;
+
+    try
+    {
+        node = m_xCopiedNode->copyNode(node);
+    }
+    catch (const css::uno::Exception&)
+    {
+        return;
+    }
+
+    // If we don’t expand the row before filling it then it will end up with two copies of all the
+    // entries
+    rTreeView.expand_row(rEntry);
+    m_xScriptContainersListBox->Fill(&rEntry);
+    // Filling it causes the node to close so we need to expand it again
+    rTreeView.expand_row(rEntry);
+
+    // Try to select the new entry
+    if (rTreeView.iter_has_child(rEntry))
+    {
+        OUString sNodeName = node->getName();
+
+        std::unique_ptr<weld::TreeIter> xIter = rTreeView.make_iterator(&rEntry);
+        if (rTreeView.iter_children(*xIter))
+        {
+            do
+            {
+                if (rTreeView.get_text(*xIter) == sNodeName)
+                {
+                    rTreeView.select(*xIter);
+                    SelectHdl(rTreeView);
+                    break;
+                }
+            } while (rTreeView.iter_next_sibling(*xIter));
+        }
     }
 }
 

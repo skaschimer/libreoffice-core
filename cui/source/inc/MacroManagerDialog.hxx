@@ -29,6 +29,11 @@
 class SbModule;
 class SbMethod;
 
+namespace com::sun::star::script::browse
+{
+class XCopyableBrowseNode;
+}
+
 struct ScriptContainerInfo
 {
     css::script::browse::XBrowseNode* pBrowseNode;
@@ -209,7 +214,12 @@ class MacroManagerDialog : public weld::GenericDialogController, public SfxListe
     std::unique_ptr<weld::Button> m_xMacroDeleteButton;
     std::unique_ptr<weld::Button> m_xMacroCreateButton;
     std::unique_ptr<weld::Button> m_xMacroRenameButton;
+    std::unique_ptr<weld::Button> m_xModuleCopyButton;
+    std::unique_ptr<weld::Button> m_xModulePasteButton;
     std::unique_ptr<weld::Button> m_xAssignButton;
+
+    // Node that is selected via the “copy” button to be later pasted with the “paste” button.
+    css::uno::Reference<css::script::browse::XCopyableBrowseNode> m_xCopiedNode;
 
     DECL_LINK(ClickHdl, weld::Button&, void);
     DECL_LINK(SelectHdl, weld::ItemView&, void);
@@ -234,6 +244,8 @@ class MacroManagerDialog : public weld::GenericDialogController, public SfxListe
                                               const weld::TreeIter& rEntry);
     void ScriptingFrameworkScriptsDeleteEntry(weld::TreeView& rTreeView,
                                               const weld::TreeIter& rEntry);
+    void ScriptingFrameworkScriptsPasteEntry(weld::TreeView& rTreeView,
+                                             const weld::TreeIter& rEntry);
     static bool getBoolProperty(css::uno::Reference<css::beans::XPropertySet> const& xProps,
                                 OUString const& propName);
     OUString getListOfChildren(const css::uno::Reference<css::script::browse::XBrowseNode>& node,
