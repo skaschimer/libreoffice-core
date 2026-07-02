@@ -10,6 +10,7 @@
 #include <tools/color.hxx>
 #include <test/bootstrapfixture.hxx>
 #include <test/outputdevice.hxx>
+#include <config_fonts.h>
 
 #include <basegfx/matrix/b2dhommatrix.hxx>
 #include <basegfx/numeric/ftools.hxx>
@@ -19,6 +20,7 @@
 #include <basegfx/matrix/b2dhommatrixtools.hxx>
 #include <tools/mapunit.hxx>
 
+#include <vcl/font.hxx>
 #include <vcl/gradient.hxx>
 #include <vcl/lineinfo.hxx>
 #include <vcl/print.hxx>
@@ -34,6 +36,8 @@
 
 #include <vcl/BitmapWriteAccess.hxx>
 #include <bufferdevice.hxx>
+#include <font/PhysicalFontCollection.hxx>
+#include <svdata.hxx>
 #include <window.h>
 
 const size_t INITIAL_SETUP_ACTION_COUNT = 5;
@@ -2118,6 +2122,90 @@ CPPUNIT_TEST_FIXTURE(VclOutdevTest, testDrawGradient_rect_complex)
     MetaAction* pAction = aMtf.GetAction(nIndex);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Not a gradient action (rectangle area)", MetaActionType::GRADIENT,
                                  pAction->GetType());
+}
+
+CPPUNIT_TEST_FIXTURE(VclOutdevTest, testGetTypographicFontName)
+{
+#if HAVE_MORE_FONTS
+    ScopedVclPtrInstance<VirtualDevice> pVDev;
+
+    // A legacy family name (name ID 1) converts to the typographic family
+    // (name ID 16) + subfamily (name ID 17) of the face it selects.
+    OUString aFamily, aSubfamily;
+    CPPUNIT_ASSERT(pVDev->GetTypographicFontName(u"DejaVu Sans Condensed", WEIGHT_NORMAL,
+                                                 WIDTH_DONTKNOW, ITALIC_NONE, aFamily, aSubfamily));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans"_ustr, aFamily);
+    CPPUNIT_ASSERT_EQUAL(u"Condensed"_ustr, aSubfamily);
+
+    CPPUNIT_ASSERT(pVDev->GetTypographicFontName(u"DejaVu Sans Condensed", WEIGHT_BOLD,
+                                                 WIDTH_DONTKNOW, ITALIC_NONE, aFamily, aSubfamily));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans"_ustr, aFamily);
+    CPPUNIT_ASSERT_EQUAL(u"Condensed Bold"_ustr, aSubfamily);
+
+    // An unknown family is left to the caller (no conversion).
+    CPPUNIT_ASSERT(!pVDev->GetTypographicFontName(
+        u"No Such Font ZZZ", WEIGHT_NORMAL, WIDTH_DONTKNOW, ITALIC_NONE, aFamily, aSubfamily));
+#endif
+}
+
+CPPUNIT_TEST_FIXTURE(VclOutdevTest, testGetTypographicFontNameFamilyAlias)
+{
+#if HAVE_MORE_FONTS
+    ScopedVclPtrInstance<VirtualDevice> pVDev;
+    CPPUNIT_ASSERT(pVDev->IsFontAvailable(u"DejaVu Sans"));
+
+    // If a condensed face happens to be enumerated first, its legacy family
+    // name gets registered as an alias of the family (tdf#63011), and the
+    // family lookup then succeeds where it otherwise wouldn't. Inject the
+    // alias to simulate such enumeration order; the legacy name must still
+    // resolve to the condensed face, not to the family's default one.
+    ImplGetSVData()->maGDIData.mxScreenFontList->AddFontFamilyAlias(u"DejaVu Sans Condensed"_ustr,
+                                                                    u"DejaVu Sans"_ustr);
+
+    OUString aFamily, aSubfamily;
+    CPPUNIT_ASSERT(pVDev->GetTypographicFontName(u"DejaVu Sans Condensed", WEIGHT_NORMAL,
+                                                 WIDTH_DONTKNOW, ITALIC_NONE, aFamily, aSubfamily));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans"_ustr, aFamily);
+    CPPUNIT_ASSERT_EQUAL(u"Condensed"_ustr, aSubfamily);
+
+    CPPUNIT_ASSERT(pVDev->GetTypographicFontName(u"DejaVu Sans Condensed", WEIGHT_BOLD,
+                                                 WIDTH_DONTKNOW, ITALIC_NONE, aFamily, aSubfamily));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans"_ustr, aFamily);
+    CPPUNIT_ASSERT_EQUAL(u"Condensed Bold"_ustr, aSubfamily);
+
+    // Drop the injected alias, so the other tests see the real font lists.
+    OutputDevice::ImplClearAllFontData(true);
+    OutputDevice::ImplRefreshAllFontData(true);
+#endif
+}
+
+CPPUNIT_TEST_FIXTURE(VclOutdevTest, testGetLegacyFontName)
+{
+#if HAVE_MORE_FONTS
+    ScopedVclPtrInstance<VirtualDevice> pVDev;
+
+    // A typographic family and subfamily to the legacy names.
+    OUString aLegacy;
+    CPPUNIT_ASSERT(pVDev->GetLegacyFontName(u"DejaVu Sans", u"Condensed", WEIGHT_NORMAL,
+                                            ITALIC_NONE, aLegacy));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans Condensed"_ustr, aLegacy);
+
+    // The bold of the same subfamily shares the legacy family name.
+    OUString aLegacyBold;
+    CPPUNIT_ASSERT(pVDev->GetLegacyFontName(u"DejaVu Sans", u"Condensed", WEIGHT_BOLD, ITALIC_NONE,
+                                            aLegacyBold));
+    CPPUNIT_ASSERT_EQUAL(u"DejaVu Sans Condensed"_ustr, aLegacyBold);
+
+    // A plain style has no extended subfamily, so the family name is kept (no recomposition).
+    OUString aRibbi;
+    CPPUNIT_ASSERT(
+        !pVDev->GetLegacyFontName(u"DejaVu Sans", u"", WEIGHT_NORMAL, ITALIC_NONE, aRibbi));
+
+    // An unknown family is left to the caller.
+    OUString aUnknown;
+    CPPUNIT_ASSERT(!pVDev->GetLegacyFontName(u"No Such Font ZZZ", u"Condensed", WEIGHT_NORMAL,
+                                             ITALIC_NONE, aUnknown));
+#endif
 }
 
 CPPUNIT_PLUGIN_IMPLEMENT();

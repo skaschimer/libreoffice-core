@@ -33,6 +33,7 @@ $(eval $(call gb_CppunitTest_use_libraries,vcl_font, \
 	comphelper \
 	cppu \
 	cppuhelper \
+	i18nlangtag \
 	sal \
 	salhelper \
 	svt \

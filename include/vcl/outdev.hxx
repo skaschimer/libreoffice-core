@@ -1177,6 +1177,14 @@ public:
 
     bool                        IsFontAvailable( std::u16string_view rFontName ) const;
 
+    bool                        GetTypographicFontName( std::u16string_view rRequestedFamily,
+                                                        FontWeight eWeight, FontWidth eWidth, FontItalic eItalic,
+                                                        OUString& rOutFamily, OUString& rOutSubfamily ) const;
+    bool                        GetLegacyFontName( std::u16string_view rTypoFamily,
+                                                   std::u16string_view rSubfamily,
+                                                   FontWeight eWeight, FontItalic eItalic,
+                                                   OUString& rOutLegacyName ) const;
+
     bool                        AddTempDevFont(const OUString& rFileURL, const OUString& rFontName) const;
     bool                        RemoveTempDevFont( const OUString& rFileURL, const OUString& rFontName );
     void                        RefreshFontData( const bool bNewFontLists );

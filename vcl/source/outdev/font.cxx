@@ -26,6 +26,7 @@
 #include <i18nlangtag/mslangid.hxx>
 #include <i18nlangtag/lang.h>
 #include <comphelper/configuration.hxx>
+#include <unotools/fontdefs.hxx>
 
 #include <vcl/event.hxx>
 #include <vcl/fontcharmap.hxx>
@@ -47,6 +48,8 @@
 #include <drawmode.hxx>
 #include <impfontcache.hxx>
 #include <font/DirectFontSubstitution.hxx>
+#include <font/FontSelectPattern.hxx>
+#include <font/PhysicalFontFace.hxx>
 #include <font/PhysicalFontFaceCollection.hxx>
 #include <font/PhysicalFontCollection.hxx>
 #include <font/FeatureCollector.hxx>
@@ -131,6 +134,134 @@ bool OutputDevice::IsFontAvailable( std::u16string_view rFontName ) const
     ImplInitFontList();
     vcl::font::PhysicalFontFamily* pFound = mxFontCollection->FindFontFamily( rFontName );
     return (pFound != nullptr);
+}
+
+bool OutputDevice::GetTypographicFontName(std::u16string_view rRequestedFamily, FontWeight eWeight,
+                                          FontWidth eWidth, FontItalic eItalic,
+                                          OUString& rOutFamily, OUString& rOutSubfamily) const
+{
+    ImplInitFontList();
+
+    // With no weight/italic requested, resolve to the regular, so the
+    // subfamily is the base style rather than e.g. the oblique one.
+    if (eWeight == WEIGHT_DONTKNOW)
+        eWeight = WEIGHT_NORMAL;
+    if (eItalic == ITALIC_DONTKNOW)
+        eItalic = ITALIC_NONE;
+
+    const vcl::font::PhysicalFontFace* pFace = nullptr;
+    const OUString aSearchName = GetEnglishSearchFontName(rRequestedFamily);
+    if (vcl::font::PhysicalFontFamily* pFamily = mxFontCollection->FindFontFamily(rRequestedFamily))
+    {
+        // The family can be found under a legacy name of one of its faces (e.g.
+        // "DejaVu Sans Condensed" for "DejaVu Sans"); the request then names that
+        // face, not the family's default one.
+        if (aSearchName != pFamily->GetSearchName())
+            pFace = pFamily->FindFontFaceByLegacyName(aSearchName, eWeight, eItalic);
+        if (!pFace)
+        {
+            vcl::Font aFont(OUString(rRequestedFamily), Size(0, 0));
+            aFont.SetWeight(eWeight);
+            aFont.SetWidthType(eWidth);
+            aFont.SetItalic(eItalic);
+            vcl::font::FontSelectPattern aPattern(aFont, OUString(rRequestedFamily), Size(0, 0),
+                                                  0.0f);
+            pFace = pFamily->FindBestFontFace(aPattern);
+        }
+    }
+    else
+        // no typographic family matching, try matching by legacy names
+        pFace = mxFontCollection->FindFontFaceByLegacyName(rRequestedFamily, eWeight, eItalic);
+
+    if (!pFace)
+        return false;
+
+    rOutFamily = pFace->GetName(vcl::font::NAME_ID_TYPOGRAPHIC_FAMILY);
+    if (rOutFamily.isEmpty())
+        rOutFamily = pFace->GetName(vcl::font::NAME_ID_FONT_FAMILY);
+
+    // The requested name can be a localized family name (e.g. the Simplified
+    // Chinese name of "Microsoft YaHei"); answer in the localization of the
+    // request, so that converting splits the style out of the name but
+    // doesn't translate it.
+    std::vector<OUString> aFamilyNames
+        = pFace->GetLocalizedNames(vcl::font::NAME_ID_TYPOGRAPHIC_FAMILY);
+    if (aFamilyNames.empty())
+        aFamilyNames = pFace->GetLocalizedNames(vcl::font::NAME_ID_FONT_FAMILY);
+    const OUString aRequestedFamily(rRequestedFamily);
+    sal_Int32 nBestPrefix = 0;
+    for (const OUString& rName : aFamilyNames)
+    {
+        if (GetEnglishSearchFontName(rName) == aSearchName)
+        {
+            rOutFamily = aRequestedFamily;
+            break;
+        }
+        if (rName.getLength() > nBestPrefix && aRequestedFamily.startsWithIgnoreAsciiCase(rName))
+        {
+            nBestPrefix = rName.getLength();
+            rOutFamily = rName;
+        }
+    }
+
+    rOutSubfamily = pFace->GetName(vcl::font::NAME_ID_TYPOGRAPHIC_SUBFAMILY);
+    if (rOutSubfamily.isEmpty())
+        rOutSubfamily = pFace->GetName(vcl::font::NAME_ID_FONT_SUBFAMILY);
+    return true;
+}
+
+bool OutputDevice::GetLegacyFontName(std::u16string_view rTypoFamily,
+                                     std::u16string_view rSubfamily, FontWeight eWeight,
+                                     FontItalic eItalic, OUString& rOutLegacyName) const
+{
+    // A plain style has no extended subfamily to fold back into a legacy name.
+    if (rSubfamily.empty())
+        return false;
+
+    ImplInitFontList();
+
+    const OUString aTypoFamily(rTypoFamily);
+    vcl::font::PhysicalFontFamily* pFamily = mxFontCollection->FindFontFamily(aTypoFamily);
+    if (!pFamily)
+        return false;
+
+    if (eWeight == WEIGHT_DONTKNOW)
+        eWeight = WEIGHT_NORMAL;
+    if (eItalic == ITALIC_DONTKNOW)
+        eItalic = ITALIC_NONE;
+
+    // Reuse the normal matcher so the subfamily is scored as it is when
+    // selecting for display.
+    vcl::Font aFont(aTypoFamily, Size(0, 0));
+    aFont.SetStyleName(OUString(rSubfamily));
+    aFont.SetWeight(eWeight);
+    aFont.SetItalic(eItalic);
+    vcl::font::FontSelectPattern aPattern(aFont, aTypoFamily, Size(0, 0), 0.0f);
+    const vcl::font::PhysicalFontFace* pFace = pFamily->FindBestFontFace(aPattern);
+    if (!pFace)
+        return false;
+
+    OUString aLegacyName = pFace->GetName(vcl::font::NAME_ID_FONT_FAMILY);
+    if (aLegacyName.isEmpty())
+        aLegacyName = pFace->GetName(vcl::font::NAME_ID_FULL_NAME);
+
+    // Prefer the legacy name in the localization of the given family name, so
+    // recomposing doesn't translate it.
+    for (const OUString& rName : pFace->GetLocalizedNames(vcl::font::NAME_ID_FONT_FAMILY))
+    {
+        if (rName.startsWithIgnoreAsciiCase(aTypoFamily))
+        {
+            aLegacyName = rName;
+            break;
+        }
+    }
+
+    // legacy family name is equal to the typographic one, nothing to recompose
+    if (aLegacyName.isEmpty() || aLegacyName.equalsIgnoreAsciiCase(aTypoFamily))
+        return false;
+
+    rOutLegacyName = aLegacyName;
+    return true;
 }
 
 bool OutputDevice::AddTempDevFont(const OUString& rFileURL, const OUString& rFontName) const

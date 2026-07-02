@@ -174,6 +174,7 @@ public:
     bool isValid() const { return m_pFace != hb_face_get_empty(); }
 
     OUString getFamilyName() const;
+    OUString getTypographicFamilyName() const;
     OUString getSubfamilyName() const;
     sal_uInt32 countNonEmptyGlyphs() const;
     FontWeight getFontWeight() const;

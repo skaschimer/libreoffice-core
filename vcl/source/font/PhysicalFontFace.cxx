@@ -89,30 +89,42 @@ sal_Int32 PhysicalFontFace::CompareIgnoreSize(const PhysicalFontFace& rOther) co
     return nRet;
 }
 
-static int FamilyNameMatchValue(FontSelectPattern const& rFSP, std::u16string_view sFontFamily)
+bool PhysicalFontFace::MatchFamilyName(std::u16string_view rFamilyName) const
 {
-    const OUString& rFontName = rFSP.maTargetName;
+    return o3tl::equalsIgnoreAsciiCase(rFamilyName, GetFamilyName());
+}
 
-    if (rFontName.equalsIgnoreAsciiCase(sFontFamily))
-        return 240000;
-
-    return 0;
+static bool IsPlainStyleName(const OUString& rStyleName)
+{
+    if (rStyleName.isEmpty())
+        return true;
+    const OUString aName = rStyleName.replaceAll(u" ", u"").toAsciiLowerCase();
+    return aName == "regular" || aName == "normal" || aName == "standard" || aName == "roman"
+           || aName == "bold" || aName == "italic" || aName == "oblique" || aName == "bolditalic"
+           || aName == "boldoblique";
 }
 
 static int StyleNameMatchValue(FontSelectPattern const& rFSP, const PhysicalFontFace& rFontFace)
 {
-    if (rFSP.GetStyleName().isEmpty()
-        || !o3tl::equalsIgnoreAsciiCase(rFontFace.GetStyleName(), rFSP.GetStyleName()))
+    const OUString& aStyleName = rFontFace.GetStyleName();
+    // If no subfamily requested prefer plain style names over extended ones
+    // with the same properties, so a bare request picks "Regular" over "Small
+    // Caps"
+    if (rFSP.GetStyleName().isEmpty())
+        return IsPlainStyleName(aStyleName) ? 10 : 0;
+    if (!o3tl::equalsIgnoreAsciiCase(aStyleName, rFSP.GetStyleName()))
         return 0;
 
-    // The style name selects an extended subfamily (a width, an optical size,
-    // a named instance, ...); it must not override an explicitly requested
-    // weight or posture, which a document may contradict by carrying a stale
-    // RIBBI subfamily such as "Regular" on bold text (tdf#152396).
-    if (rFSP.GetWeight() != WEIGHT_DONTKNOW && rFSP.GetWeight() != rFontFace.GetWeight())
-        return 0;
-    if (rFSP.GetItalic() != ITALIC_DONTKNOW && rFSP.GetItalic() != rFontFace.GetItalic())
-        return 0;
+    // A plain requested style (e.g. a stale "Regular" left on bold text) must
+    // not override an explicit weight or posture. An extended subfamily,
+    // however, must override it.
+    if (IsPlainStyleName(rFSP.GetStyleName()))
+    {
+        if (rFSP.GetWeight() != WEIGHT_DONTKNOW && rFSP.GetWeight() != rFontFace.GetWeight())
+            return 0;
+        if (rFSP.GetItalic() != ITALIC_DONTKNOW && rFSP.GetItalic() != rFontFace.GetItalic())
+            return 0;
+    }
 
     return 120000;
 }
@@ -220,7 +232,7 @@ static int ItalicMatchValue(FontSelectPattern const& rFSP, FontItalic eItalic)
 
 bool PhysicalFontFace::IsBetterMatch(const FontSelectPattern& rFSP, int& rnBestMatch) const
 {
-    int nMatch = FamilyNameMatchValue(rFSP, GetFamilyName());
+    int nMatch = MatchFamilyName(rFSP.maTargetName) ? 240000 : 0;
     nMatch += StyleNameMatchValue(rFSP, *this);
     nMatch += PitchMatchValue(rFSP, GetPitch());
     nMatch += WidthMatchValue(rFSP, GetWidthType());
@@ -829,7 +841,7 @@ OUString PhysicalFontFace::GetName(NameID aNameID, const LanguageTag& rLanguageT
     return sName;
 }
 
-std::vector<OUString> PhysicalFontFace::GetAliases() const
+std::vector<OUString> PhysicalFontFace::GetLocalizedNames(NameID aNameID) const
 {
     std::vector<OUString> aNames;
 
@@ -841,7 +853,7 @@ std::vector<OUString> PhysicalFontFace::GetAliases() const
     std::vector<char16_t> aBuf;
     for (unsigned int i = 0; i < nEntries; ++i)
     {
-        if (aEntries[i].name_id != HB_OT_NAME_ID_FONT_FAMILY)
+        if (aEntries[i].name_id != hb_ot_name_id_t(aNameID))
         {
             continue;
         }
@@ -857,11 +869,7 @@ std::vector<OUString> PhysicalFontFace::GetAliases() const
             hb_ot_name_get_utf16(pHbFace, aEntries[i].name_id, aEntries[i].language, &nName,
                                  reinterpret_cast<uint16_t*>(aBuf.data()));
 
-            OUString sName{ aBuf.data(), static_cast<sal_Int32>(nName) };
-            if (GetFamilyName() != sName)
-            {
-                aNames.push_back(std::move(sName));
-            }
+            aNames.emplace_back(aBuf.data(), static_cast<sal_Int32>(nName));
         }
     }
 
@@ -872,6 +880,13 @@ bool PhysicalFontFace::HasOpenTypeMathTable() const
 {
     const auto pHbFace = GetHbFace();
     return hb_ot_math_has_data(pHbFace);
+}
+
+std::vector<OUString> PhysicalFontFace::GetAliases() const
+{
+    std::vector<OUString> aNames = GetLocalizedNames(NAME_ID_FONT_FAMILY);
+    std::erase(aNames, GetFamilyName());
+    return aNames;
 }
 
 const std::vector<vcl::font::Variation>&

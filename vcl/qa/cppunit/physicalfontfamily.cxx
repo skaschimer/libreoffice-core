@@ -36,6 +36,9 @@ public:
     void testAddOneFontFace();
     void testAddTwoFontFaces();
     void testFindBestFontFaceByStyleName();
+    void testFindBestFontFaceByStyleNameOnSubstitute();
+    void testFindBestFontFaceDefaultStyle();
+    void testFindBestFontFaceWeightSubfamily();
 
     CPPUNIT_TEST_SUITE(VclPhysicalFontFamilyTest);
     CPPUNIT_TEST(testCreateFontFamily);
@@ -43,6 +46,9 @@ public:
     CPPUNIT_TEST(testAddOneFontFace);
     CPPUNIT_TEST(testAddTwoFontFaces);
     CPPUNIT_TEST(testFindBestFontFaceByStyleName);
+    CPPUNIT_TEST(testFindBestFontFaceByStyleNameOnSubstitute);
+    CPPUNIT_TEST(testFindBestFontFaceDefaultStyle);
+    CPPUNIT_TEST(testFindBestFontFaceWeightSubfamily);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -159,6 +165,98 @@ void VclPhysicalFontFamilyTest::testFindBestFontFaceByStyleName()
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("explicit style name should select the matching face",
                                  static_cast<PhysicalFontFace*>(pCondensedFace),
+                                 aFamily.FindBestFontFace(aFSP));
+}
+
+void VclPhysicalFontFamilyTest::testFindBestFontFaceByStyleNameOnSubstitute()
+{
+    // If requested family is missing, an explicit style name must still select
+    // the face with matching style.
+    PhysicalFontFamily aFamily(u"Test"_ustr);
+
+    FontAttributes aRegular;
+    aRegular.SetFamilyName(u"Test"_ustr);
+    aRegular.SetStyleName(u"Regular"_ustr);
+    aRegular.SetWeight(WEIGHT_NORMAL);
+    aRegular.SetWidthType(WIDTH_NORMAL);
+    aFamily.AddFontFace(new TestFontFace(aRegular, 1));
+
+    FontAttributes aCondensed;
+    aCondensed.SetFamilyName(u"Test"_ustr);
+    aCondensed.SetStyleName(u"Condensed"_ustr);
+    aCondensed.SetWeight(WEIGHT_NORMAL);
+    aCondensed.SetWidthType(WIDTH_CONDENSED);
+    TestFontFace* pCondensedFace = new TestFontFace(aCondensed, 2);
+    aFamily.AddFontFace(pCondensedFace);
+
+    vcl::Font aFont(u"Substitute"_ustr, Size(0, 12));
+    FontSelectPattern aFSP(aFont, u"Substitute"_ustr, Size(0, 12), 12.0f);
+    aFSP.SetStyleName(u"Condensed"_ustr);
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("style name should select the face even when the family differs",
+                                 static_cast<PhysicalFontFace*>(pCondensedFace),
+                                 aFamily.FindBestFontFace(aFSP));
+}
+
+void VclPhysicalFontFamilyTest::testFindBestFontFaceDefaultStyle()
+{
+    // With no style requested, the default (RIBBI) style must win over an
+    // extended subfamily with the same weight/italic/width, so a bare family
+    // request picks "Regular" rather than "Small Caps".
+    PhysicalFontFamily aFamily(u"Test"_ustr);
+
+    FontAttributes aRegular;
+    aRegular.SetFamilyName(u"Test"_ustr);
+    aRegular.SetStyleName(u"Regular"_ustr);
+    aRegular.SetWeight(WEIGHT_NORMAL);
+    aRegular.SetWidthType(WIDTH_NORMAL);
+    TestFontFace* pRegularFace = new TestFontFace(aRegular, 1);
+    aFamily.AddFontFace(pRegularFace);
+
+    FontAttributes aSmallCaps;
+    aSmallCaps.SetFamilyName(u"Test"_ustr);
+    aSmallCaps.SetStyleName(u"Small Caps"_ustr);
+    aSmallCaps.SetWeight(WEIGHT_NORMAL);
+    aSmallCaps.SetWidthType(WIDTH_NORMAL);
+    aFamily.AddFontFace(new TestFontFace(aSmallCaps, 2));
+
+    vcl::Font aFont(u"Test"_ustr, Size(0, 12));
+    FontSelectPattern aFSP(aFont, u"Test"_ustr, Size(0, 12), 12.0f);
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("a bare family request should select the default face",
+                                 static_cast<PhysicalFontFace*>(pRegularFace),
+                                 aFamily.FindBestFontFace(aFSP));
+}
+
+void VclPhysicalFontFamilyTest::testFindBestFontFaceWeightSubfamily()
+{
+    // An extended subfamily that is itself a weight ("Light") is the
+    // authoritative style: requesting it must select the Light face even
+    // though the requested weight is NORMAL.
+    PhysicalFontFamily aFamily(u"Test"_ustr);
+
+    FontAttributes aRegular;
+    aRegular.SetFamilyName(u"Test"_ustr);
+    aRegular.SetStyleName(u"Regular"_ustr);
+    aRegular.SetWeight(WEIGHT_NORMAL);
+    aRegular.SetWidthType(WIDTH_NORMAL);
+    aFamily.AddFontFace(new TestFontFace(aRegular, 1));
+
+    FontAttributes aLight;
+    aLight.SetFamilyName(u"Test"_ustr);
+    aLight.SetStyleName(u"Light"_ustr);
+    aLight.SetWeight(WEIGHT_LIGHT);
+    aLight.SetWidthType(WIDTH_NORMAL);
+    TestFontFace* pLightFace = new TestFontFace(aLight, 2);
+    aFamily.AddFontFace(pLightFace);
+
+    vcl::Font aFont(u"Test"_ustr, Size(0, 12));
+    aFont.SetWeight(WEIGHT_NORMAL);
+    FontSelectPattern aFSP(aFont, u"Test"_ustr, Size(0, 12), 12.0f);
+    aFSP.SetStyleName(u"Light"_ustr);
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("an extended subfamily must select its face over the regular one",
+                                 static_cast<PhysicalFontFace*>(pLightFace),
                                  aFamily.FindBestFontFace(aFSP));
 }
 

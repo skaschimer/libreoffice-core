@@ -137,6 +137,14 @@ OUString TrueTypeFont::getFamilyName() const
     return sFamily;
 }
 
+OUString TrueTypeFont::getTypographicFamilyName() const
+{
+    OUString sFamily = getName(HB_OT_NAME_ID_TYPOGRAPHIC_FAMILY);
+    if (sFamily.isEmpty())
+        sFamily = getFamilyName();
+    return sFamily;
+}
+
 OUString TrueTypeFont::getSubfamilyName() const { return getName(HB_OT_NAME_ID_FONT_SUBFAMILY); }
 
 sal_uInt32 TrueTypeFont::getTypeFlags() const

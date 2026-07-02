@@ -175,6 +175,9 @@ public:
 
     OUString GetName(NameID, const LanguageTag&) const;
     OUString GetName(NameID aNameID) const { return GetName(aNameID, LanguageTag(LANGUAGE_NONE)); }
+    std::vector<OUString> GetLocalizedNames(NameID) const;
+
+    bool MatchFamilyName(std::u16string_view rFamilyName) const;
 
     std::vector<OUString> GetAliases() const;
 

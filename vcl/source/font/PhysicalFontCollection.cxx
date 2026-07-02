@@ -362,6 +362,29 @@ PhysicalFontFamily* PhysicalFontCollection::FindFontFamily(std::u16string_view r
     return ImplFindFontFamilyBySearchName( GetEnglishSearchFontName( rFontName ) );
 }
 
+PhysicalFontFace* PhysicalFontCollection::FindFontFaceByLegacyName(std::u16string_view rFontName,
+                                                                   FontWeight eWeight,
+                                                                   FontItalic eItalic) const
+{
+    // Find the face name whose legacy family name matches and has the
+    // requested weight and width. To limit reading font names, we check only
+    // families whose family name matches partially. So if “DejaVu Sans
+    // Condensed" is requested, we try only faces with “DejaVu Sans” family
+    // name.
+    const OUString aSearchName = GetEnglishSearchFontName(rFontName);
+    for (sal_Int32 nLen = aSearchName.getLength() - 1; nLen > 2; --nLen)
+    {
+        auto it = maPhysicalFontFamilies.find(aSearchName.copy(0, nLen));
+        if (it == maPhysicalFontFamilies.end())
+            continue;
+        if (PhysicalFontFace* pFace
+            = it->second->FindFontFaceByLegacyName(aSearchName, eWeight, eItalic))
+            return pFace;
+    }
+
+    return nullptr;
+}
+
 std::tuple<PhysicalFontFamily*, bool>
 PhysicalFontCollection::FindOrCreateFontFamily(OUString const& rFamilyName)
 {

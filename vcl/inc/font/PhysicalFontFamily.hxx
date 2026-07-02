@@ -85,6 +85,9 @@ public:
     void AddFontFace(PhysicalFontFace*);
 
     PhysicalFontFace* FindBestFontFace(const vcl::font::FontSelectPattern& rFSD) const;
+    PhysicalFontFace* FindFontFaceByLegacyName(std::u16string_view rEnglishSearchName,
+                                               FontWeight eWeight = WEIGHT_DONTKNOW,
+                                               FontItalic eItalic = ITALIC_DONTKNOW) const;
 
     SAL_DLLPRIVATE void UpdateDevFontList(PhysicalFontFaceCollection&) const;
     SAL_DLLPRIVATE void UpdateCloneFontList(PhysicalFontCollection&) const;

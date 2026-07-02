@@ -18,6 +18,7 @@
 #include <config_folders.h>
 #include <config_eot.h>
 
+#include <o3tl/string_view.hxx>
 #include <o3tl/temporary.hxx>
 #include <osl/file.hxx>
 #include <rtl/bootstrap.hxx>
@@ -352,12 +353,20 @@ bool EmbeddedFontsManager::addEmbeddedFont( const uno::Reference< io::XInputStre
     if (fileUrl.isEmpty())
         return false;
 
-    return addEmbeddedFont(fileUrl, fontName, sufficientFontRights);
+    // tdf#172647: register the font under the typographic family name that the document
+    // model uses once legacy names are converted; the document-declared name can be a
+    // legacy full name (e.g. "Manbow Solid" for the "Manbow" family's "Solid" style).
+    OUString registerName = font.getTypographicFamilyName();
+    if (registerName.isEmpty())
+        registerName = fontName;
+
+    return addEmbeddedFont(fileUrl, registerName, sufficientFontRights);
 }
 
 bool EmbeddedFontsManager::addEmbeddedFont( const OUString& fileUrl, const OUString& fontName, bool sufficientFontRights )
 {
 
+    bool bRestricted = false;
     // Register  it / increase its refcount in s_EmbeddedFonts
     {
         DBG_TESTSOLARMUTEX();
@@ -375,9 +384,20 @@ bool EmbeddedFontsManager::addEmbeddedFont( const OUString& fileUrl, const OUStr
         }
         assert(rData.familyName == fontName);
         ++rData.refcount;
+        bRestricted = rData.isRestricted;
     }
 
     m_aAccumulatedFonts.emplace_back(fontName, fileUrl);
+
+    // tdf#172647: activate an unrestricted font as soon as it is embedded, so it is
+    // enumerable while the document body is still importing. Legacy font names are
+    // converted to their typographic form at attribute-set time, which needs the
+    // font present. Restricted fonts stay deferred until approved at end of load.
+    if (!bRestricted)
+    {
+        std::vector<std::pair<OUString, OUString>> aOne{ { fontName, fileUrl } };
+        activateFonts(aOne, false, {}, o3tl::temporary(bool()));
+    }
 
     return true;
 }
@@ -593,7 +613,9 @@ OUString EmbeddedFontsManager::fontFileUrl( std::u16string_view familyName, Font
          ++i )
     {
         vcl::font::PhysicalFontFace* f = fontInfo->Get( i );
-        if( f->GetFamilyName() == familyName )
+        // match the typographic family name or fallback to legacy one.
+        if( f->MatchFamilyName( familyName )
+            || o3tl::equalsIgnoreAsciiCase( familyName, f->GetName( vcl::font::NAME_ID_FONT_FAMILY ) ) )
         {
             // Ignore comparing text encodings, at least for now. They cannot be trivially compared
             // (e.g. UCS2 and UTF8 are technically the same characters, just have different encoding,

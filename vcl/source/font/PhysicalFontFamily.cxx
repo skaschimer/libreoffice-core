@@ -221,6 +221,35 @@ PhysicalFontFace* PhysicalFontFamily::FindBestFontFace( const vcl::font::FontSel
     return pBestFontFace;
 }
 
+PhysicalFontFace*
+PhysicalFontFamily::FindFontFaceByLegacyName(std::u16string_view rEnglishSearchName,
+                                             FontWeight eWeight, FontItalic eItalic) const
+{
+    // Several subfamilies can share a legacy family name (name ID 1), e.g.
+    // Book/Bold/Oblique/ BoldOblique of "DejaVu Sans Condensed".
+    // Pick the face best matching the requested weight/posture so the right
+    // typographic name (name ID 17) is found.
+    PhysicalFontFace* pBest = nullptr;
+    int nBestScore = 0;
+    for (auto const& xFace : maFontFaces)
+    {
+        if (GetEnglishSearchFontName(xFace->GetName(NAME_ID_FONT_FAMILY)) != rEnglishSearchName)
+            continue;
+        int nScore = (eItalic == ITALIC_DONTKNOW || xFace->GetItalic() == eItalic) ? 100 : 0;
+        if (eWeight != WEIGHT_DONTKNOW)
+        {
+            int nDiff = static_cast<int>(xFace->GetWeight()) - static_cast<int>(eWeight);
+            nScore -= (nDiff < 0) ? -nDiff : nDiff;
+        }
+        if (!pBest || nScore > nBestScore)
+        {
+            nBestScore = nScore;
+            pBest = xFace.get();
+        }
+    }
+    return pBest;
+}
+
 // update device font list with unique font faces, with uniqueness
 // meaning different font attributes, but not different fonts sizes
 void PhysicalFontFamily::UpdateDevFontList( vcl::font::PhysicalFontFaceCollection& rDevFontList ) const
