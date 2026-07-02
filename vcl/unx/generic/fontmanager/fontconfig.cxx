@@ -495,11 +495,6 @@ FcResult FontCfgWrapper::LocalizedElementFromPattern(FcPattern const * pPattern,
             if (!m_pLanguageTag)
                 m_pLanguageTag.reset(new LanguageTag(SvtSysLocaleOptions().GetRealUILanguageTag()));
 
-            // FontConfig orders Typographic Family/Subfamily before old
-            // R/B/I/BI-compatible ones, but we want the later, so reverse the
-            // names to match them first.
-            std::reverse(lang_and_elements.begin(), lang_and_elements.end());
-
             *element = bestname(lang_and_elements, *m_pLanguageTag);
 
             //if this element is a fontname, map the other names to this best-name
