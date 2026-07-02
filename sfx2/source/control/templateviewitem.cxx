@@ -111,7 +111,7 @@ void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D* pProces
                     B2DPoint(aIconPos.X(), aIconPos.Y()));
     }
 
-    addTextPrimitives(maTitle, &rAttrs, maTextPos, aSeq);
+    addTextPrimitives(maTitle, rAttrs, maTextPos, aSeq);
 
     pProcessor->process(aSeq);
 }
