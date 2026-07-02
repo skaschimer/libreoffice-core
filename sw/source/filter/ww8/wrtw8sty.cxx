@@ -25,6 +25,8 @@
 #include <hintids.hxx>
 #include <editeng/boxitem.hxx>
 #include <editeng/fontitem.hxx>
+#include <vcl/svapp.hxx>
+#include <vcl/outdev.hxx>
 #include <svx/svdobj.hxx>
 #include <svx/svdotext.hxx>
 #include <svx/svdouno.hxx>
@@ -974,9 +976,24 @@ void wwFontHelper::InitFontTable(MSWordExportBase& rExport)
     }
 }
 
+OUString wwFontHelper::GetExportFontName(const SvxFontItem& rFont)
+{
+    if (!rFont.GetStyleName().isEmpty())
+    {
+        if (OutputDevice* pDev = Application::GetDefaultDevice())
+        {
+            OUString aLegacyName;
+            if (pDev->GetLegacyFontName(rFont.GetFamilyName(), rFont.GetStyleName(),
+                                        WEIGHT_DONTKNOW, ITALIC_DONTKNOW, aLegacyName))
+                return aLegacyName;
+        }
+    }
+    return rFont.GetFamilyName();
+}
+
 sal_uInt16 wwFontHelper::GetId(const SvxFontItem& rFont)
 {
-    wwFont aFont(rFont.GetFamilyName(), rFont.GetPitch(), rFont.GetFamily(),
+    wwFont aFont(GetExportFontName(rFont), rFont.GetPitch(), rFont.GetFamily(),
         rFont.GetCharSet());
     return GetId(aFont);
 }

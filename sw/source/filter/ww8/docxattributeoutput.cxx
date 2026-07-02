@@ -8384,7 +8384,7 @@ void DocxAttributeOutput::CharEscapement( const SvxEscapementItem& rEscapement )
 void DocxAttributeOutput::CharFont( const SvxFontItem& rFont)
 {
     GetExport().GetId( rFont ); // ensure font info is written to fontTable.xml
-    const OUString& sFontName(rFont.GetFamilyName());
+    OUString sFontName(wwFontHelper::GetExportFontName(rFont));
     if (sFontName.isEmpty())
         return;
 
@@ -8576,7 +8576,7 @@ void DocxAttributeOutput::CharFontCJK( const SvxFontItem& rFont )
         return;
     }
 
-    AddToAttrList( m_pFontsAttrList, FSNS( XML_w, XML_eastAsia ), rFont.GetFamilyName() );
+    AddToAttrList( m_pFontsAttrList, FSNS( XML_w, XML_eastAsia ), wwFontHelper::GetExportFontName(rFont) );
 }
 
 void DocxAttributeOutput::CharPostureCJK( const SvxPostureItem& rPosture )
@@ -8609,7 +8609,7 @@ void DocxAttributeOutput::CharFontCTL( const SvxFontItem& rFont )
         return;
     }
 
-    AddToAttrList( m_pFontsAttrList, FSNS( XML_w, XML_cs ), rFont.GetFamilyName() );
+    AddToAttrList( m_pFontsAttrList, FSNS( XML_w, XML_cs ), wwFontHelper::GetExportFontName(rFont) );
 }
 
 void DocxAttributeOutput::CharPostureCTL( const SvxPostureItem& rPosture)

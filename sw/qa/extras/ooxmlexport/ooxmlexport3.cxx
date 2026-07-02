@@ -860,6 +860,10 @@ CPPUNIT_TEST_FIXTURE(Test, testThemePreservation)
     assertXPath(pXmlDocument, "/w:document/w:body/w:p[5]/w:r[1]/w:rPr/w:rFonts", "hAnsiTheme", u"majorHAnsi");
     assertXPath(pXmlDocument, "/w:document/w:body/w:p[5]/w:r[1]/w:rPr/w:rFonts", "asciiTheme", u"majorHAnsi");
 
+    // check the direct format legacy font name has been preserved (the model
+    // may hold the typographic family + subfamily instead, see below)
+    assertXPath(pXmlDocument, "/w:document/w:body/w:p[4]/w:r[1]/w:rPr/w:rFonts", "ascii", u"Arial Black");
+
     // check theme font color value has been preserved
     assertXPath(pXmlDocument, "/w:document/w:body/w:p[4]/w:r[1]/w:rPr/w:color", "themeColor", u"accent3");
     OUString sThemeShade = getXPath(pXmlDocument, "/w:document/w:body/w:p[4]/w:r[1]/w:rPr/w:color", "themeShade");

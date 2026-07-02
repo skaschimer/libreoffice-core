@@ -321,6 +321,7 @@ public:
     wwFontHelper() : m_bLoadAllFonts(false) {}
     /// rDoc used only to get the initial standard font(s) in use.
     void InitFontTable(MSWordExportBase& rExport);
+    static OUString GetExportFontName(const SvxFontItem& rFont);
     sal_uInt16 GetId(const SvxFontItem& rFont);
     sal_uInt16 GetId(const wwFont& rFont);
     void WriteFontTable( SvStream *pTableStream, WW8Fib& pFib );
