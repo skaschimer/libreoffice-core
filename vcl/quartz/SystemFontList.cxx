@@ -36,6 +36,36 @@
 #include <quartz/utils.h>
 #include <sallayout.hxx>
 
+static bool checkFontTypeSupported(CTFontDescriptorRef pFD, CFStringRef pFamilyName)
+{
+    int nFormat;
+    CFNumberRef pFormat = static_cast<CFNumberRef>(CTFontDescriptorCopyAttribute(pFD, kCTFontFormatAttribute));
+    CFNumberGetValue(pFormat, kCFNumberIntType, &nFormat);
+    CFRelease(pFormat);
+
+    if (nFormat == kCTFontFormatPostScript)
+    {
+        // Some fonts detected as PostScript are actually OpenType with PostScript/CFF
+        // outlines, which are OK. Allow fonts with a CFF table.
+        CTFontRef pFont = CTFontCreateWithFontDescriptor(pFD, 0.0, nullptr);
+        if (pFont)
+        {
+            CFDataRef pTable = CTFontCopyTable(pFont, kCTFontTableCFF, kCTFontTableOptionNoOptions);
+            if (pTable)
+                nFormat = kCTFontFormatOpenTypePostScript;
+            CFRelease(pTable);
+        }
+        CFRelease(pFont);
+    }
+
+    if (nFormat == kCTFontFormatUnrecognized || nFormat == kCTFontFormatPostScript || nFormat == kCTFontFormatBitmap)
+    {
+        SAL_INFO("vcl.fonts", "Ignoring font with unsupported format " << nFormat << ": " << GetOUString(pFamilyName));
+        return false;
+    }
+
+    return true;
+}
 
 FontAttributes DevFontFromCTFontDescriptor( CTFontDescriptorRef pFD, bool* bFontEnabled )
 {
@@ -80,22 +110,14 @@ FontAttributes DevFontFromCTFontDescriptor( CTFontDescriptorRef pFD, bool* bFont
         *bFontEnabled = bEnabled;
     }
 
-    // get font attributes
-    CFDictionaryRef pAttrDict = static_cast<CFDictionaryRef>(CTFontDescriptorCopyAttribute( pFD, kCTFontTraitsAttribute ));
-
     if (bFontEnabled && *bFontEnabled)
     {
         // Ignore font formats not supported.
-        int nFormat;
-        CFNumberRef pFormat = static_cast<CFNumberRef>(CTFontDescriptorCopyAttribute(pFD, kCTFontFormatAttribute));
-        CFNumberGetValue(pFormat, kCFNumberIntType, &nFormat);
-        if (nFormat == kCTFontFormatUnrecognized || nFormat == kCTFontFormatPostScript || nFormat == kCTFontFormatBitmap)
-        {
-            SAL_INFO("vcl.fonts", "Ignoring font with unsupported format: " << rDFA.GetFamilyName());
-            *bFontEnabled = false;
-        }
-        CFRelease(pFormat);
+        *bFontEnabled = checkFontTypeSupported(pFD, pFamilyName);
     }
+
+    // get font attributes
+    CFDictionaryRef pAttrDict = static_cast<CFDictionaryRef>(CTFontDescriptorCopyAttribute( pFD, kCTFontTraitsAttribute ));
 
     // get symbolic trait
     // TODO: use other traits such as MonoSpace/Condensed/Expanded or Vertical too
