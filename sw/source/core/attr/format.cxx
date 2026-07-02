@@ -25,6 +25,7 @@
 #include <frmatr.hxx>
 #include <hintids.hxx>
 #include <hints.hxx>
+#include <ndhints.hxx>
 #include <poolfmt.hxx>
 #include <o3tl/unit_conversion.hxx>
 #include <osl/diagnose.h>
@@ -539,9 +540,12 @@ bool SwFormat::SetFormatAttr( const SfxItemSet& rSet )
 
     bool bRet = false;
 
+    // tdf#172647
+    std::optional<SfxItemSet> oTypographic = ConvertCharFontsToTypographic(rSet, GetDoc());
+
     // Use local copy to be able to apply needed changes, e.g. call
     // CheckForUniqueItemForLineFillNameOrIndex which is needed for NameOrIndex stuff
-    SfxItemSet aTempSet(rSet);
+    SfxItemSet aTempSet(oTypographic ? *oTypographic : rSet);
 
     // Need to check for unique item for DrawingLayer items of type NameOrIndex
     // and evtl. correct that item to ensure unique names for that type. This call may

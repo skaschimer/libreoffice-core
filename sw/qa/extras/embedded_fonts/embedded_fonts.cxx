@@ -430,6 +430,9 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
 #if HAVE_MORE_FONTS && !defined(MACOSX)
     createSwDoc("testFontEmbedding.odt");
 
+    // tdf#172647: "DejaVu Serif Condensed" is a legacy name for the "DejaVu Serif" family, so on
+    // load it converts and merges into that font-face declaration - four (was five) are exported.
+
     OString aContentBaseXpath("/office:document-content/office:font-face-decls"_ostr);
     OString aStylesBaseXpath("/office:document-styles/office:font-face-decls"_ostr);
     OString aSettingsBaseXpath(
@@ -467,9 +470,8 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     pXmlDoc = parseExport(u"styles.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 1']", 5);
-    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif",
-                           "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 1']", 4);
+    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aStylesBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 1']");
@@ -480,9 +482,8 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     pXmlDoc = parseExport(u"content.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 1']", 5);
-    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif",
-                           "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 1']", 4);
+    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aContentBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 1']");
@@ -521,9 +522,8 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     pXmlDoc = parseExport(u"styles.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 2']", 5);
-    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif",
-                           "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 2']", 4);
+    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aStylesBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 2']");
@@ -534,9 +534,8 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     pXmlDoc = parseExport(u"content.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 2']", 5);
-    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif",
-                           "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 2']", 4);
+    for (auto fontName : { "DejaVu Sans", "DejaVu Sans Mono", "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aContentBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 2']");
@@ -578,35 +577,30 @@ CPPUNIT_TEST_FIXTURE(Test, testFontEmbedding)
     pXmlDoc = parseExport(u"styles.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 3']", 5);
-    // 'DejaVu Sans' is by default exported because of table styles
-    for (auto fontName :
-         { "DejaVu Sans Mono", "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
+    assertXPath(pXmlDoc, aStylesBaseXpath + "/style:font-face['CASE 3']", 4);
+    // 'DejaVu Sans' is exported by default (table styles), so its embedding is not asserted. Both
+    // "DejaVu Serif" faces used in the styles are embedded ("DejaVu Serif1" is the family the legacy
+    // "DejaVu Serif Condensed1" converts to).
+    for (auto fontName : { "DejaVu Sans Mono" })
     {
         OString prefix = aStylesBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 3']");
         assertXPath(pXmlDoc, prefix + "/svg:font-face-src['CASE 3']", 0);
     }
-    for (auto fontName : { "DejaVu Serif" })
+    for (auto fontName : { "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aStylesBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 3']");
         assertXPath(pXmlDoc, prefix + "/svg:font-face-src['CASE 3']", 1);
     }
 
-    // Check content - font-face-src should be present only for DejaVu Sans Mono and DejaVu Serif
+    // Check content - font-face-src should be present for the fonts used in the body text
     // Note that the used sets of fonts are different for styles.xml and content.xml
     pXmlDoc = parseExport(u"content.xml"_ustr);
     CPPUNIT_ASSERT(pXmlDoc);
 
-    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 3']", 5);
-    for (auto fontName : { "DejaVu Serif Condensed", "DejaVu Serif Condensed1" })
-    {
-        OString prefix = aContentBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
-        assertXPath(pXmlDoc, prefix + "['CASE 3']");
-        assertXPath(pXmlDoc, prefix + "/svg:font-face-src['CASE 3']", 0);
-    }
-    for (auto fontName : { "DejaVu Sans Mono", "DejaVu Serif" })
+    assertXPath(pXmlDoc, aContentBaseXpath + "/style:font-face['CASE 3']", 4);
+    for (auto fontName : { "DejaVu Sans Mono", "DejaVu Serif", "DejaVu Serif1" })
     {
         OString prefix = aContentBaseXpath + "/style:font-face[@style:name='" + fontName + "']";
         assertXPath(pXmlDoc, prefix + "['CASE 3']");
