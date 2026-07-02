@@ -42,14 +42,10 @@ TemplateViewItem::~TemplateViewItem ()
 {
 }
 
-::tools::Rectangle TemplateViewItem::getDefaultIconArea() const
+Point TemplateViewItem::getDefaultIconPosition() const
 {
     ::tools::Rectangle aArea(getDrawArea());
-    Size aSize(maDefaultBitmap.GetSizePixel());
-
-    return ::tools::Rectangle(
-            Point(aArea.Left() + THUMBNAILVIEW_ITEM_CORNER, aArea.Top() + THUMBNAILVIEW_ITEM_CORNER),
-            aSize);
+    return Point(aArea.Left() + THUMBNAILVIEW_ITEM_CORNER, aArea.Top() + THUMBNAILVIEW_ITEM_CORNER);
 }
 
 void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D *pProcessor,
@@ -109,7 +105,7 @@ void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D *pProces
 
     if(mbIsDefaultTemplate)
     {
-        Point aIconPos(getDefaultIconArea().TopLeft());
+        const Point aIconPos = getDefaultIconPosition();
 
         aSeq[4] = new DiscreteBitmapPrimitive2D( maDefaultBitmap,
                     B2DPoint(aIconPos.X(), aIconPos.Y()));
