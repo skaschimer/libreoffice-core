@@ -127,7 +127,7 @@ CellAttributeHelper& ScDocument::getCellAttributeHelper() const
         assert(!IsClipOrUndo() && "CellAttributeHelper needs to be shared using SharePooledResources, not created (!)");
         SfxItemPool* pPool(const_cast<ScDocument*>(this)->GetPool());
         assert(nullptr != pPool && "No SfxItemPool for this ScDocument (!)");
-        mpCellAttributeHelper.reset(new CellAttributeHelper(*pPool));
+        mpCellAttributeHelper.reset(new CellAttributeHelper(*pPool, const_cast<ScDocument*>(this)));
     }
 
     return *mpCellAttributeHelper;

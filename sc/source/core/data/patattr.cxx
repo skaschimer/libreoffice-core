@@ -67,8 +67,9 @@
 #include <comphelper/lok.hxx>
 #include <tabvwsh.hxx>
 
-CellAttributeHelper::CellAttributeHelper(SfxItemPool& rSfxItemPool)
+CellAttributeHelper::CellAttributeHelper(SfxItemPool& rSfxItemPool, ScDocument* pDocument)
 : mrSfxItemPool(rSfxItemPool)
+, mpDocument(pDocument)
 , mpDefaultCellAttribute(nullptr)
 , maRegisteredCellAttributes()
 , mpLastHit(nullptr)
@@ -408,6 +409,39 @@ ScPatternAttr::ScPatternAttr(CellAttributeHelper& rHelper, const SfxItemSet* pIt
         // SfxItemState::INVALID aka IsInvalidItem, this is a precious
         // value/information e.g. in ScDocument::CreateSelectionPattern
         maLocalSfxItemSet.Put(*pItemSet, false);
+
+        // tdf#172647: store fonts by their typographic names
+        ScDocument* pConvDoc = rHelper.GetDocument();
+        const TypedWhichId<SvxFontItem> aFontIds[3] = { ATTR_FONT, ATTR_CJK_FONT, ATTR_CTL_FONT };
+        const TypedWhichId<SvxWeightItem> aWeightIds[3]
+            = { ATTR_FONT_WEIGHT, ATTR_CJK_FONT_WEIGHT, ATTR_CTL_FONT_WEIGHT };
+        const TypedWhichId<SvxPostureItem> aPostureIds[3]
+            = { ATTR_FONT_POSTURE, ATTR_CJK_FONT_POSTURE, ATTR_CTL_FONT_POSTURE };
+        OutputDevice* pRefDev = nullptr;
+        for (int i = 0; pConvDoc && i < 3; ++i)
+        {
+            const SvxFontItem* pFont = maLocalSfxItemSet.GetItemIfSet(aFontIds[i], false);
+            if (!pFont)
+                continue;
+            if (!pRefDev)
+            {
+                pRefDev = pConvDoc->GetRefDevice(true);
+                if (!pRefDev)
+                    break;
+            }
+            FontWeight eWeight = WEIGHT_DONTKNOW;
+            if (const SvxWeightItem* pWeight = maLocalSfxItemSet.GetItemIfSet(aWeightIds[i], false))
+                eWeight = pWeight->GetWeight();
+            FontItalic eItalic = ITALIC_DONTKNOW;
+            if (const SvxPostureItem* pPosture = maLocalSfxItemSet.GetItemIfSet(aPostureIds[i], false))
+                eItalic = pPosture->GetPosture();
+
+            SvxFontItem aFont(*pFont);
+            aFont.makeTypographic(*pRefDev, eWeight, WIDTH_DONTKNOW, eItalic);
+            if (aFont.GetFamilyName() != pFont->GetFamilyName()
+                || aFont.GetStyleName() != pFont->GetStyleName())
+                maLocalSfxItemSet.Put(aFont);
+        }
     }
 }
 

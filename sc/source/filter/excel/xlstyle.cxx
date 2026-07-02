@@ -26,6 +26,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/font.hxx>
+#include <vcl/outdev.hxx>
 #include <sal/macros.h>
 #include <sal/log.hxx>
 #include <rtl/tencinfo.h>
@@ -201,7 +202,19 @@ void XclFontData::Clear()
 
 void XclFontData::FillFromVclFont(const vcl::Font& rFont, model::ComplexColor const& rComplexColor)
 {
-    maName = XclTools::GetXclFontName( rFont.GetFamilyName() );   // substitute with MS fonts
+    // tdf#172647: recompose the legacy font name.
+    OUString aFontName(rFont.GetFamilyName());
+    if (!rFont.GetStyleName().isEmpty())
+    {
+        if (OutputDevice* pDev = Application::GetDefaultDevice())
+        {
+            OUString aLegacyName;
+            if (pDev->GetLegacyFontName(aFontName, rFont.GetStyleName(), rFont.GetWeight(),
+                                        rFont.GetItalic(), aLegacyName))
+                aFontName = aLegacyName;
+        }
+    }
+    maName = XclTools::GetXclFontName( aFontName );   // substitute with MS fonts
     maStyle.clear();
     SetScUnderline( rFont.GetUnderline() );
     mnEscapem = EXC_FONTESC_NONE;

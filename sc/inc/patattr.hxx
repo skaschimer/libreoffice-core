@@ -70,6 +70,7 @@ class SC_DLLPUBLIC CellAttributeHelper final
     typedef std::unordered_map<std::optional<OUString>, o3tl::sorted_vector<const ScPatternAttr*>, RegisteredAttrMapHash> RegisteredAttrMap;
 
     SfxItemPool&                                        mrSfxItemPool;
+    ScDocument*                                         mpDocument;
     mutable ScPatternAttr*                              mpDefaultCellAttribute;
     mutable RegisteredAttrMap                           maRegisteredCellAttributes;
     mutable const ScPatternAttr*                        mpLastHit;
@@ -80,11 +81,12 @@ class SC_DLLPUBLIC CellAttributeHelper final
     void doUnregister(const ScPatternAttr& rCandidate);
 
 public:
-    explicit CellAttributeHelper(SfxItemPool& rSfxItemPool);
+    explicit CellAttributeHelper(SfxItemPool& rSfxItemPool, ScDocument* pDocument = nullptr);
     ~CellAttributeHelper();
 
     const ScPatternAttr& getDefaultCellAttribute() const;
     SfxItemPool& GetPool() const { return mrSfxItemPool; }
+    ScDocument* GetDocument() const { return mpDocument; }
 
     void CellStyleDeleted(const ScStyleSheet& rStyle);
     void CellStyleCreated(const ScDocument& rDoc, const OUString& rName);
