@@ -123,6 +123,7 @@
 #include <vcl/cvtgrf.hxx>
 #include <vcl/gfxlink.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/outdev.hxx>
 #include <vcl/embeddedfontsmanager.hxx>
 #include <vcl/vectorgraphicdata.hxx>
 #include <rtl/strbuf.hxx>
@@ -2857,6 +2858,19 @@ void DrawingML::WriteRunProperties(const Reference<XPropertySet>& rRun, sal_Int3
         }
     }
 
+    auto getExportFontName = [](const OUString& rTypeface, const OUString& rStyleName) -> OUString
+    {
+        if (rStyleName.isEmpty())
+            return rTypeface;
+        if (OutputDevice* pDev = Application::GetDefaultDevice())
+        {
+            OUString aLegacy;
+            if (pDev->GetLegacyFontName(rTypeface, rStyleName, WEIGHT_DONTKNOW, ITALIC_DONTKNOW, aLegacy))
+                return aLegacy;
+        }
+        return rTypeface;
+    };
+
     if (GetProperty(rXPropSet, u"CharFontName"_ustr))
     {
         const char* const pitch = nullptr;
@@ -2864,6 +2878,11 @@ void DrawingML::WriteRunProperties(const Reference<XPropertySet>& rRun, sal_Int3
         OUString usTypeface;
 
         mAny >>= usTypeface;
+
+        OUString usStyleName;
+        if (GetProperty(rXPropSet, u"CharFontStyleName"_ustr))
+            mAny >>= usStyleName;
+        usTypeface = getExportFontName(usTypeface, usStyleName);
 
         if (!mbEmbedFonts || EmbeddedFontsManager::isCommonFont(usTypeface))
         {
@@ -2887,6 +2906,13 @@ void DrawingML::WriteRunProperties(const Reference<XPropertySet>& rRun, sal_Int3
         OUString usTypeface;
 
         mAny >>= usTypeface;
+
+        OUString usStyleName;
+        if (GetDirectProperty(rXPropSet, rXPropState,
+                              bComplex ? u"CharFontStyleNameComplex"_ustr : u"CharFontStyleNameAsian"_ustr))
+            mAny >>= usStyleName;
+        usTypeface = getExportFontName(usTypeface, usStyleName);
+
         if (!mbEmbedFonts || EmbeddedFontsManager::isCommonFont(usTypeface))
         {
             OUString aSubstName( GetSubsFontName( usTypeface, SubsFontFlags::ONLYONE | SubsFontFlags::MS ) );
