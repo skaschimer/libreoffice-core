@@ -962,8 +962,7 @@ bool Bitmap::Convert( BmpConversion eConversion )
 
         case BmpConversion::N24Bit:
         {
-            // Force re-encode when source is 32-bit-with-alpha so alpha is stripped.
-            if( nBitCount < 24 || HasAlpha() )
+            if( nBitCount < 24 )
                 bRet = ImplConvertUp(vcl::PixelFormat::N24_BPP);
             else
                 bRet = true;
