@@ -211,11 +211,12 @@ OUString writeFontBytesToFile(const std::vector<char>& bytes, std::u16string_vie
 }
 
 OUString getFilenameForExport(std::u16string_view familyName, FontFamily family, FontItalic italic,
-                              FontWeight weight, FontPitch pitch)
+                              FontWeight weight, FontPitch pitch,
+                              std::u16string_view subFamilyName)
 {
-    OUString filename = OUString::Concat(familyName) + "_" + OUString::number(family) + "_"
-                        + OUString::number(italic) + "_" + OUString::number(weight) + "_"
-                        + OUString::number(pitch) + ".ttf";
+    OUString filename = OUString::Concat(familyName) + "_" + subFamilyName + "_"
+                        + OUString::number(family) + "_" + OUString::number(italic) + "_"
+                        + OUString::number(weight) + "_" + OUString::number(pitch) + ".ttf";
     return rtl::Uri::encode(filename, rtl_UriCharClassPchar, rtl_UriEncodeIgnoreEscapes,
                             RTL_TEXTENCODING_UTF8);
 }
@@ -579,7 +580,7 @@ bool EmbeddedFontsManager::analyzeTTF(const void* data, tools::Long size, FontWe
 }
 
 OUString EmbeddedFontsManager::fontFileUrl( std::u16string_view familyName, FontFamily family, FontItalic italic,
-    FontWeight weight, FontPitch pitch, FontRights rights )
+    FontWeight weight, FontPitch pitch, FontRights rights, std::u16string_view subFamilyName )
 {
     // Do not embed restricted fonts not installed locally.
     if (isEmbeddedAndRestricted(familyName))
@@ -587,7 +588,7 @@ OUString EmbeddedFontsManager::fontFileUrl( std::u16string_view familyName, Font
 
     OUString path = GetEmbeddedFontsRoot() + "fromsystem/";
     osl::Directory::createPath( path );
-    OUString url = path + getFilenameForExport(familyName, family, italic, weight, pitch);
+    OUString url = path + getFilenameForExport(familyName, family, italic, weight, pitch, subFamilyName);
     if( osl::File( url ).open( osl_File_OpenFlag_Read ) == osl::File::E_None ) // = exists()
     {
         // File with contents of the font file already exists, assume it's been created by a previous call.
@@ -617,6 +618,9 @@ OUString EmbeddedFontsManager::fontFileUrl( std::u16string_view familyName, Font
         if( f->MatchFamilyName( familyName )
             || o3tl::equalsIgnoreAsciiCase( familyName, f->GetName( vcl::font::NAME_ID_FONT_FAMILY ) ) )
         {
+            // tdf#172647: when a specific style is requested, restrict to faces of that subfamily
+            if (!subFamilyName.empty() && !f->GetStyleName().startsWithIgnoreAsciiCase(subFamilyName))
+                continue;
             // Ignore comparing text encodings, at least for now. They cannot be trivially compared
             // (e.g. UCS2 and UTF8 are technically the same characters, just have different encoding,
             // and just having a unicode font doesn't say what glyphs it actually contains).
@@ -650,7 +654,7 @@ OUString EmbeddedFontsManager::fontFileUrl( std::u16string_view familyName, Font
     {
         if (!selected) { // recalculate file name for "not perfect match"
             url = path + getFilenameForExport(familyName, f->GetFamilyType(), f->GetItalic(),
-                                              f->GetWeight(), f->GetPitch());
+                                              f->GetWeight(), f->GetPitch(), subFamilyName);
             if (osl::File(url).open(osl_File_OpenFlag_Read) == osl::File::E_None) // = exists()
             {
                 // File with contents of the font file already exists, assume it's been created by a previous call.

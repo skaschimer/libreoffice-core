@@ -44,7 +44,8 @@ public:
     */
     static OUString fontFileUrl(
         std::u16string_view familyName, FontFamily family, FontItalic italic,
-        FontWeight weight, FontPitch pitch, FontRights rights );
+        FontWeight weight, FontPitch pitch, FontRights rights,
+        std::u16string_view subFamilyName = {} );
 
     /**
       Reads a font from the input stream, saves it to a temporary font file and adds it to the list of
