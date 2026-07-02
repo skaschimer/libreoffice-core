@@ -48,22 +48,22 @@ Point TemplateViewItem::getDefaultIconPosition() const
     return Point(aArea.Left() + THUMBNAILVIEW_ITEM_CORNER, aArea.Top() + THUMBNAILVIEW_ITEM_CORNER);
 }
 
-void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D *pProcessor,
-                                   const ThumbnailItemAttributes *pAttrs)
+void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D* pProcessor,
+                             const ThumbnailItemAttributes& rAttrs)
 {
-    BColor aFillColor = pAttrs->aFillColor;
+    BColor aFillColor = rAttrs.aFillColor;
 
     drawinglayer::primitive2d::Primitive2DContainer aSeq(5);
     double fTransparence = 0.0;
 
     // Draw background
     if( mbSelected && mbHover)
-        aFillColor = pAttrs->aHighlightColor;
+        aFillColor = rAttrs.aHighlightColor;
     else if (mbSelected || mbHover)
     {
-        aFillColor = pAttrs->aHighlightColor;
+        aFillColor = rAttrs.aHighlightColor;
         if (mbHover)
-            fTransparence = pAttrs->fHighlightTransparence;
+            fTransparence = rAttrs.fHighlightTransparence;
     }
 
     aSeq[0] =
@@ -111,7 +111,7 @@ void TemplateViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D *pProces
                     B2DPoint(aIconPos.X(), aIconPos.Y()));
     }
 
-    addTextPrimitives(maTitle, pAttrs, maTextPos, aSeq);
+    addTextPrimitives(maTitle, &rAttrs, maTextPos, aSeq);
 
     pProcessor->process(aSeq);
 }

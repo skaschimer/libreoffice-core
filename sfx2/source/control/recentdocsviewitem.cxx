@@ -294,9 +294,10 @@ OUString RecentDocsViewItem::getHelpText() const
     return m_sHelpText;
 }
 
-void RecentDocsViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D *pProcessor, const ThumbnailItemAttributes *pAttrs)
+void RecentDocsViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D* pProcessor,
+                               const ThumbnailItemAttributes& rAttrs)
 {
-    ThumbnailViewItem::Paint(pProcessor, pAttrs);
+    ThumbnailViewItem::Paint(pProcessor, rAttrs);
 
     // paint the remove/pinned icon when hovered
     if (isHighlighted())

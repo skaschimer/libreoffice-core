@@ -35,8 +35,8 @@ public:
     /// Text to be used for the tooltip.
     virtual OUString getHelpText() const override;
 
-    virtual void Paint(drawinglayer::processor2d::BaseProcessor2D *pProcessor,
-                       const ThumbnailItemAttributes *pAttrs) override;
+    virtual void Paint(drawinglayer::processor2d::BaseProcessor2D* pProcessor,
+                       const ThumbnailItemAttributes& rAttrs) override;
 
     virtual void MouseButtonUp(const MouseEvent& rMEvt) override;
 

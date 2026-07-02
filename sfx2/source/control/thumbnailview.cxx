@@ -978,7 +978,7 @@ void ThumbnailView::Paint(vcl::RenderContext& rRenderContext, const ::tools::Rec
         ThumbnailViewItem *const pItem = mItemList[i].get();
         if (!pItem->isVisible())
             continue;
-        pItem->Paint(pProcessor.get(), mpItemAttrs.get());
+        pItem->Paint(pProcessor.get(), *mpItemAttrs);
     }
 }
 

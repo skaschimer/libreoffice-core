@@ -29,8 +29,8 @@ public:
 
     Point getDefaultIconPosition() const;
 
-    virtual void Paint (drawinglayer::processor2d::BaseProcessor2D *pProcessor,
-                        const ThumbnailItemAttributes *pAttrs) override;
+    virtual void Paint(drawinglayer::processor2d::BaseProcessor2D* pProcessor,
+                       const ThumbnailItemAttributes& rAttrs) override;
 
     sal_uInt16    mnRegionId;
     sal_uInt16    mnDocId;

@@ -146,21 +146,21 @@ void ThumbnailViewItem::calculateItemsPosition (const tools::Long nThumbnailHeig
     maTextPos = aPos + Point(-aTextDev.getTextWidth(maTitle, 0, nMaxTextLength) / 2, nThumbnailHeight + nPadding * 2);
 }
 
-void ThumbnailViewItem::Paint (drawinglayer::processor2d::BaseProcessor2D *pProcessor,
-                               const ThumbnailItemAttributes *pAttrs)
+void ThumbnailViewItem::Paint(drawinglayer::processor2d::BaseProcessor2D* pProcessor,
+                              const ThumbnailItemAttributes& rAttrs)
 {
-    BColor aFillColor = pAttrs->aFillColor;
+    BColor aFillColor = rAttrs.aFillColor;
     drawinglayer::primitive2d::Primitive2DContainer aSeq(4);
     double fTransparence = 0.0;
 
     // Draw background
     if( mbSelected && mbHover)
-        aFillColor = pAttrs->aHighlightColor;
+        aFillColor = rAttrs.aHighlightColor;
     else if (mbSelected || mbHover)
     {
-        aFillColor = pAttrs->aHighlightColor;
+        aFillColor = rAttrs.aHighlightColor;
         if (mbHover)
-            fTransparence = pAttrs->fHighlightTransparence;
+            fTransparence = rAttrs.fHighlightTransparence;
     }
 
     sal_uInt32 nPrimitive = 0;
@@ -203,7 +203,7 @@ void ThumbnailViewItem::Paint (drawinglayer::processor2d::BaseProcessor2D *pProc
     }
 
     // Draw text below thumbnail
-    addTextPrimitives(maTitle, pAttrs, maTextPos, aSeq);
+    addTextPrimitives(maTitle, &rAttrs, maTextPos, aSeq);
 
     pProcessor->process(aSeq);
 }
