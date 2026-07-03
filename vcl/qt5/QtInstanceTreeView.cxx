@@ -640,9 +640,28 @@ void QtInstanceTreeView::set_sort_order(bool bAscending)
     });
 }
 
-void QtInstanceTreeView::set_sort_indicator(TriState, int)
+void QtInstanceTreeView::set_sort_indicator(TriState eState, int nColumn)
 {
-    assert(false && "Not implemented yet");
+    SolarMutexGuard g;
+
+    GetQtInstance().RunInMainThread([&] {
+        switch (eState)
+        {
+            case TRISTATE_FALSE:
+                m_pTreeView->header()->setSortIndicator(nColumn, Qt::DescendingOrder);
+                break;
+            case TRISTATE_TRUE:
+                m_pTreeView->header()->setSortIndicator(nColumn, Qt::AscendingOrder);
+                break;
+            case TRISTATE_INDET:
+                if (m_pTreeView->header()->sortIndicatorSection() == nColumn)
+                {
+                    // unset sort indicator for all columns/sections
+                    m_pTreeView->header()->setSortIndicator(-1, Qt::AscendingOrder);
+                }
+                break;
+        }
+    });
 }
 
 TriState QtInstanceTreeView::get_sort_indicator(int) const
