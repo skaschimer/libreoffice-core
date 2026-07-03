@@ -309,6 +309,7 @@ class SwUndoCopyHeaderFooter final : public SwUndo, private SwUndoSaveSection
     bool m_bIsLeft;
     bool m_bIsFirstMaster;
     bool m_bIsFirstLeft;
+    bool m_bIsStashed;
 
 public:
     SwUndoCopyHeaderFooter(const SwDoc& rDoc, const SwNode& rSttNd, const UIName& rFmtName);

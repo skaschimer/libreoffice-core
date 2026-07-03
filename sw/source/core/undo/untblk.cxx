@@ -497,6 +497,7 @@ SwUndoCopyHeaderFooter::SwUndoCopyHeaderFooter(const SwDoc& rDoc, const SwNode& 
     , m_bIsLeft(false)
     , m_bIsFirstMaster(false)
     , m_bIsFirstLeft(false)
+    , m_bIsStashed(false)
 {
 }
 
@@ -555,6 +556,52 @@ void SwUndoCopyHeaderFooter::UndoImpl(::sw::UndoRedoContext& rContext)
         m_bIsFirstLeft = lcl_checkMatchesFormat(pPgDesc->GetFirstLeft(), false, m_aOff);
     }
 
+    bool bFound = m_bIsMaster || m_bIsLeft || m_bIsFirstMaster || m_bIsFirstLeft;
+
+    if (!bFound)
+    {
+        // This m_aOff is not used on any of the active frames on the PageDesc.
+        // Check whether it is used on one of its stashed frame formats.
+
+        // { bFirst, bLeft, bHeader }
+        std::vector<std::tuple<bool, bool, bool>> vHdftLocs = {
+            {true, true, true},
+            {true, true, false},
+            {true, false, true},
+            {true, false, false},
+            {false, true, true},
+            {false, true, false},
+        };
+
+        auto it = std::ranges::find_if(vHdftLocs, [&](const auto& aHdftLoc) {
+            const auto& [bFirst, bLeft, bHeader] = aHdftLoc;
+
+            if (auto pStashedFormat
+                = pPgDesc->GetStashedFrameFormat(bHeader, bLeft, bFirst))
+            {
+                return lcl_checkMatchesFormat(*pStashedFormat, bHeader, m_aOff);
+            }
+            return false;
+        });
+        if (it != vHdftLocs.end())
+        {
+            const auto& [bFirst, bLeft, bHeader] = *it;
+
+            m_bIsHeader = bHeader;
+            m_bIsMaster = !bFirst && !bLeft;
+            m_bIsLeft = !bFirst && bLeft;
+            m_bIsFirstMaster = bFirst && !bLeft;
+            m_bIsFirstLeft = bFirst && bLeft;
+
+            m_bIsStashed = true;
+            bFound = true;
+        }
+    }
+
+    OSL_ENSURE(bFound,
+               "Saving header/footer content that we can't associate with any SwFrameFormat on its "
+               "SwPageDesc");
+
     SaveSection(SwNodeIndex(rDoc.GetNodes(), m_aOff));
 }
 
@@ -570,15 +617,25 @@ void SwUndoCopyHeaderFooter::RedoImpl(::sw::UndoRedoContext& rContext)
     SwPageDesc* pPgDesc = rDoc.FindPageDesc(m_aFmtName);
 
     const SfxPoolItem* pItem = nullptr;
-    if (m_bIsMaster)
-        pItem = lcl_itemForFormat(pPgDesc->GetMaster(), m_bIsHeader);
-    else if (m_bIsLeft)
-        pItem = lcl_itemForFormat(pPgDesc->GetLeft(), m_bIsHeader);
-    else if (m_bIsFirstMaster)
-        pItem = lcl_itemForFormat(pPgDesc->GetFirstMaster(), m_bIsHeader);
-    else if (m_bIsFirstLeft)
-        pItem = lcl_itemForFormat(pPgDesc->GetFirstLeft(), m_bIsHeader);
-
+    if (m_bIsStashed)
+    {
+        bool bLeft = m_bIsLeft || m_bIsFirstLeft;
+        bool bFirst = m_bIsFirstMaster || m_bIsFirstLeft;
+        const SwFrameFormat* pFrmFmt = pPgDesc->GetStashedFrameFormat(m_bIsHeader, bLeft, bFirst);
+        if (pFrmFmt)
+            pItem = lcl_itemForFormat(*pFrmFmt, m_bIsHeader);
+    }
+    else
+    {
+        if (m_bIsMaster)
+            pItem = lcl_itemForFormat(pPgDesc->GetMaster(), m_bIsHeader);
+        else if (m_bIsLeft)
+            pItem = lcl_itemForFormat(pPgDesc->GetLeft(), m_bIsHeader);
+        else if (m_bIsFirstMaster)
+            pItem = lcl_itemForFormat(pPgDesc->GetFirstMaster(), m_bIsHeader);
+        else if (m_bIsFirstLeft)
+            pItem = lcl_itemForFormat(pPgDesc->GetFirstLeft(), m_bIsHeader);
+    }
     assert(pItem);
 
     SwFrameFormat* pHdFtFormat = const_cast<SwFrameFormat*>(

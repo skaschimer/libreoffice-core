@@ -1573,7 +1573,11 @@ void SwDoc::CopyPageDesc( const SwPageDesc& rSrcDesc, SwPageDesc& rDstDesc,
                 {
                     if (&pStashedFormatSrc->GetDoc() != this)
                     {
-                        SwFrameFormat newFormat(GetAttrPool(), UIName(u"CopyDesc"_ustr), GetDfltFrameFormat());
+                        OSL_ENSURE(pStashedFormatSrc->GetName() == rSrcDesc.GetName(),
+                                   "stashed SwFrameFormat UIName differs from containing "
+                                   "SwPageDesc UIName");
+                        SwFrameFormat newFormat(GetAttrPool(), rSrcDesc.GetName(),
+                                                GetDfltFrameFormat());
 
                         SfxItemSet aAttrSet(pStashedFormatSrc->GetAttrSet());
                         aAttrSet.ClearItem(RES_HEADER);

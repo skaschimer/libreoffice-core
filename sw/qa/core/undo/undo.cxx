@@ -9,6 +9,9 @@
 
 #include <swmodeltestbase.hxx>
 
+#include <com/sun/star/style/BreakType.hpp>
+#include <com/sun/star/text/ControlCharacter.hpp>
+#include <comphelper/propertyvalue.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 
 #include <unotxdoc.hxx>
@@ -18,6 +21,7 @@
 #include <frameformats.hxx>
 #include <fmtcntnt.hxx>
 #include <cntfrm.hxx>
+#include <fmthdft.hxx>
 #include <fmtpdsc.hxx>
 #include <pagefrm.hxx>
 #include <rootfrm.hxx>
@@ -337,6 +341,74 @@ CPPUNIT_TEST_FIXTURE(SwCoreUndoTest, testPageDescCreate)
 
     CPPUNIT_ASSERT_EQUAL(lcl_getLastPagePageDesc(*pDoc),
                          const_cast<const SwPageDesc*>(pNewPageDesc2));
+}
+
+CPPUNIT_TEST_FIXTURE(SwCoreUndoTest, testTdf171068CopyPageDescWithStashedHeaderAcrossDocuments)
+{
+    createSwDoc();
+    SwDoc* pSrcDocument = getSwDoc();
+    uno::Reference<lang::XComponent> xSrcComponent = mxComponent;
+    mxComponent.clear();
+
+    createSwDoc();
+    uno::Reference<lang::XComponent> xDstComponent = mxComponent;
+    mxComponent.clear();
+
+    // Build the source document, which will be a two page document with one paragraph
+    // on each page, separated by a page break that sets the page style of the second
+    // page to a custom page Style "SourceStyle", which includes a stashed header;
+
+    // Create the page style and attach the stashed header
+    {
+        SwPageDesc* pSrcPageDesc = pSrcDocument->MakePageDesc(UIName(u"SourceStyle"_ustr));
+        pSrcPageDesc->ChgFirstShare(false);
+        CPPUNIT_ASSERT(!pSrcPageDesc->IsFirstShared());
+
+        SwFrameFormat& rFirstMaster = pSrcPageDesc->GetFirstMaster();
+        rFirstMaster.SetFormatAttr(SwFormatHeader(true));
+
+        pSrcPageDesc->StashFrameFormat(pSrcPageDesc->GetFirstMaster(), true, false, true);
+        pSrcDocument->ChgPageDesc(UIName(u"SourceStyle"_ustr), *pSrcPageDesc);
+        CPPUNIT_ASSERT(pSrcPageDesc->HasStashedFormat(true, false, true));
+    }
+
+    // Insert the paragraphs and the page break which sets the page style for page 2
+    {
+        uno::Reference<text::XTextDocument> xTextDoc(xSrcComponent, uno::UNO_QUERY);
+        uno::Reference<text::XText> xText = xTextDoc->getText();
+        uno::Reference<text::XTextCursor> xCursor = xText->createTextCursor();
+
+        xText->insertString(xCursor, u"First page"_ustr, false);
+        xText->insertControlCharacter(xCursor, css::text::ControlCharacter::PARAGRAPH_BREAK, false);
+
+        uno::Reference<beans::XPropertySet> xProps(xCursor, uno::UNO_QUERY);
+        xProps->setPropertyValue(u"BreakType"_ustr, uno::Any(style::BreakType_PAGE_BEFORE));
+        xProps->setPropertyValue(u"PageDescName"_ustr, uno::Any(u"SourceStyle"_ustr));
+
+        xText->insertString(xCursor, u"Second page"_ustr, false);
+    }
+
+    dispatchCommand(xSrcComponent, u".uno:SelectAll"_ustr, {});
+    dispatchCommand(xSrcComponent, u".uno:Copy"_ustr, {});
+
+    dispatchCommand(xDstComponent, u".uno:SelectAll"_ustr, {});
+    dispatchCommand(xDstComponent, u".uno:Paste"_ustr, {});
+    dispatchCommand(xDstComponent, u".uno:Undo"_ustr, {});
+
+    // Without the fix, undoing the copy of the page desc failed
+    // because the page desc could not be located on the dest
+    // document, because the frame format was not named the same
+    // as the page desc.
+
+    // Also, the stashed frame format was not correctly saved
+    // to the undo nodes, which led to corruption of the
+    // node offsets similar to tdf#148703.
+
+    dispatchCommand(xDstComponent, u".uno:Redo"_ustr, {});
+    dispatchCommand(xDstComponent, u".uno:Undo"_ustr, {});
+
+    xSrcComponent->dispose();
+    xDstComponent->dispose();
 }
 
 CPPUNIT_PLUGIN_IMPLEMENT();
