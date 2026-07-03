@@ -131,7 +131,7 @@ static void lcl_PostRepaintSparkLine(sc::SparklineList* pSparklineList, const Sc
 
 ScViewFunc::ScViewFunc( vcl::Window* pParent, ScDocShell& rDocSh, ScTabViewShell* pViewShell ) :
     ScTabView( pParent, rDocSh, pViewShell ),
-    bFormatValid( false ),
+    mbFormatValid( false ),
     mbMultiInsert( false )
 {
 }
@@ -216,12 +216,12 @@ void ScViewFunc::StartFormatArea()
 
     if (bOk)
     {
-        bFormatValid = true;
-        aFormatSource = aMarkRange.aStart;
-        aFormatArea = ScRange( aFormatSource );
+        mbFormatValid = true;
+        maFormatSource = aMarkRange.aStart;
+        maFormatArea = ScRange( maFormatSource );
     }
     else
-        bFormatValid = false;       // discard old range
+        mbFormatValid = false;       // discard old range
 }
 
 bool ScViewFunc::TestFormatArea( SCCOL nCol, SCROW nRow, SCTAB nTab, bool bAttrChanged )
@@ -241,39 +241,39 @@ bool ScViewFunc::TestFormatArea( SCCOL nCol, SCROW nRow, SCTAB nTab, bool bAttrC
     //! Test if cell empty ???
 
     bool bFound = false;
-    ScRange aNewRange = aFormatArea;
-    if ( bFormatValid && nTab == aFormatSource.Tab() )
+    ScRange aNewRange = maFormatArea;
+    if ( mbFormatValid && nTab == maFormatSource.Tab() )
     {
-        if ( nRow >= aFormatArea.aStart.Row() && nRow <= aFormatArea.aEnd.Row() )
+        if ( nRow >= maFormatArea.aStart.Row() && nRow <= maFormatArea.aEnd.Row() )
         {
             //  within range?
-            if ( nCol >= aFormatArea.aStart.Col() && nCol <= aFormatArea.aEnd.Col() )
+            if ( nCol >= maFormatArea.aStart.Col() && nCol <= maFormatArea.aEnd.Col() )
             {
                 bFound = true;          // do not change range
             }
             //  left ?
-            if ( nCol+1 == aFormatArea.aStart.Col() )
+            if ( nCol+1 == maFormatArea.aStart.Col() )
             {
                 bFound = true;
                 aNewRange.aStart.SetCol( nCol );
             }
             //  right ?
-            if ( nCol == aFormatArea.aEnd.Col()+1 )
+            if ( nCol == maFormatArea.aEnd.Col()+1 )
             {
                 bFound = true;
                 aNewRange.aEnd.SetCol( nCol );
             }
         }
-        if ( nCol >= aFormatArea.aStart.Col() && nCol <= aFormatArea.aEnd.Col() )
+        if ( nCol >= maFormatArea.aStart.Col() && nCol <= maFormatArea.aEnd.Col() )
         {
             //  top ?
-            if ( nRow+1 == aFormatArea.aStart.Row() )
+            if ( nRow+1 == maFormatArea.aStart.Row() )
             {
                 bFound = true;
                 aNewRange.aStart.SetRow( nRow );
             }
             //  bottom ?
-            if ( nRow == aFormatArea.aEnd.Row()+1 )
+            if ( nRow == maFormatArea.aEnd.Row()+1 )
             {
                 bFound = true;
                 aNewRange.aEnd.SetRow( nRow );
@@ -282,9 +282,9 @@ bool ScViewFunc::TestFormatArea( SCCOL nCol, SCROW nRow, SCTAB nTab, bool bAttrC
     }
 
     if (bFound)
-        aFormatArea = aNewRange;    // extend
+        maFormatArea = aNewRange;    // extend
     else
-        bFormatValid = false;       // outside of range -> break
+        mbFormatValid = false;       // outside of range -> break
 
     return bFound;
 }
@@ -296,7 +296,7 @@ void ScViewFunc::DoAutoAttributes( SCCOL nCol, SCROW nRow, SCTAB nTab,
     ScDocument& rDoc = pDocSh->GetDocument();
 
     const ScPatternAttr* pSource = rDoc.GetPattern(
-                            aFormatSource.Col(), aFormatSource.Row(), nTab );
+                            maFormatSource.Col(), maFormatSource.Row(), nTab );
     if ( !pSource->GetItem(ATTR_MERGE).IsMerged() )
     {
         ScRange aRange( nCol, nRow, nTab, nCol, nRow, nTab );
@@ -315,7 +315,7 @@ void ScViewFunc::DoAutoAttributes( SCCOL nCol, SCROW nRow, SCTAB nTab,
     }
 
     if ( bAttrChanged )                             // value entered with number format?
-        aFormatSource.Set( nCol, nRow, nTab );      // then set a new source
+        maFormatSource.Set( nCol, nRow, nTab );      // then set a new source
 }
 
 //      additional routines
@@ -2303,7 +2303,7 @@ void ScViewFunc::DeleteContents( InsertDeleteFlags nFlags )
     if ( nFlags & InsertDeleteFlags::ATTRIB )
     {
         if ( nFlags & InsertDeleteFlags::CONTENTS )
-            bFormatValid = false;
+            mbFormatValid = false;
         else
             StartFormatArea();              // delete attribute is also attribute-change
     }

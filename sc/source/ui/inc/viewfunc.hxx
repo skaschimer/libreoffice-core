@@ -70,9 +70,9 @@ struct ScDataFormFragment
 class ScViewFunc : public ScTabView
 {
 private:
-    ScAddress   aFormatSource;      // for automatic extension of formatting
-    ScRange     aFormatArea;
-    bool        bFormatValid;
+    ScAddress   maFormatSource;      // for automatic extension of formatting
+    ScRange     maFormatArea;
+    bool        mbFormatValid;
     bool        mbMultiInsert;
 
 public:
