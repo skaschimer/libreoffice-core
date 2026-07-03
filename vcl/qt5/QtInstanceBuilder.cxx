@@ -527,6 +527,7 @@ constexpr auto SUPPORTED_WITH_QT_PARENT = frozen::make_unordered_set<std::u16str
     u"modules/swriter/ui/frmurlpage.ui",
     u"modules/swriter/ui/labelformatpage.ui",
     u"modules/swriter/ui/labeloptionspage.ui",
+    u"modules/swriter/ui/mailconfigpage.ui",
     u"modules/swriter/ui/numparapage.ui",
     u"modules/swriter/ui/optcaptionpage.ui",
     u"modules/swriter/ui/optcomparison.ui",
