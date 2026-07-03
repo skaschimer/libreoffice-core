@@ -48,7 +48,7 @@ bool MergeCellsOperation::runImplementation()
             ScAddress aConverted = convertAddress(ScAddress(0, 0, nTab));
             aConvertedTabs.insert(aConverted.Tab());
         }
-        aOption.maTabs = aConvertedTabs;
+        aOption.maTabs = std::move(aConvertedTabs);
     }
 
     SCCOL nStartCol = aOption.mnStartCol;
