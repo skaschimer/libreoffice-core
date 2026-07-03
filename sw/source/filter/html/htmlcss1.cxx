@@ -77,6 +77,8 @@ const sal_uInt16 aItemIds[] =
     RES_BREAK,
     RES_PAGEDESC,
     RES_KEEP,
+    // tdf#121049 - preserve superscript/subscript when pasting HTML with class definition
+    RES_CHRATR_ESCAPEMENT,
 };
 
 void SwCSS1Parser::ChgPageDesc( const SwPageDesc *pPageDesc,

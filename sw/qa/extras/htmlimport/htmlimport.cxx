@@ -9,6 +9,8 @@
 
 #include <swmodeltestbase.hxx>
 
+#include <editeng/escapementitem.hxx>
+
 #include <com/sun/star/awt/FontSlant.hpp>
 #include <com/sun/star/awt/FontUnderline.hpp>
 #include <com/sun/star/awt/FontStrikeout.hpp>
@@ -340,6 +342,30 @@ CPPUNIT_TEST_FIXTURE(HtmlImportTest, testTdf80194_subscript)
     CPPUNIT_ASSERT_DOUBLES_EQUAL( 33.f, getProperty<float>(xRun, u"CharEscapement"_ustr), 1);
     // HTML (although unspecified) tends to use a fairly large font. Definitely more than DFLT_ESC_PROP.
     CPPUNIT_ASSERT( 70 < getProperty<sal_Int8>(xRun, u"CharEscapementHeight"_ustr));
+}
+
+CPPUNIT_TEST_FIXTURE(HtmlImportTest, testTdf121049Superscript)
+{
+    createSwWebDoc("tdf121049-superscript-class.html");
+
+    // Without the accompanying fix in place, this test would have failed with:
+    // - Expected: 33 (DFLT_ESC_SUPER)
+    // - Actual  :  0 (SvxEscapement::Off)
+    CPPUNIT_ASSERT_EQUAL_MESSAGE(
+        "Superscript for <sup> missing", sal_Int32(DFLT_ESC_SUPER),
+        getProperty<sal_Int32>(getRun(getParagraph(1), 1), u"CharEscapement"_ustr));
+}
+
+CPPUNIT_TEST_FIXTURE(HtmlImportTest, testTdf121049Subscript)
+{
+    createSwWebDoc("tdf121049-subscript-class.html");
+
+    // Without the accompanying fix in place, this test would have failed with:
+    // - Expected: -8 (DFLT_ESC_SUB)
+    // - Actual  :  0 (SvxEscapement::Off)
+    CPPUNIT_ASSERT_EQUAL_MESSAGE(
+        "Subscript for <sub> missing", sal_Int32(DFLT_ESC_SUB),
+        getProperty<sal_Int32>(getRun(getParagraph(1), 1), u"CharEscapement"_ustr));
 }
 
 CPPUNIT_TEST_FIXTURE(HtmlImportTest, testReqIfTable)
