@@ -184,6 +184,7 @@ private:
     void setImage(const weld::TreeIter& rIter, const QPixmap& rPixmap, int nCol);
     void setTextEmphasis(const QModelIndex& rIndex, bool bOn);
 
+    bool handleHeaderViewportEvent(const QEvent& rEvent);
     bool handleViewPortToolTipEvent(const QHelpEvent& rEvent);
 
 private Q_SLOTS:

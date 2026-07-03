@@ -44,6 +44,9 @@ QtInstanceTreeView::QtInstanceTreeView(QTreeView* pTreeView)
     assert(m_pTreeView->viewport());
     m_pTreeView->viewport()->installEventFilter(this);
 
+    assert(m_pTreeView->header() && m_pTreeView->header()->viewport());
+    m_pTreeView->header()->viewport()->installEventFilter(this);
+
     QtTreeViewItemDelegate* pDelegate = new QtTreeViewItemDelegate(
         m_pTreeView, [this](const QModelIndex& rIndex) { return signalEditingStarted(rIndex); },
         [this](const QModelIndex& rIndex, const QString& rNewText) {
@@ -898,6 +901,9 @@ bool QtInstanceTreeView::eventFilter(QObject* pObject, QEvent* pEvent)
     if (pEvent->type() == QEvent::ToolTip && pObject == m_pTreeView->viewport())
         return handleViewPortToolTipEvent(static_cast<QHelpEvent&>(*pEvent));
 
+    if (pObject == m_pTreeView->header()->viewport())
+        return handleHeaderViewportEvent(*pEvent);
+
     return QtInstanceWidget::eventFilter(pObject, pEvent);
 }
 
@@ -943,6 +949,24 @@ void QtInstanceTreeView::setImage(const weld::TreeIter& rIter, const QPixmap& rP
         QModelIndex aIndex = modelIndex(rIter, nCol);
         m_pModel->setData(aIndex, rPixmap, Qt::DecorationRole);
     });
+}
+
+bool QtInstanceTreeView::handleHeaderViewportEvent(const QEvent& rEvent)
+{
+    if (rEvent.type() != QEvent::MouseButtonRelease)
+        return false;
+
+    const QMouseEvent& rMouseEvent = static_cast<const QMouseEvent&>(rEvent);
+    if (rMouseEvent.button() != Qt::MouseButton::LeftButton)
+        return false;
+
+    const int nColumnIndex = m_pTreeView->header()->logicalIndexAt(rMouseEvent.pos());
+    if (nColumnIndex < 0)
+        return false;
+
+    SolarMutexGuard g;
+    signal_column_header_clicked(nColumnIndex);
+    return true;
 }
 
 bool QtInstanceTreeView::handleViewPortToolTipEvent(const QHelpEvent& rHelpEvent)
