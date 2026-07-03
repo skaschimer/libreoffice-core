@@ -151,8 +151,6 @@ bool MasterPageContainerQueue::RequestPreview (const SharedMasterPageDescriptor&
 sal_Int32 MasterPageContainerQueue::CalculatePriority (
     const SharedMasterPageDescriptor& rpDescriptor)
 {
-    sal_Int32 nPriority;
-
     // The cost is used as a starting value.
     int nCost (0);
     if (rpDescriptor->mpPreviewProvider != nullptr)
@@ -165,7 +163,7 @@ sal_Int32 MasterPageContainerQueue::CalculatePriority (
 
     // Its negative value is used so that requests with a low cost are
     // preferred over those with high costs.
-    nPriority = -nCost;
+    sal_Int32 nPriority = -nCost;
 
     // Add a term that introduces an order based on the appearance in the
     // AllMasterPagesSelector.
