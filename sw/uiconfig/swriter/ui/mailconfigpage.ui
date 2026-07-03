@@ -34,6 +34,34 @@
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <child>
+              <object class="GtkImage" id="lockdisplayname">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="displayname_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="mailconfigpage|displayname_label">_Your name:</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">displayname</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkEntry" id="displayname">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -49,6 +77,34 @@
               <packing>
                 <property name="left-attach">2</property>
                 <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockaddress">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="address_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="mailconfigpage|address_label">_Email address:</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">address</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
@@ -70,51 +126,16 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="replyto">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="hexpand">True</property>
-                <property name="truncate-multiline">True</property>
-                <property name="input-purpose">email</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="replyto-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|replyto">Enter the address to use for email replies.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="displayname_label">
-                <property name="visible">True</property>
+              <object class="GtkImage" id="lockreplytocb">
                 <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes" context="mailconfigpage|displayname_label">_Your name:</property>
-                <property name="use-underline">True</property>
-                <property name="mnemonic-widget">displayname</property>
-                <property name="xalign">0</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="address_label">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes" context="mailconfigpage|address_label">_Email address:</property>
-                <property name="use-underline">True</property>
-                <property name="mnemonic-widget">address</property>
-                <property name="xalign">0</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
@@ -138,6 +159,19 @@
               </packing>
             </child>
             <child>
+              <object class="GtkImage" id="lockreplyto">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkLabel" id="replyto_label">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -154,54 +188,20 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="lockdisplayname">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
+              <object class="GtkEntry" id="replyto">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="truncate-multiline">True</property>
+                <property name="input-purpose">email</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="replyto-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|replyto">Enter the address to use for email replies.</property>
+                  </object>
+                </child>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockaddress">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockreplytocb">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockreplyto">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
+                <property name="left-attach">2</property>
                 <property name="top-attach">3</property>
               </packing>
             </child>
@@ -242,6 +242,34 @@
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <child>
+              <object class="GtkImage" id="lockserver">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="server_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="mailconfigpage|server_label">_Server name:</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">server</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkEntry" id="server">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -256,6 +284,86 @@
               <packing>
                 <property name="left-attach">2</property>
                 <property name="top-attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockport">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="port_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="mailconfigpage|port_label">_Port:</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">port</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="port">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="truncate-multiline">True</property>
+                <property name="adjustment">adjustment1</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="port-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|port">Enter the SMTP port.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">2</property>
+                <property name="top-attach">1</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="locksecure">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="secure">
+                <property name="label" translatable="yes" context="mailconfigpage|secure">_Use secure connection (TLS/SSL)</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="hexpand">True</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="secure-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|secure">When available, uses a secure connection to send emails.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">2</property>
+                <property name="top-attach">2</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -294,75 +402,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="port">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="truncate-multiline">True</property>
-                <property name="adjustment">adjustment1</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="port-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|port">Enter the SMTP port.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">1</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="server_label">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes" context="mailconfigpage|server_label">_Server name:</property>
-                <property name="use-underline">True</property>
-                <property name="mnemonic-widget">server</property>
-                <property name="xalign">0</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="port_label">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes" context="mailconfigpage|port_label">_Port:</property>
-                <property name="use-underline">True</property>
-                <property name="mnemonic-widget">port</property>
-                <property name="xalign">0</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkCheckButton" id="secure">
-                <property name="label" translatable="yes" context="mailconfigpage|secure">_Use secure connection (TLS/SSL)</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="hexpand">True</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="secure-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|secure">When available, uses a secure connection to send emails.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">2</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButtonBox" id="buttonbox2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -392,45 +431,6 @@
               <packing>
                 <property name="left-attach">3</property>
                 <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockserver">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockport">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="locksecure">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
