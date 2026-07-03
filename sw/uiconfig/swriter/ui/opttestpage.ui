@@ -40,6 +40,20 @@
               </packing>
             </child>
             <child>
+              <object class="GtkCheckButton" id="noscreenadj">
+                <property name="label" translatable="no">No screen adj</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkCheckButton" id="dynamic">
                 <property name="label" translatable="no">dynamic</property>
                 <property name="visible">True</property>
@@ -50,6 +64,20 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="winformat">
+                <property name="label" translatable="no">win format</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
                 <property name="top-attach">1</property>
               </packing>
             </child>
@@ -68,48 +96,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkCheckButton" id="wysiwygdbg">
-                <property name="label" translatable="no">WYSIWYG debug</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkCheckButton" id="winformat">
-                <property name="label" translatable="no">win format</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkCheckButton" id="noscreenadj">
-                <property name="label" translatable="no">No screen adj</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkCheckButton" id="noscroll">
                 <property name="label" translatable="no">No Scroll</property>
                 <property name="visible">True</property>
@@ -124,8 +110,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkCheckButton" id="AutoFormatByInput">
-                <property name="label" translatable="no">AutoFormat by Input</property>
+              <object class="GtkCheckButton" id="wysiwygdbg">
+                <property name="label" translatable="no">WYSIWYG debug</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -133,8 +119,8 @@
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">4</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">3</property>
               </packing>
             </child>
             <child>
@@ -162,6 +148,20 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
+                <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="AutoFormatByInput">
+                <property name="label" translatable="no">AutoFormat by Input</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
                 <property name="top-attach">4</property>
               </packing>
             </child>
