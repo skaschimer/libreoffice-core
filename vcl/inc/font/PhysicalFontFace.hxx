@@ -185,6 +185,8 @@ public:
         return nullptr;
     }
 
+    bool HasOpenTypeMathTable() const;
+
     virtual const std::vector<vcl::font::Variation>&
     GetVariations(const LogicalFontInstance&) const;
 

@@ -868,6 +868,12 @@ std::vector<OUString> PhysicalFontFace::GetAliases() const
     return aNames;
 }
 
+bool PhysicalFontFace::HasOpenTypeMathTable() const
+{
+    const auto pHbFace = GetHbFace();
+    return hb_ot_math_has_data(pHbFace);
+}
+
 const std::vector<vcl::font::Variation>&
 PhysicalFontFace::GetVariations(const LogicalFontInstance&) const
 {
