@@ -14251,7 +14251,7 @@ private:
             GtkTreeViewColumn* pColumn = GTK_TREE_VIEW_COLUMN(pEntry->data);
             if (pColumn == pClickedColumn)
             {
-                TreeView::signal_column_clicked(nIndex);
+                signal_column_header_clicked(nIndex);
                 break;
             }
             ++nIndex;

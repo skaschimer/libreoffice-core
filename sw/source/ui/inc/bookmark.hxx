@@ -67,9 +67,9 @@ public:
     {
         m_xControl->connect_item_activated(rLink);
     }
-    void connect_column_clicked(const Link<int, void>& rLink)
+    void connect_column_header_clicked(const Link<int, void>& rLink)
     {
-        m_xControl->connect_column_clicked(rLink);
+        m_xControl->connect_column_header_clicked(rLink);
     }
     void connect_editing(const Link<const weld::TreeIter&, bool>& rStartLink,
                          const Link<const weld::TreeView::IterColText&, bool>& rEndLink)

@@ -23,7 +23,7 @@ WidgetTestDialog::WidgetTestDialog(weld::Window* pParent)
 
     m_xOKButton->connect_clicked(LINK(this, WidgetTestDialog, OkHdl));
     m_xCancelButton->connect_clicked(LINK(this, WidgetTestDialog, CancelHdl));
-    m_xTreeView2->connect_column_clicked(LINK(this, WidgetTestDialog, HeaderBarClick));
+    m_xTreeView2->connect_column_header_clicked(LINK(this, WidgetTestDialog, HeaderBarClick));
 
     FillTreeView();
 }

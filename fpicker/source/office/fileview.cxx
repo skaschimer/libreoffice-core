@@ -817,7 +817,7 @@ SvtFileView::SvtFileView(weld::Window* pTopLevel,
     mpImpl.reset(new SvtFileView_Impl(this, pTopLevel, std::move(xTreeView), std::move(xIconView), xCmdEnv, nFlags, bOnlyFolder));
 
     weld::TreeView* pView = mpImpl->mxView->getWidget();
-    pView->connect_column_clicked(LINK(this, SvtFileView, HeaderSelect_Impl));
+    pView->connect_column_header_clicked(LINK(this, SvtFileView, HeaderSelect_Impl));
 }
 
 void SvtFileView::grab_focus()

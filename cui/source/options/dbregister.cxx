@@ -113,7 +113,8 @@ DbRegistrationOptionsPage::DbRegistrationOptionsPage(weld::Container* pPage, wel
     m_xEdit->connect_clicked( LINK( this, DbRegistrationOptionsPage, EditHdl ) );
     m_xDelete->connect_clicked( LINK( this, DbRegistrationOptionsPage, DeleteHdl ) );
 
-    m_xPathBox->connect_column_clicked(LINK(this, DbRegistrationOptionsPage, HeaderSelect_Impl));
+    m_xPathBox->connect_column_header_clicked(
+        LINK(this, DbRegistrationOptionsPage, HeaderSelect_Impl));
 
     m_xPathBox->make_sorted();
     m_xPathBox->connect_item_activated(

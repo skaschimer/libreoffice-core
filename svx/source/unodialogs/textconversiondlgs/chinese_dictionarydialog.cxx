@@ -384,8 +384,10 @@ ChineseDictionaryDialog::ChineseDictionaryDialog(weld::Window* pParent)
     initDictionaryControl(m_xCT_DictionaryToTraditional.get(), xDictionary_To_Traditional);
 
     //set hdl
-    m_xCT_DictionaryToSimplified->connect_column_clicked(LINK(this, ChineseDictionaryDialog, ToSimplifiedHeaderBarClick));
-    m_xCT_DictionaryToTraditional->connect_column_clicked(LINK(this, ChineseDictionaryDialog, ToTraditionalHeaderBarClick));
+    m_xCT_DictionaryToSimplified->connect_column_header_clicked(
+        LINK(this, ChineseDictionaryDialog, ToSimplifiedHeaderBarClick));
+    m_xCT_DictionaryToTraditional->connect_column_header_clicked(
+        LINK(this, ChineseDictionaryDialog, ToTraditionalHeaderBarClick));
 
     updateAfterDirectionChange();
 

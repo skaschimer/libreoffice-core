@@ -65,7 +65,7 @@ public:
         render_args;
 
 private:
-    Link<int, void> m_aColumnClickedHdl;
+    Link<int, void> m_aColumnHeaderClickedHdl;
     Link<const iter_col&, void> m_aRadioToggleHdl;
     Link<const TreeIter&, bool> m_aEditingStartedHdl;
     Link<const IterColText&, bool> m_aEditingDoneHdl;
@@ -83,7 +83,7 @@ protected:
     std::function<int(const weld::TreeIter&, const weld::TreeIter&)> m_aCustomSort;
 
 protected:
-    void signal_column_clicked(int nColumn) { m_aColumnClickedHdl.Call(nColumn); }
+    void signal_column_header_clicked(int nColumn) { m_aColumnHeaderClickedHdl.Call(nColumn); }
     bool signal_expanding(const TreeIter& rIter)
     {
         return !m_aExpandingHdl.IsSet() || m_aExpandingHdl.Call(rIter);
@@ -217,7 +217,10 @@ public:
     // Argument is a pair of iter, col describing the toggled node
     void connect_toggled(const Link<const iter_col&, void>& rLink) { m_aRadioToggleHdl = rLink; }
 
-    void connect_column_clicked(const Link<int, void>& rLink) { m_aColumnClickedHdl = rLink; }
+    void connect_column_header_clicked(const Link<int, void>& rLink)
+    {
+        m_aColumnHeaderClickedHdl = rLink;
+    }
     void connect_model_changed(const Link<TreeView&, void>& rLink) { m_aModelChangedHdl = rLink; }
 
     /**

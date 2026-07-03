@@ -529,7 +529,7 @@ SwAddStylesDlg_Impl::SwAddStylesDlg_Impl(weld::Window* pParent,
     m_xHeaderTree->connect_size_allocate(LINK(this, SwAddStylesDlg_Impl, TreeSizeAllocHdl));
     m_xHeaderTree->set_toggle_button_type(weld::ColumnToggleType::Radio);
     m_xHeaderTree->connect_toggled(LINK(this, SwAddStylesDlg_Impl, RadioToggleOnHdl));
-    m_xHeaderTree->connect_column_clicked(LINK(this, SwAddStylesDlg_Impl, HeaderBarClick));
+    m_xHeaderTree->connect_column_header_clicked(LINK(this, SwAddStylesDlg_Impl, HeaderBarClick));
 
     std::vector<int> aWidths
     {

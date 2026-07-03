@@ -52,7 +52,8 @@ WebConnectionInfoDialog::WebConnectionInfoDialog(weld::Window* pParent)
     m_xPasswordsLB->set_size_request(m_xPasswordsLB->get_approximate_digit_width() * 70,
                                      m_xPasswordsLB->get_height_rows(8));
 
-    m_xPasswordsLB->connect_column_clicked(LINK(this, WebConnectionInfoDialog, HeaderBarClickedHdl));
+    m_xPasswordsLB->connect_column_header_clicked(
+        LINK(this, WebConnectionInfoDialog, HeaderBarClickedHdl));
 
     FillPasswordList();
 

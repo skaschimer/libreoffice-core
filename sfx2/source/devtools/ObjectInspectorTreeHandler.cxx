@@ -971,13 +971,13 @@ ObjectInspectorTreeHandler::ObjectInspectorTreeHandler(
     setSortFunction(mpObjectInspectorWidgets->mpPropertiesTreeView);
     setSortFunction(mpObjectInspectorWidgets->mpMethodsTreeView);
 
-    mpObjectInspectorWidgets->mpInterfacesTreeView->connect_column_clicked(
+    mpObjectInspectorWidgets->mpInterfacesTreeView->connect_column_header_clicked(
         LINK(this, ObjectInspectorTreeHandler, HeaderBarClick));
-    mpObjectInspectorWidgets->mpServicesTreeView->connect_column_clicked(
+    mpObjectInspectorWidgets->mpServicesTreeView->connect_column_header_clicked(
         LINK(this, ObjectInspectorTreeHandler, HeaderBarClick));
-    mpObjectInspectorWidgets->mpPropertiesTreeView->connect_column_clicked(
+    mpObjectInspectorWidgets->mpPropertiesTreeView->connect_column_header_clicked(
         LINK(this, ObjectInspectorTreeHandler, HeaderBarClick));
-    mpObjectInspectorWidgets->mpMethodsTreeView->connect_column_clicked(
+    mpObjectInspectorWidgets->mpMethodsTreeView->connect_column_header_clicked(
         LINK(this, ObjectInspectorTreeHandler, HeaderBarClick));
 
     mpObjectInspectorWidgets->mpToolbar->connect_clicked(

@@ -79,7 +79,10 @@ public:
     {
         m_xControl->connect_selection_changed(rLink);
     }
-    void connect_column_clicked(const Link<int, void>& rLink) { m_xControl->connect_column_clicked(rLink); }
+    void connect_column_header_clicked(const Link<int, void>& rLink)
+    {
+        m_xControl->connect_column_header_clicked(rLink);
+    }
     bool get_sort_order() const { return m_xControl->get_sort_order(); }
     void set_sort_order(bool bAscending) { return m_xControl->set_sort_order(bAscending); }
     void set_sort_column(int nColumn) { return m_xControl->set_sort_column(nColumn); }

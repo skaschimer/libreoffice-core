@@ -41,7 +41,7 @@ SearchResultsDlg::SearchResultsDlg(SfxBindings* _pBindings, weld::Window* pParen
     };
     mxList->set_column_fixed_widths(aWidths);
     mxList->connect_selection_changed(LINK(this, SearchResultsDlg, ListSelectHdl));
-    mxList->connect_column_clicked(LINK(this, SearchResultsDlg, HeaderBarClick));
+    mxList->connect_column_header_clicked(LINK(this, SearchResultsDlg, HeaderBarClick));
 }
 
 SearchResultsDlg::~SearchResultsDlg()

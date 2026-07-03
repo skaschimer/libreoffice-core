@@ -4973,7 +4973,7 @@ IMPL_LINK(SalInstanceTreeView, HeaderBarClickedHdl, HeaderBar*, pHeaderBar, void
     sal_uInt16 nId = pHeaderBar->GetCurItemId();
     if (!(pHeaderBar->GetItemBits(nId) & HeaderBarItemBits::CLICKABLE))
         return;
-    signal_column_clicked(pHeaderBar->GetItemPos(nId));
+    signal_column_header_clicked(pHeaderBar->GetItemPos(nId));
 }
 
 IMPL_LINK_NOARG(SalInstanceTreeView, ExpandingHdl, SvTreeListBox*, bool)
