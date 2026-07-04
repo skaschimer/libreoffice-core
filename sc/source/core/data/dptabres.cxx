@@ -3838,12 +3838,13 @@ ScDPResultMember* ScDPResultDimension::Promote(ScDPResultMemberSlim* pSlim, SCRO
     // Remove the Slim from the memberarray but don't deallocate
     // We can't free it yet, because this Promote is called from Promote on
     // this Slim instance and it's caller may use the pointer again
-    maMemberArray[nIndex].release();
+    ScDPResultMember* pOldSlim = maMemberArray[nIndex].release();
+    assert(pOldSlim == pSlim);
 
     maMemberArray[nIndex].reset(pFull);
 
     // Stash the unpromoted member for later deletion - when this list is dropped
-    maPromotedMembers.emplace_back(pSlim);
+    maPromotedMembers.emplace_back(pOldSlim);
 
     return pFull;
 }
