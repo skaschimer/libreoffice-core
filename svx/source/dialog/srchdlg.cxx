@@ -1947,8 +1947,6 @@ IMPL_LINK_NOARG(SvxSearchDialog, FormatHdl_Impl, weld::Button&, void)
     SfxItemPool& rPool = pSh->GetPool();
     SfxItemSet aSet(rPool, m_pImpl->pRanges);
 
-    aSet.MergeRange(SID_ATTR_PARA_MODEL, SID_ATTR_PARA_MODEL);
-
     sal_uInt16 nBrushWhich = pSh->GetPool().GetWhichIDFromSlotID(SID_ATTR_BRUSH);
     aSet.MergeRange(nBrushWhich, nBrushWhich);
 
@@ -1975,7 +1973,6 @@ IMPL_LINK_NOARG(SvxSearchDialog, FormatHdl_Impl, weld::Button&, void)
         aTxt = SvxResId( RID_SVXSTR_REPLACE );
         m_pReplaceList->Get(aSet);
     }
-    aSet.DisableItem(SID_ATTR_PARA_MODEL);
     aSet.DisableItem(rPool.GetWhichIDFromSlotID(SID_ATTR_PARA_PAGEBREAK));
     aSet.DisableItem(rPool.GetWhichIDFromSlotID(SID_ATTR_PARA_KEEP));
 
