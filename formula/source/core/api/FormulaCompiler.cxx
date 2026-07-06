@@ -57,6 +57,15 @@ class FormulaCompilerRecursionGuard
         ~FormulaCompilerRecursionGuard() { --rRecursion; }
 };
 
+// True when the opcode needs an operand after it: the prefix unary
+// and binary operators. The postfix # is excluded, as its operand
+// comes before it, so a binary operator may follow it.
+bool isOperatorExpectingOperand(OpCode eOp)
+{
+    return ocStartBinaryOperators <= eOp && eOp < ocStopUnaryOperators
+           && eOp != ocSpill;
+}
+
 SvNumFormatType lcl_GetRetFormat( OpCode eOpCode )
 {
     switch (eOpCode)
@@ -2439,8 +2448,8 @@ void FormulaCompiler::UnaryLine()
 void FormulaCompiler::PostOpLine()
 {
     UnaryLine();
-    while ( mpToken->GetOpCode() == ocPercentSign )
-    {   // this operator _follows_ its operand
+    while (mpToken->GetOpCode() == ocPercentSign || mpToken->GetOpCode() == ocSpill)
+    {   // these operators _follow_ their operand
         if (mbComputeII)
         {
             FormulaToken** pArg = mpCode - 1;
@@ -3214,11 +3223,11 @@ OpCode FormulaCompiler::NextToken()
     // There must be an operator before a push
     if ( (eOp == ocPush || eOp == ocColRowNameAuto) &&
             !( (meLastOp == ocOpen) || (meLastOp == ocSep) ||
-                (ocStartBinaryOperators <= meLastOp && meLastOp < ocStopUnaryOperators)) )
+                isOperatorExpectingOperand(meLastOp)) )
         SetError( FormulaError::OperatorExpected);
     // Operator and Plus => operator
     if (eOp == ocAdd && (meLastOp == ocOpen || meLastOp == ocSep ||
-                (ocStartBinaryOperators <= meLastOp && meLastOp < ocStopUnaryOperators)))
+                isOperatorExpectingOperand(meLastOp)))
     {
         FormulaCompilerRecursionGuard aRecursionGuard( mnRecursion );
         eOp = NextToken();
@@ -3230,7 +3239,7 @@ OpCode FormulaCompiler::NextToken()
         if ( eOp != ocAnd && eOp != ocOr &&
                 (ocStartBinaryOperators <= eOp && eOp < ocStopBinaryOperators )
                 && (meLastOp == ocOpen || meLastOp == ocSep ||
-                    (ocStartBinaryOperators <= meLastOp && meLastOp < ocStopUnaryOperators)))
+                    isOperatorExpectingOperand(meLastOp)))
         {
             SetError( FormulaError::VariableExpected);
             if ( mbAutoCorrect && !mpStack )
