@@ -671,7 +671,8 @@ void SdModule::ApplyItemSet( sal_uInt16 nSlot, const SfxItemSet& rSet )
             {
                 pDoc->SetUIScale( double(nX) / nY );
                 if( pViewShell )
-                    pViewShell->SetRuler( pViewShell->HasRuler() );
+                    // tdf#155798 - refresh ruler after scale change
+                    pViewShell->GetViewShellBase().UpdateBorder(true);
             }
         }
     }
