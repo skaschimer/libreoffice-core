@@ -168,6 +168,25 @@ void LogicalFontInstance::GetScale(double* nXScale, double* nYScale) const
     }
 }
 
+double LogicalFontInstance::GetOpenTypeMathConstant(OpenTypeMathConstant aConstant) const
+{
+    auto* pHbFont = const_cast<LogicalFontInstance*>(this)->GetHbFont();
+
+    hb_position_t nHBValue
+        = hb_ot_math_get_constant(pHbFont, static_cast<hb_ot_math_constant_t>(aConstant));
+
+    switch (aConstant)
+    {
+        case ScriptPercentScaleDown:
+        case ScriptScriptPercentScaleDown:
+        case RadicalDegreeBottomRaisePercent:
+            return nHBValue / 100.0;
+
+        default:
+            return double(nHBValue);
+    }
+}
+
 void LogicalFontInstance::AddFallbackForUnicode(sal_UCS4 cChar, FontWeight eWeight,
                                                 const OUString& rFontName, bool bEmbolden,
                                                 const ItalicMatrix& rMatrix)
