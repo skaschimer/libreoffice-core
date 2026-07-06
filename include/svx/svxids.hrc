@@ -910,7 +910,8 @@ class XFillGradientItem;
 #define SID_OPTIONS_DATABASES                           ( SID_SVX_START + 1060 )
 #define SID_OPEN_SMARTTAGMENU                           TypedWhichId<SvxSmartTagItem>( SID_SVX_START + 1061 )
 
-// CAUTION! Range <1062 .. 1069> used by include/sfx2/sfxsids.hrc
+// CAUTION! Range <1062 .. 1068> used by include/sfx2/sfxsids.hrc
+// CAUTION! 1069 used by include/editeng/editids.hrc
 
 #define SID_TABLE_MERGE_CELLS                           ( SID_SVX_START + 1070 )
 #define SID_TABLE_SPLIT_CELLS                           ( SID_SVX_START + 1071 )
