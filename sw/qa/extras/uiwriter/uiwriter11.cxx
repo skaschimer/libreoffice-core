@@ -32,6 +32,8 @@
 #include <ndtxt.hxx>
 #include <IDocumentLayoutAccess.hxx>
 #include <IDocumentRedlineAccess.hxx>
+#include <sfx2/bindings.hxx>
+#include <sfx2/request.hxx>
 #include <svl/srchitem.hxx>
 #include <svx/svxids.hrc>
 #include <sortedobjs.hxx>
@@ -845,6 +847,42 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf172081SplitParaClearsWritingModeAu
     // The first paragraph should still have the DF, but it should be cleared on the second one
     CPPUNIT_ASSERT(!getProperty<bool>(getRun(getParagraph(1), 1), u"WritingModeAutomatic"_ustr));
     CPPUNIT_ASSERT(getProperty<bool>(getRun(getParagraph(2), 1), u"WritingModeAutomatic"_ustr));
+}
+
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf36181_findReplaceParaStyle)
+{
+    // given a document with various paragraph styles
+
+    createSwDoc("tdf36181_findReplaceParaStyle.odt");
+    SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    SwView& rView = pWrtShell->GetView();
+
+    // initialize find/replace static environment
+    SfxItemSet aSet(rView.GetPool(), svl::Items<SID_SEARCH_ITEM, SID_SEARCH_ITEM>);
+    rView.StateSearch(aSet); // initializes SwView::GetSearchItem
+    SvxSearchItem& rInit = *SwView::GetSearchItem();
+    rInit.SetSearchString("Body Text");
+    rInit.SetReplaceString("Caption");
+    rInit.SetPattern(true); // paragraph styles replacement
+    rInit.SetSelection(true); // only search inside of the current selection
+    rInit.SetCommand(SvxSearchCmd::REPLACE);
+
+    // pre-select something - that is what the bug is about...
+    dispatchCommand(mxComponent, u".uno:SelectAll"_ustr, {});
+
+    // Execute 'Replace' one instance
+    SfxItemSet aFn(rView.GetPool(), svl::Items<FN_REPEAT_SEARCH, FN_REPEAT_SEARCH>);
+    SfxRequest aRequest(FN_REPEAT_SEARCH, SfxCallMode::SYNCHRON, aFn);
+    rView.ExecSearch(aRequest);
+
+    // Without the fix, the Title style was also replaced by the Caption style
+    CPPUNIT_ASSERT_EQUAL(u"Title"_ustr,
+                         getProperty<OUString>(getParagraph(1), u"ParaStyleName"_ustr));
+    CPPUNIT_ASSERT_EQUAL(u"Caption"_ustr,
+                         getProperty<OUString>(getParagraph(2), u"ParaStyleName"_ustr));
+    // Without the fix, all of the selection applied the Caption style
+    CPPUNIT_ASSERT_EQUAL(u"Text body indent"_ustr,
+                         getProperty<OUString>(getParagraph(3), u"ParaStyleName"_ustr));
 }
 
 CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf36582_findReplaceRedline)
