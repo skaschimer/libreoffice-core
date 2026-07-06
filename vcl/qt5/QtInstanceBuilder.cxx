@@ -154,6 +154,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"filter/ui/xmlfiltertabpagetransformation.ui",
     u"filter/ui/xmlfiltersettings.ui",
     u"filter/ui/xsltfilterdialog.ui",
+    u"fps/ui/explorerfiledialog.ui",
     u"fps/ui/foldernamedialog.ui",
     u"modules/BasicIDE/ui/colorscheme.ui",
     u"modules/BasicIDE/ui/defaultlanguage.ui",
