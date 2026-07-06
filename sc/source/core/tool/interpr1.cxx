@@ -2865,6 +2865,31 @@ void ScInterpreter::ScIsValue()
     PushInt( int(bRes) );
 }
 
+namespace {
+
+// Whether ISFORMULA counts a cell as a formula. A dynamic-array
+// spill cell is not a formula, only its master is. A classic array
+// formula cell stays a formula.
+bool lclReportsAsFormula(const ScDocument& rDocument, const ScAddress& rPosition)
+{
+    if (rDocument.GetCellType(rPosition) != CELLTYPE_FORMULA)
+        return false;
+    const ScFormulaCell* pCell = rDocument.GetFormulaCell(rPosition);
+    if (pCell && pCell->GetMatrixFlag() == ScMatrixMode::Reference)
+    {
+        ScAddress aOrigin;
+        if (pCell->GetMatrixOrigin(rDocument, aOrigin))
+        {
+            const ScFormulaCell* pMaster = rDocument.GetFormulaCell(aOrigin);
+            if (pMaster && pMaster->IsDynamicArrayMaster())
+                return false;
+        }
+    }
+    return true;
+}
+
+}
+
 void ScInterpreter::ScIsFormula()
 {
     nFuncFmtType = SvNumFormatType::LOGICAL;
@@ -2906,8 +2931,7 @@ void ScInterpreter::ScIsFormula()
                     for (SCROW nRow = nRow1; nRow <= nRow2; ++nRow)
                     {
                         aAdr.SetRow(nRow);
-                        ScRefCellValue aCell(mrDoc, aAdr);
-                        pResMat->PutBoolean( (aCell.getType() == CELLTYPE_FORMULA), i,j);
+                        pResMat->PutBoolean(lclReportsAsFormula(mrDoc, aAdr), i, j);
                         ++j;
                     }
                     ++i;
@@ -2924,7 +2948,7 @@ void ScInterpreter::ScIsFormula()
             if ( !PopDoubleRefOrSingleRef( aAdr ) )
                 break;
 
-            bRes = (mrDoc.GetCellType(aAdr) == CELLTYPE_FORMULA);
+            bRes = lclReportsAsFormula(mrDoc, aAdr);
         }
         break;
         default:
