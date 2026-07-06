@@ -39,9 +39,6 @@ void QtInstanceIconView::set_item_width(int) { assert(false && "Not implemented 
 void QtInstanceIconView::do_insert(int nPos, const OUString* pStr, const OUString* pId,
                                    const QPixmap* pIcon, weld::TreeIter* pRet)
 {
-    assert(!pRet && "Support for pRet param not implemented yet");
-    (void)pRet;
-
     SolarMutexGuard g;
 
     GetQtInstance().RunInMainThread([&] {
@@ -63,6 +60,9 @@ void QtInstanceIconView::do_insert(int nPos, const OUString* pStr, const OUStrin
         }
 
         m_pModel->insertRow(nPos, pItem);
+
+        if (pRet)
+            static_cast<QtInstanceTreeIter*>(pRet)->setModelIndex(m_pModel->index(nPos, 0));
     });
 }
 
