@@ -3249,6 +3249,14 @@
           <value xml:lang="en-US">Open the Functions Deck</value>
         </prop>
       </node>
+      <node oor:name=".uno:FindText" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">Find Values</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Find text in values, to search in formulas use the dialog</value>
+        </prop>
+      </node>
     </node>
   </node>
 </oor:component-data>
