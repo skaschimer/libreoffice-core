@@ -242,7 +242,6 @@ SvxSearchDialog::SvxSearchDialog(weld::Window* pParent, SfxChildWindow* pChildWi
     , m_bWriter(false)
     , m_bSearch(true)
     , m_bFormat(false)
-    , m_bReplaceBackwards(false)
     , m_nOptions(SearchOptionFlags::ALL)
     , m_bSet(false)
     , m_bConstruct(true)
@@ -784,7 +783,7 @@ void SvxSearchDialog::Init_Impl( bool bSearchPattern )
     if (!(m_nModifyFlag & ModifyFlags::Exact))
         m_xMatchCaseCB->set_active(m_pSearchItem->GetExact());
     if (!(m_nModifyFlag & ModifyFlags::Backwards))
-        m_xReplaceBackwardsCB->set_active(m_bReplaceBackwards); //adjustment to replace backwards
+        m_xReplaceBackwardsCB->set_active(aOpt.IsBackwards());
     if (!(m_nModifyFlag & ModifyFlags::Notes))
         m_xNotesBtn->set_active(m_pSearchItem->GetNotes());
     if (!(m_nModifyFlag & ModifyFlags::Selection))
@@ -1315,7 +1314,6 @@ IMPL_LINK(SvxSearchDialog, CommandHdl_Impl, weld::Button&, rBtn, void)
         else if( &rBtn == m_xReplaceBtn.get())
         {
             bSetBackwards = GetCheckBoxValue(*m_xReplaceBackwardsCB);
-            m_bReplaceBackwards = GetCheckBoxValue(*m_xReplaceBackwardsCB);
         }
 
         m_pSearchItem->SetBackward(bSetBackwards);
@@ -2280,6 +2278,7 @@ void SvxSearchDialog::SaveToModule_Impl()
     m_pSearchItem->SetUseAsianOptions(GetCheckBoxValue(*m_xJapOptionsCB));
 
     SvtSearchOptions aOpt;
+    aOpt.SetBackwards(GetCheckBoxValue(*m_xReplaceBackwardsCB));
     aOpt.SetIgnoreDiacritics_CTL(GetNegatedCheckBoxValue(*m_xIncludeDiacritics));
     aOpt.SetIgnoreKashida_CTL(GetNegatedCheckBoxValue(*m_xIncludeKashida));
     aOpt.Commit();

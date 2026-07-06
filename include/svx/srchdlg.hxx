@@ -161,7 +161,6 @@ private:
     bool m_bWriter;
     bool m_bSearch;
     bool m_bFormat;
-    bool m_bReplaceBackwards;
     SearchOptionFlags m_nOptions;
     bool m_bSet;
     bool m_bConstruct;
