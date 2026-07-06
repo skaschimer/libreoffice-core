@@ -48,6 +48,7 @@ public:
     void tdf137624_autofillMergedMixed();
     void tdf122716_rtf_portion_encoding();
     void testRTFFontHeight();
+    void testHtmlImportDataUrlIncompleteBase64();
 
     CPPUNIT_TEST_SUITE(ScCopyPasteTest);
     CPPUNIT_TEST(testCopyPasteXLS);
@@ -67,6 +68,7 @@ public:
     CPPUNIT_TEST(tdf137624_autofillMergedMixed);
     CPPUNIT_TEST(tdf122716_rtf_portion_encoding);
     CPPUNIT_TEST(testRTFFontHeight);
+    CPPUNIT_TEST(testHtmlImportDataUrlIncompleteBase64);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -830,6 +832,24 @@ void ScCopyPasteTest::testRTFFontHeight()
     // Check that the font height was exported (in Half-point units)
     OUString sText = "\\fs" + OUString::number(nHeightPt * 2);
     CPPUNIT_ASSERT(sRTF.indexOf(sText) >= 0);
+}
+
+void ScCopyPasteTest::testHtmlImportDataUrlIncompleteBase64()
+{
+    createScDoc();
+    ScDocument* pDoc = getScDoc();
+
+    // The image carries a "data:" URL whose base64 payload ends with an
+    // incomplete group: "AAAAA" is one full quartet plus a dangling fifth
+    // character. Decoding consumes only the first four, so getData() treats
+    // the payload as malformed and hands back a null pointer.
+    ScImportExport aObj(*pDoc, ScAddress(0, 0, 0));
+    char buf[] = "<img src=\"data:image/png;base64,AAAAA\">";
+    SvMemoryStream aStream(buf, strlen(buf), StreamMode::READ);
+
+    // Without the accompanying fix, ScHTMLLayoutParser::Image() dereferenced
+    // that null pointer and the import crashed.
+    CPPUNIT_ASSERT(aObj.ImportStream(aStream, OUString(), SotClipboardFormatId::HTML));
 }
 
 ScCopyPasteTest::ScCopyPasteTest()
