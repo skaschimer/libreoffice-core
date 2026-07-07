@@ -368,15 +368,6 @@ static FontPitch ImplLogPitchToSal( BYTE nPitch )
         return PITCH_VARIABLE;
 }
 
-static FontPitch ImplMetricPitchToSal( BYTE nPitch )
-{
-    // Grrrr! See NT help
-    if ( !(nPitch & TMPF_FIXED_PITCH) )
-        return PITCH_FIXED;
-    else
-        return PITCH_VARIABLE;
-}
-
 static FontWidth ImplStretchToSal(DWRITE_FONT_STRETCH eStretch)
 {
     switch (eStretch)
@@ -815,38 +806,21 @@ void WinSalGraphics::SetFont(LogicalFontInstance* pFont, int nFallbackLevel)
 
 void WinSalGraphics::GetFontMetric( FontMetricDataRef& rxFontMetric, int nFallbackLevel )
 {
-    // temporarily change the HDC to the font in the fallback level
     rtl::Reference<WinFontInstance> pFontInstance = mpWinFontEntry[nFallbackLevel];
-    const HFONT hOldFont = SelectFont(getHDC(), pFontInstance->GetHFONT());
+    const WinFontFace* pFace = pFontInstance->GetFontFace();
 
-    wchar_t aFaceName[LF_FACESIZE+60];
-    if( GetTextFaceW( getHDC(), SAL_N_ELEMENTS(aFaceName), aFaceName ) )
-        rxFontMetric->SetFamilyName(OUString(o3tl::toU(aFaceName)));
+    // device independent font attributes
+    rxFontMetric->FontAttributes::operator=(*pFace);
+    rxFontMetric->SetSlant( 0 );
 
     rxFontMetric->SetMinKashida(pFontInstance->GetKashidaWidth());
     rxFontMetric->ImplCalcLineSpacing(pFontInstance.get());
     rxFontMetric->ImplInitBaselines(pFontInstance.get());
 
-    // get the font metric
-    OUTLINETEXTMETRICW aOutlineMetric;
-    const bool bOK = GetOutlineTextMetricsW(getHDC(), sizeof(aOutlineMetric), &aOutlineMetric);
-    // restore the HDC to the font in the base level
-    SelectFont( getHDC(), hOldFont );
-    if( !bOK )
-        return;
-
-    TEXTMETRICW aWinMetric = aOutlineMetric.otmTextMetrics;
-
-    // device independent font attributes
-    rxFontMetric->SetFamilyType(ImplFamilyToSal( aWinMetric.tmPitchAndFamily ));
-    rxFontMetric->SetMicrosoftSymbolEncoded(aWinMetric.tmCharSet == SYMBOL_CHARSET);
-    rxFontMetric->SetWeight(ImplWeightToSal( aWinMetric.tmWeight ));
-    rxFontMetric->SetPitch(ImplMetricPitchToSal( aWinMetric.tmPitchAndFamily ));
-    rxFontMetric->SetItalic(aWinMetric.tmItalic ? ITALIC_NORMAL : ITALIC_NONE);
-    rxFontMetric->SetSlant( 0 );
-
-    // transformation dependent font metrics
-    rxFontMetric->SetWidth(aWinMetric.tmAveCharWidth);
+    // transformation dependent font metrics, mnWidth is only used for
+    // stretching/squeezing fonts
+    const vcl::font::FontSelectPattern& rFSP = pFontInstance->GetFontSelectPattern();
+    rxFontMetric->SetWidth(rFSP.mnWidth ? rFSP.mnWidth : rFSP.mnHeight);
 }
 
 FontCharMapRef WinSalGraphics::GetFontCharMap() const
