@@ -1291,7 +1291,7 @@ private:
     // tdf#127471 for import correction of own wrong written EMF/WMF files allow correction
     // of FontScale after import. Only from there, so use a friend here and keep the method private
     friend class emfio::ScaledFontDetectCorrectHelper;
-    void correctFontScale(tools::Long nNewFontScale) { maFont.SetAverageFontWidth(nNewFontScale); }
+    void correctFontScale(tools::Long nNewFontScale) { maFont.SetFontWidth(nNewFontScale); }
 
 public:
     MetaFontAction(MetaFontAction const &) = default;

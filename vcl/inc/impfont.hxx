@@ -49,7 +49,7 @@ public:
     FontWidth           GetWidthType()                                  { if(meWidthType==WIDTH_DONTKNOW) AskConfig(); return meWidthType; }
     TextAlign           GetAlignment() const                            { return meAlign; }
     rtl_TextEncoding    GetCharSet() const                              { return meCharSet; }
-    const Size&         GetFontSize() const                      { return maAverageFontSize; }
+    const Size&         GetFontSize() const                      { return maFontSize; }
 
     void                SetFamilyName( const OUString& sFamilyName )    { maFamilyName = sFamilyName; }
     void                SetStyleName( const OUString& sStyleName )      { maStyleName = sStyleName; }
@@ -63,13 +63,13 @@ public:
     void                SetCharSet( const rtl_TextEncoding eCharSet )   { meCharSet = eCharSet; }
     void                SetFontSize( const Size& rSize )
     {
-        if(rSize.Height() != maAverageFontSize.Height())
+        if(rSize.Height() != maFontSize.Height())
         {
-            // reset evtl. buffered calculated AverageFontSize, it depends
+            // reset evtl. buffered calculated AverageFontWidth, it depends
             // on Font::Height
             mnCalculatedAverageFontWidth = 0;
         }
-        maAverageFontSize = rSize;
+        maFontSize = rSize;
     }
 
     // straight properties, no getting them from AskConfig()
@@ -118,7 +118,7 @@ private:
     FontEmphasisMark    meEmphasisMark;
     FontKerning         meKerning;
     short               mnSpacing;
-    Size                maAverageFontSize;
+    Size                maFontSize;
     rtl_TextEncoding    meCharSet;
 
     LanguageTag         maLanguageTag;

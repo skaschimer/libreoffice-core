@@ -74,8 +74,8 @@ namespace
 {
 void scaleFontWidth(vcl::Font& rFont, vcl::RenderContext const & rRenderContext,tools::Long& n100PercentFont)
 {
-    rFont.SetAverageFontWidth(0);
-    n100PercentFont = rRenderContext.GetFontMetric(rFont).GetAverageFontWidth();
+    rFont.SetFontWidth(0);
+    n100PercentFont = rRenderContext.GetFontMetric(rFont).GetFontWidth();
 }
 
 void initFont(vcl::Font& rFont)
@@ -422,9 +422,9 @@ void FontPrevWin_Impl::ScaleFontWidth(vcl::RenderContext const & rOutDev)
         scaleFontWidth(maCTLFont, rOutDev, mn100PercentFontWidthCTL);
     }
 
-    maFont.SetAverageFontWidth(mn100PercentFontWidth * mnFontWidthScale / 100);
-    maCJKFont.SetAverageFontWidth(mn100PercentFontWidthCJK * mnFontWidthScale / 100);
-    maCTLFont.SetAverageFontWidth(mn100PercentFontWidthCTL * mnFontWidthScale / 100);
+    maFont.SetFontWidth(mn100PercentFontWidth * mnFontWidthScale / 100);
+    maCJKFont.SetFontWidth(mn100PercentFontWidthCJK * mnFontWidthScale / 100);
+    maCTLFont.SetFontWidth(mn100PercentFontWidthCTL * mnFontWidthScale / 100);
 }
 
 static bool GetWhich (const SfxItemSet& rSet, sal_uInt16 nSlot, sal_uInt16& rWhich)

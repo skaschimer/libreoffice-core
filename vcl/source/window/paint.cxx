@@ -1342,7 +1342,7 @@ void Window::ImplPaintToDevice(OutputDevice& rTargetOutDev, const Point& i_rPos)
     if( nOldDPIX != GetOutDev()->GetDPIX() || nOldDPIY != GetOutDev()->GetDPIY() )
     {
         aCopyFont.SetFontHeight( aCopyFont.GetFontHeight() * GetOutDev()->GetDPIY() / nOldDPIY );
-        aCopyFont.SetAverageFontWidth( aCopyFont.GetAverageFontWidth() * GetOutDev()->GetDPIX() / nOldDPIX );
+        aCopyFont.SetFontWidth( aCopyFont.GetFontWidth() * GetOutDev()->GetDPIX() / nOldDPIX );
     }
     SetFont( aCopyFont );
     SetTextColor( GetTextColor() );

@@ -109,9 +109,8 @@ public:
     const Size&         GetFontSize() const;
     void                SetFontHeight( tools::Long nHeight );
     tools::Long                GetFontHeight() const;
-    void                SetAverageFontWidth( tools::Long nWidth );
-    tools::Long                GetAverageFontWidth() const;
-    SAL_DLLPRIVATE const Size& GetAverageFontSize() const;
+    void                SetFontWidth( tools::Long nWidth );
+    tools::Long                GetFontWidth() const;
     SAL_DLLPRIVATE const FontFamily& GetFontFamily() const;
 
     // tdf#127471 for corrections on EMF/WMF we need the AvgFontWidth in Windows-specific notation

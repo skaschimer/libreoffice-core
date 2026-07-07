@@ -85,7 +85,7 @@ namespace cairocanvas
 
         const tools::Long nNewWidth = ::basegfx::fround( aSize.Width() * fStretch );
 
-        maFont->SetAverageFontWidth( nNewWidth );
+        maFont->SetFontWidth( nNewWidth );
 
         pOutDev->EnableMapMode(bOldMapState);
     }

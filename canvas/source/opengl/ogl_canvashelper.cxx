@@ -748,7 +748,7 @@ namespace oglcanvas
 
                     const sal_Int32 nNewWidth = ::basegfx::fround( aSize.Width() * fStretch );
 
-                    aFont.SetAverageFontWidth( nNewWidth );
+                    aFont.SetFontWidth( nNewWidth );
                 }
 
                 // set font

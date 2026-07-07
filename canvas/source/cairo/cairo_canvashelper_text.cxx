@@ -79,7 +79,7 @@ namespace cairocanvas
         if( !::rtl::math::approxEqual(aScale.getX(), aScale.getY()) )
         {
             // retrieve true font width
-            const sal_Int32 nFontWidth( rOutDev.GetFontMetric( io_rVCLFont ).GetAverageFontWidth() );
+            const sal_Int32 nFontWidth( rOutDev.GetFontMetric( io_rVCLFont ).GetFontWidth() );
 
             const sal_Int32 nScaledFontWidth( ::basegfx::fround(nFontWidth * aScale.getX()) );
 
@@ -90,7 +90,7 @@ namespace cairocanvas
                 return false;
             }
 
-            io_rVCLFont.SetAverageFontWidth( nScaledFontWidth );
+            io_rVCLFont.SetFontWidth( nScaledFontWidth );
         }
 
         if( !::rtl::math::approxEqual(aScale.getY(), 1.0) )

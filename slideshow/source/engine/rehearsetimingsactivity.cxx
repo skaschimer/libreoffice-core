@@ -153,7 +153,7 @@ RehearseTimingsActivity::RehearseTimingsActivity( const SlideShowContext& rConte
     mbDrawPressed(false)
 {
     maFont.SetFontHeight( maFont.GetFontHeight() * 2 );
-    maFont.SetAverageFontWidth( maFont.GetAverageFontWidth() * 2 );
+    maFont.SetFontWidth( maFont.GetFontWidth() * 2 );
     maFont.SetAlignment( ALIGN_BASELINE );
     maFont.SetColor( COL_BLACK );
 

@@ -789,8 +789,8 @@ namespace cppcanvas::internal
             if( nFontWidthLog != 0 )
             {
                 vcl::Font aTestFont = rFont;
-                aTestFont.SetAverageFontWidth( 0 );
-                sal_Int32 nNormalWidth = rParms.mrVDev.GetFontMetric( aTestFont ).GetAverageFontWidth();
+                aTestFont.SetFontWidth( 0 );
+                sal_Int32 nNormalWidth = rParms.mrVDev.GetFontMetric( aTestFont ).GetFontWidth();
                 if( nNormalWidth != nFontWidthLog )
                     if( nNormalWidth )
                         aFontMatrix.m00 = static_cast<double>(nFontWidthLog) / nNormalWidth;

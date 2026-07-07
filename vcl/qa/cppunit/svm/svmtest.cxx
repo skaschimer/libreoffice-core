@@ -2024,7 +2024,7 @@ void SvmTest::testFont()
     aFont.SetFamilyName(u"Liberation Sans"_ustr);
     aFont.SetStyleName(u"Regular"_ustr);
     aFont.SetFontHeight(12);
-    aFont.SetAverageFontWidth(12);
+    aFont.SetFontWidth(12);
     aFont.SetVertical(true);
     aFont.SetOrientation(Degree10(50));
     pVirtualDev->SetFont(aFont);

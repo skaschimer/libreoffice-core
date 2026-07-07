@@ -146,7 +146,7 @@ namespace dxcanvas
 
                 const sal_Int32 nNewWidth = ::basegfx::fround( aSize.Width() * fStretch );
 
-                aFont.SetAverageFontWidth( nNewWidth );
+                aFont.SetFontWidth( nNewWidth );
             }
 
             // set font
@@ -275,7 +275,7 @@ namespace dxcanvas
 
             const sal_Int32 nNewWidth = ::basegfx::fround( aSize.Width() * fStretch );
 
-            aFont.SetAverageFontWidth( nNewWidth );
+            aFont.SetFontWidth( nNewWidth );
         }
 
         CanvasFont::ImplRef pFont(dxcanvastools::canvasFontFromXFont(rCanvasFont));

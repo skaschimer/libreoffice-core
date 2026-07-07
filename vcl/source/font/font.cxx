@@ -68,7 +68,7 @@ Font::Font( vcl::Font&& rFont ) noexcept : mpImplFont( std::move(rFont.mpImplFon
 Font::Font( const OUString& rFamilyName, const Size& rSize )
 {
     if (GetFamilyName() != rFamilyName
-        || GetAverageFontSize() != rSize)
+        || GetFontSize() != rSize)
     {
         auto impl = mpImplFont.get();
         impl->SetFamilyName( rFamilyName );
@@ -80,7 +80,7 @@ Font::Font( const OUString& rFamilyName, const OUString& rStyleName, const Size&
 {
     if (GetFamilyName() != rFamilyName
         || GetStyleName() != rStyleName
-        || GetAverageFontSize() != rSize)
+        || GetFontSize() != rSize)
     {
         auto impl = mpImplFont.get();
         impl->SetFamilyName( rFamilyName );
@@ -92,7 +92,7 @@ Font::Font( const OUString& rFamilyName, const OUString& rStyleName, const Size&
 Font::Font( FontFamily eFamily, const Size& rSize )
 {
     if (GetFontFamily() != eFamily
-        || GetAverageFontSize() != rSize)
+        || GetFontSize() != rSize)
     {
         auto impl = mpImplFont.get();
         impl->SetFamilyType( eFamily );
@@ -452,7 +452,7 @@ tools::Long Font::GetOrCalculateAverageFontWidth() const
         // create unscaled copy of font (this), a VirtualDevice and set it there
         vcl::Font aUnscaledFont(*this);
         ScopedVclPtr<VirtualDevice> pTempVirtualDevice(VclPtr<VirtualDevice>::Create());
-        aUnscaledFont.SetAverageFontWidth(0);
+        aUnscaledFont.SetFontWidth(0);
         pTempVirtualDevice->SetFont(aUnscaledFont);
 
         // We need to calculate AvgFontWidth as close as possible (discussion see
@@ -493,20 +493,20 @@ SvStream& ReadImplFont( SvStream& rIStm, ImplFont& rImplFont, tools::Long& rnNor
     rImplFont.SetFamilyName( rIStm.ReadUniOrByteString() );
     rImplFont.maStyleName = rIStm.ReadUniOrByteString();
     TypeSerializer aSerializer(rIStm);
-    aSerializer.readSize(rImplFont.maAverageFontSize);
+    aSerializer.readSize(rImplFont.maFontSize);
 
     static const bool bFuzzing = comphelper::IsFuzzing();
     if (bFuzzing)
     {
-        if (rImplFont.maAverageFontSize.Width() > 8192)
+        if (rImplFont.maFontSize.Width() > 8192)
         {
-            SAL_WARN("vcl.gdi", "suspicious average width of: " << rImplFont.maAverageFontSize.Width());
-            rImplFont.maAverageFontSize.setWidth(8192);
+            SAL_WARN("vcl.gdi", "suspicious average width of: " << rImplFont.maFontSize.Width());
+            rImplFont.maFontSize.setWidth(8192);
         }
-        if (rImplFont.maAverageFontSize.Height() > 8192)
+        if (rImplFont.maFontSize.Height() > 8192)
         {
-            SAL_WARN("vcl.gdi", "suspicious average height of: " << rImplFont.maAverageFontSize.Height());
-            rImplFont.maAverageFontSize.setHeight(8192);
+            SAL_WARN("vcl.gdi", "suspicious average height of: " << rImplFont.maFontSize.Height());
+            rImplFont.maFontSize.setHeight(8192);
         }
     }
 
@@ -570,7 +570,7 @@ SvStream& WriteImplFont( SvStream& rOStm, const ImplFont& rImplFont, tools::Long
     TypeSerializer aSerializer(rOStm);
     rOStm.WriteUniOrByteString( rImplFont.GetFamilyName() );
     rOStm.WriteUniOrByteString( rImplFont.GetStyleName() );
-    aSerializer.writeSize(rImplFont.maAverageFontSize);
+    aSerializer.writeSize(rImplFont.maFontSize);
 
     rOStm.WriteUInt16( GetStoreCharSet( rImplFont.GetCharSet() ) );
     rOStm.WriteUInt16( rImplFont.GetFamilyTypeNoAsk() );
@@ -624,7 +624,7 @@ SvStream& ReadFont( SvStream& rIStm, vcl::Font& rFont )
             // the writing producer was on an old windows system with FontScaling
             // pre-multiplied by the average font width. The correct
             // non-pre-multiplied value is the 2nd one, use it
-            rFont.SetAverageFontWidth(nNormedFontScaling);
+            rFont.SetFontWidth(nNormedFontScaling);
         }
     }
 
@@ -666,7 +666,7 @@ namespace
             // set weight
             o_rResult.SetWeight( aFont.getFontWeight() );
             // set width
-            o_rResult.SetAverageFontWidth( aFont.getFontWidth() );
+            o_rResult.SetFontWidth( aFont.getFontWidth() );
             // set italic
             o_rResult.SetItalic( aFont.getFontItalic() );
 
@@ -822,11 +822,10 @@ const OUString& Font::GetStyleName() const { return mpImplFont->maStyleName; }
 const FontFamily& Font::GetFontFamily() const { return mpImplFont->meFamily; }
 
 const Size& Font::GetFontSize() const { return mpImplFont->GetFontSize(); }
-const Size& Font::GetAverageFontSize() const { return mpImplFont->maAverageFontSize; }
 void Font::SetFontHeight( tools::Long nHeight ) { SetFontSize( Size( std::as_const(mpImplFont)->GetFontSize().Width(), nHeight ) ); }
 tools::Long Font::GetFontHeight() const { return mpImplFont->GetFontSize().Height(); }
-void Font::SetAverageFontWidth( tools::Long nWidth ) { SetFontSize( Size( nWidth, std::as_const(mpImplFont)->GetFontSize().Height() ) ); }
-tools::Long Font::GetAverageFontWidth() const { return mpImplFont->GetFontSize().Width(); }
+void Font::SetFontWidth( tools::Long nWidth ) { SetFontSize( Size( nWidth, std::as_const(mpImplFont)->GetFontSize().Height() ) ); }
+tools::Long Font::GetFontWidth() const { return mpImplFont->GetFontSize().Width(); }
 
 rtl_TextEncoding Font::GetCharSet() const { return mpImplFont->GetCharSet(); }
 
@@ -914,7 +913,7 @@ ImplFont::ImplFont( const ImplFont& rImplFont ) :
     meEmphasisMark( rImplFont.meEmphasisMark ),
     meKerning( rImplFont.meKerning ),
     mnSpacing( rImplFont.mnSpacing ),
-    maAverageFontSize( rImplFont.maAverageFontSize ),
+    maFontSize( rImplFont.maFontSize ),
     meCharSet( rImplFont.meCharSet ),
     maLanguageTag( rImplFont.maLanguageTag ),
     maCJKLanguageTag( rImplFont.maCJKLanguageTag ),
@@ -961,7 +960,7 @@ bool ImplFont::EqualIgnoreColor( const ImplFont& rOther ) const
     ||  (meAlign          != rOther.meAlign) )
         return false;
 
-    if( (maAverageFontSize       != rOther.maAverageFontSize)
+    if( (maFontSize       != rOther.maFontSize)
     ||  (mnOrientation  != rOther.mnOrientation)
     ||  (mbVertical     != rOther.mbVertical) )
         return false;
@@ -1010,7 +1009,7 @@ size_t ImplFont::GetHashValueIgnoreColor() const
     o3tl::hash_combine( hash, maCJKLanguageTag.getLanguageType( false ).get());
     o3tl::hash_combine( hash, meAlign );
 
-    o3tl::hash_combine( hash, maAverageFontSize.GetHashValue());
+    o3tl::hash_combine( hash, maFontSize.GetHashValue());
     o3tl::hash_combine( hash, mnOrientation.get());
     o3tl::hash_combine( hash, mbVertical );
 

@@ -1050,7 +1050,7 @@ void ImpSdrGDIMetaFileImport::ImportText( const Point& rPos, const OUString& rSt
     pText->SetMergedItem ( makeSdrTextRightDistItem (0));
     pText->SetMergedItem ( makeSdrTextLeftDistItem (0));
 
-    if ( aFnt.GetAverageFontWidth() || ( rAct.GetType() == MetaActionType::STRETCHTEXT ) )
+    if ( aFnt.GetFontWidth() || ( rAct.GetType() == MetaActionType::STRETCHTEXT ) )
     {
         pText->ClearMergedItem( SDRATTR_TEXT_AUTOGROWWIDTH );
         pText->SetMergedItem( makeSdrTextAutoGrowHeightItem( false ) );

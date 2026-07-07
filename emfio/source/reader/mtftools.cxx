@@ -331,7 +331,7 @@ namespace emfio
             if(nAverageFontWidth > 0)
             {
                 const double fScaleFactor(static_cast<double>(aFontSize.Height()) / static_cast<double>(nAverageFontWidth));
-                aFont.SetAverageFontWidth(static_cast<tools::Long>(static_cast<double>(aFontSize.Width()) * fScaleFactor));
+                aFont.SetFontWidth(static_cast<tools::Long>(static_cast<double>(aFontSize.Width()) * fScaleFactor));
             }
         }
     };
@@ -398,7 +398,7 @@ namespace emfio
         // so this will already sort out most situations
         const vcl::Font& rCandidate(rNewMetaFontAction->GetFont());
 
-        if(0 != rCandidate.GetAverageFontWidth())
+        if(0 != rCandidate.GetFontWidth())
         {
             const tools::Long nUnscaledAverageFontWidth(rCandidate.GetOrCalculateAverageFontWidth());
 
@@ -439,14 +439,14 @@ namespace emfio
         // WinMtfFontStyle constructor). It was wrongly assumed to be Windows-style
         // FontScaling, so we need to revert that to get back to the needed FontScale
         const tools::Long nUnscaledAverageFontWidth(rFontCandidate.GetOrCalculateAverageFontWidth());
-        const tools::Long nScaledAverageFontWidth(rFontCandidate.GetAverageFontWidth());
+        const tools::Long nScaledAverageFontWidth(rFontCandidate.GetFontWidth());
         const double fScaleFactor(static_cast<double>(nUnscaledAverageFontWidth) / static_cast<double>(rFontCandidate.GetFontHeight()));
         const double fCorrectedAverageFontWidth(static_cast<double>(nScaledAverageFontWidth) * fScaleFactor);
         tools::Long nCorrectedTextLength(0);
 
         { // do in own scope, only need nUnscaledAverageFontWidth
             vcl::Font rFontCandidate2(rFontCandidate);
-            rFontCandidate2.SetAverageFontWidth(static_cast<tools::Long>(fCorrectedAverageFontWidth));
+            rFontCandidate2.SetFontWidth(static_cast<tools::Long>(fCorrectedAverageFontWidth));
             pTempVirtualDevice->SetFont(rFontCandidate2);
             nCorrectedTextLength = pTempVirtualDevice->GetTextWidth(rText);
             // on failure, use original length

@@ -408,7 +408,7 @@ static void GetTextAreaOutline(
                 {   // applying character spacing
                     pVirDev->GetTextArray( rText, &aDXArray);
                     FontMetric aFontMetric( pVirDev->GetFontMetric() );
-                    aFont.SetAverageFontWidth( static_cast<sal_Int32>( static_cast<double>(aFontMetric.GetAverageFontWidth()) * ( double(100) / static_cast<double>(nCharScaleWidth) ) ) );
+                    aFont.SetFontWidth( static_cast<sal_Int32>( static_cast<double>(aFontMetric.GetFontWidth()) * ( double(100) / static_cast<double>(nCharScaleWidth) ) ) );
                     pVirDev->SetFont( aFont );
                 }
                 FWCharacterData aCharacterData;

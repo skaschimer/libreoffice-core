@@ -5861,16 +5861,16 @@ void PDFWriterImpl::drawLayout( SalLayout& rLayout, const OUString& rText, bool 
     // transform font height back to current units
     // note: the layout calculates in outdevs device pixel !!
     sal_Int32 nFontHeight = DevicePixelToLogicHeight(nPixelFontHeight);
-    if( m_aCurrentPDFState.m_aFont.GetAverageFontWidth() )
+    if( m_aCurrentPDFState.m_aFont.GetFontWidth() )
     {
         Font aFont( m_aCurrentPDFState.m_aFont );
-        aFont.SetAverageFontWidth( 0 );
+        aFont.SetFontWidth( 0 );
         FontMetric aMetric = GetFontMetric( aFont );
-        if( aMetric.GetAverageFontWidth() != m_aCurrentPDFState.m_aFont.GetAverageFontWidth() )
+        if( aMetric.GetFontWidth() != m_aCurrentPDFState.m_aFont.GetFontWidth() )
         {
             fXScale =
-                static_cast<double>(m_aCurrentPDFState.m_aFont.GetAverageFontWidth()) /
-                static_cast<double>(aMetric.GetAverageFontWidth());
+                static_cast<double>(m_aCurrentPDFState.m_aFont.GetFontWidth()) /
+                static_cast<double>(aMetric.GetFontWidth());
         }
     }
 
