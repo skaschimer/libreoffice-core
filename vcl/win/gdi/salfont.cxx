@@ -32,6 +32,7 @@
 #include <win/svsys.h>
 #include <vector>
 
+#include <d2d1.h>
 #include <dwrite_3.h>
 #include <basegfx/matrix/b2dhommatrixtools.hxx>
 #include <basegfx/polygon/b2dpolygon.hxx>
@@ -52,7 +53,6 @@
 #include <vcl/sysdata.hxx>
 #include <vcl/metric.hxx>
 #include <vcl/fontcharmap.hxx>
-#include <comphelper/scopeguard.hxx>
 #include <comphelper/windowserrorstring.hxx>
 
 #include <font/FontSelectPattern.hxx>
@@ -74,18 +74,6 @@
 #include <skia/win/font.hxx>
 
 using namespace vcl;
-
-static FIXED FixedFromDouble( double d )
-{
-    const tools::Long l = static_cast<tools::Long>( d * 65536. );
-    return *reinterpret_cast<FIXED const *>(&l);
-}
-
-static int IntTimes256FromFixed(FIXED f)
-{
-    int nFixedTimes256 = (f.value << 8) + ((f.fract+0x80) >> 8);
-    return nFixedTimes256;
-}
 
 // platform specific font substitution hooks for glyph fallback enhancement
 
@@ -1046,189 +1034,87 @@ void WinSalGraphics::ClearDevFontCache()
     mWinSalGraphicsImplBase->ClearDevFontCache();
 }
 
-bool WinFontInstance::GetGlyphOutline(sal_GlyphId nId, basegfx::B2DPolyPolygon& rB2DPolyPoly, bool) const
+namespace
+{
+// Builds a B2DPolyPolygon from the glyph outline
+class B2DGeometrySink : public IDWriteGeometrySink
+{
+    basegfx::B2DPolyPolygon& mrPolyPoly;
+    basegfx::B2DPolygon maPolygon;
+
+public:
+    B2DGeometrySink(basegfx::B2DPolyPolygon& rPolyPoly)
+        : mrPolyPoly(rPolyPoly)
+    {
+    }
+
+    // IUnknown, for a stack-allocated sink
+    HRESULT STDMETHODCALLTYPE QueryInterface(REFIID rIId, void** ppObject) override
+    {
+        if (rIId == __uuidof(IDWriteGeometrySink) || rIId == __uuidof(IUnknown))
+        {
+            *ppObject = this;
+            return S_OK;
+        }
+        *ppObject = nullptr;
+        return E_NOINTERFACE;
+    }
+    ULONG STDMETHODCALLTYPE AddRef() override { return 1; }
+    ULONG STDMETHODCALLTYPE Release() override { return 1; }
+
+    void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
+    void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
+
+    void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F aStartPoint, D2D1_FIGURE_BEGIN) override
+    {
+        maPolygon.append(basegfx::B2DPoint(aStartPoint.x, aStartPoint.y));
+    }
+
+    void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F* pPoints, UINT32 nCount) override
+    {
+        for (UINT32 i = 0; i < nCount; ++i)
+            maPolygon.append(basegfx::B2DPoint(pPoints[i].x, pPoints[i].y));
+    }
+
+    void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT* pBeziers, UINT32 nCount) override
+    {
+        for (UINT32 i = 0; i < nCount; ++i)
+            maPolygon.appendBezierSegment(
+                basegfx::B2DPoint(pBeziers[i].point1.x, pBeziers[i].point1.y),
+                basegfx::B2DPoint(pBeziers[i].point2.x, pBeziers[i].point2.y),
+                basegfx::B2DPoint(pBeziers[i].point3.x, pBeziers[i].point3.y));
+    }
+
+    void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
+    {
+        maPolygon.setClosed(true);
+        mrPolyPoly.append(maPolygon);
+        maPolygon.clear();
+    }
+
+    HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
+};
+}
+
+bool WinFontInstance::GetGlyphOutline(sal_GlyphId nId, basegfx::B2DPolyPolygon& rB2DPolyPoly,
+                                      bool) const
 {
     rB2DPolyPoly.clear();
 
-    assert(m_pGraphics);
-    HDC hDC = m_pGraphics->getHDC();
-    const HFONT hOrigFont = static_cast<HFONT>(GetCurrentObject(hDC, OBJ_FONT));
-    const HFONT hFont = GetHFONT();
-    if (hFont != hOrigFont)
-        SelectObject(hDC, hFont);
-
-    const ::comphelper::ScopeGuard aFontRestoreScopeGuard([hFont, hOrigFont, hDC]()
-        { if (hFont != hOrigFont) SelectObject(hDC, hOrigFont); });
-
-    // use unity matrix
-    MAT2 aMat;
-    aMat.eM11 = aMat.eM22 = FixedFromDouble( 1.0 );
-    aMat.eM12 = aMat.eM21 = FixedFromDouble( 0.0 );
-
-    UINT nGGOFlags = GGO_NATIVE;
-    nGGOFlags |= GGO_GLYPH_INDEX;
-
-    GLYPHMETRICS aGlyphMetrics;
-    const DWORD nSize1 = ::GetGlyphOutlineW(hDC, nId, nGGOFlags, &aGlyphMetrics, 0, nullptr, &aMat);
-    if( !nSize1 )       // blank glyphs are ok
-        return true;
-    else if( nSize1 == GDI_ERROR )
+    IDWriteFontFace* pFontFace = GetDWFontFace().get();
+    if (!pFontFace)
         return false;
 
-    BYTE* pData = new BYTE[ nSize1 ];
-    const DWORD nSize2 = ::GetGlyphOutlineW(hDC, nId, nGGOFlags,
-              &aGlyphMetrics, nSize1, pData, &aMat );
-
-    if( nSize1 != nSize2 )
+    const vcl::font::FontSelectPattern& rFSP = GetFontSelectPattern();
+    const UINT16 nIndex = nId;
+    B2DGeometrySink aSink(rB2DPolyPoly);
+    if (FAILED(pFontFace->GetGlyphRunOutline(rFSP.mnHeight, &nIndex, nullptr, nullptr, 1, FALSE,
+                                             FALSE, &aSink)))
         return false;
 
-    // TODO: avoid tools polygon by creating B2DPolygon directly
-    int     nPtSize = 512;
-    Point*  pPoints = new Point[ nPtSize ];
-    PolyFlags* pFlags = new PolyFlags[ nPtSize ];
-
-    TTPOLYGONHEADER* pHeader = reinterpret_cast<TTPOLYGONHEADER*>(pData);
-    while( reinterpret_cast<BYTE*>(pHeader) < pData+nSize2 )
-    {
-        // only outline data is interesting
-        if( pHeader->dwType != TT_POLYGON_TYPE )
-            break;
-
-        // get start point; next start points are end points
-        // of previous segment
-        sal_uInt16 nPnt = 0;
-
-        tools::Long nX = IntTimes256FromFixed( pHeader->pfxStart.x );
-        tools::Long nY = IntTimes256FromFixed( pHeader->pfxStart.y );
-        pPoints[ nPnt ] = Point( nX, nY );
-        pFlags[ nPnt++ ] = PolyFlags::Normal;
-
-        bool bHasOfflinePoints = false;
-        TTPOLYCURVE* pCurve = reinterpret_cast<TTPOLYCURVE*>( pHeader + 1 );
-        pHeader = reinterpret_cast<TTPOLYGONHEADER*>( reinterpret_cast<BYTE*>(pHeader) + pHeader->cb );
-        while( reinterpret_cast<BYTE*>(pCurve) < reinterpret_cast<BYTE*>(pHeader) )
-        {
-            int nNeededSize = nPnt + 16 + 3 * pCurve->cpfx;
-            if( nPtSize < nNeededSize )
-            {
-                Point* pOldPoints = pPoints;
-                PolyFlags* pOldFlags = pFlags;
-                nPtSize = 2 * nNeededSize;
-                pPoints = new Point[ nPtSize ];
-                pFlags = new PolyFlags[ nPtSize ];
-                for( sal_uInt16 i = 0; i < nPnt; ++i )
-                {
-                    pPoints[ i ] = pOldPoints[ i ];
-                    pFlags[ i ] = pOldFlags[ i ];
-                }
-                delete[] pOldPoints;
-                delete[] pOldFlags;
-            }
-
-            int i = 0;
-            if( TT_PRIM_LINE == pCurve->wType )
-            {
-                while( i < pCurve->cpfx )
-                {
-                    nX = IntTimes256FromFixed( pCurve->apfx[ i ].x );
-                    nY = IntTimes256FromFixed( pCurve->apfx[ i ].y );
-                    ++i;
-                    pPoints[ nPnt ] = Point( nX, nY );
-                    pFlags[ nPnt ] = PolyFlags::Normal;
-                    ++nPnt;
-                }
-            }
-            else if( TT_PRIM_QSPLINE == pCurve->wType )
-            {
-                bHasOfflinePoints = true;
-                while( i < pCurve->cpfx )
-                {
-                    // get control point of quadratic bezier spline
-                    nX = IntTimes256FromFixed( pCurve->apfx[ i ].x );
-                    nY = IntTimes256FromFixed( pCurve->apfx[ i ].y );
-                    ++i;
-                    Point aControlP( nX, nY );
-
-                    // calculate first cubic control point
-                    // P0 = 1/3 * (PBeg + 2 * PQControl)
-                    nX = pPoints[ nPnt-1 ].X() + 2 * aControlP.X();
-                    nY = pPoints[ nPnt-1 ].Y() + 2 * aControlP.Y();
-                    pPoints[ nPnt+0 ] = Point( (2*nX+3)/6, (2*nY+3)/6 );
-                    pFlags[ nPnt+0 ] = PolyFlags::Control;
-
-                    // calculate endpoint of segment
-                    nX = IntTimes256FromFixed( pCurve->apfx[ i ].x );
-                    nY = IntTimes256FromFixed( pCurve->apfx[ i ].y );
-
-                    if ( i+1 >= pCurve->cpfx )
-                    {
-                        // endpoint is either last point in segment => advance
-                        ++i;
-                    }
-                    else
-                    {
-                        // or endpoint is the middle of two control points
-                        nX += IntTimes256FromFixed( pCurve->apfx[ i-1 ].x );
-                        nY += IntTimes256FromFixed( pCurve->apfx[ i-1 ].y );
-                        nX = (nX + 1) / 2;
-                        nY = (nY + 1) / 2;
-                        // no need to advance, because the current point
-                        // is the control point in next bezier spline
-                    }
-
-                    pPoints[ nPnt+2 ] = Point( nX, nY );
-                    pFlags[ nPnt+2 ] = PolyFlags::Normal;
-
-                    // calculate second cubic control point
-                    // P1 = 1/3 * (PEnd + 2 * PQControl)
-                    nX = pPoints[ nPnt+2 ].X() + 2 * aControlP.X();
-                    nY = pPoints[ nPnt+2 ].Y() + 2 * aControlP.Y();
-                    pPoints[ nPnt+1 ] = Point( (2*nX+3)/6, (2*nY+3)/6 );
-                    pFlags[ nPnt+1 ] = PolyFlags::Control;
-
-                    nPnt += 3;
-                }
-            }
-
-            // next curve segment
-            pCurve = reinterpret_cast<TTPOLYCURVE*>(&pCurve->apfx[ i ]);
-        }
-
-        // end point is start point for closed contour
-        // disabled, because Polygon class closes the contour itself
-        // pPoints[nPnt++] = pPoints[0];
-        // #i35928#
-        // Added again, but add only when not yet closed
-        if(pPoints[nPnt - 1] != pPoints[0])
-        {
-            if( bHasOfflinePoints )
-                pFlags[nPnt] = pFlags[0];
-
-            pPoints[nPnt++] = pPoints[0];
-        }
-
-        // convert y-coordinates W32 -> VCL
-        for( int i = 0; i < nPnt; ++i )
-            pPoints[i].setY(-pPoints[i].Y());
-
-        // insert into polypolygon
-        tools::Polygon aPoly( nPnt, pPoints, (bHasOfflinePoints ? pFlags : nullptr) );
-        // convert to B2DPolyPolygon
-        // TODO: get rid of the intermediate PolyPolygon
-        rB2DPolyPoly.append( aPoly.getB2DPolygon() );
-    }
-
-    delete[] pPoints;
-    delete[] pFlags;
-
-    delete[] pData;
-
-    // rescaling needed for the tools::PolyPolygon conversion
-    if( rB2DPolyPoly.count() )
-    {
-        const double fFactor(1.0f/256);
-        rB2DPolyPoly.transform(basegfx::utils::createScaleB2DHomMatrix(fFactor, fFactor));
-    }
+    const float fHScale = getHScale();
+    if (fHScale != 1.0f)
+        rB2DPolyPoly.transform(basegfx::utils::createScaleB2DHomMatrix(fHScale, 1.0));
 
     return true;
 }
