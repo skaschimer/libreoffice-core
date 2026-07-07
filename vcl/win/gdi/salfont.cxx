@@ -693,7 +693,9 @@ void ImplGetLogFontFromFontSelect( const vcl::font::FontSelectPattern& rFont,
 
     rLogFont.lfWeight          = ImplWeightToWin( rFont.GetWeight() );
     rLogFont.lfHeight          = static_cast<LONG>(-rFont.mnHeight);
-    rLogFont.lfWidth           = static_cast<LONG>(rFont.mnWidth);
+    // mnWidth is relative to the font height, unlike GDI's lfWidth which is
+    // relative to the average character width, so it can't be used directly.
+    rLogFont.lfWidth           = 0;
     rLogFont.lfUnderline       = 0;
     rLogFont.lfStrikeOut       = 0;
     rLogFont.lfItalic          = BYTE(rFont.GetItalic() != ITALIC_NONE);
@@ -736,6 +738,20 @@ WinSalGraphics::ImplDoSetFont(HDC hDC, vcl::font::FontSelectPattern const& i_rFo
         SelectFont(hDC, hNewFont2);
         DeleteFont( hNewFont );
         hNewFont = hNewFont2;
+        ::GetTextMetricsW(hDC, &aTextMetricW);
+    }
+
+    // Stretch the glyphs horizontally like the layout does (mnWidth relative to the
+    // font height), expressed in GDI's average character width terms.
+    if (i_rFont.mnWidth && i_rFont.mnHeight && aTextMetricW.tmAveCharWidth > 0)
+    {
+        aLogFont.lfWidth = basegfx::fround(double(i_rFont.mnWidth) * aTextMetricW.tmAveCharWidth
+                                           / i_rFont.mnHeight);
+        HFONT hStretchedFont = ::CreateFontIndirectW(&aLogFont);
+        ::SelectFont(hDC, hStretchedFont);
+        ::DeleteFont(hNewFont);
+        hNewFont = hStretchedFont;
+        ::GetTextMetricsW(hDC, &aTextMetricW);
     }
 
     // Optionally create a secondary font for non-rotated CJK glyphs in vertical context

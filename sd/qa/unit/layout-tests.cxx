@@ -361,17 +361,10 @@ CPPUNIT_TEST_FIXTURE(SdLayoutTest, testFitToFrameTextFitting)
 
     assertXPath(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]", "x", u"0");
     assertXPath(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]", "y", u"406");
-#ifndef _WIN32 // FIXME: Windows seems to differ in text layouting
     assertXPathDoubleValue(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]/dxarray", "first",
                            114.087, 0.001);
     assertXPathDoubleValue(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]/dxarray", "last",
                            6983.573, 0.001);
-#else
-    assertXPathDoubleValue(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]/dxarray", "first",
-                           113.64, 0.001);
-    assertXPathDoubleValue(pXmlDoc, "/metafile/push[1]/push[1]/textarray[1]/dxarray", "last",
-                           6956.219, 0.001);
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(SdLayoutTest, testTdf156955)

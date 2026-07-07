@@ -397,25 +397,6 @@ void VclProcessor2D::RenderTextSimpleOrDecoratedPortionPrimitive2D(
                           / (aResultFontSize.Width() ? aResultFontSize.Width()
                                                      : aResultFontSize.Height());
 
-#ifdef _WIN32
-                    if (aResultFontSize.Width()
-                        && aResultFontSize.Width() != aResultFontSize.Height())
-                    {
-                        // See getVclFontFromFontAttribute in drawinglayer/source/primitive2d/textlayoutdevice.cxx
-                        vcl::Font aUnscaledTest(aFont);
-                        aUnscaledTest.SetFontSize({ 0, aResultFontSize.Height() });
-                        const FontMetric aUnscaledFontMetric(
-                            Application::GetDefaultDevice()->GetFontMetric(aUnscaledTest));
-                        if (aUnscaledFontMetric.GetAverageFontWidth() > 0)
-                        {
-                            double nExistingXScale = static_cast<double>(aResultFontSize.Width())
-                                                     / aUnscaledFontMetric.GetAverageFontWidth();
-                            nFontScalingFixX
-                                = aFontScaling.getX() / aFontScaling.getY() / nExistingXScale;
-                        }
-                    }
-#endif
-
                     if (!rtl_math_approxEqual(nFontScalingFixY, 1.0)
                         || !rtl_math_approxEqual(nFontScalingFixX, 1.0))
                     {

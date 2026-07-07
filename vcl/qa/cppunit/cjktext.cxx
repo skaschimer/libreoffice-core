@@ -207,11 +207,6 @@ void VclCjkTextTest::testVerticalText()
     // Test width scaled to 200%.
     font = baseFont;
     font.SetFontSize(Size(72, 36));
-#ifdef _WIN32
-    // TODO: What is the proper way to draw 200%-wide text? This is needed on Windows
-    // but it breaks Linux.
-    font.SetAverageFontWidth(2 * font.GetOrCalculateAverageFontWidth());
-#endif
     device->Erase();
     device->SetFont(font);
     device->DrawText(Point(90, 10), text);
@@ -225,9 +220,6 @@ void VclCjkTextTest::testVerticalText()
     // Test width scaled to 50%.
     font = baseFont;
     font.SetFontSize(Size(18, 36));
-#ifdef _WIN32
-    font.SetAverageFontWidth(0.5 * font.GetOrCalculateAverageFontWidth());
-#endif
     device->Erase();
     device->SetFont(font);
     device->DrawText(Point(90, 10), text);

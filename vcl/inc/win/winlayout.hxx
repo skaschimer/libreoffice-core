@@ -58,8 +58,6 @@ public:
 private:
     explicit WinFontInstance(const WinFontFace&, const vcl::font::FontSelectPattern&);
 
-    virtual void ImplInitHbFont(hb_font_t*) override;
-
     WinSalGraphics *m_pGraphics;
     HFONT m_hFont;
     HFONT m_hVerticalFont = nullptr;

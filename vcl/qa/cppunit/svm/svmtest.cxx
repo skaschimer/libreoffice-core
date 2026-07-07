@@ -176,7 +176,7 @@ class SvmTest : public test::BootstrapFixture, public XmlTestTools
     void checkMapMode(const GDIMetaFile& rMetaFile);
     void testMapMode();
 
-#if HAVE_MORE_FONTS && !defined(_WIN32)
+#if HAVE_MORE_FONTS
     void checkFont(const GDIMetaFile& rMetaFile);
 #endif
     void testFont();
@@ -1995,7 +1995,7 @@ void SvmTest::testMapMode()
     checkMapMode(readFile(u"mapmode.svm"));
 }
 
-#if HAVE_MORE_FONTS && !defined(_WIN32)
+#if HAVE_MORE_FONTS
 void SvmTest::checkFont(const GDIMetaFile& rMetafile)
 {
     xmlDocUniquePtr pDoc = dumpMeta(rMetafile);
@@ -2016,8 +2016,6 @@ void SvmTest::checkFont(const GDIMetaFile& rMetafile)
 void SvmTest::testFont()
 {
 #if HAVE_MORE_FONTS
-// Windows interprets Width differently causing build errors
-#if !defined(_WIN32)
     GDIMetaFile aGDIMetaFile;
     ScopedVclPtrInstance<VirtualDevice> pVirtualDev;
     setupBaseVirtualDevice(*pVirtualDev, aGDIMetaFile);
@@ -2032,7 +2030,6 @@ void SvmTest::testFont()
     pVirtualDev->SetFont(aFont);
     checkFont(writeAndReadStream(aGDIMetaFile));
     checkFont(readFile(u"font.svm"));
-#endif // _WIN32
 #endif
 }
 

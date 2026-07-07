@@ -463,14 +463,13 @@ void EMFWriter::ImplCheckTextAttr()
     const tools::Long nFontHeight(rFont.GetFontSize().Height());
     tools::Long nFontWidth(rFont.GetFontSize().Width());
 
-#ifndef _WIN32
     const bool bFontScaledHorizontally(nFontWidth != 0 && nFontWidth != nFontHeight);
 
     if(bFontScaledHorizontally)
     {
-        // tdf#127471 nFontWidth is the non-Windows NormedFontScaling, need to convert to
-        // Windows-like notation with pre-multiplied AvgFontWidth since EMF/WMF are Windows
-        // specific formats.
+        // tdf#127471 nFontWidth is the NormedFontScaling, need to convert to
+        // Windows-like notation with pre-multiplied AvgFontWidth since EMF/WMF are
+        // Windows specific formats.
         const tools::Long nAverageFontWidth(rFont.GetOrCalculateAverageFontWidth());
 
         if(nFontHeight > 0)
@@ -479,7 +478,6 @@ void EMFWriter::ImplCheckTextAttr()
             nFontWidth = static_cast<tools::Long>(static_cast<double>(nFontWidth) * fScaleFactor);
         }
     }
-#endif
 
     ImplBeginRecord( WIN_EMR_EXTCREATEFONTINDIRECTW );
     m_rStm.WriteUInt32( mnTextHandle );

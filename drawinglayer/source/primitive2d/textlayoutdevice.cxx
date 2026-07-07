@@ -423,21 +423,11 @@ vcl::Font getVclFontFromFontAttribute(const attribute::FontAttribute& rFontAttri
     const sal_uInt32 nWidth(basegfx::fround(fabs(fFontScaleX)));
     const bool bFontIsScaled(nHeight != nWidth);
 
-#ifdef _WIN32
-    // for WIN32 systems, start with creating an unscaled font. If FontScaling
-    // is wanted, that width needs to be adapted using FontMetric again to get a
-    // width of the unscaled font
-    vcl::Font aRetval(rFontAttribute.getFamilyName(), rFontAttribute.getStyleName(),
-                      Size(0, nHeight));
-#else
-    // for non-WIN32 systems things are easier since these accept a Font creation
-    // with initially nWidth != nHeight for FontScaling. Despite that, use zero for
-    // FontWidth when no scaling is used to explicitly have that zero when e.g. the
-    // Font would be recorded in a MetaFile (The MetaFile FontAction WILL record a
-    // set FontWidth; import that in a WIN32 system, and trouble is there)
+    // Use zero for FontWidth when no scaling is used, to explicitly have that zero
+    // when e.g. the Font would be recorded in a MetaFile (The MetaFile FontAction
+    // WILL record a set FontWidth)
     vcl::Font aRetval(rFontAttribute.getFamilyName(), rFontAttribute.getStyleName(),
                       Size(bFontIsScaled ? std::max<sal_uInt32>(nWidth, 1) : 0, nHeight));
-#endif
     // define various other FontAttribute
     aRetval.SetAlignment(ALIGN_BASELINE);
     aRetval.SetCharSet(rFontAttribute.getSymbol() ? RTL_TEXTENCODING_SYMBOL
@@ -449,22 +439,6 @@ vcl::Font getVclFontFromFontAttribute(const attribute::FontAttribute& rFontAttri
     aRetval.SetPitch(rFontAttribute.getMonospaced() ? PITCH_FIXED : PITCH_VARIABLE);
     aRetval.SetLanguage(LanguageTag::convertToLanguageType(rLocale, false));
 
-#ifdef _WIN32
-    // for WIN32 systems, correct the FontWidth if FontScaling is used
-    if (bFontIsScaled && nHeight > 0)
-    {
-        const FontMetric aUnscaledFontMetric(
-            Application::GetDefaultDevice()->GetFontMetric(aRetval));
-
-        if (aUnscaledFontMetric.GetAverageFontWidth() > 0)
-        {
-            const double fScaleFactor(static_cast<double>(nWidth) / static_cast<double>(nHeight));
-            const sal_uInt32 nScaledWidth(basegfx::fround(
-                static_cast<double>(aUnscaledFontMetric.GetAverageFontWidth()) * fScaleFactor));
-            aRetval.SetAverageFontWidth(nScaledWidth);
-        }
-    }
-#endif
     // handle FontRotation (if defined)
     if (!basegfx::fTools::equalZero(fFontRotation))
     {
@@ -490,37 +464,13 @@ attribute::FontAttribute getFontAttributeFromVclFont(basegfx::B2DVector& o_rSize
     o_rSize.setY(std::max<tools::Long>(rFont.GetFontSize().getHeight(), 0));
     o_rSize.setX(o_rSize.getY());
 
-#ifdef _WIN32
-    // for WIN32 systems, the FontScaling at the Font is detected by
-    // checking that FontWidth != 0. When FontScaling is used, WIN32
-    // needs to do extra stuff to detect the correct width (since it's
-    // zero and not equal the font height) and its relationship to
-    // the height
-    if (rFont.GetFontSize().getWidth() > 0)
-    {
-        vcl::Font aUnscaledFont(rFont);
-        aUnscaledFont.SetAverageFontWidth(0);
-        const FontMetric aUnscaledFontMetric(
-            Application::GetDefaultDevice()->GetFontMetric(aUnscaledFont));
-
-        if (aUnscaledFontMetric.GetAverageFontWidth() > 0)
-        {
-            const double fScaleFactor(
-                static_cast<double>(rFont.GetFontSize().getWidth())
-                / static_cast<double>(aUnscaledFontMetric.GetAverageFontWidth()));
-            o_rSize.setX(fScaleFactor * o_rSize.getY());
-        }
-    }
-#else
-    // For non-WIN32 systems the detection is the same, but the value
-    // is easier achieved since width == height is interpreted as no
-    // scaling. Ergo, Width == 0 means width == height, and width != 0
-    // means the scaling is in the direct relation of width to height
+    // The FontScaling at the Font is detected by checking that FontWidth != 0.
+    // Width == 0 means width == height, and width != 0 means the scaling is in
+    // the direct relation of width to height
     if (rFont.GetFontSize().getWidth() > 0)
     {
         o_rSize.setX(static_cast<double>(rFont.GetFontSize().getWidth()));
     }
-#endif
     return aRetval;
 }
 

@@ -36,7 +36,6 @@
 
 #include <win/DWriteTextRenderer.hxx>
 #include <win/WindowsInstance.hxx>
-#include <win/scoped_gdi.hxx>
 
 #include <sallayout.hxx>
 
@@ -138,35 +137,7 @@ float WinFontInstance::getHScale() const
     const vcl::font::FontSelectPattern& rPattern = GetFontSelectPattern();
     if (!rPattern.mnHeight || !rPattern.mnWidth)
         return 1.0;
-    return rPattern.mnWidth * GetAverageWidthFactor() / rPattern.mnHeight;
-}
-
-void WinFontInstance::ImplInitHbFont(hb_font_t* /*pHbFont*/)
-{
-    assert(m_pGraphics);
-    // Calculate the AverageWidthFactor, see LogicalFontInstance::GetScale().
-    if (!GetFontSelectPattern().mnWidth)
-        return;
-
-    double nUPEM = GetFontFace()->UnitsPerEm();
-
-    LOGFONTW aLogFont;
-    GetObjectW(m_hFont, sizeof(LOGFONTW), &aLogFont);
-
-    // Set the height (font size) to EM to minimize rounding errors.
-    aLogFont.lfHeight = -nUPEM;
-    // Set width to the default to get the original value in the metrics.
-    aLogFont.lfWidth = 0;
-
-    TEXTMETRICW aFontMetric;
-    {
-        // Get the font metrics.
-        HDC hDC = m_pGraphics->getHDC();
-        ScopedSelectedHFONT hFont(hDC, CreateFontIndirectW(&aLogFont));
-        GetTextMetricsW(hDC, &aFontMetric);
-    }
-
-    SetAverageWidthFactor(nUPEM / aFontMetric.tmAveCharWidth);
+    return float(rPattern.mnWidth) / rPattern.mnHeight;
 }
 
 void WinFontInstance::SetGraphics(WinSalGraphics* pGraphics)

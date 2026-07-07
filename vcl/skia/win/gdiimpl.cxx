@@ -217,7 +217,7 @@ bool WinSkiaSalGraphicsImpl::DrawTextLayout(const GenericSalLayout& rLayout)
                                                                : ePreferredAliasing);
 
     double nHeight = rFSD.mnHeight;
-    double nWidth = rFSD.mnWidth ? rFSD.mnWidth * rWinFont.GetAverageWidthFactor() : nHeight;
+    double nWidth = rFSD.mnWidth ? rFSD.mnWidth : nHeight;
     font.setSize(nHeight);
     font.setScaleX(nWidth / nHeight);
 

@@ -200,11 +200,6 @@ CPPUNIT_TEST_FIXTURE(VclTextTest, testSimpleText)
 
     // Test width scaled to 200%.
     font = vcl::Font(u"DejaVu Sans"_ustr, u"Book"_ustr, Size(72, 36));
-#ifdef _WIN32
-    // TODO: What is the proper way to draw 200%-wide text? This is needed on Windows
-    // but it breaks Linux.
-    font.SetAverageFontWidth(2 * font.GetOrCalculateAverageFontWidth());
-#endif
     device->Erase();
     device->SetFont(font);
     device->DrawText(Point(10, 10), text);
@@ -216,9 +211,6 @@ CPPUNIT_TEST_FIXTURE(VclTextTest, testSimpleText)
 
     // Test width scaled to 50%.
     font = vcl::Font(u"DejaVu Sans"_ustr, u"Book"_ustr, Size(18, 36));
-#ifdef _WIN32
-    font.SetAverageFontWidth(0.5 * font.GetOrCalculateAverageFontWidth());
-#endif
     device->Erase();
     device->SetFont(font);
     device->DrawText(Point(10, 10), text);

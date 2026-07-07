@@ -40,7 +40,6 @@ LogicalFontInstance::LogicalFontInstance(const vcl::font::PhysicalFontFace& rFon
     , mpFontCache(nullptr)
     , m_aFontSelData(rFontSelData)
     , m_pHbFont(nullptr)
-    , m_nAveWidthFactor(1.0f)
     , m_pFontFace(&const_cast<vcl::font::PhysicalFontFace&>(rFontFace))
     , m_aVariations(rFontSelData.maVariations)
     , m_bOpticalSizing(rFontSelData.mbOpticalSizing)
@@ -158,12 +157,7 @@ void LogicalFontInstance::GetScale(double* nXScale, double* nYScale) const
 
     if (nXScale)
     {
-        // On Windows, mnWidth is relative to average char width not font height,
-        // and we need to keep it that way for GDI to correctly scale the glyphs.
-        // Here we compensate for this so that HarfBuzz gives us the correct glyph
-        // positions.
-        double nWidth(m_aFontSelData.mnWidth ? m_aFontSelData.mnWidth * GetAverageWidthFactor()
-                                             : m_aFontSelData.mnHeight);
+        double nWidth(m_aFontSelData.mnWidth ? m_aFontSelData.mnWidth : m_aFontSelData.mnHeight);
         *nXScale = nWidth / nUPEM;
     }
 }

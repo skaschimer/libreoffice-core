@@ -97,8 +97,6 @@ public: // TODO: make data members private
 
     inline hb_font_t* GetHbFont();
     SAL_DLLPRIVATE bool IsGraphiteFont();
-    void SetAverageWidthFactor(double nFactor) { m_nAveWidthFactor = std::abs(nFactor); }
-    double GetAverageWidthFactor() const { return m_nAveWidthFactor; }
     const vcl::font::FontSelectPattern& GetFontSelectPattern() const { return m_aFontSelData; }
 
     const std::vector<vcl::font::Variation>& GetVariations() const;
@@ -218,7 +216,6 @@ private:
     const vcl::font::FontSelectPattern m_aFontSelData;
     hb_font_t* m_pHbFont;
     mutable hb_font_t* m_pHbFontUntransformed = nullptr;
-    double m_nAveWidthFactor;
     rtl::Reference<vcl::font::PhysicalFontFace> m_pFontFace;
     std::optional<bool> m_xbIsGraphiteFont;
     std::vector<vcl::font::Variation> m_aVariations;
