@@ -533,10 +533,12 @@ static sal_IntPtr getNextFontId()
     return ++id;
 }
 
-WinFontFace::WinFontFace(const FontAttributes& rDFA, const LOGFONTW& rLogFont)
+WinFontFace::WinFontFace(const FontAttributes& rDFA, const LOGFONTW& rLogFont,
+                         IDWriteFont* pDWFont)
 :   vcl::font::PhysicalFontFace(rDFA),
     mnId(getNextFontId()),
-    maLogFont(rLogFont)
+    maLogFont(rLogFont),
+    mxDWFont(pDWFont)
 {
 }
 
@@ -869,7 +871,8 @@ static void ImplEnumDWriteCollection(IDWriteFontCollection* pCollection,
                 continue;
 
             rtl::Reference<WinFontFace> pData = new WinFontFace(
-                WinFont2DevFontAttributes(xFont.get(), aFamilyName, aLogFont), aLogFont);
+                WinFont2DevFontAttributes(xFont.get(), aFamilyName, aLogFont), aLogFont,
+                xFont.get());
             pList->Add(pData.get());
             SAL_INFO("vcl.fonts", "ImplEnumDWriteCollection: font added: "
                                       << pData->GetFamilyName() << " " << pData->GetStyleName());
@@ -1231,21 +1234,36 @@ const sal::systools::COMReference<IDWriteFontFace>& WinFontInstance::GetDWFontFa
 {
     if (!mxDWFontFace)
     {
-        assert(m_pGraphics);
-        HDC hDC = m_pGraphics->getHDC();
-        const HFONT hOrigFont = static_cast<HFONT>(GetCurrentObject(hDC, OBJ_FONT));
-        const HFONT hFont = GetHFONT();
-        if (hFont != hOrigFont)
-            SelectObject(hDC, hFont);
+        IDWriteFont* pDWFont = GetFontFace()->GetDWFont();
+        if (!pDWFont)
+            return mxDWFontFace;
 
-        const ::comphelper::ScopeGuard aFontRestoreScopeGuard([hFont, hOrigFont, hDC]() {
-            if (hFont != hOrigFont)
-                SelectObject(hDC, hOrigFont);
-        });
+        // Simulate bold and italic when they are requested but the face does not
+        // provide them, like GDI font selection does.
+        DWRITE_FONT_SIMULATIONS eSimulations = DWRITE_FONT_SIMULATIONS_NONE;
+        const vcl::font::FontSelectPattern& rFSD = GetFontSelectPattern();
+        if (rFSD.GetWeight() > WEIGHT_MEDIUM && GetFontFace()->GetWeight() <= WEIGHT_MEDIUM)
+            eSimulations |= DWRITE_FONT_SIMULATIONS_BOLD;
+        if (rFSD.GetItalic() != ITALIC_NONE && GetFontFace()->GetItalic() == ITALIC_NONE)
+            eSimulations |= DWRITE_FONT_SIMULATIONS_OBLIQUE;
 
-        IDWriteGdiInterop* pDWriteGdiInterop = WinSalGraphics::getDWriteGdiInterop();
-
-        HRESULT hr = pDWriteGdiInterop->CreateFontFaceFromHdc(hDC, &mxDWFontFace);
+        HRESULT hr = S_OK;
+        if (eSimulations == DWRITE_FONT_SIMULATIONS_NONE)
+            hr = pDWFont->CreateFontFace(&mxDWFontFace);
+        else
+        {
+            auto xDWFont = sal::systools::COMReference<IDWriteFont>(pDWFont)
+                               .QueryInterface<IDWriteFont3>();
+            sal::systools::COMReference<IDWriteFontFaceReference> xFaceRef;
+            hr = xDWFont ? xDWFont->GetFontFaceReference(&xFaceRef) : E_NOINTERFACE;
+            if (SUCCEEDED(hr))
+            {
+                sal::systools::COMReference<IDWriteFontFace3> xFontFace;
+                hr = xFaceRef->CreateFontFaceWithSimulations(eSimulations, &xFontFace);
+                if (SUCCEEDED(hr))
+                    mxDWFontFace = sal::systools::COMReference<IDWriteFontFace>(xFontFace.get());
+            }
+        }
         if (FAILED(hr))
         {
             SAL_WARN("vcl.fonts", "HRESULT 0x" << OUString::number(hr, 16) << ": "

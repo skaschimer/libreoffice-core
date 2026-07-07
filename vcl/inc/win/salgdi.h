@@ -62,13 +62,14 @@ class FontMetricData;
 class WinFontFace final : public vcl::font::PhysicalFontFace
 {
 public:
-    explicit                WinFontFace(const FontAttributes&, const LOGFONTW&);
+    explicit                WinFontFace(const FontAttributes&, const LOGFONTW&, IDWriteFont*);
                             ~WinFontFace() override;
 
     rtl::Reference<LogicalFontInstance> CreateFontInstance( const vcl::font::FontSelectPattern& ) const override;
     sal_IntPtr              GetFontId() const override;
 
     const LOGFONTW&         GetLogFont() const          { return maLogFont; }
+    IDWriteFont*            GetDWFont() const           { return mxDWFont.get(); }
 
     hb_blob_t*              GetHbTable(hb_tag_t nTag) const override;
 
@@ -78,6 +79,7 @@ private:
     sal_IntPtr              mnId;
 
     LOGFONTW                maLogFont;
+    sal::systools::COMReference<IDWriteFont> mxDWFont;
 };
 
 /**
