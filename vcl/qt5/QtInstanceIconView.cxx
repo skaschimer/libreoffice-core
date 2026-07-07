@@ -62,7 +62,7 @@ void QtInstanceIconView::do_insert(int nPos, const OUString* pStr, const OUStrin
         m_pModel->insertRow(nPos, pItem);
 
         if (pRet)
-            static_cast<QtInstanceTreeIter*>(pRet)->setModelIndex(m_pModel->index(nPos, 0));
+            static_cast<QtInstanceTreeIter*>(pRet)->setModelIndex(modelIndex(nPos));
     });
 }
 
