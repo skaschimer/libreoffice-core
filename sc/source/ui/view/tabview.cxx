@@ -139,6 +139,8 @@ void ScCornerButton::MouseButtonDown( const MouseEvent& rMEvt )
     {
         ScTabViewShell* pViewSh = rViewData.GetViewShell();
         pViewSh->SetActive();                                   // Appear and SetViewFrame
+        // tdf#84694 - deselect draw objects before selecting the entire sheet
+        pViewSh->DrawDeselectAll();
         pViewSh->ActiveGrabFocus();
 
         bool bControl = rMEvt.IsMod1();
