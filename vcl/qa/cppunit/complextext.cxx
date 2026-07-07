@@ -873,7 +873,6 @@ CPPUNIT_TEST_FIXTURE(VclComplexTextTest, testTdf163761)
 CPPUNIT_TEST_FIXTURE(VclComplexTextTest, testOpticalSizing)
 {
 #if HAVE_MORE_FONTS
-#if !defined _WIN32
     ScopedVclPtrInstance<VirtualDevice> pOutDev;
     pOutDev->SetMapMode(MapMode(MapUnit::MapPoint));
 
@@ -914,7 +913,6 @@ CPPUNIT_TEST_FIXTURE(VclComplexTextTest, testOpticalSizing)
     CPPUNIT_ASSERT_EQUAL(size_t(2), aGlyphs2.size());
     CPPUNIT_ASSERT(aGlyphs1.at(0) != aGlyphs2.at(0));
     CPPUNIT_ASSERT(aGlyphs1.at(1) != aGlyphs2.at(1));
-#endif
 #endif
 }
 

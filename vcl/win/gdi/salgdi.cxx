@@ -339,13 +339,13 @@ void WinSalGraphics::GetResolution( sal_Int32& rDPIX, sal_Int32& rDPIY )
 }
 
 // static
-const sal::systools::COMReference<IDWriteFactory>& WinSalGraphics::getDWriteFactory()
+const sal::systools::COMReference<IDWriteFactory6>& WinSalGraphics::getDWriteFactory()
 {
-    static sal::systools::COMReference<IDWriteFactory> pDWriteFactory(
+    static sal::systools::COMReference<IDWriteFactory6> pDWriteFactory(
         []()
         {
-            sal::systools::COMReference<IDWriteFactory> pResult;
-            HRESULT hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
+            sal::systools::COMReference<IDWriteFactory6> pResult;
+            HRESULT hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory6),
                                              reinterpret_cast<IUnknown**>(&pResult));
             if (FAILED(hr))
             {

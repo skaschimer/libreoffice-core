@@ -645,16 +645,6 @@ CPPUNIT_TEST_FIXTURE(Test, testEmbeddedFontProps)
         pXmlDoc,
         "//style:font-face[@style:name='DejaVu Serif']/svg:font-face-src/svg:font-face-uri[3]",
         "font-weight", u"normal");
-#if defined _WIN32
-    assertXPath(
-        pXmlDoc,
-        "//style:font-face[@style:name='DejaVu Serif']/svg:font-face-src/svg:font-face-uri[4]",
-        "font-style", u"italic");
-    assertXPath(
-        pXmlDoc,
-        "//style:font-face[@style:name='DejaVu Serif']/svg:font-face-src/svg:font-face-uri[4]",
-        "font-weight", u"bold");
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(Test, testFontEmbeddingDOCX)

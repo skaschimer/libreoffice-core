@@ -177,7 +177,7 @@ void WinFontInstance::SetGraphics(WinSalGraphics* pGraphics)
     HFONT hOrigFont;
     HDC hDC = m_pGraphics->getHDC();
     std::tie(m_hFont, m_hVerticalFont, m_nTmDescent)
-        = m_pGraphics->ImplDoSetFont(hDC, GetFontSelectPattern(), GetFontFace(), hOrigFont);
+        = m_pGraphics->ImplDoSetFont(hDC, GetFontSelectPattern(), *GetFontFace(), hOrigFont);
     SelectObject(hDC, hOrigFont);
 }
 

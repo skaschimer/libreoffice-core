@@ -2137,7 +2137,7 @@ static void ImplSalFrameSetInputContext( HWND hWnd, const SalInputContext* pCont
             {
                 LOGFONTW aLogFont;
                 ImplGetLogFontFromFontSelect(pContext->mpFont->GetFontSelectPattern(),
-                                             nullptr, aLogFont, true);
+                                             *pContext->mpFont->GetFontFace(), aLogFont, true);
 
                 // tdf#147299: To enable vertical input mode, Windows IMEs check the face
                 // name string for a leading '@'.
