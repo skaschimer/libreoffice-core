@@ -122,7 +122,6 @@ class SvxZoomItem;
 #define SID_HYPHENATIONMISSING              (SID_SFX_START + 428)
 
 #define SID_SHOW_LICENSE                    (SID_SFX_START + 1695)
-#define SID_SHOW_CREDITS                    (SID_SFX_START + 1711)
 
 // default-ids for document
 #define SID_NEWDOC                          (SID_SFX_START + 500)
@@ -163,8 +162,6 @@ class SvxZoomItem;
 #define SID_DIRECTEXPORTDOCASPDF            (SID_SFX_START + 1674)
 #define SID_EXPORTDOCASEPUB                 (SID_SFX_START + 1677)
 #define SID_DIRECTEXPORTDOCASEPUB           (SID_SFX_START + 1678)
-#define SID_REDACTDOC                       (SID_SFX_START + 1732)
-#define SID_AUTOREDACTDOC                   (SID_SFX_START + 1736)
 #define SID_UPDATEDOCMODE                   TypedWhichId<SfxUInt16Item>(SID_SFX_START + 1668)
 #define SID_CHECKOUT                        TypedWhichId<SfxVisibilityItem>(SID_SFX_START + 512)
 #define SID_CANCELCHECKOUT                  TypedWhichId<SfxVisibilityItem>(SID_SFX_START + 513)
@@ -280,9 +277,6 @@ class SvxZoomItem;
 #define SID_NO_THUMBNAIL                    (SID_SFX_START + 1730)
 #define SID_LOCK_CONTENT_EXTRACTION         TypedWhichId<SfxBoolItem>(SID_SFX_START + 1731)
 #define SID_LOCK_EXPORT                     TypedWhichId<SfxBoolItem>(SID_SFX_START + 1732)
-// Used to export a temporary file for preview in Mail Merge Wizard, where saving the data source is
-// not required for preview, but interferes with not-yet-saved embedded data source for main document.
-#define SID_NO_EMBEDDED_DS                  TypedWhichId<SfxBoolItem>(SID_SFX_START + 1731)
 #define SID_IS_REDACT_MODE                  (SID_SFX_START + 1733)
 #define SID_REDACTION_STYLE                 (SID_SFX_START + 1734)
 #define SID_DIALOG_PARENT                   TypedWhichId<SfxUnoAnyItem>(SID_SFX_START + 1735)
@@ -302,6 +296,12 @@ class SvxZoomItem;
 #define SID_MACROMANAGER                    (SID_SFX_START + 1750)
 #define SID_EXPORTDIRECTORY                 TypedWhichId<SfxStringItem>(SID_SFX_START + 1751)
 #define SID_EXTENSION_MANAGER               TypedWhichId<SfxStringItem>(SID_SFX_START + 1752)
+// Used to export a temporary file for preview in Mail Merge Wizard, where saving the data source is
+// not required for preview, but interferes with not-yet-saved embedded data source for main document.
+#define SID_NO_EMBEDDED_DS                  TypedWhichId<SfxBoolItem>(SID_SFX_START + 1753)
+#define SID_SHOW_CREDITS                    (SID_SFX_START + 1754)
+#define SID_REDACTDOC                       (SID_SFX_START + 1755)
+#define SID_AUTOREDACTDOC                   (SID_SFX_START + 1756)
 //      SID_SFX_free_END                    (SID_SFX_START + 3999)
 
 #define SID_OPEN_NEW_VIEW                   TypedWhichId<SfxBoolItem>(SID_SFX_START + 520)
