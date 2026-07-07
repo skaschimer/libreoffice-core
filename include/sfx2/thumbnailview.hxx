@@ -303,12 +303,15 @@ protected:
     tools::Long mnVItemSpace;          // Vertical spacing between rows, -1 to use excess unused height split up between items
     tools::Long mnVisLines;
     tools::Long mnLines;
+    tools::Long mnPinnedSeparatorY;      // tdf#38742 - vertical position of the separator line between pinned/unpinned items
+    tools::Long mnPinnedSeparatorMargin; // tdf#38742 - horizontal margin of the pinned separator
 
     sal_uInt16 mnCols;
     sal_uInt16 mnFirstLine;
     bool mbScroll : 1;          // Whether we need to scroll
     bool mbAllowVScrollBar : 1; // Whether to show a visible scrollbar
     bool mbHasVisibleItems : 1;
+    bool mbHasPinnedSeparator : 1; // tdf#38742 - whether to draw a separator line after the pinned items
     bool mbShowTooltips : 1;
     bool mbDrawMnemonics : 1;
     bool mbSelectOnFocus : 1;

@@ -283,8 +283,11 @@ void ThumbnailView::ImplInit()
     mnLines = 0;
     mnFirstLine = 0;
     mnCols = 0;
+    mnPinnedSeparatorY = 0;
+    mnPinnedSeparatorMargin = 0;
     mbScroll = false;
     mbHasVisibleItems = false;
+    mbHasPinnedSeparator = false;
     mbShowTooltips = false;
     mbDrawMnemonics = false;
     mbAllowMultiSelection = true;
@@ -524,6 +527,16 @@ void ThumbnailView::CalculateItemPositions(bool bScrollBarUsed)
     {
         x = nStartX;
         y += mnItemHeight + nVItemSpace;
+    }
+
+    // tdf#38742 - calculate the position for the separator line between pinned/unpinned items
+    mbHasPinnedSeparator = nCurCountVisible && nItemCountPinned < nItemCount;
+    if (mbHasPinnedSeparator)
+    {
+        // separator line is drawn at the center above the first unpinned row
+        mnPinnedSeparatorY = y - nVItemSpace / 2;
+        // separator line is aligned with the first and last document thumbnails in the row
+        mnPinnedSeparatorMargin = nStartX;
     }
 
     // tdf#164102 - adjust first item only if there are any pinned items
@@ -979,6 +992,16 @@ void ThumbnailView::Paint(vcl::RenderContext& rRenderContext, const ::tools::Rec
         if (!pItem->isVisible())
             continue;
         pItem->Paint(pProcessor.get(), *mpItemAttrs);
+    }
+
+    // tdf#38742 - draw a separator line between the pinned/unpinned items using left/right margin
+    if (mbHasPinnedSeparator)
+    {
+        rRenderContext.SetLineColor(
+            rRenderContext.GetSettings().GetStyleSettings().GetSeparatorColor());
+        rRenderContext.DrawLine(
+            Point(mnPinnedSeparatorMargin, mnPinnedSeparatorY),
+            Point(GetOutputSizePixel().Width() - mnPinnedSeparatorMargin, mnPinnedSeparatorY));
     }
 }
 
