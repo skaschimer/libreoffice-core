@@ -1038,7 +1038,7 @@ void QtInstanceTreeView::handleDataChanged(const QModelIndex& rTopLeft,
         // use special index of -1 for the "expander toggle"
         nColIndex = -1;
 
-    signal_toggled(iter_col(QtInstanceTreeIter(*this, rTopLeft), nColIndex));
+    signal_toggled(iter_col(treeIter(rTopLeft), nColIndex));
 }
 
 void QtInstanceTreeView::signalCollapsing(const QModelIndex& rIndex)
