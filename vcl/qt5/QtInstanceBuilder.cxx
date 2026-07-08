@@ -508,6 +508,7 @@ constexpr auto SUPPORTED_WITH_QT_PARENT = frozen::make_unordered_set<std::u16str
     u"modules/simpress/ui/impressprinteroptions.ui",
     u"modules/simpress/ui/interactionpage.ui",
     u"modules/simpress/ui/optimpressgeneralpage.ui",
+    u"modules/simpress/ui/sdviewpage.ui",
     u"modules/smath/ui/printeroptions.ui",
     u"modules/smath/ui/smathsettings.ui",
     u"modules/spropctrlr/ui/browserline.ui",
