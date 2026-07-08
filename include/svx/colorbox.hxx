@@ -95,6 +95,9 @@ public:
         m_xButton->connect_focus_out(rLink);
     }
     weld::MenuButton& get_widget() { return *m_xButton; }
+
+    // move the color window content into pTarget for inline embedding
+    void EmbedColorWindowContent(weld::Container* pTarget);
 };
 
 #endif

@@ -34,10 +34,10 @@ public:
 
 private:
     Color                         m_aTabBgColor;
+    std::unique_ptr<weld::Container> m_xColorContainer;
     std::unique_ptr<ColorListBox> m_xColorListBox;
 
     DECL_LINK(ColorSelectedHdl, ColorListBox&, void);
-    DECL_LINK(AutoOpenPickerHdl, void*, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

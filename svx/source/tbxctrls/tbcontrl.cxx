@@ -4289,6 +4289,12 @@ ColorListBox::~ColorListBox()
 {
 }
 
+void ColorListBox::EmbedColorWindowContent(weld::Container* pTarget)
+{
+    ColorWindow& rColorWindow = getColorWindow();
+    rColorWindow.getTopLevel()->move(rColorWindow.getContainer(), pTarget);
+}
+
 ColorWindow& ColorListBox::getColorWindow() const
 {
     if (!m_xColorWindow)

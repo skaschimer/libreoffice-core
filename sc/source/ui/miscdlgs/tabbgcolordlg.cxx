@@ -22,7 +22,6 @@
 #include <tabbgcolordlg.hxx>
 
 #include <svx/colorwindow.hxx>
-#include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Dialog.hxx>
 
@@ -31,6 +30,7 @@ ScTabBgColorDlg::ScTabBgColorDlg(weld::Window* pParent, const OUString& rTitle,
     : GenericDialogController(pParent, u"modules/scalc/ui/tabcolordialog.ui"_ustr,
                               u"TabColorDialog"_ustr)
     , m_aTabBgColor(rDefaultColor)
+    , m_xColorContainer(m_xBuilder->weld_container(u"colorcontainer"_ustr))
     , m_xColorListBox(new ColorListBox(m_xBuilder->weld_menu_button(u"colorlistbox"_ustr),
                                        [pParent] { return pParent; }))
 {
@@ -42,7 +42,9 @@ ScTabBgColorDlg::ScTabBgColorDlg(weld::Window* pParent, const OUString& rTitle,
         m_xColorListBox->SelectEntry(rDefaultColor);
 
     m_xColorListBox->SetSelectHdl(LINK(this, ScTabBgColorDlg, ColorSelectedHdl));
-    Application::PostUserEvent(LINK(this, ScTabBgColorDlg, AutoOpenPickerHdl));
+
+    // tdf#163785 - embed the color picker content inline without any popup
+    m_xColorListBox->EmbedColorWindowContent(m_xColorContainer.get());
 }
 
 ScTabBgColorDlg::~ScTabBgColorDlg()
@@ -59,11 +61,6 @@ IMPL_LINK_NOARG(ScTabBgColorDlg, ColorSelectedHdl, ColorListBox&, void)
     Color aColor = m_xColorListBox->GetSelectEntryColor();
     m_aTabBgColor = aColor == COL_NONE_COLOR ? COL_AUTO : aColor;
     m_xDialog->response(RET_OK);
-}
-
-IMPL_LINK_NOARG(ScTabBgColorDlg, AutoOpenPickerHdl, void*, void)
-{
-    m_xColorListBox->get_widget().set_active(true);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
