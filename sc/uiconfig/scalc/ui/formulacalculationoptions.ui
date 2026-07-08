@@ -103,6 +103,22 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkComboBoxText" id="comboConversion">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <items>
+                      <item id="0" translatable="yes" context="formulacalculationoptions|comboConversion">Generate #VALUE! error</item>
+                      <item id="1" translatable="yes" context="formulacalculationoptions|comboConversion">Treat as zero</item>
+                      <item id="2" translatable="yes" context="formulacalculationoptions|comboConversion">Convert only if unambiguous</item>
+                      <item id="3" translatable="yes" context="formulacalculationoptions|comboConversion">Convert also locale dependent</item>
+                    </items>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="checkEmptyAsZero">
                     <property name="label" translatable="yes" context="formulacalculationoptions|checkEmptyAsZero">Treat _empty string as zero</property>
                     <property name="visible">True</property>
@@ -145,22 +161,6 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBoxText" id="comboConversion">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <items>
-                      <item id="0" translatable="yes" context="formulacalculationoptions|comboConversion">Generate #VALUE! error</item>
-                      <item id="1" translatable="yes" context="formulacalculationoptions|comboConversion">Treat as zero</item>
-                      <item id="2" translatable="yes" context="formulacalculationoptions|comboConversion">Convert only if unambiguous</item>
-                      <item id="3" translatable="yes" context="formulacalculationoptions|comboConversion">Convert also locale dependent</item>
-                    </items>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
