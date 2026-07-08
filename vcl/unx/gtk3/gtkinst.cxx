@@ -13965,10 +13965,15 @@ private:
                            m_nTextCol, !pText ? nullptr : OUStringToOString(*pText, RTL_TEXTENCODING_UTF8).getStr(),
                            m_nIdCol, !pId ? nullptr : OUStringToOString(*pId, RTL_TEXTENCODING_UTF8).getStr());
 
+        if (!pIconName && !pDevice)
+            return;
+
+        const int nImageCol = m_nExpanderImageCol != -1 ? m_nExpanderImageCol : m_nImageCol;
+
         if (pIconName)
         {
             GdkPixbuf* pixbuf = getPixbuf(*pIconName);
-            m_Setter(m_pTreeModel, &iter, m_nImageCol, pixbuf, -1);
+            m_Setter(m_pTreeModel, &iter, nImageCol, pixbuf, -1);
             if (pixbuf)
                 g_object_unref(pixbuf);
         }
@@ -13987,7 +13992,7 @@ private:
             cairo_paint(cr);
             cairo_destroy(cr);
 
-            m_Setter(m_pTreeModel, &iter, m_nImageCol, target, -1);
+            m_Setter(m_pTreeModel, &iter, nImageCol, target, -1);
             cairo_surface_destroy(target);
         }
     }
