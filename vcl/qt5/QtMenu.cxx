@@ -443,6 +443,36 @@ void QtMenu::SetSubMenu(SalMenuItem* pSalMenuItem, SalMenu* pSubMenu, unsigned n
     InsertQtMenuItem(pItem, nPos);
 }
 
+#if defined MACOSX
+void QtMenu::runDialog(ShowDialogId nDialog)
+{
+    SolarMutexGuard g;
+
+    QtInstance& rQtInstance = GetQtInstance();
+    if (!rQtInstance.IsMainThread())
+    {
+        rQtInstance.RunInMainThread([this, nDialog]() { runDialog(nDialog); });
+        return;
+    }
+
+    mpFrame->CallCallback(SalEvent::ShowDialog, reinterpret_cast<void*>(nDialog));
+}
+
+void QtMenu::quitApp()
+{
+    SolarMutexGuard g;
+
+    QtInstance& rQtInstance = GetQtInstance();
+    if (!rQtInstance.IsMainThread())
+    {
+        rQtInstance.RunInMainThread([this]() { this->quitApp(); });
+        return;
+    }
+
+    mpFrame->CallCallback(SalEvent::Shutdown, nullptr);
+}
+#endif
+
 void QtMenu::SetFrame(const SalFrame* pFrame)
 {
     QtInstance& rQtInstance = GetQtInstance();
@@ -487,6 +517,36 @@ void QtMenu::SetFrame(const SalFrame* pFrame)
     mpQMenu = nullptr;
 
     DoFullMenuUpdate(mpVCLMenu);
+
+#ifdef MACOSX
+    // Qt automatically manages Mac Application menu commands, but we must put them into
+    // some menu we manage so Qt can find them and move them to the right place.
+    // So attach them to the File menu after the menus have been rebuilt.
+    for (sal_Int32 nItem = 0; nItem < static_cast<sal_Int32>(GetItemCount()); nItem++)
+    {
+        QtMenuItem* pSalMenuItem = GetItemAtPos(nItem);
+        sal_uInt16 nId = pSalMenuItem->mnId;
+        if (mpVCLMenu->GetItemCommand(nId) == ".uno:PickList")
+        {
+            // Add Mac-specific menu items that Qt will move to the App menu automatically
+            QAction* pAboutAction = pSalMenuItem->mpSubMenu->mpQMenu->addAction("About");
+            pAboutAction->setMenuRole(QAction::AboutRole);
+            connect(pAboutAction, &QAction::triggered, this,
+                    [this] { this->runDialog(ShowDialogId::About); });
+
+            QAction* pPrefsAction = pSalMenuItem->mpSubMenu->mpQMenu->addAction("Preferences");
+            pPrefsAction->setMenuRole(QAction::PreferencesRole);
+            connect(pPrefsAction, &QAction::triggered, this,
+                    [this] { this->runDialog(ShowDialogId::Preferences); });
+
+            QAction* pQuitAction = pSalMenuItem->mpSubMenu->mpQMenu->addAction("Quit");
+            pQuitAction->setMenuRole(QAction::QuitRole);
+            connect(pQuitAction, &QAction::triggered, this, [this] { this->quitApp(); });
+
+            break;
+        }
+    }
+#endif
 }
 
 void QtMenu::DoFullMenuUpdate(Menu* pMenuBar)

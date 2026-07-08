@@ -12,6 +12,7 @@
 #include <sal/config.h>
 
 #include <salmenu.hxx>
+#include <vcl/commandevent.hxx>
 
 #include <QtCore/QObject>
 #include <QtWidgets/QMenu>
@@ -71,6 +72,10 @@ private:
     void connectHelpShortcut(QMenu* pMenu);
     // set slots that handle signals relevant for help menu
     void connectHelpSignalSlots(QMenu* pMenu, QtMenuItem* pSalMenuItem);
+#if defined MACOSX
+    void runDialog(ShowDialogId nDialog);
+    void quitApp();
+#endif
 
 public:
     QtMenu(bool bMenuBar);
