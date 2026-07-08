@@ -27,6 +27,19 @@
                 <property name="margin-start">12</property>
                 <property name="margin-top">6</property>
                 <child>
+                  <object class="GtkImage" id="lockformula">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="formula">
                     <property name="label" translatable="yes" context="tpviewpage|formula">_Formulas</property>
                     <property name="visible">True</property>
@@ -43,6 +56,19 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="locknil">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -65,6 +91,19 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkImage" id="lockannot">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="annot">
                     <property name="label" translatable="yes" context="tpviewpage|annot">_Comment indicator</property>
                     <property name="visible">True</property>
@@ -81,6 +120,50 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="imNoteAuthor">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="cbNoteAuthor">
+                    <property name="label" translatable="yes" context="tpviewpage|noteauthor">Comment authorship</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="cbNoteAuthor-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cbNoteAuthor">Specifies whether the author of the comment is displayed above the comment.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockformulamark">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -103,6 +186,19 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkImage" id="lockvalue">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">5</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="value">
                     <property name="label" translatable="yes" context="tpviewpage|value">Value h_ighlighting</property>
                     <property name="visible">True</property>
@@ -122,26 +218,39 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="rangefind">
-                    <property name="label" translatable="yes" context="tpviewpage|rangefind">_Show references in color</property>
+                  <object class="GtkImage" id="lockcolrowhigh">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="colrowhigh">
+                    <property name="label" translatable="yes" context="tpviewpage|value">Column/Row highlighting</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
-                      <object class="AtkObject" id="rangefind-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|rangefind">Specifies that each reference is highlighted in color in the formula. The cell range is also enclosed by a colored border as soon as the cell containing the reference is selected for editing.</property>
+                      <object class="AtkObject" id="colrowhigh-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|value">Mark the Column/row highlighting box to show row/column highlighting for the row and column of the active cell.</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="top-attach">9</property>
+                    <property name="top-attach">6</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkImage" id="lockformula">
+                  <object class="GtkImage" id="lockeditcellbghigh">
                     <property name="can-focus">False</property>
                     <property name="no-show-all">True</property>
                     <property name="halign">center</property>
@@ -150,46 +259,26 @@
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
+                    <property name="top-attach">7</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkImage" id="locknil">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
+                  <object class="GtkCheckButton" id="editcellbg">
+                    <property name="label" translatable="yes" context="tpviewpage|value">Highlight cell in edit mode</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="editcellbg-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|value">Mark this box to show highlighted background when the cell is in edit mode.</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockannot">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockformulamark">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -203,19 +292,6 @@
                   <packing>
                     <property name="left-attach">0</property>
                     <property name="top-attach">8</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockvalue">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -251,98 +327,22 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="colrowhigh">
-                    <property name="label" translatable="yes" context="tpviewpage|value">Column/Row highlighting</property>
+                  <object class="GtkCheckButton" id="rangefind">
+                    <property name="label" translatable="yes" context="tpviewpage|rangefind">_Show references in color</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
-                      <object class="AtkObject" id="colrowhigh-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|value">Mark the Column/row highlighting box to show row/column highlighting for the row and column of the active cell.</property>
+                      <object class="AtkObject" id="rangefind-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|rangefind">Specifies that each reference is highlighted in color in the formula. The cell range is also enclosed by a colored border as soon as the cell containing the reference is selected for editing.</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="top-attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockcolrowhigh">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="editcellbg">
-                    <property name="label" translatable="yes" context="tpviewpage|value">Highlight cell in edit mode</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="editcellbg-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|value">Mark this box to show highlighted background when the cell is in edit mode.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockeditcellbghigh">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="cbNoteAuthor">
-                    <property name="label" translatable="yes" context="tpviewpage|noteauthor">Comment authorship</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="cbNoteAuthor-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cbNoteAuthor">Specifies whether the author of the comment is displayed above the comment.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="imNoteAuthor">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">3</property>
+                    <property name="top-attach">9</property>
                   </packing>
                 </child>
               </object>
@@ -364,293 +364,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame5">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label-xalign">0</property>
-            <property name="shadow-type">none</property>
-            <child>
-              <!-- n-columns=2 n-rows=6 -->
-              <object class="GtkGrid" id="grid4">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-top">6</property>
-                <child>
-                  <object class="GtkCheckButton" id="rowcolheader">
-                    <property name="label" translatable="yes" context="tpviewpage|rowcolheader">Colu_mn/row headers</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="rowcolheader-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|rowcolheader">Specifies whether to display row and column headers.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="hscroll">
-                    <property name="label" translatable="yes" context="tpviewpage|hscroll">Hori_zontal scroll bar</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="hscroll-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|hscroll">Specifies whether to display a horizontal scrollbar at the bottom of the document window.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="vscroll">
-                    <property name="label" translatable="yes" context="tpviewpage|vscroll">_Vertical scroll bar</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="vscroll-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|vscroll">Specifies whether to display a vertical scrollbar at the right of the document window.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="tblreg">
-                    <property name="label" translatable="yes" context="tpviewpage|tblreg">Sh_eet tabs</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="tblreg-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|tblreg">Specifies whether to display the sheet tabs at the bottom of the spreadsheet document.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="outline">
-                    <property name="label" translatable="yes" context="tpviewpage|outline">_Outline symbols</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="outline-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|outline">If you have defined an outline, the Outline symbols option specifies whether to view the outline symbols at the border of the sheet.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="cbSummary">
-                    <property name="label" translatable="yes" context="tpviewpage|summary">Summary o_n search</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="active">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="cbSummary-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cbSummary">If this box is checked, a Search Results window appears when you choose Find All in the Find Box, which summarizes the search results.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockrowcolheader">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockhscroll">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockvscroll">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="locktblreg">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockoutline">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockcbSummary">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">5</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label5">Window</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFrame" id="frame3">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label-xalign">0</property>
-            <property name="shadow-type">none</property>
-            <child>
-              <!-- n-columns=2 n-rows=1 -->
-              <object class="GtkGrid">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-top">6</property>
-                <child>
-                  <object class="GtkCheckButton" id="synczoom">
-                    <property name="label" translatable="yes" context="tpviewpage|synczoom">S_ynchronize sheets</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="synczoom-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|synczoom">If checked, all sheets are shown with the same zoom factor. If not checked, each sheet can have its own zoom factor.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="locksynczoom">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label3">Zoom</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkFrame" id="frame1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -666,43 +379,16 @@
                 <property name="row-spacing">3</property>
                 <property name="column-spacing">6</property>
                 <child>
-                  <object class="GtkCheckButton" id="break">
-                    <property name="label" translatable="yes" context="tpviewpage|break">_Page breaks</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="break-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|break">Specifies whether to view the page breaks within a defined print area.</property>
-                      </object>
-                    </child>
+                  <object class="GtkImage" id="lockgrid">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
                   </object>
                   <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                    <property name="width">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="guideline">
-                    <property name="label" translatable="yes" context="tpviewpage|guideline">Helplines _while moving</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="guideline-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|guideline">Specifies whether to view guides when moving drawings, frames, graphics and other objects.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                    <property name="width">3</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -743,6 +429,19 @@
                     <property name="left-attach">2</property>
                     <property name="top-attach">0</property>
                     <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockCursor">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -802,32 +501,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkImage" id="lockgrid">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockCursor">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkImage" id="lockbreak">
                     <property name="can-focus">False</property>
                     <property name="no-show-all">True</property>
@@ -841,6 +514,26 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkCheckButton" id="break">
+                    <property name="label" translatable="yes" context="tpviewpage|break">_Page breaks</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="break-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|break">Specifies whether to view the page breaks within a defined print area.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkImage" id="lockguideline">
                     <property name="can-focus">False</property>
                     <property name="no-show-all">True</property>
@@ -851,6 +544,26 @@
                   <packing>
                     <property name="left-attach">0</property>
                     <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="guideline">
+                    <property name="label" translatable="yes" context="tpviewpage|guideline">Helplines _while moving</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="guideline-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|guideline">Specifies whether to view guides when moving drawings, frames, graphics and other objects.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
+                    <property name="width">3</property>
                   </packing>
                 </child>
               </object>
@@ -872,6 +585,230 @@
           </packing>
         </child>
         <child>
+          <object class="GtkFrame" id="frame5">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label-xalign">0</property>
+            <property name="shadow-type">none</property>
+            <child>
+              <!-- n-columns=2 n-rows=6 -->
+              <object class="GtkGrid" id="grid4">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">12</property>
+                <property name="margin-top">6</property>
+                <child>
+                  <object class="GtkImage" id="lockrowcolheader">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="rowcolheader">
+                    <property name="label" translatable="yes" context="tpviewpage|rowcolheader">Colu_mn/row headers</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="rowcolheader-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|rowcolheader">Specifies whether to display row and column headers.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockhscroll">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="hscroll">
+                    <property name="label" translatable="yes" context="tpviewpage|hscroll">Hori_zontal scroll bar</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="hscroll-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|hscroll">Specifies whether to display a horizontal scrollbar at the bottom of the document window.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockvscroll">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="vscroll">
+                    <property name="label" translatable="yes" context="tpviewpage|vscroll">_Vertical scroll bar</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="vscroll-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|vscroll">Specifies whether to display a vertical scrollbar at the right of the document window.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="locktblreg">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="tblreg">
+                    <property name="label" translatable="yes" context="tpviewpage|tblreg">Sh_eet tabs</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="tblreg-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|tblreg">Specifies whether to display the sheet tabs at the bottom of the spreadsheet document.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockoutline">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="outline">
+                    <property name="label" translatable="yes" context="tpviewpage|outline">_Outline symbols</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="outline-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|outline">If you have defined an outline, the Outline symbols option specifies whether to view the outline symbols at the border of the sheet.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockcbSummary">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="cbSummary">
+                    <property name="label" translatable="yes" context="tpviewpage|summary">Summary o_n search</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="active">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="cbSummary-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cbSummary">If this box is checked, a Search Results window appears when you choose Find All in the Find Box, which summarizes the search results.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">5</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes" context="tpviewpage|label5">Window</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkFrame" id="frame2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -886,6 +823,19 @@
                 <property name="margin-top">6</property>
                 <property name="row-spacing">3</property>
                 <property name="column-spacing">3</property>
+                <child>
+                  <object class="GtkImage" id="lockobjgrf">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkLabel" id="objgrf_label">
                     <property name="visible">True</property>
@@ -903,44 +853,6 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="diagram_label">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|diagram_label">Char_ts:</property>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">diagram</property>
-                    <property name="xalign">0</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="diagram_label-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|Char_ts:">Defines if charts in your document are shown or hidden.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="draw_label">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|draw_label">_Drawing objects:</property>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">draw</property>
-                    <property name="xalign">0</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="draw_label-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|_Drawing objects:">Defines if drawing objects in your document are shown or hidden.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -963,6 +875,38 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkImage" id="lockdiagram">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="diagram_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes" context="tpviewpage|diagram_label">Char_ts:</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">diagram</property>
+                    <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="diagram_label-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|Char_ts:">Defines if charts in your document are shown or hidden.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkComboBoxText" id="diagram">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -979,6 +923,38 @@
                   <packing>
                     <property name="left-attach">2</property>
                     <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockdraw">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="draw_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes" context="tpviewpage|draw_label">_Drawing objects:</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">draw</property>
+                    <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="draw_label-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|_Drawing objects:">Defines if drawing objects in your document are shown or hidden.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1000,45 +976,6 @@
                     <property name="top-attach">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkImage" id="lockobjgrf">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockdiagram">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockdraw">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
               </object>
             </child>
             <child type="label">
@@ -1055,6 +992,69 @@
           <packing>
             <property name="left-attach">1</property>
             <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame3">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label-xalign">0</property>
+            <property name="shadow-type">none</property>
+            <child>
+              <!-- n-columns=2 n-rows=1 -->
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">12</property>
+                <property name="margin-top">6</property>
+                <child>
+                  <object class="GtkImage" id="locksynczoom">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="synczoom">
+                    <property name="label" translatable="yes" context="tpviewpage|synczoom">S_ynchronize sheets</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="synczoom-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|synczoom">If checked, all sheets are shown with the same zoom factor. If not checked, each sheet can have its own zoom factor.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes" context="tpviewpage|label3">Zoom</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
