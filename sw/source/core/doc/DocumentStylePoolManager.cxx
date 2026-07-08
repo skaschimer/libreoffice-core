@@ -543,9 +543,8 @@ const TranslateId STR_POOLNUMRULE_NUM_ARY[] =
 // RES_POOL_TABLESTYLE_TYPE in sw/inc/poolfmt.hxx
 const TranslateId STR_TABSTYLE_ARY[] =
 {
-    // XXX MUST be in order, Writer first, then Svx old, then Svx new
-    // 1 Writer resource string
-    STR_TABSTYLE_DEFAULT,
+    // XXX MUST be in order: default style, then Svx old, then Svx new
+    RID_SVXSTR_TBLAFMT_DEFAULT_STYLE,
     // 16 old styles Svx resource strings
     RID_SVXSTR_TBLAFMT_3D,
     RID_SVXSTR_TBLAFMT_BLACK1,
@@ -2847,9 +2846,8 @@ const std::vector<OUString>& SwStyleNameMapper::GetTableStyleUINameArray()
     auto it = s_aTableStyleUINameArray.find(rCurrentLanguage);
     if (it == s_aTableStyleUINameArray.end())
         it = s_aTableStyleUINameArray.emplace(rCurrentLanguage,
-            // 1 Writer resource string (XXX if this ever changes rather use offset math)
             lcl_NewUINameArray(STR_TABSTYLE_ARY, std::ssize(STR_TABSTYLE_ARY),
-                    static_cast<size_t>(std::ssize(STR_TABSTYLE_ARY) - 1))).first;
+                    static_cast<size_t>(std::ssize(STR_TABSTYLE_ARY)))).first;
 
     return it->second;
 }

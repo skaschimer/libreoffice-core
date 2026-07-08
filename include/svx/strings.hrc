@@ -677,6 +677,7 @@
 #define RID_SVXSTR_COLOR_PINK                               NC_("RID_SVXSTR_COLOR_PINK", "Pink")
 #define RID_SVXSTR_COLOR_TURQUOISE                          NC_("RID_SVXSTR_COLOR_TURQUOISE", "Turquoise")
 /* 16 old AutoFormat Table Styles */
+#define RID_SVXSTR_TBLAFMT_DEFAULT_STYLE                    NC_("RID_SVXSTR_TBLAFMT_DEFAULT_STYLE", "Default Style")
 #define RID_SVXSTR_TBLAFMT_3D                               NC_("RID_SVXSTR_TBLAFMT_3D", "3D")
 #define RID_SVXSTR_TBLAFMT_BLACK1                           NC_("RID_SVXSTR_TBLAFMT_BLACK1", "Black 1")
 #define RID_SVXSTR_TBLAFMT_BLACK2                           NC_("RID_SVXSTR_TBLAFMT_BLACK2", "Black 2")

@@ -42,7 +42,11 @@ common functionality of SwTableAutoFormatTable and ScAutoFormat
 #include <editeng/svxenum.hxx>
 #include <svl/typedwhich.hxx>
 #include <svx/TableStylesParser.hxx>
+#include <svx/dialmgr.hxx>
+#include <svx/strings.hrc>
 #include <tools/stream.hxx>
+#include <map>
+#include <string_view>
 
 using namespace com::sun::star::beans;
 using namespace com::sun::star;
@@ -421,6 +425,38 @@ void SvxAutoFormatData::ResetAutoFormat(SvxAutoFormatData& pOld)
 
 SvxAutoFormat::~SvxAutoFormat() = default;
 
+const std::map<OUString, TranslateId> getTranslatedStyleNames = {
+    { u"Default Style"_ustr, RID_SVXSTR_TBLAFMT_DEFAULT_STYLE },
+    { u"Academic"_ustr, RID_SVXSTR_TBLAFMT_LO6_ACADEMIC },
+    { u"Box List Blue"_ustr, RID_SVXSTR_TBLAFMT_LO6_BOX_LIST_BLUE },
+    { u"Box List Green"_ustr, RID_SVXSTR_TBLAFMT_LO6_BOX_LIST_GREEN },
+    { u"Box List Red"_ustr, RID_SVXSTR_TBLAFMT_LO6_BOX_LIST_RED },
+    { u"Box List Yellow"_ustr, RID_SVXSTR_TBLAFMT_LO6_BOX_LIST_YELLOW },
+    { u"Elegant"_ustr, RID_SVXSTR_TBLAFMT_LO6_ELEGANT },
+    { u"Financial"_ustr, RID_SVXSTR_TBLAFMT_LO6_FINANCIAL },
+    { u"Simple Grid Columns"_ustr, RID_SVXSTR_TBLAFMT_LO6_SIMPLE_GRID_COLUMNS },
+    { u"Simple Grid Rows"_ustr, RID_SVXSTR_TBLAFMT_LO6_SIMPLE_GRID_ROWS },
+    { u"Simple List Shaded"_ustr, RID_SVXSTR_TBLAFMT_LO6_SIMPLE_LIST_SHADED },
+};
+
+OUString SvxAutoFormat::MapProgToUIName(std::u16string_view rProgName)
+{
+    const OUString aProgName(rProgName);
+    auto it = getTranslatedStyleNames.find(aProgName);
+    return it != getTranslatedStyleNames.end() ? SvxResId(it->second) : aProgName;
+}
+
+OUString SvxAutoFormat::MapUIToProgName(std::u16string_view rUIName)
+{
+    const OUString aUIName(rUIName);
+    for (auto const & [ rProgName, rResId ] : getTranslatedStyleNames)
+    {
+        if (aUIName == SvxResId(rResId))
+            return rProgName;
+    }
+    return aUIName;
+}
+
 void SvxAutoFormat::ResetParent(std::u16string_view rName)
 {
     OUString sParent;
@@ -470,6 +506,14 @@ bool SvxAutoFormat::Load(bool bWriter)
         aInputSource.sSystemId = sPath;
 
         xImport->parseStream(aInputSource);
+
+        for (size_t i = 0; i < size(); ++i)
+        {
+            SvxAutoFormatData* pData = GetData(i);
+            pData->SetName(MapProgToUIName(pData->GetName()));
+            if (!pData->GetParent().isEmpty())
+                pData->SetParent(MapProgToUIName(pData->GetParent()));
+        }
         return true;
     }
     catch (const uno::Exception& e)

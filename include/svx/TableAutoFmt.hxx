@@ -202,6 +202,10 @@ public:
     virtual size_t size() const = 0;
     void ResetParent(std::u16string_view rName);
 
+    /** Translate built-in table style names between programmatic name and localized UI name. */
+    static OUString MapProgToUIName(std::u16string_view rProgName);
+    static OUString MapUIToProgName(std::u16string_view rUIName);
+
     static const SfxItemPropertySet& GetTablePropertySet();
 
     bool Load(bool bWriter);

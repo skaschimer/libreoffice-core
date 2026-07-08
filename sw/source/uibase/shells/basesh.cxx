@@ -18,6 +18,7 @@
  */
 
 #include <svx/dialmgr.hxx>
+#include <svx/strings.hrc>
 #include <config_features.h>
 #include <config_fuzzers.h>
 
@@ -3265,7 +3266,7 @@ void SwBaseShell::InsertTable( SfxRequest& _rRequest )
             // Use Default Style if no autoformat is provided
             else
             {
-                aAutoNameIn = SvxResId(STR_TABSTYLE_DEFAULT);
+                aAutoNameIn = SvxResId(RID_SVXSTR_TBLAFMT_DEFAULT_STYLE);
                 pTAFormatIn.reset(new SwTableAutoFormat(rTableTable[0]));
             }
 
@@ -3320,7 +3321,7 @@ void SwBaseShell::InsertTable( SfxRequest& _rRequest )
 
             // Set Default Style name is no autoformat is provided
             if (aAutoNameIn.isEmpty())
-                aAutoNameIn = SvxResId(STR_TABSTYLE_DEFAULT);
+                aAutoNameIn = SvxResId(RID_SVXSTR_TBLAFMT_DEFAULT_STYLE);
 
             InsertTableImpl( rSh, rTempView, UIName(aTableNameIn), nRowsIn, nColsIn, aInsTableOptsIn, TableStyleName(aAutoNameIn), pTAFormatIn );
 

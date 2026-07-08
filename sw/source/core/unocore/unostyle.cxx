@@ -36,7 +36,9 @@
 #include <svl/numformat.hxx>
 #include <svl/zforlist.hxx>
 #include <svl/zformat.hxx>
+#include <svx/dialmgr.hxx>
 #include <svx/pageitem.hxx>
+#include <svx/strings.hrc>
 #include <editeng/colritem.hxx>
 #include <editeng/contouritem.hxx>
 #include <editeng/crossedoutitem.hxx>
@@ -1083,7 +1085,7 @@ void SwXStyleFamily::insertByName(const OUString& rProgName, const uno::Any& rEl
 
         pNewStyle->setName(rProgName); // insertByName sets the element name
         if (pNewStyle->getParentStyle().isEmpty())
-            pNewStyle->setParentStyle(SwResId(STR_TABSTYLE_DEFAULT));
+            pNewStyle->setParentStyle(SvxResId(RID_SVXSTR_TBLAFMT_DEFAULT_STYLE));
 
         m_pDocShell->GetDoc()->GetTableStyles().AddAutoFormat(*pNewStyle->GetTableFormat());
         pNewStyle->SetPhysical();

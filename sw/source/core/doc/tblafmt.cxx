@@ -23,7 +23,7 @@
 #include <doc.hxx>
 #include <tblafmt.hxx>
 #include <cellatr.hxx>
-#include <SwStyleNameMapper.hxx>
+#include <swtypes.hxx>
 #include <hintids.hxx>
 #include <fmtornt.hxx>
 #include <editsh.hxx>
