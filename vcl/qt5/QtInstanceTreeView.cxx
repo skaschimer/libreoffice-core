@@ -74,7 +74,7 @@ void QtInstanceTreeView::do_insert(const weld::TreeIter* pParent, int nPos, cons
         if (aParentIndex.isValid() && m_pModel->columnCount(aParentIndex) == 0)
             m_pModel->insertColumns(0, m_pModel->columnCount(), aParentIndex);
 
-        const QModelIndex aIndex = modelIndex(nPos, 0, aParentIndex);
+        const QPersistentModelIndex aIndex = modelIndex(nPos, 0, aParentIndex);
         QStandardItem* pItem = itemFromIndex(aIndex);
         if (pStr)
             set_text(treeIter(nPos, aParentIndex), *pStr);
