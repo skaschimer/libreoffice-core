@@ -24,6 +24,230 @@
     <property name="row-spacing">12</property>
     <property name="column-spacing">24</property>
     <child>
+      <object class="GtkFrame" id="frame5">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <!-- n-columns=2 n-rows=3 -->
+          <object class="GtkGrid" id="grid5">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <child>
+              <object class="GtkRadioButton" id="formulawildcards">
+                <property name="label" translatable="yes" context="optcalculatepage|formulawildcards">Enable w_ildcards in formulas</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-text" translatable="yes" context="optcalculatepage|formulawildcards|tooltip_text">Enable wildcards for interoperability with Microsoft Excel</property>
+                <property name="use-underline">True</property>
+                <property name="active">True</property>
+                <property name="draw-indicator">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="formulawildcards-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formulawildcards">Specifies that wildcards are enabled when searching and also for character string comparisons.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockformulawild">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="formularegex">
+                <property name="label" translatable="yes" context="optcalculatepage|formularegex">Enable r_egular expressions in formulas</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">formulawildcards</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="formularegex-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formularegex">Specifies that regular expressions instead of simple wildcards are enabled when searching and also for character string comparisons.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="formulaliteral">
+                <property name="label" translatable="yes" context="optcalculatepage|formulaliteral">No wildcards or regular expressions in formulas</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">formulawildcards</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="formulaliteral-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formulaliteral">Specifies that only literal strings are used when searching and also for character string comparisons.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes" context="optcalculatepage|label5">Formulas Wildcards</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left-attach">0</property>
+        <property name="top-attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame3">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <!-- n-columns=2 n-rows=3 -->
+          <object class="GtkGrid" id="grid2">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <child>
+              <object class="GtkRadioButton" id="datestd">
+                <property name="label" translatable="yes" context="optcalculatepage|datestd">1899-12-30 (defa_ult)</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-text" translatable="yes" context="optcalculatepage|datestd|tooltip_text">Value 0 corresponds to 1899-12-30</property>
+                <property name="use-underline">True</property>
+                <property name="active">True</property>
+                <property name="draw-indicator">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="datestd-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datestd">Sets 1899-12-30 as day zero.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockdate">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="datesc10">
+                <property name="label" translatable="yes" context="optcalculatepage|datesc10">1900-01-01 (Star_Calc 1.0)</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-text" translatable="yes" context="optcalculatepage|datesc10|tooltip_text">Value 0 corresponds to 1900-01-01</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">datestd</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="datesc10-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datesc10">Sets 1900-01-01 as day zero. Use this setting for StarCalc 1.0 spreadsheets containing date entries.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="date1904">
+                <property name="label" translatable="yes" context="optcalculatepage|date1904">_1904-01-01</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-text" translatable="yes" context="optcalculatepage|date1904|tooltip_text">0 corresponds to 1904-01-01</property>
+                <property name="use-underline">True</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">datestd</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="date1904-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|date1904">Sets 1904-01-01 as day zero. Use this setting for spreadsheets that are imported in a foreign format.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes" context="optcalculatepage|label3">Date</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left-attach">1</property>
+        <property name="top-attach">0</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -37,6 +261,19 @@
             <property name="margin-start">12</property>
             <property name="margin-top">6</property>
             <property name="hexpand">True</property>
+            <child>
+              <object class="GtkImage" id="lockcase">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkCheckButton" id="case">
                 <property name="label" translatable="yes" context="optcalculatepage|case">Case se_nsitive</property>
@@ -58,6 +295,19 @@
               </packing>
             </child>
             <child>
+              <object class="GtkImage" id="lockcalc">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkCheckButton" id="calc">
                 <property name="label" translatable="yes" context="optcalculatepage|calc">_Precision as shown</property>
                 <property name="visible">True</property>
@@ -74,6 +324,19 @@
               <packing>
                 <property name="left-attach">1</property>
                 <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockmatch">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
@@ -97,6 +360,19 @@
               </packing>
             </child>
             <child>
+              <object class="GtkImage" id="locklookup">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkCheckButton" id="lookup">
                 <property name="label" translatable="yes" context="optcalculatepage|lookup">_Automatically find column and row labels</property>
                 <property name="visible">True</property>
@@ -116,6 +392,19 @@
               </packing>
             </child>
             <child>
+              <object class="GtkImage" id="lockgeneralprec">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkCheckButton" id="generalprec">
                 <property name="label" translatable="yes" context="optcalculatepage|generalprec">_Limit decimals for general number format</property>
                 <property name="visible">True</property>
@@ -132,6 +421,19 @@
               <packing>
                 <property name="left-attach">1</property>
                 <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="lockprec">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">5</property>
               </packing>
             </child>
             <child>
@@ -179,84 +481,6 @@
                 <property name="top-attach">5</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkImage" id="lockcase">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockcalc">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockmatch">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="locklookup">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockgeneralprec">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockprec">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">5</property>
-              </packing>
-            </child>
           </object>
         </child>
         <child type="label">
@@ -273,230 +497,6 @@
       <packing>
         <property name="left-attach">0</property>
         <property name="top-attach">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkFrame" id="frame3">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="label-xalign">0</property>
-        <property name="shadow-type">none</property>
-        <child>
-          <!-- n-columns=2 n-rows=3 -->
-          <object class="GtkGrid" id="grid2">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
-            <child>
-              <object class="GtkRadioButton" id="datestd">
-                <property name="label" translatable="yes" context="optcalculatepage|datestd">1899-12-30 (defa_ult)</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="optcalculatepage|datestd|tooltip_text">Value 0 corresponds to 1899-12-30</property>
-                <property name="use-underline">True</property>
-                <property name="active">True</property>
-                <property name="draw-indicator">True</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="datestd-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datestd">Sets 1899-12-30 as day zero.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="datesc10">
-                <property name="label" translatable="yes" context="optcalculatepage|datesc10">1900-01-01 (Star_Calc 1.0)</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="optcalculatepage|datesc10|tooltip_text">Value 0 corresponds to 1900-01-01</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-                <property name="group">datestd</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="datesc10-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datesc10">Sets 1900-01-01 as day zero. Use this setting for StarCalc 1.0 spreadsheets containing date entries.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="date1904">
-                <property name="label" translatable="yes" context="optcalculatepage|date1904">_1904-01-01</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="optcalculatepage|date1904|tooltip_text">0 corresponds to 1904-01-01</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-                <property name="group">datestd</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="date1904-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|date1904">Sets 1904-01-01 as day zero. Use this setting for spreadsheets that are imported in a foreign format.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockdate">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-        </child>
-        <child type="label">
-          <object class="GtkLabel" id="label3">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optcalculatepage|label3">Date</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left-attach">1</property>
-        <property name="top-attach">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkFrame" id="frame5">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="label-xalign">0</property>
-        <property name="shadow-type">none</property>
-        <child>
-          <!-- n-columns=2 n-rows=3 -->
-          <object class="GtkGrid" id="grid5">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
-            <child>
-              <object class="GtkRadioButton" id="formulawildcards">
-                <property name="label" translatable="yes" context="optcalculatepage|formulawildcards">Enable w_ildcards in formulas</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="optcalculatepage|formulawildcards|tooltip_text">Enable wildcards for interoperability with Microsoft Excel</property>
-                <property name="use-underline">True</property>
-                <property name="active">True</property>
-                <property name="draw-indicator">True</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="formulawildcards-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formulawildcards">Specifies that wildcards are enabled when searching and also for character string comparisons.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="formularegex">
-                <property name="label" translatable="yes" context="optcalculatepage|formularegex">Enable r_egular expressions in formulas</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-                <property name="group">formulawildcards</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="formularegex-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formularegex">Specifies that regular expressions instead of simple wildcards are enabled when searching and also for character string comparisons.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="formulaliteral">
-                <property name="label" translatable="yes" context="optcalculatepage|formulaliteral">No wildcards or regular expressions in formulas</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
-                <property name="draw-indicator">True</property>
-                <property name="group">formulawildcards</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="formulaliteral-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|formulaliteral">Specifies that only literal strings are used when searching and also for character string comparisons.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockformulawild">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-        </child>
-        <child type="label">
-          <object class="GtkLabel" id="label5">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optcalculatepage|label5">Formulas Wildcards</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left-attach">0</property>
-        <property name="top-attach">0</property>
       </packing>
     </child>
     <child>
@@ -567,6 +567,19 @@
                 <property name="row-spacing">3</property>
                 <property name="column-spacing">6</property>
                 <child>
+                  <object class="GtkImage" id="locksteps">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkLabel" id="stepsft">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -578,20 +591,6 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="minchangeft">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="optcalculatepage|minchangeft">_Minimum change:</property>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">minchange</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -613,6 +612,33 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkImage" id="lockminchange">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="minchangeft">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes" context="optcalculatepage|minchangeft">_Minimum change:</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">minchange</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkEntry" id="minchange">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
@@ -627,32 +653,6 @@
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="locksteps">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockminchange">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
                     <property name="top-attach">1</property>
                   </packing>
                 </child>
@@ -698,6 +698,19 @@
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <child>
+              <object class="GtkImage" id="lockthreadingenabled">
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon-name">res/lock.png</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkCheckButton" id="threadingenabled">
                 <property name="label" translatable="yes" context="optcalculatepage|threadingenabled">Enable multi-threaded calculation</property>
                 <property name="visible">True</property>
@@ -711,19 +724,6 @@
                 <property name="left-attach">1</property>
                 <property name="top-attach">0</property>
                 <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="lockthreadingenabled">
-                <property name="can-focus">False</property>
-                <property name="no-show-all">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon-name">res/lock.png</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
