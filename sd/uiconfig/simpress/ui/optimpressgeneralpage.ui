@@ -60,6 +60,19 @@
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <child>
+                  <object class="GtkImage" id="lockstartwithwizard">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="startwithwizard">
                     <property name="label" translatable="yes" context="optimpressgeneralpage|startwithwizard">Start with _Template Selection</property>
                     <property name="visible">True</property>
@@ -75,19 +88,6 @@
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockstartwithwizard">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
                     <property name="top-attach">0</property>
                   </packing>
                 </child>
@@ -129,6 +129,19 @@
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <child>
+                  <object class="GtkImage" id="lockcopywhenmove">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="copywhenmove">
                     <property name="label" translatable="yes" context="optimpressgeneralpage|copywhenmove">Copy when moving</property>
                     <property name="visible">True</property>
@@ -146,6 +159,113 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockbackgroundback">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="backgroundback">
+                    <property name="label" translatable="yes" context="optimpressgeneralpage|backgroundback">Use background cache</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="backgroundback-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|backgroundback">Specifies whether to use the cache for displaying objects on the master slide.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockobjalwymov">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="objalwymov">
+                    <property name="label" translatable="yes" context="optimpressgeneralpage|objalwymov">Objects always moveable</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="objalwymov-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|objalwymov">Specifies that you want to move an object with the Rotate tool enabled. If Objects always moveable is not marked, the Rotate tool can only be used to rotate an object.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockdistortcb">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="distortcb">
+                    <property name="label" translatable="yes" context="optimpressgeneralpage|distortcb">Do not distort objects in curve</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="lockunits">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -187,6 +307,19 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="locktabstop">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -237,139 +370,6 @@
                     <property name="top-attach">5</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkCheckButton" id="objalwymov">
-                    <property name="label" translatable="yes" context="optimpressgeneralpage|objalwymov">Objects always moveable</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="halign">start</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="objalwymov-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|objalwymov">Specifies that you want to move an object with the Rotate tool enabled. If Objects always moveable is not marked, the Rotate tool can only be used to rotate an object.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="distortcb">
-                    <property name="label" translatable="yes" context="optimpressgeneralpage|distortcb">Do not distort objects in curve</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="halign">start</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="backgroundback">
-                    <property name="label" translatable="yes" context="optimpressgeneralpage|backgroundback">Use background cache</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="halign">start</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="backgroundback-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|backgroundback">Specifies whether to use the cache for displaying objects on the master slide.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockcopywhenmove">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockbackgroundback">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockobjalwymov">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockunits">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="locktabstop">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockdistortcb">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
               </object>
             </child>
             <child type="label">
@@ -406,6 +406,19 @@
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <child>
+                  <object class="GtkImage" id="lockcbCompatibility">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="cbCompatibility">
                     <property name="label" translatable="yes" context="optimpressgeneralpage|cbCompatibility">Add _spacing between paragraphs and tables</property>
                     <property name="visible">True</property>
@@ -421,19 +434,6 @@
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockcbCompatibility">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
                     <property name="top-attach">0</property>
                   </packing>
                 </child>
@@ -488,6 +488,19 @@
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <child>
+                  <object class="GtkImage" id="lockqickedit">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="qickedit">
                     <property name="label" translatable="yes" context="optimpressgeneralpage|qickedit">Allow quick editing</property>
                     <property name="visible">True</property>
@@ -508,6 +521,19 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkImage" id="locktextselected">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="textselected">
                     <property name="label" translatable="yes" context="optimpressgeneralpage|textselected">Only text area selectable</property>
                     <property name="visible">True</property>
@@ -523,32 +549,6 @@
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockqickedit">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="locktextselected">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
                     <property name="top-attach">1</property>
                   </packing>
                 </child>
@@ -588,6 +588,19 @@
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <child>
+                  <object class="GtkImage" id="lockscaleBox">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon-name">res/lock.png</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkLabel" id="label8">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -599,6 +612,29 @@
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="scaleBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="has-entry">True</property>
+                    <child internal-child="entry">
+                      <object class="GtkEntry">
+                        <property name="can-focus">False</property>
+                        <property name="truncate-multiline">True</property>
+                        <property name="halign">start</property>
+                      </object>
+                    </child>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="scaleBox-atkobject">
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|scaleBox">Determines the drawing scale on the status bar.</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
                     <property name="top-attach">0</property>
                   </packing>
                 </child>
@@ -617,20 +653,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="heightlbl">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="label" translatable="yes" context="optimpressgeneralpage|heightlbl">Page _height:</property>
-                    <property name="use-underline">True</property>
-                    <property name="mnemonic-widget">metricHeightFields</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkSpinButton" id="metricWidthFields">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
@@ -642,6 +664,20 @@
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="heightlbl">
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="label" translatable="yes" context="optimpressgeneralpage|heightlbl">Page _height:</property>
+                    <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">metricHeightFields</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">3</property>
                     <property name="top-attach">1</property>
                   </packing>
                 </child>
@@ -714,42 +750,6 @@
                   <packing>
                     <property name="left-attach">4</property>
                     <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBoxText" id="scaleBox">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="has-entry">True</property>
-                    <child internal-child="entry">
-                      <object class="GtkEntry">
-                        <property name="can-focus">False</property>
-                        <property name="truncate-multiline">True</property>
-                        <property name="halign">start</property>
-                      </object>
-                    </child>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="scaleBox-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|scaleBox">Determines the drawing scale on the status bar.</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="lockscaleBox">
-                    <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="icon-name">res/lock.png</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
