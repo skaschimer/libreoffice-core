@@ -88,7 +88,7 @@
   <style:style style:name="Academic.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Academic.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -168,7 +168,7 @@
   <style:style style:name="Box-List-Blue.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Box-List-Blue.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -248,7 +248,7 @@
   <style:style style:name="Box-List-Green.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Box-List-Green.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -328,7 +328,7 @@
   <style:style style:name="Box-List-Red.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Box-List-Red.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -408,7 +408,7 @@
   <style:style style:name="Box-List-Yellow.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Box-List-Yellow.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -488,7 +488,7 @@
   <style:style style:name="Elegant.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border-bottom="0.5pt solid #999999" fo:background-color="#eeeeee"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Elegant.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -568,7 +568,7 @@
   <style:style style:name="Financial.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0.5pt solid #b2b2b2"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name-asian="Source Han Sans CN Regular" style:font-family-asian="Source Han Sans CN Regular" style:font-name-complex="Lohit Devanagari" style:font-family-complex="Lohit Devanagari"/>
+    <style:text-properties style:font-family-asian="Source Han Sans CN Regular" style:font-family-complex="Lohit Devanagari"/>
   </style:style>
   <style:style style:name="Financial.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -648,7 +648,7 @@
   <style:style style:name="Simple-Grid-Columns.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0.5pt solid #666666"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Simple-Grid-Columns.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties fo:background-color="#eeeeee"/>
@@ -728,7 +728,7 @@
   <style:style style:name="Simple-Grid-Rows.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0.5pt solid #666666"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name="Liberation Sans" fo:font-family="'Liberation Sans'" style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties fo:font-family="'Liberation Sans'" style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Simple-Grid-Rows.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>
@@ -808,7 +808,7 @@
   <style:style style:name="Simple-List-Shaded.body" style:family="table-cell" style:parent-style-name="Default-Style.body">
     <style:table-cell-properties fo:border="0pt solid #000000"/>
     <style:paragraph-properties/>
-    <style:text-properties style:font-name-asian="DejaVu Sans" style:font-family-asian="'DejaVu Sans'" style:font-name-complex="DejaVu Sans" style:font-family-complex="'DejaVu Sans'"/>
+    <style:text-properties style:font-family-asian="'DejaVu Sans'" style:font-family-complex="'DejaVu Sans'"/>
   </style:style>
   <style:style style:name="Simple-List-Shaded.even-columns" style:family="table-cell" style:parent-style-name="Default-Style.even-columns">
     <style:table-cell-properties/>

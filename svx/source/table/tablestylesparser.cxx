@@ -850,19 +850,15 @@ void SvxTableStylesExport::exportTextProperties(const SvxAutoFormatDataField& rF
     // <style:font-name, style:font-family>
     if (rField.IsPropertySet(PROP_FONT) && rField.GetFont() != rParent.GetFont())
     {
-        AddAttribute(XML_NAMESPACE_STYLE, XML_FONT_NAME, rField.GetFont().GetFamilyName());
         AddAttribute(XML_NAMESPACE_FO, XML_FONT_FAMILY, rField.GetFont().GetFamilyName());
     }
     if (rField.IsPropertySet(PROP_CJK_FONT) && rField.GetCJKFont() != rParent.GetCJKFont())
     {
-        AddAttribute(XML_NAMESPACE_STYLE, XML_FONT_NAME_ASIAN, rField.GetCJKFont().GetFamilyName());
         AddAttribute(XML_NAMESPACE_STYLE, XML_FONT_FAMILY_ASIAN,
                      rField.GetCJKFont().GetFamilyName());
     }
     if (rField.IsPropertySet(PROP_CTL_FONT) && rField.GetCTLFont() != rParent.GetCTLFont())
     {
-        AddAttribute(XML_NAMESPACE_STYLE, XML_FONT_NAME_COMPLEX,
-                     rField.GetCTLFont().GetFamilyName());
         AddAttribute(XML_NAMESPACE_STYLE, XML_FONT_FAMILY_COMPLEX,
                      rField.GetCTLFont().GetFamilyName());
     }
