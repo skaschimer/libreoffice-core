@@ -17,14 +17,15 @@
 
 class QtInstanceTreeIter final : public weld::TreeIter
 {
-    QModelIndex m_aModelIndex;
+    QPersistentModelIndex m_aModelIndex;
 
 public:
-    explicit QtInstanceTreeIter(const weld::ItemView& rItemView, QModelIndex aModelIndex);
+    explicit QtInstanceTreeIter(const weld::ItemView& rItemView,
+                                const QPersistentModelIndex& rModelIndex);
     virtual bool equal(const TreeIter& rOther) const override;
 
-    const QModelIndex& modelIndex() const { return m_aModelIndex; }
-    void setModelIndex(const QModelIndex& aIndex) { m_aModelIndex = aIndex; }
+    const QPersistentModelIndex& modelIndex() const { return m_aModelIndex; }
+    void setModelIndex(const QPersistentModelIndex& rIndex) { m_aModelIndex = rIndex; }
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

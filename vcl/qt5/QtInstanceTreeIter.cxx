@@ -11,9 +11,10 @@
 
 #include <QtInstanceTreeIter.hxx>
 
-QtInstanceTreeIter::QtInstanceTreeIter(const weld::ItemView& rItemView, QModelIndex aModelIndex)
+QtInstanceTreeIter::QtInstanceTreeIter(const weld::ItemView& rItemView,
+                                       const QPersistentModelIndex& rModelIndex)
     : weld::TreeIter(rItemView)
-    , m_aModelIndex(aModelIndex)
+    , m_aModelIndex(rModelIndex)
 {
 }
 
