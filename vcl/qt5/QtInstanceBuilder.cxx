@@ -477,6 +477,7 @@ constexpr auto SUPPORTED_WITH_QT_PARENT = frozen::make_unordered_set<std::u16str
     u"modules/scalc/ui/erroralerttabpage.ui",
     u"modules/scalc/ui/optdlg.ui",
     u"modules/scalc/ui/printeroptions.ui",
+    u"modules/scalc/ui/scgeneralpage.ui",
     u"modules/scalc/ui/sheetprintpage.ui",
     u"modules/scalc/ui/sortcriteriapage.ui",
     u"modules/scalc/ui/sortkey.ui",
