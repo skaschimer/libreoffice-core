@@ -60,8 +60,7 @@ public:
  */
 class SC_DLLPUBLIC ScUserList
 {
-    typedef std::vector<ScUserListData> DataType;
-    DataType maData;
+    std::vector<ScUserListData> maData;
 
 public:
     explicit ScUserList(bool initDefault = true);
