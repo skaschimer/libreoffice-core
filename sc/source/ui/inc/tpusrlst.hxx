@@ -60,7 +60,6 @@ private:
     std::unique_ptr<weld::Button> mxBtnCopy;
 
     const OUString m_aStrQueryRemove;
-    const OUString m_aStrCopyList;
     const OUString m_aStrCopyFrom;
     const OUString m_aStrCopyErr;
 

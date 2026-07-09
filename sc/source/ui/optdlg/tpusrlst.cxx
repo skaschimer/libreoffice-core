@@ -64,7 +64,6 @@ ScTpUserLists::ScTpUserLists( weld::Container* pPage, weld::DialogController* pC
     , mxBtnRemove(m_xBuilder->weld_button(u"delete"_ustr))
     , mxBtnCopy(m_xBuilder->weld_button(u"copy"_ustr))
     , m_aStrQueryRemove(ScResId(STR_QUERYREMOVE))
-    , m_aStrCopyList(ScResId(STR_COPYLIST))
     , m_aStrCopyFrom(ScResId(STR_COPYFROM))
     , m_aStrCopyErr(ScResId(STR_COPYERR))
     , m_nWhichUserLists(GetWhich(SID_SCUSERLISTS))
@@ -360,7 +359,7 @@ void ScTpUserLists::CopyListFromArea( const ScRefAddress& rStartPos,
 
     if ( (nStartCol != nEndCol) && (nStartRow != nEndRow) )
     {
-        ScColOrRowDlg aDialog(GetFrameWeld(), m_aStrCopyList, m_aStrCopyFrom);
+        ScColOrRowDlg aDialog(GetFrameWeld(), ScResId(STR_COPYLIST), m_aStrCopyFrom);
         nCellDir = aDialog.run();
     }
     else if ( nStartCol != nEndCol )
