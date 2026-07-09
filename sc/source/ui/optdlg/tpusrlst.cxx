@@ -76,16 +76,7 @@ ScTpUserLists::ScTpUserLists( weld::Container* pPage, weld::DialogController* pC
     , m_nCancelPos(0)
 {
     SetExchangeSupport();
-    Init();
-    Reset(&rCoreAttrs);
-}
 
-ScTpUserLists::~ScTpUserLists()
-{
-}
-
-void ScTpUserLists::Init()
-{
     SfxViewShell*   pSh = SfxViewShell::Current();
     ScTabViewShell* pViewSh = dynamic_cast<ScTabViewShell*>( pSh );
 
@@ -128,6 +119,11 @@ void ScTpUserLists::Init()
         mxEdCopyFrom->set_sensitive(false);
     }
 
+    Reset(&rCoreAttrs);
+}
+
+ScTpUserLists::~ScTpUserLists()
+{
 }
 
 std::unique_ptr<SfxTabPage> ScTpUserLists::Create( weld::Container* pPage, weld::DialogController* pController, const SfxItemSet* rAttrSet )

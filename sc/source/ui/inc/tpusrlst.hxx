@@ -76,7 +76,6 @@ private:
     bool m_bCopyDone;
     sal_Int32 m_nCancelPos;
 
-    void    Init                ();
     size_t  UpdateUserListBox   ();
     void    UpdateEntries       ( size_t nList );
     static void MakeListStr     ( OUString& rListStr );
