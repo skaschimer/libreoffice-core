@@ -339,9 +339,9 @@ IMPL_LINK( SdDefineCustomShowDlg, ClickButtonEditHdl, weld::Entry&, rEdit, void 
 }
 
 // ButtonHdl()
-void SdDefineCustomShowDlg::ClickButtonHdl2(void const * p)
+void SdDefineCustomShowDlg::ClickButtonHdl2(const weld::Widget* pWidget)
 {
-    if( p == m_xBtnAdd.get() )
+    if (pWidget == m_xBtnAdd.get())
     {
         auto aRows = m_xLbPages->get_selected_rows();
         if (!aRows.empty())
@@ -364,7 +364,7 @@ void SdDefineCustomShowDlg::ClickButtonHdl2(void const * p)
             bModified = true;
         }
     }
-    else if (p == m_xBtnRemove.get())
+    else if (pWidget == m_xBtnRemove.get())
     {
         int nPos = m_xLbCustomPages->get_selected_index();
         if (nPos != -1)
@@ -374,7 +374,7 @@ void SdDefineCustomShowDlg::ClickButtonHdl2(void const * p)
             bModified = true;
         }
     }
-    else if( p == m_xEdtName.get() )
+    else if (pWidget == m_xEdtName.get())
     {
         bModified = true;
     }

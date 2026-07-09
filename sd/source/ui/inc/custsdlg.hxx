@@ -79,7 +79,7 @@ private:
     DECL_LINK(ClickButtonHdl3, weld::ItemView&, void);
     DECL_LINK(ClickButtonHdl4, weld::ItemView&, void);
     DECL_LINK( OKHdl, weld::Button&, void );
-    void ClickButtonHdl2(void const *);
+    void ClickButtonHdl2(const weld::Widget* pWidget);
 
 public:
 
