@@ -80,7 +80,6 @@ $(eval $(call gb_Library_add_exception_objects,svgio,\
     svgio/source/svgreader/svgmasknode \
     svgio/source/svgreader/svgnode \
     svgio/source/svgreader/SvgNumber \
-    svgio/source/svgreader/svgpaint \
     svgio/source/svgreader/svgpathnode \
     svgio/source/svgreader/svgpatternnode \
     svgio/source/svgreader/svgpolynode \
