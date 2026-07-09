@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface domain="sc">
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkTreeStore" id="liststore1">
@@ -182,6 +182,7 @@
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
+                    <property name="accepts-tab">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="entries-atkobject">
                         <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|entries">Displays the content of the currently selected list. This content can be edited.</property>
