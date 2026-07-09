@@ -59,22 +59,22 @@ private:
     std::unique_ptr<weld::Button> mxBtnRemove;
     std::unique_ptr<weld::Button> mxBtnCopy;
 
-    const OUString      aStrQueryRemove;
-    const OUString      aStrCopyList;
-    const OUString      aStrCopyFrom;
-    const OUString      aStrCopyErr;
+    const OUString m_aStrQueryRemove;
+    const OUString m_aStrCopyList;
+    const OUString m_aStrCopyFrom;
+    const OUString m_aStrCopyErr;
 
-    const sal_uInt16    nWhichUserLists;
-    std::unique_ptr<ScUserList> pUserLists;
+    const sal_uInt16 m_nWhichUserLists;
+    std::unique_ptr<ScUserList> m_pUserLists;
 
-    ScDocument*     pDoc;
-    ScViewData*     pViewData;
-    OUString        aStrSelectedArea;
+    ScDocument* m_pDoc;
+    ScViewData* m_pViewData;
+    OUString m_aStrSelectedArea;
 
-    bool            bModifyMode;
-    bool            bCancelMode;
-    bool            bCopyDone;
-    sal_Int32       nCancelPos;
+    bool m_bModifyMode;
+    bool m_bCancelMode;
+    bool m_bCopyDone;
+    sal_Int32 m_nCancelPos;
 
     void    Init                ();
     size_t  UpdateUserListBox   ();
