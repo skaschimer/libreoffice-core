@@ -485,7 +485,7 @@ SvxRubyDialog::SvxRubyDialog(SfxBindings* pBind, SfxChildWindow* pCW, weld::Wind
     Link<weld::ScrolledWindow&, void> aScrLk(LINK(this, SvxRubyDialog, ScrollHdl_Impl));
     m_xScrolledWindow->connect_vadjustment_value_changed(aScrLk);
 
-    Link<weld::Entry&, void> aEditLk(LINK(this, SvxRubyDialog, EditModifyHdl_Impl));
+    Link<weld::TextWidget&, void> aEditLk(LINK(this, SvxRubyDialog, EditModifyHdl_Impl));
     Link<weld::Widget&, void> aFocusLk(LINK(this, SvxRubyDialog, EditFocusHdl_Impl));
     Link<const KeyEvent&, bool> aKeyUpDownLk(LINK(this, SvxRubyDialog, KeyUpDownHdl_Impl));
     Link<const KeyEvent&, bool> aKeyTabUpDownLk(LINK(this, SvxRubyDialog, KeyUpDownTabHdl_Impl));
@@ -873,7 +873,7 @@ IMPL_LINK(SvxRubyDialog, EditFocusHdl_Impl, weld::Widget&, rEdit, void)
     m_xPreviewWin->Invalidate();
 }
 
-IMPL_LINK(SvxRubyDialog, EditModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxRubyDialog, EditModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     EditFocusHdl_Impl(rEdit);
 }

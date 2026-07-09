@@ -52,7 +52,7 @@ class SwFieldDBPage : public SwFieldPage
     DECL_LINK(TypeListBoxHdl, weld::ItemView&, void);
     DECL_LINK( NumSelectHdl, weld::ComboBox&, void );
     DECL_LINK(TreeSelectHdl, weld::ItemView&, void);
-    DECL_LINK( ModifyHdl, weld::Entry&, void );
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK( AddDBHdl, weld::Button&, void );
     void TypeHdl(const weld::ItemView*);
 

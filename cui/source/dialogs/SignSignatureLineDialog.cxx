@@ -171,7 +171,10 @@ IMPL_LINK_NOARG(SignSignatureLineDialog, chooseCertificate, weld::Button&, void)
     ValidateFields();
 }
 
-IMPL_LINK_NOARG(SignSignatureLineDialog, entryChanged, weld::Entry&, void) { ValidateFields(); }
+IMPL_LINK_NOARG(SignSignatureLineDialog, entryChanged, weld::TextWidget&, void)
+{
+    ValidateFields();
+}
 
 void SignSignatureLineDialog::ValidateFields()
 {

@@ -67,8 +67,8 @@ class SwFieldRefPage : public SwFieldPage
     DECL_LINK(TypeHdl, weld::ItemView&, void);
     DECL_LINK(SubTypeListBoxHdl, weld::ItemView&, void);
     DECL_LINK(SubTypeTreeListBoxHdl, weld::ItemView&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
-    DECL_LINK(ModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
+    DECL_LINK(ModifyHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(FormatHdl, weld::ItemView&, void);
 
     void SubTypeHdl();

@@ -95,7 +95,7 @@ private:
     DECL_DLLPRIVATE_LINK(OKHdl, weld::Button&, void);
     DECL_DLLPRIVATE_LINK(ShowHdl, weld::Toggleable&, void);
     DECL_DLLPRIVATE_LINK(InsertTextHdl, OUString&, bool);
-    DECL_DLLPRIVATE_LINK(EditModifyHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(EditModifyHdl, weld::TextWidget&, void);
     void            ModifyHdl();
 
     void            SetPasswdText();

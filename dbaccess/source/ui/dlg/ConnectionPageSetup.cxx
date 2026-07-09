@@ -133,7 +133,7 @@ namespace dbaui
         return !m_xConnectionURL->get_visible() || !m_xConnectionURL->GetTextNoPrefix().isEmpty();
     }
 
-    IMPL_LINK_NOARG(OConnectionTabPageSetup, OnEditModified, weld::Entry&, void)
+    IMPL_LINK_NOARG(OConnectionTabPageSetup, OnEditModified, weld::TextWidget&, void)
     {
         SetRoadmapStateValue(checkTestConnection());
         callModifiedHdl();

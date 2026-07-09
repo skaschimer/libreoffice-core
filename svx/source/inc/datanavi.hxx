@@ -425,7 +425,7 @@ namespace svxform
         std::unique_ptr<weld::Button> m_xEditNamespacesBtn;
         std::unique_ptr<weld::Button> m_xOKBtn;
 
-        DECL_LINK(ModifyHdl, weld::TextView&, void);
+        DECL_LINK(ModifyHdl, weld::TextWidget&, void);
         DECL_LINK(ResultHdl, Timer *, void);
         DECL_LINK(EditHdl, weld::Button&, void);
         DECL_LINK(OKHdl, weld::Button&, void);

@@ -333,7 +333,7 @@ namespace svt
         return convertLineEnd(rEntry.get_text().copy(nStartPos, nEndPos - nStartPos), eSeparator);
     }
 
-    IMPL_LINK_NOARG(MultiLineEditImplementation, ModifyHdl, weld::TextView&, void)
+    IMPL_LINK_NOARG(MultiLineEditImplementation, ModifyHdl, weld::TextWidget&, void)
     {
         CallModifyHdls();
     }
@@ -346,7 +346,7 @@ namespace svt
         m_pEditImplementation->SetModifyHdl( LINK(this, EditCellController, ModifyHdl) );
     }
 
-    IMPL_LINK_NOARG(EntryImplementation, ModifyHdl, weld::Entry&, void)
+    IMPL_LINK_NOARG(EntryImplementation, ModifyHdl, weld::TextWidget&, void)
     {
         CallModifyHdls();
     }
@@ -466,7 +466,7 @@ namespace svt
         InitEditControlBase(m_bSpinVariant ? m_xSpinButton.get() : m_xEntry.get());
     }
 
-    void FormattedControlBase::connect_changed(const Link<weld::Entry&, void>& rLink)
+    void FormattedControlBase::connect_changed(const Link<weld::TextWidget&, void>& rLink)
     {
         get_formatter().connect_changed(rLink);
     }
@@ -625,7 +625,7 @@ namespace svt
         InitEditControlBase(m_xWidget.get());
     }
 
-    void PatternControl::connect_changed(const Link<weld::Entry&, void>& rLink)
+    void PatternControl::connect_changed(const Link<weld::TextWidget&, void>& rLink)
     {
         m_xEntryFormatter->connect_changed(rLink);
     }

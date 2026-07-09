@@ -171,7 +171,7 @@ SwAddRenameEntryDialog::SwAddRenameEntryDialog(
     ModifyHdl_Impl(*m_xFieldNameED);
 }
 
-IMPL_LINK(SwAddRenameEntryDialog, ModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwAddRenameEntryDialog, ModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     OUString sEntry = rEdit.get_text();
     bool bFound = sEntry.isEmpty();

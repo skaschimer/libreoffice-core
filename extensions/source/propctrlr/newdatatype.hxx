@@ -46,7 +46,7 @@ namespace pcr
         OUString GetName() const { return m_xName->get_text(); }
 
     private:
-        DECL_LINK(OnNameModified, weld::Entry&, void);
+        DECL_LINK(OnNameModified, weld::TextWidget&, void);
     };
 
 

@@ -31,10 +31,7 @@
 
 #include <bitmaps.hlst>
 
-IMPL_LINK_NOARG(SfxPasswordDialog, EditModifyHdl, weld::Entry&, void)
-{
-    ModifyHdl();
-}
+IMPL_LINK_NOARG(SfxPasswordDialog, EditModifyHdl, weld::TextWidget&, void) { ModifyHdl(); }
 
 void SfxPasswordDialog::ModifyHdl()
 {
@@ -252,7 +249,7 @@ SfxPasswordDialog::SfxPasswordDialog(weld::Widget* pParent, const OUString* pGro
     , moPasswordPolicy(officecfg::Office::Common:: Security::Scripting::PasswordPolicy::get())
     , mbAsciiOnly(false)
 {
-    Link<weld::Entry&,void> aLink = LINK(this, SfxPasswordDialog, EditModifyHdl);
+    Link<weld::TextWidget&, void> aLink = LINK(this, SfxPasswordDialog, EditModifyHdl);
     m_xPassword1ED->connect_changed(aLink);
     m_xPassword2ED->connect_changed(aLink);
     Link<OUString&,bool> aLink2 = LINK(this, SfxPasswordDialog, InsertTextHdl);

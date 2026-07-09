@@ -87,7 +87,7 @@ private:
     // Handler:
     DECL_LINK(LbSelectHdl, weld::ItemView&, void);
     DECL_LINK( BtnClickHdl, weld::Button&, void );
-    DECL_LINK( EdEntriesModHdl, weld::TextView&, void);
+    DECL_LINK(EdEntriesModHdl, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

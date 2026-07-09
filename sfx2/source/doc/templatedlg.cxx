@@ -777,7 +777,7 @@ IMPL_LINK(SfxTemplateManagerDlg, DefaultTemplateHdl, ThumbnailViewItem*, pItem, 
     updateMenuItems();
 }
 
-IMPL_LINK_NOARG(SfxTemplateManagerDlg, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SfxTemplateManagerDlg, SearchUpdateHdl, weld::TextWidget&, void)
 {
     m_aUpdateDataTimer.Start();
 }
@@ -1242,7 +1242,7 @@ SfxTemplateCategoryDialog::~SfxTemplateCategoryDialog()
 {
 }
 
-IMPL_LINK_NOARG(SfxTemplateCategoryDialog, NewCategoryEditHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SfxTemplateCategoryDialog, NewCategoryEditHdl, weld::TextWidget&, void)
 {
     OUString sParam = comphelper::string::strip(mxNewCategoryEdit->get_text(), ' ');
     mxLBCategory->set_sensitive(sParam.isEmpty());

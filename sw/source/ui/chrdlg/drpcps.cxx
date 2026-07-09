@@ -634,7 +634,7 @@ IMPL_LINK_NOARG(SwDropCapsPage, WholeWordHdl, weld::Toggleable&, void)
     m_bModified = true;
 }
 
-void SwDropCapsPage::ModifyEntry(const weld::Entry& rEdit)
+void SwDropCapsPage::ModifyEntry(const weld::TextWidget& rEdit)
 {
     OUString sPreview;
 
@@ -686,10 +686,7 @@ void SwDropCapsPage::ModifyEntry(const weld::Entry& rEdit)
     m_bModified = true;
 }
 
-IMPL_LINK(SwDropCapsPage, ModifyHdl, weld::Entry&, rEdit, void)
-{
-    ModifyEntry(rEdit);
-}
+IMPL_LINK(SwDropCapsPage, ModifyHdl, weld::TextWidget&, rEdit, void) { ModifyEntry(rEdit); }
 
 IMPL_LINK(SwDropCapsPage, ValueChangedHdl, weld::SpinButton&, rEdit, void)
 {

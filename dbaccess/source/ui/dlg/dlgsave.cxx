@@ -273,7 +273,7 @@ IMPL_LINK_NOARG(OSaveAsDlg, ButtonClickHdl, weld::Button&, void)
     m_xTitle->grab_focus();
 }
 
-IMPL_LINK_NOARG(OSaveAsDlg, EditModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(OSaveAsDlg, EditModifyHdl, weld::TextWidget&, void)
 {
     m_xPB_OK->set_sensitive(!m_xTitle->get_text().isEmpty());
 }

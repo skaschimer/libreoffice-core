@@ -70,7 +70,7 @@ private:
     DECL_LINK(Impl_CloseHdl, weld::Button&, void);
 
     DECL_LINK(Impl_ScrollHdl, weld::ScrolledWindow&, void);
-    DECL_LINK(Impl_DataModifyHdl, weld::Entry&, void);
+    DECL_LINK(Impl_DataModifyHdl, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

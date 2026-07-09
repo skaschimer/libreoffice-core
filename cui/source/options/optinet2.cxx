@@ -83,7 +83,7 @@ bool isValidPort(OUString const & value) {
 
 }
 
-IMPL_LINK(SvxProxyTabPage, PortChangedHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxProxyTabPage, PortChangedHdl, weld::TextWidget&, rEdit, void)
 {
     if (!isValidPort(rEdit.get_text()))
     {

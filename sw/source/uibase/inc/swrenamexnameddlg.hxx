@@ -38,7 +38,7 @@ class SwRenameXNamedDlg final : public weld::GenericDialogController
 
     DECL_LINK(TextFilterHdl, OUString&, bool);
     DECL_LINK(OkHdl, weld::Button&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     SwRenameXNamedDlg(weld::Widget* pParent,

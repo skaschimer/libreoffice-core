@@ -3277,7 +3277,7 @@ bool SwFrameAddPage::FillItemSet(SfxItemSet *rSet)
     return bRet;
 }
 
-IMPL_LINK_NOARG(SwFrameAddPage, EditModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFrameAddPage, EditModifyHdl, weld::TextWidget&, void)
 {
     bool bEnable = !m_xNameED->get_text().isEmpty();
     m_xAltNameED->set_sensitive(bEnable);

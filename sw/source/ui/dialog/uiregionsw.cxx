@@ -1129,7 +1129,7 @@ IMPL_LINK(SwEditRegionDlg, FileNameComboBoxHdl, weld::ComboBox&, rEdit, void)
 }
 
 // Applying of the filename or the linked region
-IMPL_LINK(SwEditRegionDlg, FileNameEntryHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwEditRegionDlg, FileNameEntryHdl, weld::TextWidget&, rEdit, void)
 {
     int nStartPos, nEndPos;
     rEdit.get_selection_bounds(nStartPos, nEndPos);
@@ -1283,7 +1283,7 @@ IMPL_LINK_NOARG(SwEditRegionDlg, ChangePasswdHdl, weld::Button&, void)
 
 // the current region name is being added to the TreeListBox immediately during
 // editing, with empty string no Ok()
-IMPL_LINK_NOARG(SwEditRegionDlg, NameEditHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwEditRegionDlg, NameEditHdl, weld::TextWidget&, void)
 {
     if(!CheckPasswd())
         return;
@@ -1298,7 +1298,7 @@ IMPL_LINK_NOARG(SwEditRegionDlg, NameEditHdl, weld::Entry&, void)
     }
 }
 
-IMPL_LINK( SwEditRegionDlg, ConditionEditHdl, weld::Entry&, rEdit, void )
+IMPL_LINK(SwEditRegionDlg, ConditionEditHdl, weld::TextWidget&, rEdit, void)
 {
     int nStartPos, nEndPos;
     rEdit.get_selection_bounds(nStartPos, nEndPos);

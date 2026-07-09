@@ -525,7 +525,7 @@ SvxTPFilter::SvxTPFilter(weld::Container* pParent)
     m_xTfDate->connect_value_changed(a3Link);
     m_xTfDate2->connect_value_changed(a3Link);
 
-    Link<weld::Entry&,void> a4Link=LINK( this, SvxTPFilter, ModifyHdl);
+    Link<weld::TextWidget&, void> a4Link = LINK(this, SvxTPFilter, ModifyHdl);
     m_xEdRange->connect_changed(a4Link);
     m_xEdComment->connect_changed(a4Link);
     m_xLbAction->connect_changed(LINK( this, SvxTPFilter, ModifyListBoxHdl));
@@ -860,10 +860,7 @@ IMPL_LINK(SvxTPFilter, TimeHdl, weld::Button&, rIB, void)
     m_bModified=true;
 }
 
-IMPL_LINK_NOARG(SvxTPFilter, ModifyHdl, weld::Entry&, void)
-{
-    m_bModified=true;
-}
+IMPL_LINK_NOARG(SvxTPFilter, ModifyHdl, weld::TextWidget&, void) { m_bModified = true; }
 
 IMPL_LINK_NOARG(SvxTPFilter, ModifyListBoxHdl, weld::ComboBox&, void)
 {

@@ -192,7 +192,7 @@ private:
 
     DECL_LINK(SelectHdl, weld::ComboBox&, void);
     DECL_LINK(SelectListBoxHdl, weld::ComboBox&, void);
-    DECL_LINK(ModifyEntryHdl, weld::Entry&, void);
+    DECL_LINK(ModifyEntryHdl, weld::TextWidget&, void);
     DECL_LINK(ModifyComboHdl, weld::ComboBox&, void);
     DECL_LINK(OrderHdl, weld::ComboBox&, void );
     DECL_LINK(ShowEntryHdl, weld::ItemView&, void);

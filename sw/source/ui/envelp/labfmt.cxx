@@ -582,10 +582,7 @@ IMPL_LINK_NOARG(SwSaveLabelDlg, ModifyComboHdl, weld::ComboBox&, void)
     Modify();
 }
 
-IMPL_LINK_NOARG(SwSaveLabelDlg, ModifyEntryHdl, weld::Entry&, void)
-{
-    Modify();
-}
+IMPL_LINK_NOARG(SwSaveLabelDlg, ModifyEntryHdl, weld::TextWidget&, void) { Modify(); }
 
 bool SwSaveLabelDlg::GetLabel(SwLabItem& rItem)
 {

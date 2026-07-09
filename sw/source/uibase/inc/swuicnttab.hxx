@@ -210,7 +210,7 @@ class SwTOXSelectTabPage final : public SfxTabPage
     void LanguageHdl(const weld::ComboBox*);
     DECL_LINK(CheckBoxHdl, weld::Toggleable&, void );
     DECL_LINK(RadioButtonHdl, weld::Toggleable&, void);
-    DECL_LINK(ModifyEntryHdl, weld::Entry&, void);
+    DECL_LINK(ModifyEntryHdl, weld::TextWidget&, void);
     DECL_LINK(ModifySpinHdl, weld::SpinButton&, void);
     DECL_LINK(ModifyListBoxHdl, weld::ComboBox&, void);
 

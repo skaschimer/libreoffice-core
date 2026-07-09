@@ -192,10 +192,7 @@ namespace abp
         m_xDuplicateNameError->set_visible(!bValidName && !bEmptyName);
     }
 
-    IMPL_LINK_NOARG( FinalPage, OnEntryNameModified, weld::Entry&, void )
-    {
-        implCheckName();
-    }
+    IMPL_LINK_NOARG(FinalPage, OnEntryNameModified, weld::TextWidget&, void) { implCheckName(); }
 
     IMPL_LINK_NOARG( FinalPage, OnComboNameModified, weld::ComboBox&, void )
     {

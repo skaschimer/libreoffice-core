@@ -95,8 +95,9 @@ IMPL_LINK_NOARG(PasswordToOpenModifyDialog, OkBtnClickHdl, weld::Button&, void)
     }
 }
 
-IMPL_LINK(PasswordToOpenModifyDialog, ChangeHdl, weld::Entry&, rEntry, void)
+IMPL_LINK(PasswordToOpenModifyDialog, ChangeHdl, weld::TextWidget&, rTextWidget, void)
 {
+    weld::Entry& rEntry = dynamic_cast<weld::Entry&>(rTextWidget);
     auto aPasswordText = rEntry.get_text();
 
     weld::Label* pIndicator = nullptr;

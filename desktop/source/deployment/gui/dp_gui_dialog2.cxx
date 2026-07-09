@@ -728,10 +728,7 @@ IMPL_LINK_NOARG(ExtMgrDialog, HandleExtTypeCbx, weld::Toggleable&, void)
     updateList();
 }
 
-IMPL_LINK_NOARG(ExtMgrDialog, HandleSearch, weld::Entry&, void)
-{
-    updateList();
-}
+IMPL_LINK_NOARG(ExtMgrDialog, HandleSearch, weld::TextWidget&, void) { updateList(); }
 
 IMPL_LINK_NOARG(ExtMgrDialog, HandleUpdateBtn, weld::Button&, void)
 {

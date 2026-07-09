@@ -37,7 +37,7 @@ namespace dbaui
         std::unique_ptr<weld::Label> m_xHeaderText;
 
         // called when the test connection button was clicked
-        DECL_LINK(OnEditModified, weld::Entry&, void);
+        DECL_LINK(OnEditModified, weld::TextWidget&, void);
 
     public:
         OConnectionTabPageSetup(weld::Container* pPage, weld::DialogController* pController, const OUString& _rUIXMLDescription, const OUString& _rId, const SfxItemSet& _rCoreAttrs, TranslateId pHelpTextResId, TranslateId pHeaderResId, TranslateId pUrlResId);

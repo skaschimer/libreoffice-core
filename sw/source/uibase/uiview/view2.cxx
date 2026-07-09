@@ -190,7 +190,8 @@ private:
     std::unique_ptr<weld::Label> m_xLabel2;
     std::unique_ptr<weld::Button> m_xOKButton;
 
-    DECL_LINK(InputModifiedHdl, weld::Entry&, void);
+    DECL_LINK(InputModifiedHdl, weld::TextWidget&, void);
+
 public:
     SwNumberInputDlg(weld::Window* pParent, const OUString& rTitle,
         const OUString& rLabel1, const sal_Int64 nValue, const sal_Int64 min, const sal_Int64 max,
@@ -221,7 +222,7 @@ public:
     }
 };
 
-IMPL_LINK_NOARG(SwNumberInputDlg, InputModifiedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwNumberInputDlg, InputModifiedHdl, weld::TextWidget&, void)
 {
     m_xOKButton->set_sensitive(!m_xSpinButton->get_text().isEmpty());
     if (!m_xOKButton->get_sensitive())

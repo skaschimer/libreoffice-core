@@ -43,7 +43,7 @@ private:
     Link<SvxNameDialog&, bool> m_aCheckNameHdl;
     Link<SvxNameDialog&, OUString> m_aCheckNameTooltipHdl;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     SvxNameDialog(weld::Window* pWindow, const OUString& rName, const OUString& rDesc,
@@ -122,7 +122,7 @@ private:
     // callback link for name uniqueness
     Link<SvxObjectNameDialog&, bool> aCheckNameHdl;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     // constructor

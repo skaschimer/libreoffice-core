@@ -93,7 +93,7 @@ class SwAddressControl_Impl
     std::vector<std::unique_ptr<SwAddressFragment>> m_aLines;
 
     DECL_LINK(GotFocusHdl_Impl, weld::Widget&, void);
-    DECL_LINK(EditModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl_Impl, weld::TextWidget&, void);
 
     void                MakeVisible(const tools::Rectangle& aRect);
 
@@ -128,7 +128,8 @@ void SwAddressControl_Impl::SetData(SwCSVData& rDBData)
     }
 
     Link<weld::Widget&,void> aFocusLink = LINK(this, SwAddressControl_Impl, GotFocusHdl_Impl);
-    Link<weld::Entry&,void> aEditModifyLink = LINK(this, SwAddressControl_Impl, EditModifyHdl_Impl);
+    Link<weld::TextWidget&, void> aEditModifyLink
+        = LINK(this, SwAddressControl_Impl, EditModifyHdl_Impl);
     sal_Int32 nLines = 0;
     for (const auto& rHeader : m_pData->aDBColumnHeaders)
     {
@@ -196,7 +197,7 @@ void SwAddressControl_Impl::MakeVisible(const tools::Rectangle & rRect)
 }
 
 // copy data changes into database
-IMPL_LINK(SwAddressControl_Impl, EditModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwAddressControl_Impl, EditModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     //get the data element number of the current set
     sal_Int32 nIndex = m_aEditLines[&rEdit];
@@ -485,7 +486,7 @@ IMPL_LINK(SwCreateAddressListDialog, DBCursorHdl_Impl, weld::Button&, rButton, v
     }
 }
 
-IMPL_LINK_NOARG(SwCreateAddressListDialog, DBNumCursorHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwCreateAddressListDialog, DBNumCursorHdl_Impl, weld::TextWidget&, void)
 {
     m_xSetNoNF->set_text(m_xSetNoED->get_text());
     DBNumCursor();
@@ -584,7 +585,7 @@ IMPL_LINK_NOARG(SwFindEntryDialog, FindHdl_Impl, weld::Button&, void)
     m_pParent->Find(m_xFindED->get_text(), nColumn);
 }
 
-IMPL_LINK_NOARG(SwFindEntryDialog, FindEnableHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFindEntryDialog, FindEnableHdl_Impl, weld::TextWidget&, void)
 {
     m_xFindPB->set_sensitive(!m_xFindED->get_text().isEmpty());
 }

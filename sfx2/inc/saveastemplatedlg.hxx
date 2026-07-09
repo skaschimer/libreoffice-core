@@ -41,7 +41,7 @@ private:
 
 public:
     DECL_LINK(OkClickHdl, weld::Button&, void);
-    DECL_LINK(TemplateNameEditHdl, weld::Entry&, void);
+    DECL_LINK(TemplateNameEditHdl, weld::TextWidget&, void);
     DECL_LINK(SelectCategoryHdl, weld::ItemView&, void);
 
     void initialize();

@@ -263,7 +263,7 @@ namespace dbp
         implCheckMoveButtons();
     }
 
-    IMPL_LINK_NOARG( ORadioSelectionPage, OnNameModified, weld::Entry&, void )
+    IMPL_LINK_NOARG(ORadioSelectionPage, OnNameModified, weld::TextWidget&, void)
     {
         implCheckMoveButtons();
     }

@@ -52,7 +52,7 @@ class SwInsFootNoteDlg final : public weld::GenericDialogController
     std::unique_ptr<weld::Button>     m_xNextBT;
 
     DECL_LINK(NumberToggleHdl, weld::Toggleable&, void);
-    DECL_LINK(NumberEditHdl, weld::Entry&, void);
+    DECL_LINK(NumberEditHdl, weld::TextWidget&, void);
     DECL_LINK(NumberExtCharHdl, weld::Button&, void);
     DECL_LINK(NextPrevHdl, weld::Button&, void);
 

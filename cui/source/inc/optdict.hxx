@@ -51,7 +51,7 @@ private:
     css::uno::Reference<css::linguistic2::XDictionary> m_xNewDic;
 
     DECL_LINK(OKHdl_Impl, weld::Button&, void);
-    DECL_LINK(ModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl_Impl, weld::TextWidget&, void);
 
 public:
     SvxNewDictionaryDialog(weld::Window* pParent);
@@ -95,7 +95,7 @@ private:
     DECL_LINK(SelectHdl, weld::ItemView&, void);
     DECL_LINK(NewDelButtonHdl, weld::Button&, void);
     DECL_LINK(NewDelActionHdl, weld::Entry&, bool);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK(EntrySizeAllocHdl, const Size&, void);
     bool NewDelHdl(const weld::Widget*);
 

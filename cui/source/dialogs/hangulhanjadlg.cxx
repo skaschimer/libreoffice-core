@@ -553,7 +553,7 @@ static int GetCodePointCount(std::u16string_view sText)
     return nCount;
 }
 
-IMPL_LINK_NOARG(HangulHanjaConversionDialog, OnSuggestionModified, weld::Entry&, void)
+IMPL_LINK_NOARG(HangulHanjaConversionDialog, OnSuggestionModified, weld::TextWidget&, void)
 {
     m_xFind->set_sensitive(m_xWordInput->get_value_changed_from_saved());
 
@@ -963,7 +963,7 @@ IMPL_LINK_NOARG(HangulHanjaNewDictDialog, OKHdl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK_NOARG(HangulHanjaNewDictDialog, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(HangulHanjaNewDictDialog, ModifyHdl, weld::TextWidget&, void)
 {
     OUString aName(comphelper::string::stripEnd(m_xDictNameED->get_text(), ' '));
 
@@ -1212,22 +1212,22 @@ IMPL_LINK_NOARG(HangulHanjaEditDictDialog, OriginalModifyHdl, weld::ComboBox&, v
     UpdateButtonStates();
 }
 
-IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl1, weld::Entry&, rEdit, void)
+IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl1, weld::TextWidget&, rEdit, void)
 {
     EditModify(&rEdit, 0);
 }
 
-IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl2, weld::Entry&, rEdit, void)
+IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl2, weld::TextWidget&, rEdit, void)
 {
     EditModify(&rEdit, 1);
 }
 
-IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl3, weld::Entry&, rEdit, void)
+IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl3, weld::TextWidget&, rEdit, void)
 {
     EditModify(&rEdit, 2);
 }
 
-IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl4, weld::Entry&, rEdit, void)
+IMPL_LINK(HangulHanjaEditDictDialog, EditModifyHdl4, weld::TextWidget&, rEdit, void)
 {
     EditModify(&rEdit, 3);
 }
@@ -1410,7 +1410,7 @@ void HangulHanjaEditDictDialog::SetEditText(SuggestionEdit& rEdit, sal_uInt16 nE
     rEdit.set_text(aStr);
 }
 
-void HangulHanjaEditDictDialog::EditModify(const weld::Entry* pEdit, sal_uInt8 _nEntryOffset)
+void HangulHanjaEditDictDialog::EditModify(const weld::TextWidget* pEdit, sal_uInt8 _nEntryOffset)
 {
     m_bModifiedSuggestions = true;
 

@@ -494,7 +494,7 @@ IMPL_LINK_NOARG(MacroChooser, BasicSelectHdl, weld::ItemView&, void)
     CheckButtons();
 }
 
-IMPL_LINK_NOARG(MacroChooser, EditModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(MacroChooser, EditModifyHdl, weld::TextWidget&, void)
 {
     // select the module in which the macro is put at "new",
     // if BasicManager or Lib is selecting

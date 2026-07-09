@@ -39,7 +39,7 @@ private:
     std::optional<OUString> m_oPasswordPolicy;
 
     DECL_LINK(OKHdl_Impl, weld::Button&, void);
-    DECL_LINK(EditHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditHdl_Impl, weld::TextWidget&, void);
 
 public:
     MasterPasswordCreateDialog(weld::Window* pParent, const std::locale& rLocale);

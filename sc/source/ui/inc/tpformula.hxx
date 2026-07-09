@@ -46,7 +46,7 @@ public:
 
 private:
     void ResetSeparators();
-    void OnFocusSeparatorInput(weld::Entry* pEdit);
+    void OnFocusSeparatorInput(weld::TextWidget* pEdit);
     void UpdateCustomCalcRadioButtons(bool bDefault);
     void LaunchCustomCalcSettings();
 
@@ -57,7 +57,7 @@ private:
     DECL_LINK(SepInsertTextHdl, OUString&, bool);
     DECL_LINK(ColSepInsertTextHdl, OUString&, bool);
     DECL_LINK(RowSepInsertTextHdl, OUString&, bool);
-    DECL_LINK(SepModifyHdl, weld::Entry&, void);
+    DECL_LINK(SepModifyHdl, weld::TextWidget&, void);
     DECL_LINK(SepEditOnFocusHdl, weld::Widget&, void);
 
 private:

@@ -94,7 +94,7 @@ namespace dbaui
         OUString getSchema() const;
     private:
         DECL_LINK(ButtonClickHdl, weld::Button&, void);
-        DECL_LINK(EditModifyHdl,  weld::Entry&, void);
+        DECL_LINK(EditModifyHdl, weld::TextWidget&, void);
 
         void implInitOnlyTitle(const OUString& _rLabel);
         void implInit();

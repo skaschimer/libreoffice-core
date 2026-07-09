@@ -511,10 +511,7 @@ IMPL_LINK_NOARG(ScNameDlg, EdModifyCheckBoxHdl, weld::Toggleable&, void)
     NameModified();
 }
 
-IMPL_LINK_NOARG(ScNameDlg, EdModifyHdl, weld::Entry&, void)
-{
-    NameModified();
-}
+IMPL_LINK_NOARG(ScNameDlg, EdModifyHdl, weld::TextWidget&, void) { NameModified(); }
 
 IMPL_LINK_NOARG(ScNameDlg, RefEdModifyHdl, formula::RefEdit&, void)
 {

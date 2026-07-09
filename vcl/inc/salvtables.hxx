@@ -2161,7 +2161,7 @@ public:
 
     virtual void do_set_text(const OUString& rText) override;
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override;
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override;
 
     virtual void connect_focus_out(const Link<weld::Widget&, void>& rLink) override;
 

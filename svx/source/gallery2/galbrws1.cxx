@@ -1535,7 +1535,7 @@ void GalleryBrowser::FillThemeEntries()
     }
     maFoundThemeEntries.assign(maAllThemeEntries.begin(), maAllThemeEntries.end());
 }
-IMPL_LINK(GalleryBrowser, SearchHdl, weld::Entry&, searchEdit, void)
+IMPL_LINK(GalleryBrowser, SearchHdl, weld::TextWidget&, searchEdit, void)
 {
     OUString search =   searchEdit.get_text().trim();
     OUString curThemeName;

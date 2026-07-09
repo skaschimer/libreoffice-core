@@ -110,7 +110,7 @@ void ScTableProtectionDlg::Init()
 
     m_xBtnOk->connect_clicked(LINK(this, ScTableProtectionDlg, OKHdl));
 
-    Link<weld::Entry&,void> aLink = LINK(this, ScTableProtectionDlg, PasswordModifyHdl);
+    Link<weld::TextWidget&, void> aLink = LINK(this, ScTableProtectionDlg, PasswordModifyHdl);
     m_xPassword1Edit->connect_changed(aLink);
     m_xPassword2Edit->connect_changed(aLink);
 
@@ -157,7 +157,7 @@ IMPL_LINK_NOARG(ScTableProtectionDlg, OKHdl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK(ScTableProtectionDlg, PasswordModifyHdl, weld::Entry&, rEntry, void)
+IMPL_LINK(ScTableProtectionDlg, PasswordModifyHdl, weld::TextWidget&, rEntry, void)
 {
     OUString aPass1 = m_xPassword1Edit->get_text();
     if (&rEntry == m_xPassword1Edit.get())

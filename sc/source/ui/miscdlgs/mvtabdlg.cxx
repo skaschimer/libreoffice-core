@@ -327,7 +327,7 @@ IMPL_LINK_NOARG(ScMoveTableDlg, SelHdl, weld::ComboBox&, void)
     ResetRenameInput();
 }
 
-IMPL_LINK_NOARG(ScMoveTableDlg, CheckNameHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ScMoveTableDlg, CheckNameHdl, weld::TextWidget&, void)
 {
     mbEverEdited = true;
     CheckNewTabName();

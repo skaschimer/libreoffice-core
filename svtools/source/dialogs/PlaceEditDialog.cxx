@@ -312,18 +312,15 @@ IMPL_LINK_NOARG( PlaceEditDialog, EditHdl, DetailsContainer*, void )
     m_xBTOk->set_sensitive( !sName.isEmpty( ) && !sUrl.isEmpty( ) );
 }
 
-IMPL_LINK_NOARG( PlaceEditDialog, ModifyHdl, weld::Entry&, void )
-{
-    EditHdl(nullptr);
-}
+IMPL_LINK_NOARG(PlaceEditDialog, ModifyHdl, weld::TextWidget&, void) { EditHdl(nullptr); }
 
-IMPL_LINK_NOARG( PlaceEditDialog, EditLabelHdl, weld::Entry&, void )
+IMPL_LINK_NOARG(PlaceEditDialog, EditLabelHdl, weld::TextWidget&, void)
 {
     m_bLabelChanged = true;
     EditHdl(nullptr);
 }
 
-IMPL_LINK_NOARG( PlaceEditDialog, EditUsernameHdl, weld::Entry&, void )
+IMPL_LINK_NOARG(PlaceEditDialog, EditUsernameHdl, weld::TextWidget&, void)
 {
     for ( auto& rxDetailsContainer : m_aDetailsContainers )
     {

@@ -32,8 +32,8 @@ private:
     void CheckPrefix();
     void OnFocusPrefixInput();
 
-    DECL_LINK( NumModifiedHdl, weld::Entry&, void );
-    DECL_LINK( PrefixModifiedHdl, weld::Entry&, void );
+    DECL_LINK(NumModifiedHdl, weld::TextWidget&, void);
+    DECL_LINK(PrefixModifiedHdl, weld::TextWidget&, void);
     DECL_LINK( PrefixEditOnFocusHdl, weld::Widget&, void );
 
 private:

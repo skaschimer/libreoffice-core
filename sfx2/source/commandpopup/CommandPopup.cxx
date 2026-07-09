@@ -259,7 +259,7 @@ IMPL_LINK(CommandListBox, TreeViewKeyPress, const KeyEvent&, rKeyEvent, bool)
     return false;
 }
 
-IMPL_LINK_NOARG(CommandListBox, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(CommandListBox, ModifyHdl, weld::TextWidget&, void)
 {
     mpCommandTreeView->clear();
     maCommandList.clear();

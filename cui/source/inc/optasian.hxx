@@ -47,7 +47,7 @@ class SvxAsianLayoutPage : public SfxTabPage
 
     DECL_LINK(LanguageHdl, weld::ComboBox&, void);
     DECL_LINK(ChangeStandardHdl, weld::Toggleable&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     SvxAsianLayoutPage(weld::Container* pPage, weld::DialogController* pController,

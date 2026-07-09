@@ -69,8 +69,8 @@ class SwInsTableDlg final : public SfxDialogController
 
     DECL_LINK(TextFilterHdl, OUString&, bool);
     DECL_LINK(SelFormatHdl, weld::ItemView&, void);
-    DECL_LINK(ModifyName, weld::Entry&, void);
-    DECL_LINK(ModifyRowCol, weld::Entry&, void);
+    DECL_LINK(ModifyName, weld::TextWidget&, void);
+    DECL_LINK(ModifyRowCol, weld::TextWidget&, void);
     DECL_LINK(OKHdl, weld::Button&, void);
     DECL_LINK(CheckBoxHdl, weld::Toggleable&, void);
     DECL_LINK(RepeatHeaderCheckBoxHdl, weld::Toggleable&, void);

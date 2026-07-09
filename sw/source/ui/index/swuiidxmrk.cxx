@@ -658,7 +658,7 @@ class SwNewUserIdxDlg : public weld::GenericDialogController
     std::unique_ptr<weld::Button> m_xOKPB;
     std::unique_ptr<weld::Entry> m_xNameED;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     explicit SwNewUserIdxDlg(SwIndexMarkPane* pPane, weld::Window* pParent)
@@ -676,7 +676,7 @@ public:
 
 }
 
-IMPL_LINK( SwNewUserIdxDlg, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwNewUserIdxDlg, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     m_xOKPB->set_sensitive(!rEdit.get_text().isEmpty() && !m_pDlg->IsTOXType(rEdit.get_text()));
 }
@@ -732,7 +732,7 @@ IMPL_LINK_NOARG(SwIndexMarkPane, ResetHdl, weld::Button&, void)
     UpdateDialog();
 }
 
-IMPL_LINK_NOARG(SwIndexMarkPane, GenericEntryModifiedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwIndexMarkPane, GenericEntryModifiedHdl, weld::TextWidget&, void)
 {
     SetModified(true);
 }
@@ -749,7 +749,7 @@ IMPL_LINK(SwIndexMarkPane, ModifyListBoxHdl, weld::ComboBox&, rBox, void)
     ModifyHdl(rBox);
 }
 
-IMPL_LINK(SwIndexMarkPane, ModifyEditHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwIndexMarkPane, ModifyEditHdl, weld::TextWidget&, rEdit, void)
 {
     SetModified(true);
     ModifyHdl(rEdit);
@@ -999,7 +999,7 @@ void SwIndexMarkPane::UpdateDialog()
 }
 
 // Remind whether the edit boxes for Phonetic reading are changed manually
-IMPL_LINK(SwIndexMarkPane, PhoneticEDModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwIndexMarkPane, PhoneticEDModifyHdl, weld::TextWidget&, rEdit, void)
 {
     SetModified(true);
     if (m_xPhoneticED0.get() == &rEdit)
@@ -1152,7 +1152,7 @@ class SwCreateAuthEntryDlg_Impl : public weld::GenericDialogController
 {
     std::vector<std::unique_ptr<weld::Builder>> m_aBuilders;
 
-    Link<weld::Entry&,bool>       m_aShortNameCheckLink;
+    Link<weld::TextWidget&, bool> m_aShortNameCheckLink;
 
     SwWrtShell&     m_rWrtSh;
 
@@ -1176,7 +1176,7 @@ class SwCreateAuthEntryDlg_Impl : public weld::GenericDialogController
     weld::Entry* m_pTargetURLField;
 
     DECL_LINK(IdentifierHdl, weld::ComboBox&, void);
-    DECL_LINK(ShortNameHdl, weld::Entry&, void);
+    DECL_LINK(ShortNameHdl, weld::TextWidget&, void);
     DECL_LINK(EnableHdl, weld::ComboBox&, void);
     DECL_LINK(BrowseHdl, weld::Button&, void);
     DECL_LINK(PageNumHdl, weld::Toggleable&, void);
@@ -1193,8 +1193,10 @@ public:
 
     OUString        GetEntryText(ToxAuthorityField eField) const;
 
-    void            SetCheckNameHdl(const Link<weld::Entry&,bool>& rLink) {m_aShortNameCheckLink = rLink;}
-
+    void SetCheckNameHdl(const Link<weld::TextWidget&, bool>& rLink)
+    {
+        m_aShortNameCheckLink = rLink;
+    }
 };
 
 struct TextInfo
@@ -1528,9 +1530,9 @@ IMPL_LINK_NOARG(SwAuthorMarkPane, ChangeSourceHdl, weld::Toggleable&, void)
     CompEntryHdl(*m_xEntryLB);
 }
 
-IMPL_LINK(SwAuthorMarkPane, EditModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwAuthorMarkPane, EditModifyHdl, weld::TextWidget&, rEdit, void)
 {
-    Link<weld::Entry&,bool> aAllowed = LINK(this, SwAuthorMarkPane, IsEditAllowedHdl);
+    Link<weld::TextWidget&, bool> aAllowed = LINK(this, SwAuthorMarkPane, IsEditAllowedHdl);
     bool bResult = aAllowed.Call(rEdit);
     m_xActionBT->set_sensitive(bResult);
     if(bResult)
@@ -1541,7 +1543,7 @@ IMPL_LINK(SwAuthorMarkPane, EditModifyHdl, weld::Entry&, rEdit, void)
     }
 };
 
-IMPL_LINK(SwAuthorMarkPane, IsEntryAllowedHdl, weld::Entry&, rEdit, bool)
+IMPL_LINK(SwAuthorMarkPane, IsEntryAllowedHdl, weld::TextWidget&, rEdit, bool)
 {
     OUString sEntry = rEdit.get_text();
     bool bAllowed = false;
@@ -1563,7 +1565,7 @@ IMPL_LINK(SwAuthorMarkPane, IsEntryAllowedHdl, weld::Entry&, rEdit, bool)
     return bAllowed;
 }
 
-IMPL_LINK(SwAuthorMarkPane, IsEditAllowedHdl, weld::Entry&, rEdit, bool)
+IMPL_LINK(SwAuthorMarkPane, IsEditAllowedHdl, weld::TextWidget&, rEdit, bool)
 {
     OUString sEntry = rEdit.get_text();
     bool bAllowed = false;
@@ -1919,7 +1921,7 @@ IMPL_LINK(SwCreateAuthEntryDlg_Impl, IdentifierHdl, weld::ComboBox&, rBox, void)
     SetFields(sFields, false);
 }
 
-IMPL_LINK(SwCreateAuthEntryDlg_Impl, ShortNameHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwCreateAuthEntryDlg_Impl, ShortNameHdl, weld::TextWidget&, rEdit, void)
 {
     if (m_aShortNameCheckLink.IsSet())
     {

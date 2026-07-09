@@ -5369,7 +5369,7 @@ void SalInstanceFormattedSpinButton::do_set_text(const OUString& rText)
     m_xButton->SpinField::SetText(rText);
 }
 
-void SalInstanceFormattedSpinButton::connect_changed(const Link<weld::Entry&, void>& rLink)
+void SalInstanceFormattedSpinButton::connect_changed(const Link<weld::TextWidget&, void>& rLink)
 {
     if (!m_pFormatter) // once a formatter is set, it takes over "changed"
     {

@@ -110,7 +110,7 @@ class SvxRubyDialog final : public SfxModelessDialogController
     DECL_LINK(PositionHdl_Impl, weld::ComboBox&, void);
     DECL_LINK(AdjustHdl_Impl, weld::ComboBox&, void);
     DECL_LINK(CharStyleHdl_Impl, weld::ComboBox&, void);
-    DECL_LINK(EditModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(EditFocusHdl_Impl, weld::Widget&, void);
     DECL_LINK(KeyUpDownHdl_Impl, const KeyEvent&, bool);
     DECL_LINK(KeyUpDownTabHdl_Impl, const KeyEvent&, bool);

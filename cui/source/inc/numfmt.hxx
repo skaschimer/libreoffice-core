@@ -145,10 +145,10 @@ private:
     DECL_LINK(SelFormatClickHdl_Impl, weld::Toggleable&, void);
     void SelFormatHdl_Impl(weld::Widget*);
     DECL_LINK(ClickHdl_Impl, weld::Button&, void);
-    DECL_LINK(EditModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(OptEditHdl_Impl, weld::SpinButton&, void);
     DECL_LINK(OptClickHdl_Impl, weld::Toggleable&, void);
-    void EditHdl_Impl(const weld::Entry*);
+    void EditHdl_Impl(const weld::TextWidget*);
     void OptHdl_Impl(const weld::Widget*);
 
     // set and get currency, taking into account if the legacy

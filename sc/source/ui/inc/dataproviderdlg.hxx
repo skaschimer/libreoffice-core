@@ -68,8 +68,8 @@ private:
     DECL_LINK(TransformationListHdl, weld::Button&, void);
     DECL_LINK(ProviderSelectHdl, weld::ComboBox&, void);
     DECL_LINK(TransformationSelectHdl, weld::ComboBox&, void);
-    DECL_LINK(IDEditHdl, weld::Entry&, void);
-    DECL_LINK(URLEditHdl, weld::Entry&, void);
+    DECL_LINK(IDEditHdl, weld::TextWidget&, void);
+    DECL_LINK(URLEditHdl, weld::TextWidget&, void);
     DECL_LINK(ApplyBtnHdl, weld::Button&, void);
     DECL_LINK(BrowseBtnHdl, weld::Button&, void);
 

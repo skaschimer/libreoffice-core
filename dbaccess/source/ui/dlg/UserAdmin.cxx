@@ -65,7 +65,7 @@ class OPasswordDialog : public weld::GenericDialogController
     std::unique_ptr<weld::Button> m_xOKBtn;
 
     DECL_LINK(OKHdl_Impl, weld::Button&, void);
-    DECL_LINK(ModifiedHdl, weld::Entry&, void);
+    DECL_LINK(ModifiedHdl, weld::TextWidget&, void);
 
 public:
     OPasswordDialog(weld::Window* pParent, std::u16string_view rUserName);
@@ -110,7 +110,7 @@ IMPL_LINK_NOARG(OPasswordDialog, OKHdl_Impl, weld::Button&, void)
     }
 }
 
-IMPL_LINK(OPasswordDialog, ModifiedHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(OPasswordDialog, ModifiedHdl, weld::TextWidget&, rEdit, void)
 {
     m_xOKBtn->set_sensitive(!rEdit.get_text().isEmpty());
 }

@@ -1122,7 +1122,7 @@ bool OfaAutocorrReplacePage::NewDelHdl(const weld::Widget* pBtn)
     return true;
 }
 
-IMPL_LINK(OfaAutocorrReplacePage, ModifyHdl, weld::Entry&, rEdt, void)
+IMPL_LINK(OfaAutocorrReplacePage, ModifyHdl, weld::TextWidget&, rEdt, void)
 {
     std::unique_ptr<weld::TreeIter> xFirstSel = m_xReplaceTLB->get_selected();
     bool bFirstSelIterSet = bool(xFirstSel);
@@ -1540,7 +1540,7 @@ IMPL_LINK(OfaAutocorrExceptPage, SelectHdl, weld::ItemView&, rBox, void)
     }
 }
 
-IMPL_LINK(OfaAutocorrExceptPage, ModifyHdl, weld::Entry&, rEdt, void)
+IMPL_LINK(OfaAutocorrExceptPage, ModifyHdl, weld::TextWidget&, rEdt, void)
 {
     const OUString sEntry = rEdt.get_text();
     bool bEntryLen = !sEntry.isEmpty();

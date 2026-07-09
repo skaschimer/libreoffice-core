@@ -122,7 +122,7 @@ public:
 
 private:
     DECL_LINK( DirectionHdl, weld::Toggleable&, void );
-    DECL_LINK( EditFieldsHdl, weld::Entry&, void );
+    DECL_LINK(EditFieldsHdl, weld::TextWidget&, void);
     DECL_LINK( EditFieldsListBoxHdl, weld::ComboBox&, void );
     DECL_LINK(MappingSelectHdl, weld::ItemView&, void);
     DECL_LINK( AddHdl, weld::Button&, void );

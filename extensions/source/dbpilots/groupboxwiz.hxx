@@ -100,7 +100,7 @@ namespace dbp
 
         DECL_LINK( OnMoveEntry, weld::Button&, void );
         DECL_LINK(OnEntrySelected, weld::ItemView&, void);
-        DECL_LINK( OnNameModified, weld::Entry&, void );
+        DECL_LINK(OnNameModified, weld::TextWidget&, void);
 
         void implCheckMoveButtons();
     };

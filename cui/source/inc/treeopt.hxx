@@ -195,7 +195,7 @@ private:
     DECL_LINK(BackHdl_Impl, weld::Button&, void);
     DECL_LINK(ApplyHdl_Impl, weld::Button&, void);
     DECL_LINK(HelpHdl_Impl, weld::Widget&, bool);
-    DECL_LINK(SearchUpdateHdl, weld::Entry&, void);
+    DECL_LINK(SearchUpdateHdl, weld::TextWidget&, void);
     DECL_LINK(ImplUpdateDataHdl, Timer*, void);
     DECL_LINK(FocusOut_Impl, weld::Widget&, void);
     void ResetCurrentPageFromConfig();

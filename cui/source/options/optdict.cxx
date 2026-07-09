@@ -204,7 +204,7 @@ IMPL_LINK_NOARG(SvxNewDictionaryDialog, OKHdl_Impl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK_NOARG(SvxNewDictionaryDialog, ModifyHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxNewDictionaryDialog, ModifyHdl_Impl, weld::TextWidget&, void)
 {
     m_xOKBtn->set_sensitive(!m_xNameEdit->get_text().isEmpty());
 }
@@ -684,7 +684,7 @@ bool SvxEditDictionaryDialog::NewDelHdl(const weld::Widget* pBtn)
     return true;
 }
 
-IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::Entry&, rEdt, void)
+IMPL_LINK(SvxEditDictionaryDialog, ModifyHdl, weld::TextWidget&, rEdt, void)
 {
     OUString rEntry = rEdt.get_text();
 

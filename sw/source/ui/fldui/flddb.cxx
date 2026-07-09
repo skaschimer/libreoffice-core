@@ -502,10 +502,7 @@ IMPL_LINK_NOARG(SwFieldDBPage, AddDBHdl, weld::Button&, void)
 }
 
 // Modify
-IMPL_LINK_NOARG(SwFieldDBPage, ModifyHdl, weld::Entry&, void)
-{
-    CheckInsert();
-}
+IMPL_LINK_NOARG(SwFieldDBPage, ModifyHdl, weld::TextWidget&, void) { CheckInsert(); }
 
 void    SwFieldDBPage::FillUserData()
 {

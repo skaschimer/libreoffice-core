@@ -57,7 +57,8 @@ class SvDDELinkEditDialog : public weld::GenericDialogController
     std::unique_ptr<weld::Entry> m_xEdDdeItem;
     std::unique_ptr<weld::Button> m_xOKButton;
 
-    DECL_LINK(EditHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditHdl_Impl, weld::TextWidget&, void);
+
 public:
     SvDDELinkEditDialog(weld::Window* pParent, SvBaseLink const*);
     OUString GetCmd() const;
@@ -93,7 +94,7 @@ OUString SvDDELinkEditDialog::GetCmd() const
     return sRet;
 }
 
-IMPL_LINK_NOARG( SvDDELinkEditDialog, EditHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvDDELinkEditDialog, EditHdl_Impl, weld::TextWidget&, void)
 {
     m_xOKButton->set_sensitive(!m_xEdDdeApp->get_text().isEmpty() &&
                                !m_xEdDdeTopic->get_text().isEmpty() &&

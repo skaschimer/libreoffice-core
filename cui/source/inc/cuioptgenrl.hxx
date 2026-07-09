@@ -62,7 +62,7 @@ private:
     OUString msCurrentSigningKey;
     OUString msCurrentEncryptionKey;
 
-    DECL_LINK( ModifyHdl_Impl, weld::Entry&, void );
+    DECL_LINK(ModifyHdl_Impl, weld::TextWidget&, void);
     DECL_LINK( ChooseKeyButtonHdl, weld::Button&, void );
     DECL_LINK( RemoveKeyButtonHdl, weld::Button&, void );
 

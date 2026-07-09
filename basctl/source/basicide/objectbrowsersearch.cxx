@@ -42,7 +42,7 @@ void ObjectBrowserSearch::Initialize()
     }
 }
 
-IMPL_STATIC_LINK(basctl::ObjectBrowserSearch, OnFilterChanged, weld::Entry&, /*rBox*/, void)
+IMPL_STATIC_LINK(basctl::ObjectBrowserSearch, OnFilterChanged, weld::TextWidget&, /*rBox*/, void)
 {
     // STUB
 }

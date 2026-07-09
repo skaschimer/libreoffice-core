@@ -231,7 +231,7 @@ IMPL_LINK_NOARG(HyperlinkDocTabPage, ModifiedPathHdl_Impl, weld::ComboBox&, void
     m_xFtFullURL->set_label(maStrURL);
 }
 
-IMPL_LINK_NOARG(HyperlinkDocTabPage, ModifiedTargetHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(HyperlinkDocTabPage, ModifiedTargetHdl_Impl, weld::TextWidget&, void)
 {
     maStrURL = GetCurrentURL();
 

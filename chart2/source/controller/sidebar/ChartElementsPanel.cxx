@@ -396,7 +396,7 @@ void ChartElementsPanel::Initialize()
 
     mxLBLegendPosition->connect_changed(LINK(this, ChartElementsPanel, LegendPosHdl));
 
-    Link<weld::Entry&, void> aEditLink = LINK(this, ChartElementsPanel, EditHdl);
+    Link<weld::TextWidget&, void> aEditLink = LINK(this, ChartElementsPanel, EditHdl);
     mxEditTitle->connect_changed(aEditLink);
     mxEditSubtitle->connect_changed(aEditLink);
 }
@@ -625,7 +625,7 @@ IMPL_LINK(ChartElementsPanel, CheckBoxHdl, weld::Toggleable&, rCheckBox, void)
     updateData();
 }
 
-IMPL_LINK(ChartElementsPanel, EditHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(ChartElementsPanel, EditHdl, weld::TextWidget&, rEdit, void)
 {
     // title or subtitle?
     TitleHelper::eTitleType aTitleType = TitleHelper::MAIN_TITLE;

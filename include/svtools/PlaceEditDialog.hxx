@@ -99,11 +99,11 @@ private:
     DECL_DLLPRIVATE_LINK(OKHdl, weld::Button&, void);
     DECL_DLLPRIVATE_LINK(DelHdl, weld::Button&, void);
     DECL_DLLPRIVATE_LINK(EditHdl, DetailsContainer*, void);
-    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::TextWidget&, void);
     void SelectType(bool bSkipSeparator);
     DECL_DLLPRIVATE_LINK(SelectTypeHdl, weld::ComboBox&, void);
-    DECL_DLLPRIVATE_LINK(EditLabelHdl, weld::Entry&, void);
-    DECL_DLLPRIVATE_LINK(EditUsernameHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(EditLabelHdl, weld::TextWidget&, void);
+    DECL_DLLPRIVATE_LINK(EditUsernameHdl, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

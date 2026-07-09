@@ -112,7 +112,7 @@ class SwInsertBookmarkDlg final : public SfxDialogController
     std::unique_ptr<BookmarkTable> m_xBookmarksBox;
     std::unique_ptr<weld::Label> m_xForbiddenChars;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK(InsertHdl, weld::Button&, void);
     DECL_LINK(DeleteHdl, weld::Button&, void);
     DECL_LINK(EditTextHdl, weld::Button&, void);

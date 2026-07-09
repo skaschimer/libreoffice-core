@@ -134,7 +134,7 @@ void SwFieldFuncPage::Reset(const SfxItemSet* )
     m_xListUpPB->connect_clicked(aListModifyLk);
     m_xListDownPB->connect_clicked(aListModifyLk);
     m_xListItemED->connect_activate(LINK(this, SwFieldFuncPage, ListModifyReturnActionHdl));
-    Link<weld::Entry&,void> aListEnableLk = LINK(this, SwFieldFuncPage, ListEnableHdl);
+    Link<weld::TextWidget&, void> aListEnableLk = LINK(this, SwFieldFuncPage, ListEnableHdl);
     m_xListItemED->connect_changed(aListEnableLk);
     m_xListItemsLB->connect_selection_changed(LINK(this, SwFieldFuncPage, ListEnableListBoxHdl));
 
@@ -462,7 +462,7 @@ IMPL_LINK_NOARG(SwFieldFuncPage, ListEnableListBoxHdl, weld::ItemView&, void)
     ListEnableHdl(*m_xListItemED);
 }
 
-IMPL_LINK_NOARG(SwFieldFuncPage, ListEnableHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldFuncPage, ListEnableHdl, weld::TextWidget&, void)
 {
     //enable "Add" button when text is in the Edit that's not already member of the box
     m_xListAddPB->set_sensitive(!m_xListItemED->get_text().isEmpty() &&
@@ -606,7 +606,7 @@ void    SwFieldFuncPage::FillUserData()
     SetUserData(USER_DATA_VERSION ";" + OUString::number( nTypeSel ));
 }
 
-IMPL_LINK_NOARG(SwFieldFuncPage, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldFuncPage, ModifyHdl, weld::TextWidget&, void)
 {
     const sal_Int32 nLen = m_xNameED->get_text().getLength();
 

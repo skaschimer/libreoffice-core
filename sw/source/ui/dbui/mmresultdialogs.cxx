@@ -155,7 +155,8 @@ namespace {
 
 class SwSaveWarningBox_Impl : public SwMessageAndEditDialog
 {
-    DECL_LINK( ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
+
 public:
     SwSaveWarningBox_Impl(weld::Window* pParent, const OUString& rFileName);
 
@@ -168,7 +169,8 @@ public:
 class SwSendQueryBox_Impl : public SwMessageAndEditDialog
 {
     bool            m_bIsEmptyAllowed;
-    DECL_LINK( ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
+
 public:
     SwSendQueryBox_Impl(weld::Window* pParent, const OUString& rID,
         const OUString& rUIXMLDescription);
@@ -207,7 +209,7 @@ SwSaveWarningBox_Impl::SwSaveWarningBox_Impl(weld::Window* pParent, const OUStri
     ModifyHdl(*m_xEdit);
 }
 
-IMPL_LINK( SwSaveWarningBox_Impl, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwSaveWarningBox_Impl, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     m_xOKPB->set_sensitive(!rEdit.get_text().isEmpty());
 }
@@ -221,7 +223,7 @@ SwSendQueryBox_Impl::SwSendQueryBox_Impl(weld::Window* pParent, const OUString& 
     ModifyHdl(*m_xEdit);
 }
 
-IMPL_LINK( SwSendQueryBox_Impl, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwSendQueryBox_Impl, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     m_xOKPB->set_sensitive(m_bIsEmptyAllowed  || !rEdit.get_text().isEmpty());
 }

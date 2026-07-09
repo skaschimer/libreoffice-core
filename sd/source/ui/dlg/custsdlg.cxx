@@ -333,7 +333,7 @@ IMPL_LINK(SdDefineCustomShowDlg, ClickButtonHdl4, weld::ItemView&, rListBox, voi
     ClickButtonHdl2(&rListBox);
 }
 
-IMPL_LINK( SdDefineCustomShowDlg, ClickButtonEditHdl, weld::Entry&, rEdit, void )
+IMPL_LINK(SdDefineCustomShowDlg, ClickButtonEditHdl, weld::TextWidget&, rEdit, void)
 {
     ClickButtonHdl2(&rEdit);
 }

@@ -33,7 +33,7 @@ SvxRelativeField::SvxRelativeField(std::unique_ptr<weld::MetricSpinButton> pCont
     rSpinButton.connect_changed(LINK(this, SvxRelativeField, ModifyHdl));
 }
 
-IMPL_LINK_NOARG(SvxRelativeField, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxRelativeField, ModifyHdl, weld::TextWidget&, void)
 {
     if (m_bRelativeMode)
     {

@@ -48,7 +48,7 @@ using namespace ::com::sun::star;
 const char BookmarkTable::s_cSeparator(';');
 
 // callback to modify EditBox
-IMPL_LINK_NOARG(SwInsertBookmarkDlg, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwInsertBookmarkDlg, ModifyHdl, weld::TextWidget&, void)
 {
     ValidateBookmarks();
     m_xBookmarksBox->unselect_all();

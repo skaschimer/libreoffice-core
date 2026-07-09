@@ -467,7 +467,7 @@ IMPL_LINK_NOARG(IndexTabPage_Impl, TreeChangeHdl, weld::ItemView&, void)
     m_xIndexEntry->set_text(m_xIndexList->get_selected_text());
 }
 
-IMPL_LINK_NOARG(IndexTabPage_Impl, EntryChangeHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(IndexTabPage_Impl, EntryChangeHdl, weld::TextWidget&, void)
 {
     switch (nLastCharCode)
     {

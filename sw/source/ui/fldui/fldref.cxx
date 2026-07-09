@@ -139,7 +139,7 @@ SwFieldRefPage::~SwFieldRefPage()
 {
 }
 
-IMPL_LINK_NOARG(SwFieldRefPage, ModifyHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldRefPage, ModifyHdl_Impl, weld::TextWidget&, void)
 {
     UpdateSubType(comphelper::string::strip(m_xFilterED->get_text(), ' '));
     // tdf#135938 - refresh cross-reference name after filter selection has changed
@@ -1003,7 +1003,7 @@ sal_Int32 SwFieldRefPage::FillFormatLB(sal_uInt16 nTypeId)
 }
 
 // Modify
-IMPL_LINK_NOARG(SwFieldRefPage, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldRefPage, ModifyHdl, weld::TextWidget&, void)
 {
     OUString aName(m_xNameED->get_text());
     const bool bEmptyName = aName.isEmpty();

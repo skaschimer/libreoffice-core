@@ -25,7 +25,7 @@ IMPL_LINK(EntryTreeView, ClickHdl, weld::ItemView&, rView, void)
     m_aChangeHdl.Call(*this);
 }
 
-IMPL_LINK_NOARG(EntryTreeView, ModifyHdl, weld::Entry&, void) { m_aChangeHdl.Call(*this); }
+IMPL_LINK_NOARG(EntryTreeView, ModifyHdl, weld::TextWidget&, void) { m_aChangeHdl.Call(*this); }
 
 void EntryTreeView::set_height_request_by_rows(int nRows)
 {

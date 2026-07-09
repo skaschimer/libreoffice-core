@@ -41,7 +41,7 @@ private:
     std::unique_ptr<weld::Button> m_xOKBtn;
 
     DECL_DLLPRIVATE_LINK(ButtonHdl, weld::Button&, void);
-    DECL_DLLPRIVATE_LINK(EditModifyHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(EditModifyHdl, weld::TextWidget&, void);
 
 public:
     SvxPasswordDialog(weld::Window* pParent, bool bDisableOldPassword);

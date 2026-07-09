@@ -63,7 +63,7 @@ namespace dbaui
 
     namespace
     {
-        void checkName(OSQLNameChecker& rChecker, weld::Entry& rEntry)
+        void checkName(OSQLNameChecker& rChecker, weld::TextWidget& rEntry)
         {
             OUString sCorrected;
             if (rChecker.checkString(rEntry.get_text(), sCorrected))
@@ -79,13 +79,13 @@ namespace dbaui
         }
     }
 
-    IMPL_LINK(OSQLNameEditControl, ModifyHdl, weld::Entry&, rEntry, void)
+    IMPL_LINK(OSQLNameEditControl, ModifyHdl, weld::TextWidget&, rEntry, void)
     {
         checkName(*this, rEntry);
         m_ChainChangedHdl.Call(rEntry);
     }
 
-    IMPL_LINK(OSQLNameEntry, ModifyHdl, weld::Entry&, rEntry, void)
+    IMPL_LINK(OSQLNameEntry, ModifyHdl, weld::TextWidget&, rEntry, void)
     {
         checkName(*this, rEntry);
     }

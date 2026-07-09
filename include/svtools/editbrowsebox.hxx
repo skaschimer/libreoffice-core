@@ -235,7 +235,7 @@ public:
 
     weld::Entry& get_widget() { return *m_pEntry; }
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) = 0;
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) = 0;
     virtual void connect_focus_in(const Link<weld::Widget&, void>& rLink) = 0;
     virtual void connect_focus_out(const Link<weld::Widget&, void>& rLink) = 0;
     virtual void connect_key_press(const Link<const KeyEvent&, bool>& rLink) = 0;
@@ -254,7 +254,7 @@ public:
 
     virtual void dispose() override;
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override
     {
         m_xWidget->connect_changed(rLink);
     }
@@ -283,7 +283,7 @@ class SVT_DLLPUBLIC EntryImplementation final : public IEditImplementation
     EditControlBase& m_rEdit;
     int m_nMaxTextLen;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     EntryImplementation(EditControlBase& rEdit)
@@ -384,7 +384,7 @@ public:
 
     virtual void dispose() override;
 
-    void connect_changed(const Link<weld::TextView&, void>& rLink)
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink)
     {
         m_xWidget->connect_changed(rLink);
     }
@@ -402,7 +402,7 @@ class SVT_DLLPUBLIC MultiLineEditImplementation final : public IEditImplementati
     MultiLineTextCell& m_rEdit;
     int m_nMaxTextLen;
 
-    DECL_LINK(ModifyHdl, weld::TextView&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     MultiLineEditImplementation(MultiLineTextCell& rEdit)
@@ -688,7 +688,7 @@ public:
 
     virtual void dispose() override;
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override;
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override;
     virtual void connect_focus_in(const Link<weld::Widget&, void>& rLink) override;
     virtual void connect_focus_out(const Link<weld::Widget&, void>& rLink) override;
     virtual void connect_key_press(const Link<const KeyEvent&, bool>& rLink) override;
@@ -760,7 +760,7 @@ public:
 
     weld::PatternFormatter& get_formatter() { return *m_xEntryFormatter; }
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override;
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override;
     virtual void connect_focus_in(const Link<weld::Widget&, void>& rLink) override;
     virtual void connect_focus_out(const Link<weld::Widget&, void>& rLink) override;
     virtual void connect_key_press(const Link<const KeyEvent&, bool>& rLink) override;

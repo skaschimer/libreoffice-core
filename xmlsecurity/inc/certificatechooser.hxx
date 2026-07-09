@@ -84,7 +84,7 @@ private:
     DECL_LINK(ViewButtonHdl, weld::Button&, void);
     DECL_LINK(CertificateHighlightHdl, weld::ItemView&, void);
     DECL_LINK(CertificateSelectHdl, const weld::TreeIter&, bool);
-    DECL_LINK(SearchModifyHdl, weld::Entry&, void);
+    DECL_LINK(SearchModifyHdl, weld::TextWidget&, void);
 
     void ImplShowCertificateDetails();
     void ImplInitialize(bool mbSearch = false);

@@ -274,7 +274,7 @@ private:
     DECL_LINK(SearchEditTimeoutHdl, Timer*, void);
     DECL_LINK(ComboChangedHdl, weld::ComboBox&, void);
 
-    DECL_LINK(EdModifyHdl, weld::Entry&, void);
+    DECL_LINK(EdModifyHdl, weld::TextWidget&, void);
     DECL_LINK(EdActivateHdl, weld::Entry&, bool);
 
     DECL_LINK(RowActivatedHdl, const weld::TreeIter&, bool);

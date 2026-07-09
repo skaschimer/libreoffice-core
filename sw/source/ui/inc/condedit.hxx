@@ -20,6 +20,7 @@
 
 #include <vcl/transfer.hxx>
 #include <svx/dbaexchange.hxx>
+#include <vcl/weld/TextWidget.hxx>
 
 template <typename X> class ConditionEdit;
 
@@ -101,7 +102,10 @@ public:
     void save_value() { m_xControl->save_value(); }
     bool get_value_changed_from_saved() const { return m_xControl->get_value_changed_from_saved(); }
     void set_sensitive(bool bSensitive) { m_xControl->set_sensitive(bSensitive); }
-    void connect_changed(const Link<T&, void>& rLink) { m_xControl->connect_changed(rLink); }
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink)
+    {
+        m_xControl->connect_changed(rLink);
+    }
     void replace_selection(const OUString& rText) { m_xControl->replace_selection(rText); }
     void hide() { m_xControl->hide(); }
     T& get_widget() { return *m_xControl; }

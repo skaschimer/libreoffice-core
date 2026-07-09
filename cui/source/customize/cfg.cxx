@@ -1696,7 +1696,7 @@ IMPL_LINK_NOARG(SvxConfigPage, ImplUpdateDataHdl, Timer*, void)
     SelectFunctionHdl(m_xFunctions->get_widget());
 }
 
-IMPL_LINK_NOARG(SvxConfigPage, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxConfigPage, SearchUpdateHdl, weld::TextWidget&, void)
 {
     m_aUpdateDataTimer.Start();
 }
@@ -1857,7 +1857,7 @@ SvxMainMenuOrganizerDialog::~SvxMainMenuOrganizerDialog()
 {
 }
 
-IMPL_LINK_NOARG(SvxMainMenuOrganizerDialog, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxMainMenuOrganizerDialog, ModifyHdl, weld::TextWidget&, void)
 {
     // if the Edit control is empty do not change the name
     if (m_xMenuNameEdit->get_text().isEmpty())

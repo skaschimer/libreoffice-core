@@ -163,7 +163,7 @@ public:
 
 private:
     DECL_LINK(OnOption, weld::Button&, void);
-    DECL_LINK(OnSuggestionModified, weld::Entry&, void);
+    DECL_LINK(OnSuggestionModified, weld::TextWidget&, void);
     DECL_LINK(OnSuggestionSelected, SuggestionDisplay&, void);
     DECL_LINK(OnConversionDirectionClicked, weld::Toggleable&, void);
     DECL_LINK(ClickByCharacterHdl, weld::Toggleable&, void);
@@ -212,7 +212,7 @@ private:
     std::unique_ptr<weld::Entry> m_xDictNameED;
 
     DECL_LINK(OKHdl, weld::Button&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     HangulHanjaNewDictDialog(weld::Window* pParent);
@@ -243,7 +243,7 @@ public:
 
     void grab_focus() { m_xEntry->grab_focus(); }
     void set_text(const OUString& rText) { m_xEntry->set_text(rText); }
-    void connect_changed(const Link<weld::Entry&, void>& rLink)
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink)
     {
         m_xEntry->connect_changed(rLink);
     }
@@ -276,10 +276,10 @@ private:
 
     DECL_LINK(OriginalModifyHdl, weld::ComboBox&, void);
     DECL_LINK(ScrollHdl, weld::ScrolledWindow&, void);
-    DECL_LINK(EditModifyHdl1, weld::Entry&, void);
-    DECL_LINK(EditModifyHdl2, weld::Entry&, void);
-    DECL_LINK(EditModifyHdl3, weld::Entry&, void);
-    DECL_LINK(EditModifyHdl4, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl1, weld::TextWidget&, void);
+    DECL_LINK(EditModifyHdl2, weld::TextWidget&, void);
+    DECL_LINK(EditModifyHdl3, weld::TextWidget&, void);
+    DECL_LINK(EditModifyHdl4, weld::TextWidget&, void);
 
     DECL_LINK(BookLBSelectHdl, weld::ComboBox&, void);
     DECL_LINK(NewPBPushHdl, weld::Button&, void);
@@ -291,7 +291,7 @@ private:
     void UpdateButtonStates();
 
     void SetEditText(SuggestionEdit& rEdit, sal_uInt16 nEntryNum);
-    void EditModify(const weld::Entry* pEdit, sal_uInt8 nEntryOffset);
+    void EditModify(const weld::TextWidget* pEdit, sal_uInt8 nEntryOffset);
 
     bool DeleteEntryFromDictionary(
         const css::uno::Reference<css::linguistic2::XConversionDictionary>& xDict);

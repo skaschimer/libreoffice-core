@@ -96,7 +96,7 @@ public:
         m_xWidget->select_region(nStartPos, nEndPos);
     }
 
-    void connect_changed(const Link<weld::Entry&, void>& rLink)
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink)
     {
         m_xWidget->connect_changed(rLink);
     }
@@ -169,7 +169,7 @@ friend class InputEdit;
     void CleanupUglyHackWithUndo();
 
     void DelBoxContent();
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
     using Window::IsActive;
 

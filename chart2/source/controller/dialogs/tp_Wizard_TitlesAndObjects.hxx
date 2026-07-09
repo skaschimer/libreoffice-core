@@ -25,6 +25,7 @@
 #include <rtl/ref.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/CheckButton.hxx>
+#include <vcl/weld/TextWidget.hxx>
 
 #include <memory>
 
@@ -51,7 +52,7 @@ public:
 private:
     void commitToModel();
     DECL_LINK( ChangeHdl, LinkParamNone*, void );
-    DECL_LINK( ChangeEditHdl, weld::Entry&, void );
+    DECL_LINK(ChangeEditHdl, weld::TextWidget&, void);
     DECL_LINK( ChangeCheckBoxHdl, weld::Toggleable&, void );
 
     std::unique_ptr< TitleResources >            m_xTitleResources;

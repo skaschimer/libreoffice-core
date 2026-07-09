@@ -61,7 +61,7 @@ class SwCaptionDialog final : public SfxDialogController
     std::unique_ptr<weld::CustomWeld> m_xPreview;
 
     DECL_LINK(SelectListBoxHdl, weld::ComboBox&, void);
-    DECL_LINK(ModifyEntryHdl, weld::Entry&, void);
+    DECL_LINK(ModifyEntryHdl, weld::TextWidget&, void);
     DECL_LINK(ModifyComboHdl, weld::ComboBox&, void);
     DECL_LINK(OptionHdl, weld::Button&, void);
     DECL_LINK(CaptionHdl, weld::Button&, void);

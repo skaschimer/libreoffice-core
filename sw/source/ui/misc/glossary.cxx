@@ -124,7 +124,7 @@ class SwNewGlosNameDlg : public weld::GenericDialogController
     std::unique_ptr<weld::Entry> m_xOldShort;
 
 protected:
-    DECL_LINK(Modify, weld::Entry&, void);
+    DECL_LINK(Modify, weld::TextWidget&, void);
     DECL_LINK(Rename, weld::Button&, void);
     DECL_LINK(TextFilterHdl, OUString&, bool);
 
@@ -486,7 +486,7 @@ std::unique_ptr<weld::TreeIter> SwGlossaryDlg::DoesBlockExist(std::u16string_vie
     return nullptr;
 }
 
-IMPL_LINK(SwGlossaryDlg, NameModify, weld::Entry&, rEdit, void)
+IMPL_LINK(SwGlossaryDlg, NameModify, weld::TextWidget&, rEdit, void)
 {
     const OUString aName(m_xNameED->get_text());
     bool bNameED = &rEdit == m_xNameED.get();
@@ -933,7 +933,7 @@ void SwGlossaryDlg::Init()
 }
 
 // KeyInput for ShortName - Edits without Spaces
-IMPL_LINK( SwNewGlosNameDlg, Modify, weld::Entry&, rBox, void )
+IMPL_LINK(SwNewGlosNameDlg, Modify, weld::TextWidget&, rBox, void)
 {
     OUString aName(m_xNewName->get_text());
     SwGlossaryDlg* pDlg = m_pParent;

@@ -134,7 +134,7 @@ PasswordDialog::PasswordDialog(weld::Window* pParent,
     m_xOKBtn->connect_clicked(LINK(this, PasswordDialog, OKHdl_Impl));
 }
 
-IMPL_LINK_NOARG(PasswordDialog, EnableOKBtn_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(PasswordDialog, EnableOKBtn_Impl, weld::TextWidget&, void)
 {
     bool bFirstPasswordHasText = !m_xEDPassword->get_text().isEmpty();
     m_xOKBtn->set_sensitive(bFirstPasswordHasText);

@@ -774,7 +774,7 @@ IMPL_LINK_NOARG(OfaTreeOptionsDialog, FocusOut_Impl, weld::Widget&, void)
     }
 }
 
-IMPL_LINK_NOARG(OfaTreeOptionsDialog, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(OfaTreeOptionsDialog, SearchUpdateHdl, weld::TextWidget&, void)
 {
     m_aUpdateDataTimer.Start();
 }

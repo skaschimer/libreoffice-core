@@ -53,7 +53,7 @@ QtInstanceFormattedSpinButton::QtInstanceFormattedSpinButton(QtDoubleSpinBox* pS
 
 QWidget* QtInstanceFormattedSpinButton::getQWidget() const { return m_pSpinBox; }
 
-void QtInstanceFormattedSpinButton::connect_changed(const Link<weld::Entry&, void>& rLink)
+void QtInstanceFormattedSpinButton::connect_changed(const Link<weld::TextWidget&, void>& rLink)
 {
     if (m_pFormatter)
     {
@@ -87,7 +87,7 @@ Formatter& QtInstanceFormattedSpinButton::GetFormatter()
             auto aFocusOutHdl = m_aFocusOutHdl;
             m_aFocusOutHdl = Link<weld::Widget&, void>();
             auto aChangeHdl = m_aChangeHdl;
-            m_aChangeHdl = Link<weld::Entry&, void>();
+            m_aChangeHdl = Link<weld::TextWidget&, void>();
 
             m_xOwnFormatter = std::make_unique<weld::EntryFormatter>(*this);
             m_xOwnFormatter->SetMinValue(m_pSpinBox->minimum());

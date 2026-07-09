@@ -387,7 +387,7 @@ private:
     bool                                bInitialised;
     SaveInData*                         pCurrentSaveInData;
 
-    DECL_LINK(SearchUpdateHdl, weld::Entry&, void);
+    DECL_LINK(SearchUpdateHdl, weld::TextWidget&, void);
 
 protected:
 
@@ -549,7 +549,7 @@ class SvxMainMenuOrganizerDialog : public weld::GenericDialogController
     void UpdateButtonStates();
 
     DECL_LINK(MoveHdl, weld::Button&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK(SelectHdl, weld::ItemView&, void);
 
 public:

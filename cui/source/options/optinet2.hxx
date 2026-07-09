@@ -67,7 +67,7 @@ private:
     void ReadConfigDefaults_Impl();
     void RestoreConfigDefaults_Impl();
 
-    DECL_LINK(PortChangedHdl, weld::Entry&, void);
+    DECL_LINK(PortChangedHdl, weld::TextWidget&, void);
     DECL_STATIC_LINK(SvxProxyTabPage, NumberOnlyTextFilterHdl, OUString&, bool);
     DECL_STATIC_LINK(SvxProxyTabPage, NoSpaceTextFilterHdl, OUString&, bool);
     DECL_LINK(ProxyHdl_Impl, weld::ComboBox&, void);

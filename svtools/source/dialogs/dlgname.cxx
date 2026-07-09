@@ -45,7 +45,7 @@ SvxNameDialog::SvxNameDialog(weld::Window* pParent, const OUString& rName, const
         set_title(rTitle);
 }
 
-IMPL_LINK_NOARG(SvxNameDialog, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxNameDialog, ModifyHdl, weld::TextWidget&, void)
 {
     // Do not allow empty names, unless custom CheckNameHdl is specified
     bool bEnable;
@@ -107,7 +107,7 @@ SvxObjectNameDialog::SvxObjectNameDialog(weld::Window* pParent, const OUString& 
     m_xEdtName->connect_changed(LINK(this, SvxObjectNameDialog, ModifyHdl));
 }
 
-IMPL_LINK_NOARG(SvxObjectNameDialog, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxObjectNameDialog, ModifyHdl, weld::TextWidget&, void)
 {
     if (aCheckNameHdl.IsSet())
     {

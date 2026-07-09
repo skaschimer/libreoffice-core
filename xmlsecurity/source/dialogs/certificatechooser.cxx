@@ -416,7 +416,7 @@ IMPL_LINK_NOARG(CertificateChooser, ReloadButtonHdl, weld::Button&, void)
     ImplInitialize();
 }
 
-IMPL_LINK_NOARG(CertificateChooser, SearchModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(CertificateChooser, SearchModifyHdl, weld::TextWidget&, void)
 {
     ImplInitialize(true);
 }

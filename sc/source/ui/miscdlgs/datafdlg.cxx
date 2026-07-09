@@ -219,7 +219,7 @@ void ScDataFormDlg::FillCtrls()
     m_xSlider->vadjustment_set_value(m_nCurrentRow - m_nStartRow - 1);
 }
 
-IMPL_LINK( ScDataFormDlg, Impl_DataModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(ScDataFormDlg, Impl_DataModifyHdl, weld::TextWidget&, rEdit, void)
 {
     if (rEdit.get_value_changed_from_saved())
         m_xBtnRestore->set_sensitive(true);

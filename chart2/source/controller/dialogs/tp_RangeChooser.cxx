@@ -301,7 +301,7 @@ bool RangeChooserTabPage::isValid()
     return bIsValid;
 }
 
-IMPL_LINK_NOARG(RangeChooserTabPage, ControlEditedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(RangeChooserTabPage, ControlEditedHdl, weld::TextWidget&, void)
 {
     setDirty();
     isValid();
@@ -317,7 +317,7 @@ IMPL_LINK_NOARG(RangeChooserTabPage, ControlChangedCheckBoxHdl, weld::Toggleable
     ControlChangedHdl(*m_xED_Range);
 }
 
-IMPL_LINK_NOARG(RangeChooserTabPage, ControlChangedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(RangeChooserTabPage, ControlChangedHdl, weld::TextWidget&, void)
 {
     setDirty();
     if( isValid())

@@ -2431,7 +2431,7 @@ IMPL_LINK( PrintDialog, UIOption_SpinModifyHdl, weld::SpinButton&, i_rBox, void 
     }
 }
 
-IMPL_LINK( PrintDialog, UIOption_EntryModifyHdl, weld::Entry&, i_rBox, void )
+IMPL_LINK(PrintDialog, UIOption_EntryModifyHdl, weld::TextWidget&, i_rBox, void)
 {
     PropertyValue* pVal = getValueForWindow( &i_rBox );
     if( pVal && mxPageRangesRadioButton->get_active() )

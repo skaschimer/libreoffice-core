@@ -43,7 +43,7 @@ IMPL_LINK_NOARG( SvxThesaurusDialog, ModifyTimer_Hdl, Timer *, void )
     m_aModifyIdle.Stop();
 }
 
-IMPL_LINK_NOARG(SvxThesaurusDialog, ReplaceEditHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxThesaurusDialog, ReplaceEditHdl_Impl, weld::TextWidget&, void)
 {
     m_xReplaceBtn->set_sensitive(!m_xReplaceEdit->get_text().isEmpty());
 }

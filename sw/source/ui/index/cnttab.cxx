@@ -1394,10 +1394,7 @@ IMPL_LINK_NOARG(SwTOXSelectTabPage, ModifyListBoxHdl, weld::ComboBox&, void)
     ModifyHdl();
 }
 
-IMPL_LINK_NOARG(SwTOXSelectTabPage, ModifyEntryHdl, weld::Entry&, void)
-{
-    ModifyHdl();
-}
+IMPL_LINK_NOARG(SwTOXSelectTabPage, ModifyEntryHdl, weld::TextWidget&, void) { ModifyHdl(); }
 
 IMPL_LINK_NOARG(SwTOXSelectTabPage, ModifySpinHdl, weld::SpinButton&, void)
 {
@@ -1549,7 +1546,8 @@ class SwTOXEdit : public SwTOXWidget
     SwTokenWindow*        m_pParent;
     std::unique_ptr<weld::Entry> m_xEntry;
 
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
+
 public:
     SwTOXEdit(SwTokenWindow* pTokenWin, const SwFormToken& rToken)
         : m_xBuilder(Application::CreateBuilder(&pTokenWin->get_child_container(),
@@ -1652,10 +1650,7 @@ public:
     void AdjustSize();
 };
 
-IMPL_LINK_NOARG(SwTOXEdit, ModifyHdl, weld::Entry&, void)
-{
-    m_aModifiedLink.Call(*this);
-}
+IMPL_LINK_NOARG(SwTOXEdit, ModifyHdl, weld::TextWidget&, void) { m_aModifiedLink.Call(*this); }
 
 IMPL_LINK(SwTOXEdit, KeyInputHdl, const KeyEvent&, rKEvt, bool)
 {

@@ -63,7 +63,7 @@ class SwGlossaryGroupDlg final : public SfxDialogController
     DECL_LINK(SelectHdl, weld::ItemView&, void);
     DECL_LINK(NewHdl, weld::Button&, void);
     DECL_LINK(DeleteHdl, weld::Button&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK(ModifyListBoxHdl, weld::ComboBox&, void);
     DECL_LINK(RenameHdl, weld::Button&, void);
     DECL_STATIC_LINK(SwGlossaryGroupDlg, EditInsertTextHdl, OUString&, bool);

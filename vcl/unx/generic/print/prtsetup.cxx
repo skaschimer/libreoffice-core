@@ -361,7 +361,7 @@ sal_uLong RTSDevicePage::getColorDevice() const
     return 0;
 }
 
-IMPL_LINK(RTSDevicePage, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(RTSDevicePage, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     if (m_pCustomValue)
     {

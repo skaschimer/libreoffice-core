@@ -81,7 +81,7 @@ namespace dbaui
         m_xNamedPipe->set_sensitive(m_xNamedPipeRadio->get_active());
     }
 
-    IMPL_LINK(MySQLNativeSettings, EditModifyHdl, weld::Entry&, rEdit, void)
+    IMPL_LINK(MySQLNativeSettings, EditModifyHdl, weld::TextWidget&, rEdit, void)
     {
         m_aControlModificationLink.Call(&rEdit);
     }

@@ -24,14 +24,9 @@ template <typename Arg, typename Ret> class Link;
 namespace weld
 {
 class Builder;
-}
-namespace weld
-{
 class Entry;
-}
-namespace weld
-{
 class Label;
+class TextWidget;
 }
 
 namespace chart
@@ -45,7 +40,7 @@ public:
     void writeToResources(const TitleDialogData& rInput);
     void readFromResources(TitleDialogData& rOutput);
 
-    void connect_changed(const Link<weld::Entry&, void>& rLink);
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink);
     bool get_value_changed_from_saved() const;
     void save_value();
 

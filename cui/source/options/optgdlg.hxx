@@ -178,7 +178,7 @@ class OfaLanguagesTabPage : public SfxTabPage
     std::unique_ptr<weld::Widget> m_xUseInputLanguageImg;
 
     DECL_LINK(LocaleSettingHdl, weld::ComboBox&, void);
-    DECL_LINK(DatePatternsHdl, weld::Entry&, void);
+    DECL_LINK(DatePatternsHdl, weld::TextWidget&, void);
 
     bool validateDatePatterns( bool& rbModified, OUString& rPatterns );
 

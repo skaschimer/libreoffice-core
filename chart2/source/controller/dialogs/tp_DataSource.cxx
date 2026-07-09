@@ -661,10 +661,10 @@ IMPL_LINK_NOARG(DataSourceTabPage, DownButtonClickedHdl, weld::Button&, void)
     }
 }
 
-IMPL_LINK(DataSourceTabPage, RangeModifiedHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(DataSourceTabPage, RangeModifiedHdl, weld::TextWidget&, rEdit, void)
 {
     // note: isValid sets the color of the edit field
-    if( isRangeFieldContentValid( rEdit ))
+    if (isRangeFieldContentValid(dynamic_cast<weld::Entry&>(rEdit)))
     {
         setDirty();
         updateModelFromControl( &rEdit );
@@ -723,7 +723,7 @@ void DataSourceTabPage::disposingRangeSelection()
     m_rDialogModel.getRangeSelectionHelper()->stopRangeListening( false );
 }
 
-bool DataSourceTabPage::updateModelFromControl(const weld::Entry* pField)
+bool DataSourceTabPage::updateModelFromControl(const weld::TextWidget* pField)
 {
     if (!m_bIsDirty)
         return true;

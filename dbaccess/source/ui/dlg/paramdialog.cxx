@@ -320,7 +320,7 @@ IMPL_LINK_NOARG(OParameterDialog, OnVisitedTimeout, Timer*, void)
     }
 }
 
-IMPL_LINK_NOARG(OParameterDialog, OnValueModified, weld::Entry&, void)
+IMPL_LINK_NOARG(OParameterDialog, OnValueModified, weld::TextWidget&, void)
 {
     // mark the currently selected entry as dirty
     OSL_ENSURE(o3tl::make_unsigned(m_nCurrentlySelected) < m_aVisitedParams.size(),

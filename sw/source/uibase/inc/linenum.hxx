@@ -55,7 +55,7 @@ private:
     std::unique_ptr<weld::Widget> m_xNumRowsFT;
     DECL_LINK(OKHdl, weld::Button&, void);
     DECL_LINK(LineOnOffHdl, weld::Toggleable&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     SwLineNumberingDlg(const SwView& rVw);

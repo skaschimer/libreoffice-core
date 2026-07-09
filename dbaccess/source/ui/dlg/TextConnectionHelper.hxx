@@ -71,7 +71,7 @@ namespace dbaui
         std::unique_ptr<CharSetListBox> m_xCharSet;
 
         DECL_LINK(OnSetExtensionHdl, weld::Toggleable&, void);
-        DECL_LINK(OnEditModified, weld::Entry&, void);
+        DECL_LINK(OnEditModified, weld::TextWidget&, void);
 
         OUString    GetSeparator(const weld::ComboBox& rBox, std::u16string_view rList);
         void        SetSeparator(weld::ComboBox& rBox, std::u16string_view rList, const OUString& rVal);

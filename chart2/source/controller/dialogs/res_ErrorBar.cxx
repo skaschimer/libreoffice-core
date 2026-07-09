@@ -455,7 +455,7 @@ IMPL_LINK(ErrorBarResources, ChooseRange, weld::Button&, rButton, void)
         aUIString, *this );
 }
 
-IMPL_LINK( ErrorBarResources, RangeChanged, weld::Entry&, rEdit, void )
+IMPL_LINK(ErrorBarResources, RangeChanged, weld::TextWidget&, rEdit, void)
 {
     if( &rEdit == m_xEdRangePositive.get() )
     {
@@ -467,7 +467,7 @@ IMPL_LINK( ErrorBarResources, RangeChanged, weld::Entry&, rEdit, void )
         m_bRangeNegUnique = true;
     }
 
-    isRangeFieldContentValid( rEdit );
+    isRangeFieldContentValid(dynamic_cast<weld::Entry&>(rEdit));
 }
 
 void ErrorBarResources::Reset(const SfxItemSet& rInAttrs)

@@ -451,7 +451,7 @@ void ScFunctionWin::DoEnter(bool bDoubleOrEnter)
 #*
 #************************************************************************/
 
-IMPL_LINK_NOARG(ScFunctionWin, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ScFunctionWin, ModifyHdl, weld::TextWidget&, void)
 {
     if (xCatBox->get_active() == LRU_CATEGORY || xCatBox->get_active() == FAVOURITES_CATEGORY)
     {

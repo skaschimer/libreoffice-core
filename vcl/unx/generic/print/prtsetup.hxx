@@ -127,7 +127,7 @@ private:
     Idle m_aReselectCustomIdle;
 
     DECL_LINK(SelectHdl, weld::ItemView&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK(ComboChangedHdl, weld::ComboBox&, void);
     DECL_LINK(ImplHandleReselectHdl, Timer*, void);
 

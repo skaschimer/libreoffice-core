@@ -51,7 +51,7 @@ namespace dbaui
         Link<weld::Widget*,void> m_aControlModificationLink;
         DECL_LINK(RadioToggleHdl, weld::Toggleable&, void);
         DECL_LINK(SpinModifyHdl, weld::SpinButton&, void);
-        DECL_LINK(EditModifyHdl, weld::Entry&, void);
+        DECL_LINK(EditModifyHdl, weld::TextWidget&, void);
 
     public:
         MySQLNativeSettings(weld::Widget* pParent, const Link<weld::Widget*,void>& rControlModificationLink);

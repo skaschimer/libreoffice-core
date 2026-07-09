@@ -171,7 +171,7 @@ private:
     DECL_LINK(DragBeginHdl, bool&, bool);
     DECL_LINK(VisRowsScrolledHdl, weld::TreeView&, void);
     DECL_LINK(SizeAllocHdl, const Size&, void);
-    DECL_LINK(SearchHdl, weld::Entry&, void);
+    DECL_LINK(SearchHdl, weld::TextWidget&, void);
 
     static GalleryBrowserMode meInitMode;
 

@@ -478,7 +478,7 @@ IMPL_LINK_NOARG(SvxCharacterMap, SearchFieldGetFocusHdl, weld::Widget&, void)
     m_xOKBtn->set_sensitive(false);
 }
 
-IMPL_LINK_NOARG(SvxCharacterMap, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxCharacterMap, SearchUpdateHdl, weld::TextWidget&, void)
 {
     if (!m_xSearchText->get_text().isEmpty())
     {
@@ -733,12 +733,12 @@ void SvxCharacterMap::selectCharByCode(Radix radix)
     }
 }
 
-IMPL_LINK_NOARG(SvxCharacterMap, DecimalCodeChangeHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxCharacterMap, DecimalCodeChangeHdl, weld::TextWidget&, void)
 {
     selectCharByCode(Radix::decimal);
 }
 
-IMPL_LINK_NOARG(SvxCharacterMap, HexCodeChangeHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxCharacterMap, HexCodeChangeHdl, weld::TextWidget&, void)
 {
     selectCharByCode(Radix::hexadecimal);
 }

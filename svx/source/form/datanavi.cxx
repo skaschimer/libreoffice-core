@@ -2638,7 +2638,7 @@ namespace svxform
         m_xDialog->response(RET_OK);
     }
 
-    IMPL_LINK_NOARG(AddConditionDialog, ModifyHdl, weld::TextView&, void)
+    IMPL_LINK_NOARG(AddConditionDialog, ModifyHdl, weld::TextWidget&, void)
     {
         m_aResultIdle.Start();
     }

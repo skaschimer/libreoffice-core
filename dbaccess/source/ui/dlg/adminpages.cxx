@@ -105,7 +105,7 @@ namespace dbaui
         callModifiedHdl(&rCtrl);
     }
 
-    IMPL_LINK(OGenericAdministrationPage, OnControlEntryModifyHdl, weld::Entry&, rCtrl, void)
+    IMPL_LINK(OGenericAdministrationPage, OnControlEntryModifyHdl, weld::TextWidget&, rCtrl, void)
     {
         callModifiedHdl(&rCtrl);
     }

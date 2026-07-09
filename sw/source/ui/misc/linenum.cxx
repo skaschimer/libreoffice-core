@@ -242,7 +242,7 @@ IMPL_LINK_NOARG(SwLineNumberingDlg, OKHdl, weld::Button&, void)
 }
 
 // modify
-IMPL_LINK_NOARG(SwLineNumberingDlg, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwLineNumberingDlg, ModifyHdl, weld::TextWidget&, void)
 {
     bool bEnable = m_xNumberingOnCB->get_active() && !m_xDivisorED->get_text().isEmpty();
 

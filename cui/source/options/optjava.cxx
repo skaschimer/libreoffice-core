@@ -669,7 +669,7 @@ SvxJavaParameterDlg::~SvxJavaParameterDlg()
 {
 }
 
-IMPL_LINK_NOARG(SvxJavaParameterDlg, ModifyHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxJavaParameterDlg, ModifyHdl_Impl, weld::TextWidget&, void)
 {
     OUString sParam = comphelper::string::strip(m_xParameterEdit->get_text(), ' ');
     m_xAssignBtn->set_sensitive(!sParam.isEmpty());

@@ -98,7 +98,7 @@ class SwOutlineSettingsTabPage final : public SfxTabPage
     DECL_LINK( CollSelect, weld::ComboBox&, void );
     void CollSave();
     DECL_LINK( NumberSelect, weld::ComboBox&, void );
-    DECL_LINK( DelimModify, weld::Entry&, void );
+    DECL_LINK(DelimModify, weld::TextWidget&, void);
     DECL_LINK( StartModified, weld::SpinButton&, void );
     DECL_LINK( CharFormatHdl, weld::ComboBox&, void );
 

@@ -29,7 +29,7 @@ private:
     DECL_LINK(ClickFileopenHdl_Impl, weld::Button&, void);
     DECL_LINK(ClickTargetHdl_Impl, weld::Button&, void);
     DECL_LINK(ModifiedPathHdl_Impl, weld::ComboBox&, void);
-    DECL_LINK(ModifiedTargetHdl_Impl, weld::Entry&, void);
+    DECL_LINK(ModifiedTargetHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(LostFocusPathHdl_Impl, weld::Widget&, void);
     DECL_LINK(TimeoutHdl_Impl, Timer*, void);
 

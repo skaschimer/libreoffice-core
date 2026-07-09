@@ -250,7 +250,7 @@ namespace vcl
         DECL_LINK( UIOption_RadioHdl, weld::Toggleable&, void );
         DECL_LINK( UIOption_SelectHdl, weld::ComboBox&, void );
         DECL_LINK( UIOption_SpinModifyHdl, weld::SpinButton&, void );
-        DECL_LINK( UIOption_EntryModifyHdl, weld::Entry&, void );
+        DECL_LINK(UIOption_EntryModifyHdl, weld::TextWidget&, void);
 
         css::beans::PropertyValue* getValueForWindow(weld::Widget*) const;
 

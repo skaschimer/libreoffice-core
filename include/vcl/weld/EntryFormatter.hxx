@@ -16,6 +16,7 @@ namespace weld
 {
 class Entry;
 class FormattedSpinButton;
+class TextWidget;
 class Widget;
 
 class VCL_DLLPUBLIC EntryFormatter : public Formatter
@@ -52,7 +53,7 @@ public:
        handled transparently by the FormattedSpinButton for the user and the
        handlers can be set on the FormattedSpinButton
     */
-    void connect_changed(const Link<weld::Entry&, void>& rLink) { m_aModifyHdl = rLink; }
+    void connect_changed(const Link<weld::TextWidget&, void>& rLink) { m_aModifyHdl = rLink; }
     void connect_focus_out(const Link<weld::Widget&, void>& rLink) { m_aFocusOutHdl = rLink; }
 
     SAL_DLLPRIVATE virtual ~EntryFormatter() override;
@@ -60,10 +61,10 @@ public:
 private:
     weld::Entry& m_rEntry;
     weld::FormattedSpinButton* m_pSpinButton;
-    Link<weld::Entry&, void> m_aModifyHdl;
+    Link<weld::TextWidget&, void> m_aModifyHdl;
     Link<weld::Widget&, void> m_aFocusOutHdl;
     SelectionOptions m_eOptions;
-    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_DLLPRIVATE_LINK(FocusOutHdl, weld::Widget&, void);
     SAL_DLLPRIVATE void Init();
 

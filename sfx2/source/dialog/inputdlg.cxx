@@ -58,7 +58,7 @@ void InputDialog::setCheckEntry(const std::function<bool(OUString)>& rFunc)
     m_xEntry->connect_changed(LINK(this, InputDialog, EntryChangedHdl));
 }
 
-IMPL_LINK_NOARG(InputDialog, EntryChangedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(InputDialog, EntryChangedHdl, weld::TextWidget&, void)
 {
     if (mCheckEntry(m_xEntry->get_text()))
         SetEntryMessageType(weld::EntryMessageType::Normal);

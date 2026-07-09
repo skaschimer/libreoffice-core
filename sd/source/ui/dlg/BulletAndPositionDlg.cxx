@@ -1152,7 +1152,7 @@ IMPL_LINK_NOARG(SvxBulletAndPositionDlg, ResetHdl_Impl, weld::Button&, void)
     Reset(&rFirstStateSet);
 }
 
-IMPL_LINK(SvxBulletAndPositionDlg, EditModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxBulletAndPositionDlg, EditModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     EditModifyHdl_Impl(&rEdit);
 }
@@ -1259,7 +1259,7 @@ IMPL_LINK(SvxBulletAndPositionDlg, RelativeHdl_Impl, weld::Toggleable&, rBox, vo
     bLastRelative = bOn;
 }
 
-void SvxBulletAndPositionDlg::EditModifyHdl_Impl(const weld::Entry* pEdit)
+void SvxBulletAndPositionDlg::EditModifyHdl_Impl(const weld::TextWidget* pEdit)
 {
     bool bPrefixOrSuffix = (pEdit == m_xPrefixED.get()) || (pEdit == m_xSuffixED.get());
     bool bStart = pEdit == m_xStartED.get();

@@ -85,7 +85,7 @@ IMPL_LINK_NOARG(SfxSaveAsTemplateDialog, OkClickHdl, weld::Button&, void)
     }
 }
 
-IMPL_LINK_NOARG(SfxSaveAsTemplateDialog, TemplateNameEditHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SfxSaveAsTemplateDialog, TemplateNameEditHdl, weld::TextWidget&, void)
 {
     msTemplateName = comphelper::string::strip(m_xTemplateNameEdit->get_text(), ' ');
     SelectCategoryHdl(*m_xLBCategory);

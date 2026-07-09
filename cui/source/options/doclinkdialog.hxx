@@ -57,7 +57,7 @@ namespace svx
         void    getLink(        OUString& _rName,         OUString& _rURL ) const;
 
     private:
-        DECL_LINK( OnEntryModified, weld::Entry&, void );
+        DECL_LINK(OnEntryModified, weld::TextWidget&, void);
         DECL_LINK( OnComboBoxModified, weld::ComboBox&, void );
         DECL_LINK( OnBrowseFile, weld::Button&, void );
         DECL_LINK( OnOk, weld::Button&, void );

@@ -323,7 +323,7 @@ class SwFrameAddPage final : public SfxTabPage
     std::unique_ptr<weld::Label> m_xTextFlowFT;
     std::unique_ptr<svx::FrameDirectionListBox> m_xTextFlowLB;
 
-    DECL_LINK(EditModifyHdl, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl, weld::TextWidget&, void);
     DECL_LINK(DecorativeHdl, weld::Toggleable&, void);
     DECL_LINK(ChainModifyHdl, weld::ComboBox&, void);
 

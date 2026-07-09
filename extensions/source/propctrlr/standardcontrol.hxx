@@ -378,7 +378,7 @@ namespace pcr
                         GetStringListValue() const;
 
         DECL_LINK(ButtonHandler, weld::Button&, void);
-        DECL_LINK(TextViewModifiedHdl, weld::TextView&, void);
+        DECL_LINK(TextViewModifiedHdl, weld::TextWidget&, void);
 
         void CheckEntryTextViewMisMatch();
 

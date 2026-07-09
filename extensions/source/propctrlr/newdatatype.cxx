@@ -66,7 +66,7 @@ namespace pcr
     {
     }
 
-    IMPL_LINK_NOARG(NewDataTypeDialog, OnNameModified, weld::Entry&, void)
+    IMPL_LINK_NOARG(NewDataTypeDialog, OnNameModified, weld::TextWidget&, void)
     {
         OUString sCurrentName = GetName();
         bool bNameIsOK = ( !sCurrentName.isEmpty() )

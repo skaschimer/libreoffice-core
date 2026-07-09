@@ -67,10 +67,10 @@ private:
     void setDirty();
 
     DECL_LINK( ChooseRangeHdl, weld::Button&, void );
-    DECL_LINK( ControlChangedHdl, weld::Entry&, void );
+    DECL_LINK(ControlChangedHdl, weld::TextWidget&, void);
     DECL_LINK( ControlChangedCheckBoxHdl, weld::Toggleable&, void );
     DECL_LINK( ControlChangedRadioHdl, weld::Toggleable&, void );
-    DECL_LINK( ControlEditedHdl, weld::Entry&, void );
+    DECL_LINK(ControlEditedHdl, weld::TextWidget&, void);
 
     sal_Int32       m_nChangingControlCalls;
     bool            m_bIsDirty;

@@ -52,7 +52,7 @@ private:
     DECL_LINK(clearImage, weld::Button&, void);
     DECL_LINK(loadImage, weld::Button&, void);
     DECL_LINK(chooseCertificate, weld::Button&, void);
-    DECL_LINK(entryChanged, weld::Entry&, void);
+    DECL_LINK(entryChanged, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

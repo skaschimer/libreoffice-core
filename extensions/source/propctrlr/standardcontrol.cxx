@@ -781,7 +781,7 @@ namespace pcr
         m_xOk->connect_clicked(LINK(this, OMultilineEditControl, ButtonHandler));
     }
 
-    IMPL_LINK_NOARG(OMultilineEditControl, TextViewModifiedHdl, weld::TextView&, void)
+    IMPL_LINK_NOARG(OMultilineEditControl, TextViewModifiedHdl, weld::TextWidget&, void)
     {
         // tdf#139070 during editing update the entry to look like how it will
         // look once editing is finished so that the default behaviour of vcl

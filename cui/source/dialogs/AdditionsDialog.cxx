@@ -719,7 +719,7 @@ bool AdditionsItem::getExtensionFile(OUString& sExtensionFile)
 
 IMPL_LINK_NOARG(AdditionsDialog, ImplUpdateDataHdl, Timer*, void) { RefreshUI(); }
 
-IMPL_LINK_NOARG(AdditionsDialog, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(AdditionsDialog, SearchUpdateHdl, weld::TextWidget&, void)
 {
     m_aSearchDataTimer.Start();
 }

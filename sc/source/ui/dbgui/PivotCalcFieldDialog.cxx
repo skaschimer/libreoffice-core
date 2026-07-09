@@ -593,7 +593,7 @@ IMPL_LINK_NOARG(ScPivotCalcFieldDlg, CalcFieldNameSelected, weld::ComboBox&, voi
     }
 }
 
-IMPL_LINK_NOARG(ScPivotCalcFieldDlg, CalcEntryChanged, weld::TextView&, void)
+IMPL_LINK_NOARG(ScPivotCalcFieldDlg, CalcEntryChanged, weld::TextWidget&, void)
 {
     OUString aName = mxCalcNames->get_active_text();
     OUString aCalc = mxCalculation->get_text().trim();

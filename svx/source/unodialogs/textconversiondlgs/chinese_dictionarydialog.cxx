@@ -457,7 +457,7 @@ IMPL_LINK_NOARG(ChineseDictionaryDialog, EditFieldsListBoxHdl, weld::ComboBox&, 
     updateButtons();
 }
 
-IMPL_LINK_NOARG(ChineseDictionaryDialog, EditFieldsHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ChineseDictionaryDialog, EditFieldsHdl, weld::TextWidget&, void)
 {
     updateButtons();
 }

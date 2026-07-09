@@ -885,15 +885,9 @@ IMPL_LINK_NOARG(ScDataProviderDlg, ProviderSelectHdl, weld::ComboBox&, void)
     isValid();
 }
 
-IMPL_LINK_NOARG(ScDataProviderDlg, IDEditHdl, weld::Entry&, void)
-{
-    isValid();
-}
+IMPL_LINK_NOARG(ScDataProviderDlg, IDEditHdl, weld::TextWidget&, void) { isValid(); }
 
-IMPL_LINK_NOARG(ScDataProviderDlg, URLEditHdl, weld::Entry&, void)
-{
-    isValid();
-}
+IMPL_LINK_NOARG(ScDataProviderDlg, URLEditHdl, weld::TextWidget&, void) { isValid(); }
 
 IMPL_LINK_NOARG(ScDataProviderDlg, ApplyBtnHdl, weld::Button&, void)
 {

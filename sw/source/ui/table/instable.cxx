@@ -167,7 +167,7 @@ IMPL_LINK_NOARG(SwInsTableDlg, OKHdl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK( SwInsTableDlg, ModifyName, weld::Entry&, rEdit, void )
+IMPL_LINK(SwInsTableDlg, ModifyName, weld::TextWidget&, rEdit, void)
 {
     OUString sTableName = rEdit.get_text();
     m_xInsertBtn->set_sensitive(m_pShell->GetTableStyle(UIName(sTableName)) == nullptr);
@@ -181,7 +181,7 @@ IMPL_LINK( SwInsTableDlg, ModifyName, weld::Entry&, rEdit, void )
 // used weld::Entry's notification; specifically, we have to call spin buttons' get_text() instead
 // of get_value(), because the latter is not guaranteed to return an up-to-date value at this point
 // (depends on vcl plugin used).
-IMPL_LINK( SwInsTableDlg, ModifyRowCol, weld::Entry&, rEdit, void )
+IMPL_LINK(SwInsTableDlg, ModifyRowCol, weld::TextWidget&, rEdit, void)
 {
     sal_Int64 nRow = m_xRowSpinButton->get_text().toInt64();
     sal_Int64 nCol = m_xColSpinButton->get_text().toInt64();

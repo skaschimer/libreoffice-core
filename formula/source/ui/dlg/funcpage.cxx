@@ -324,7 +324,7 @@ IMPL_LINK_NOARG(FuncPage, DblClkHdl, const weld::TreeIter&, bool)
     return true;
 }
 
-IMPL_LINK_NOARG(FuncPage, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(FuncPage, ModifyHdl, weld::TextWidget&, void)
 {
     if (m_xLbCategory->get_active() == LRU_CATEGORY
         || m_xLbCategory->get_active() == FAVOURITES_CATEGORY)

@@ -61,7 +61,7 @@ void CommonBehaviourControlHelper::notifyModifiedValue()
 
 void CommonBehaviourControlHelper::editChanged() { setModified(); }
 
-IMPL_LINK_NOARG(CommonBehaviourControlHelper, EditModifiedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(CommonBehaviourControlHelper, EditModifiedHdl, weld::TextWidget&, void)
 {
     editChanged();
 }

@@ -27,7 +27,7 @@ private:
     std::unique_ptr<weld::TreeView> m_xLb;
 
     DECL_LINK(DblClkHdl, const weld::TreeIter&, bool);
-    DECL_LINK(FindNameHdl, weld::Entry&, void);
+    DECL_LINK(FindNameHdl, weld::TextWidget&, void);
 
 public:
     ScGoToTabDlg(weld::Window* pParent);

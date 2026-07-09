@@ -522,7 +522,7 @@ class MatrixCreatorDialog final : public weld::GenericDialogController
 
     DECL_LINK(ButtonOkHdl, weld::Button&, void);
     DECL_LINK(ButtonCancelHdl, weld::Button&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     OUString mOldName;
     DECL_LINK(SpinButtonModifyHdl, weld::SpinButton&, void);
     DECL_LINK(RadioButtonModifyHdl, weld::Toggleable&, void);

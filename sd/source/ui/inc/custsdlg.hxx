@@ -75,7 +75,7 @@ private:
     void            CheckCustomShow();
 
     DECL_LINK( ClickButtonHdl, weld::Button&, void );
-    DECL_LINK( ClickButtonEditHdl, weld::Entry&, void );
+    DECL_LINK(ClickButtonEditHdl, weld::TextWidget&, void);
     DECL_LINK(ClickButtonHdl3, weld::ItemView&, void);
     DECL_LINK(ClickButtonHdl4, weld::ItemView&, void);
     DECL_LINK( OKHdl, weld::Button&, void );

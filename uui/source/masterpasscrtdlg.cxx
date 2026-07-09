@@ -30,8 +30,7 @@
 
 // MasterPasswordCreateDialog---------------------------------------------------
 
-
-IMPL_LINK_NOARG(MasterPasswordCreateDialog, EditHdl_Impl, weld::Entry&, void)
+IMPL_LINK_NOARG(MasterPasswordCreateDialog, EditHdl_Impl, weld::TextWidget&, void)
 {
     OUString aPasswordText = m_xEDMasterPasswordCrt->get_text();
     m_xOKBtn->set_sensitive(aPasswordText.getLength() >= 1);

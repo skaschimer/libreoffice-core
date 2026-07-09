@@ -86,7 +86,7 @@ private:
     DECL_LINK(OkHdl, weld::Button&, void);
     DECL_LINK(SelHdl, weld::ComboBox&, void);
     DECL_LINK(CheckBtnHdl, weld::Toggleable&, void);
-    DECL_LINK(CheckNameHdl, weld::Entry&, void);
+    DECL_LINK(CheckNameHdl, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

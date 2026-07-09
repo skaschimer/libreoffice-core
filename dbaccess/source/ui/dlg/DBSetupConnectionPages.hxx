@@ -199,7 +199,7 @@ namespace dbaui
         virtual void fillWindows(std::vector< std::unique_ptr<ISaveValueWrapper> >& _rControlList) override;
 
         DECL_LINK(OnTestJavaClickHdl, weld::Button&, void);
-        DECL_LINK(OnEditModified, weld::Entry&, void);
+        DECL_LINK(OnEditModified, weld::TextWidget&, void);
         std::unique_ptr<weld::Label> m_xFTDriverClass;
         std::unique_ptr<weld::Entry> m_xETDriverClass;
         std::unique_ptr<weld::Button> m_xPBTestJavaDriver;

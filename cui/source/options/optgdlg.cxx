@@ -1517,7 +1517,7 @@ IMPL_LINK_NOARG(OfaLanguagesTabPage, LocaleSettingHdl, weld::ComboBox&, void)
     m_xDatePatternsED->set_message_type(weld::EntryMessageType::Normal);
 }
 
-IMPL_LINK_NOARG(OfaLanguagesTabPage, DatePatternsHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(OfaLanguagesTabPage, DatePatternsHdl, weld::TextWidget&, void)
 {
     OUString aPatterns(m_xDatePatternsED->get_text());
     bool bModified = false;

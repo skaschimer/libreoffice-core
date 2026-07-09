@@ -2411,8 +2411,7 @@ IMPL_LINK_NOARG(MatrixCreatorDialog, ButtonCancelHdl, weld::Button&, void)
     m_xDialog->response(RET_CANCEL);
 }
 
-
-IMPL_LINK(MatrixCreatorDialog, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(MatrixCreatorDialog, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     OUString newName = rEdit.get_text();
     if (newName.isEmpty())

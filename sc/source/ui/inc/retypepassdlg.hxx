@@ -131,7 +131,7 @@ private:
     DECL_LINK(OKHdl, weld::Button&, void);
     DECL_LINK(RadioBtnHdl, weld::Toggleable&, void);
     DECL_LINK(CheckBoxHdl, weld::Toggleable&, void);
-    DECL_LINK(PasswordModifyHdl, weld::Entry&, void);
+    DECL_LINK(PasswordModifyHdl, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -66,7 +66,7 @@ ScTpFormulaOptions::ScTpFormulaOptions(weld::Container* pPage, weld::DialogContr
     mxEdSepArrayCol->connect_insert_text(LINK( this, ScTpFormulaOptions, ColSepInsertTextHdl ));
     mxEdSepArrayRow->connect_insert_text(LINK( this, ScTpFormulaOptions, RowSepInsertTextHdl ));
 
-    Link<weld::Entry&,void> aLink = LINK( this, ScTpFormulaOptions, SepModifyHdl );
+    Link<weld::TextWidget&, void> aLink = LINK(this, ScTpFormulaOptions, SepModifyHdl);
     mxEdSepFuncArg->connect_changed(aLink);
     mxEdSepArrayCol->connect_changed(aLink);
     mxEdSepArrayRow->connect_changed(aLink);
@@ -96,7 +96,7 @@ void ScTpFormulaOptions::ResetSeparators()
     mxEdSepArrayRow->set_text(aArrayRow);
 }
 
-void ScTpFormulaOptions::OnFocusSeparatorInput(weld::Entry* pEdit)
+void ScTpFormulaOptions::OnFocusSeparatorInput(weld::TextWidget* pEdit)
 {
     if (!pEdit)
         return;
@@ -247,7 +247,7 @@ IMPL_LINK(ScTpFormulaOptions, ColSepInsertTextHdl, OUString&, rTest, bool)
     return true;
 }
 
-IMPL_LINK( ScTpFormulaOptions, SepModifyHdl, weld::Entry&, rEdit, void )
+IMPL_LINK(ScTpFormulaOptions, SepModifyHdl, weld::TextWidget&, rEdit, void)
 {
     OnFocusSeparatorInput(&rEdit);
 }

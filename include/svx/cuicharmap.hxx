@@ -121,12 +121,12 @@ private:
     DECL_DLLPRIVATE_LINK(ReturnKeypressOnCharHdl, SvxShowCharSet&, void);
     DECL_DLLPRIVATE_LINK(FavClickHdl, SvxShowCharSet&, void);
     DECL_DLLPRIVATE_LINK(SearchCharHighlightHdl, SvxShowCharSet&, void);
-    DECL_DLLPRIVATE_LINK(DecimalCodeChangeHdl, weld::Entry&, void);
-    DECL_DLLPRIVATE_LINK(HexCodeChangeHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(DecimalCodeChangeHdl, weld::TextWidget&, void);
+    DECL_DLLPRIVATE_LINK(HexCodeChangeHdl, weld::TextWidget&, void);
     DECL_DLLPRIVATE_LINK(CharFocusHdl, const CharAndFont&, void);
     DECL_DLLPRIVATE_LINK(InsertClickHdl, weld::Button&, void);
     DECL_DLLPRIVATE_LINK(FavSelectHdl, weld::Button&, void);
-    DECL_DLLPRIVATE_LINK(SearchUpdateHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(SearchUpdateHdl, weld::TextWidget&, void);
     DECL_DLLPRIVATE_LINK(SearchFieldGetFocusHdl, weld::Widget&, void);
     DECL_DLLPRIVATE_LINK(UpdateFavHdl, void*, void);
 

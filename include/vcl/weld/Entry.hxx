@@ -20,7 +20,7 @@ namespace weld
 class VCL_DLLPUBLIC Entry : virtual public TextWidget
 {
 protected:
-    Link<Entry&, void> m_aChangeHdl;
+    Link<TextWidget&, void> m_aChangeHdl;
     Link<OUString&, bool> m_aInsertTextHdl;
     Link<Entry&, bool> m_aActivateHdl;
 
@@ -39,7 +39,7 @@ public:
     virtual void set_overwrite_mode(bool bOn) = 0;
     virtual bool get_overwrite_mode() const = 0;
 
-    virtual void connect_changed(const Link<Entry&, void>& rLink) { m_aChangeHdl = rLink; }
+    virtual void connect_changed(const Link<TextWidget&, void>& rLink) { m_aChangeHdl = rLink; }
     void connect_insert_text(const Link<OUString&, bool>& rLink) { m_aInsertTextHdl = rLink; }
     // callback returns true to indicated no further processing of activate wanted
     void connect_activate(const Link<Entry&, bool>& rLink) { m_aActivateHdl = rLink; }

@@ -65,7 +65,7 @@ namespace abp
         // OImportPage overridables
         virtual bool        canAdvance() const override;
 
-        DECL_LINK(OnEntryNameModified, weld::Entry&, void);
+        DECL_LINK(OnEntryNameModified, weld::TextWidget&, void);
         DECL_LINK(OnComboNameModified, weld::ComboBox&, void);
         DECL_LINK(OnRegister, weld::Toggleable&, void);
         DECL_LINK(OnEmbed, weld::Toggleable&, void);

@@ -27,7 +27,7 @@ public:
 
 private:
     // Event handlers for the UI widgets
-    DECL_STATIC_LINK(ObjectBrowserSearch, OnFilterChanged, weld::Entry&, void);
+    DECL_STATIC_LINK(ObjectBrowserSearch, OnFilterChanged, weld::TextWidget&, void);
     DECL_STATIC_LINK(ObjectBrowserSearch, OnClearSearchClicked, weld::Button&, void);
     DECL_STATIC_LINK(ObjectBrowserSearch, DebounceTimerHandler, Timer*, void);
 

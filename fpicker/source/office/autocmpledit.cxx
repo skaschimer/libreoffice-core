@@ -27,7 +27,7 @@ IMPL_LINK(AutocompleteEdit, KeyInputHdl, const KeyEvent&, rKEvt, bool)
     return false;
 }
 
-IMPL_LINK_NOARG(AutocompleteEdit, ChangedHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(AutocompleteEdit, ChangedHdl, weld::TextWidget&, void)
 {
     m_aChangeHdl.Call(*m_xEntry);
 

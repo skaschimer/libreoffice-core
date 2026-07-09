@@ -95,8 +95,8 @@ class SwEditRegionDlg final : public SfxDialogController
     DECL_LINK(GetFirstEntryHdl, weld::ItemView&, void);
 
     DECL_LINK(OkHdl, weld::Button&, void);
-    DECL_LINK(NameEditHdl, weld::Entry&, void);
-    DECL_LINK(ConditionEditHdl, weld::Entry&, void);
+    DECL_LINK(NameEditHdl, weld::TextWidget&, void);
+    DECL_LINK(ConditionEditHdl, weld::TextWidget&, void);
 
     void ChangePasswd(bool bChange);
     DECL_LINK(TogglePasswdHdl, weld::Toggleable&, void);
@@ -110,7 +110,7 @@ class SwEditRegionDlg final : public SfxDialogController
     DECL_LINK(FileSearchHdl, weld::Button&, void);
     DECL_LINK(OptionsHdl, weld::Button&, void);
     DECL_LINK(FileNameComboBoxHdl, weld::ComboBox&, void);
-    DECL_LINK(FileNameEntryHdl, weld::Entry&, void);
+    DECL_LINK(FileNameEntryHdl, weld::TextWidget&, void);
     DECL_LINK(DDEHdl, weld::Toggleable&, void);
     DECL_LINK(DlgClosedHdl, sfx2::FileDialogHelper*, void);
     DECL_LINK(SubRegionEventHdl, weld::ComboBox&, void);

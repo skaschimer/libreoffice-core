@@ -604,10 +604,7 @@ IMPL_LINK_NOARG(SvxIMapDlg, URLModifyHdl, weld::ComboBox&, void)
     URLModify();
 }
 
-IMPL_LINK_NOARG(SvxIMapDlg, EntryModifyHdl, weld::Entry&, void)
-{
-    URLModify();
-}
+IMPL_LINK_NOARG(SvxIMapDlg, EntryModifyHdl, weld::TextWidget&, void) { URLModify(); }
 
 IMPL_LINK_NOARG(SvxIMapDlg, URLLoseFocusHdl, weld::Widget&, void)
 {

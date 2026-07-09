@@ -128,7 +128,7 @@ SvxAsianLayoutPage::SvxAsianLayoutPage(weld::Container* pPage, weld::DialogContr
     LanguageHdl(*m_xLanguageLB->get_widget());
     m_xLanguageLB->connect_changed(LINK(this, SvxAsianLayoutPage, LanguageHdl));
     m_xStandardCB->connect_toggled(LINK(this, SvxAsianLayoutPage, ChangeStandardHdl));
-    Link<weld::Entry&,void> aLk(LINK(this, SvxAsianLayoutPage, ModifyHdl));
+    Link<weld::TextWidget&, void> aLk(LINK(this, SvxAsianLayoutPage, ModifyHdl));
     m_xStartED->connect_changed(aLk);
     m_xEndED->connect_changed(aLk);
 
@@ -374,7 +374,7 @@ IMPL_LINK(SvxAsianLayoutPage, ChangeStandardHdl, weld::Toggleable&, rBox, void)
     ModifyHdl(*m_xStartED);
 }
 
-IMPL_LINK(SvxAsianLayoutPage, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxAsianLayoutPage, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     LanguageType eSelectLanguage = m_xLanguageLB->get_active_id();
     Locale aLocale( LanguageTag::convertToLocale( eSelectLanguage ));

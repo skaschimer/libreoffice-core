@@ -137,7 +137,7 @@ IMPL_LINK_NOARG(TitlesAndObjectsTabPage, ChangeCheckBoxHdl, weld::Toggleable&, v
     ChangeHdl(nullptr);
 }
 
-IMPL_LINK_NOARG(TitlesAndObjectsTabPage, ChangeEditHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(TitlesAndObjectsTabPage, ChangeEditHdl, weld::TextWidget&, void)
 {
     ChangeHdl(nullptr);
 }

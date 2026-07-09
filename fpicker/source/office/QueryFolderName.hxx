@@ -30,7 +30,7 @@ private:
     std::unique_ptr<weld::Button> m_xOKBtn;
 
     DECL_LINK(OKHdl, weld::Button&, void);
-    DECL_LINK(NameHdl, weld::Entry&, void);
+    DECL_LINK(NameHdl, weld::TextWidget&, void);
 
 public:
     QueryFolderNameDialog(weld::Window* _pParent, const OUString& rTitle,

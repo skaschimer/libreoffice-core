@@ -1011,7 +1011,7 @@ IMPL_LINK_NOARG(ScCheckListMenuControl, ComboChangedHdl, weld::ComboBox&, void)
         mxFieldChangedAction->execute();
 }
 
-IMPL_LINK_NOARG(ScCheckListMenuControl, EdModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ScCheckListMenuControl, EdModifyHdl, weld::TextWidget&, void)
 {
     maSearchEditTimer.Start();
 }

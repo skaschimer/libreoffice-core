@@ -109,7 +109,7 @@ public:
     void SetGetFocusHdl(const Link<SeriesHeaderEdit&,void>& rLink) { m_aFocusInHdl = rLink; }
 
 private:
-    DECL_LINK(NameEdited, weld::Entry&, void);
+    DECL_LINK(NameEdited, weld::TextWidget&, void);
     DECL_LINK(NameFocusIn, weld::Widget&, void);
     DECL_LINK(MousePressHdl, const MouseEvent&, bool);
 
@@ -133,7 +133,7 @@ SeriesHeaderEdit::SeriesHeaderEdit(std::unique_ptr<weld::Entry> xControl, sal_In
     m_xControl->set_buildable_name(m_xControl->get_buildable_name() + OUString::number(nHeader));
 }
 
-IMPL_LINK_NOARG(SeriesHeaderEdit, NameEdited, weld::Entry&, void)
+IMPL_LINK_NOARG(SeriesHeaderEdit, NameEdited, weld::TextWidget&, void)
 {
     m_aModifyHdl.Call(*this);
 }

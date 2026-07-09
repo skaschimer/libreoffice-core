@@ -48,7 +48,7 @@ IMPL_LINK_NOARG(HexColorControl, OnAsyncModifyHdl, void*, void)
 
 // tdf#123291 resend it async so it arrives after ImplProcessInputHdl has been
 // processed
-IMPL_LINK_NOARG(HexColorControl, ImplProcessModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(HexColorControl, ImplProcessModifyHdl, weld::TextWidget&, void)
 {
     if (m_nAsyncModifyEvent)
         Application::RemoveUserEvent(m_nAsyncModifyEvent);

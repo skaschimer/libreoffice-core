@@ -1432,12 +1432,12 @@ bool SvxNumberFormatTabPage::Click_Impl(const weld::Button& rIB)
 #*
 #************************************************************************/
 
-IMPL_LINK(SvxNumberFormatTabPage, EditModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxNumberFormatTabPage, EditModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     EditHdl_Impl(&rEdit);
 }
 
-void SvxNumberFormatTabPage::EditHdl_Impl(const weld::Entry* pEdFormat)
+void SvxNumberFormatTabPage::EditHdl_Impl(const weld::TextWidget* pEdFormat)
 {
     sal_uInt32 nCurKey = NUMKEY_UNDEFINED;
 

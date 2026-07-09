@@ -1254,7 +1254,7 @@ IMPL_LINK_NOARG(SfxAcceleratorConfigPage, ImplUpdateDataHdl, Timer*, void)
     SelectHdl(m_xGroupLBox->get_widget());
 }
 
-IMPL_LINK_NOARG(SfxAcceleratorConfigPage, SearchUpdateHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SfxAcceleratorConfigPage, SearchUpdateHdl, weld::TextWidget&, void)
 {
     m_aUpdateDataTimer.Start();
 }

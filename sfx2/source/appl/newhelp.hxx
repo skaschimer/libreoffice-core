@@ -120,7 +120,7 @@ private:
     DECL_LINK(AutoCompleteHdl, Timer*, void);
     DECL_LINK(TimeoutHdl, Timer*, void);
     DECL_LINK(TreeChangeHdl, weld::ItemView&, void);
-    DECL_LINK(EntryChangeHdl, weld::Entry&, void);
+    DECL_LINK(EntryChangeHdl, weld::TextWidget&, void);
     DECL_LINK(ActivateHdl, weld::Entry&, bool);
     DECL_LINK(DoubleClickHdl, const weld::TreeIter&, bool);
     DECL_LINK(KeyInputHdl, const KeyEvent&, bool);

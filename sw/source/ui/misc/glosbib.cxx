@@ -334,7 +334,7 @@ IMPL_LINK_NOARG(SwGlossaryGroupDlg, ModifyListBoxHdl, weld::ComboBox&, void)
     ModifyHdl(*m_xNameED);
 }
 
-IMPL_LINK_NOARG(SwGlossaryGroupDlg, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwGlossaryGroupDlg, ModifyHdl, weld::TextWidget&, void)
 {
     const OUString sEntry(m_xNameED->get_text());
     bool bEnableNew = true;

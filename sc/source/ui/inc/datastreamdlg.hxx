@@ -49,7 +49,7 @@ class DataStreamDlg : public weld::GenericDialogController
     std::unique_ptr<weld::Frame> m_xVclFrameMove;
 
     DECL_LINK(UpdateClickHdl, weld::Toggleable&, void);
-    DECL_LINK(UpdateHdl, weld::Entry&, void);
+    DECL_LINK(UpdateHdl, weld::TextWidget&, void);
     DECL_LINK(UpdateComboBoxHdl, weld::ComboBox&, void);
     DECL_LINK(BrowseHdl, weld::Button&, void);
 

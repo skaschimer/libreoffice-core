@@ -841,12 +841,12 @@ void SwFieldVarPage::FillFormatLB(SwFieldTypesEnum nTypeId)
 }
 
 // Modify
-IMPL_LINK_NOARG(SwFieldVarPage, ModifyValueHdl, weld::TextView&, void)
+IMPL_LINK_NOARG(SwFieldVarPage, ModifyValueHdl, weld::TextWidget&, void)
 {
     ModifyHdl(*m_xNameED);    // apply/insert/delete status update
 }
 
-IMPL_LINK_NOARG(SwFieldVarPage, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldVarPage, ModifyHdl, weld::TextWidget&, void)
 {
     OUString sValue(m_xValueED->get_text());
     bool bHasValue = !sValue.isEmpty();
@@ -1134,7 +1134,7 @@ IMPL_LINK_NOARG(SwFieldVarPage, ChapterHdl, weld::ComboBox&, void)
     SeparatorHdl(*m_xSeparatorED);
 }
 
-IMPL_LINK_NOARG(SwFieldVarPage, SeparatorHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwFieldVarPage, SeparatorHdl, weld::TextWidget&, void)
 {
     bool bEnable = !m_xSeparatorED->get_text().isEmpty() ||
                     m_xChapterLevelLB->get_active() == 0;

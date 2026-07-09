@@ -345,7 +345,7 @@ OUString RefEdit::GetLabelTextForShrinkMode()
     return OUString();
 }
 
-IMPL_LINK_NOARG(RefEdit, Modify, weld::Entry&, void)
+IMPL_LINK_NOARG(RefEdit, Modify, weld::TextWidget&, void)
 {
     maModifyHdl.Call(*this);
     if (mpAnyRefDlg)

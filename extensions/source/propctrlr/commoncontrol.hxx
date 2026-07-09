@@ -89,7 +89,7 @@ public:
     /// may be used by derived classes, they forward the event to the PropCtrListener
     DECL_LINK(ModifiedHdl, weld::ComboBox&, void);
     DECL_LINK(ColorModifiedHdl, ColorListBox&, void);
-    DECL_LINK(EditModifiedHdl, weld::Entry&, void);
+    DECL_LINK(EditModifiedHdl, weld::TextWidget&, void);
     DECL_LINK(MetricModifiedHdl, weld::MetricSpinButton&, void);
     DECL_LINK(FormattedModifiedHdl, weld::FormattedSpinButton&, void);
     DECL_LINK(TimeModifiedHdl, weld::FormattedSpinButton&, void);

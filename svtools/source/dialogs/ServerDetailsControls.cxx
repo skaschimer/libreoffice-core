@@ -79,10 +79,7 @@ void DetailsContainer::notifyChange( )
     m_aChangeHdl.Call( this );
 }
 
-IMPL_LINK_NOARG( DetailsContainer, ValueChangeHdl, weld::Entry&, void )
-{
-    notifyChange( );
-}
+IMPL_LINK_NOARG(DetailsContainer, ValueChangeHdl, weld::TextWidget&, void) { notifyChange(); }
 
 HostDetailsContainer::HostDetailsContainer(PlaceEditDialog* pDialog, sal_uInt16 nPort, OUString sScheme) :
     DetailsContainer( pDialog ),

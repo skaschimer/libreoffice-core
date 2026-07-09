@@ -123,7 +123,7 @@ class SwSaveLabelDlg : public weld::GenericDialogController
     std::unique_ptr<weld::Button> m_xOKPB;
 
     DECL_LINK(OkHdl, weld::Button&, void);
-    DECL_LINK(ModifyEntryHdl, weld::Entry&, void);
+    DECL_LINK(ModifyEntryHdl, weld::TextWidget&, void);
     DECL_LINK(ModifyComboHdl, weld::ComboBox&, void);
 
     void Modify();

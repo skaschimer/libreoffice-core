@@ -56,7 +56,7 @@ IMPL_LINK_NOARG(SvxPasswordDialog, ButtonHdl, weld::Button&, void)
         m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK_NOARG(SvxPasswordDialog, EditModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SvxPasswordDialog, EditModifyHdl, weld::TextWidget&, void)
 {
     if (!m_xOKBtn->get_sensitive())
         m_xOKBtn->set_sensitive(true);

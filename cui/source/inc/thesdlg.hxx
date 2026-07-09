@@ -64,7 +64,7 @@ public:
     DECL_LINK(AlternativesSelectHdl_Impl, weld::ItemView&, void);
     DECL_LINK(AlternativesDoubleClickHdl_Impl, const weld::TreeIter&, bool);
     DECL_LINK( SelectFirstHdl_Impl, void*, void );
-    DECL_LINK( ReplaceEditHdl_Impl, weld::Entry&, void );
+    DECL_LINK(ReplaceEditHdl_Impl, weld::TextWidget&, void);
     DECL_LINK( ModifyTimer_Hdl, Timer *, void );
     DECL_LINK( KeyInputHdl, const KeyEvent&, bool );
 

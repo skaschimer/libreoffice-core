@@ -41,7 +41,7 @@ class PasswordDialog : public weld::GenericDialogController
 
 
     DECL_LINK(OKHdl_Impl, weld::Button&, void);
-    DECL_LINK(EnableOKBtn_Impl, weld::Entry&, void);
+    DECL_LINK(EnableOKBtn_Impl, weld::TextWidget&, void);
     DECL_LINK(ShowHdl, weld::Toggleable&, void);
 
 public:

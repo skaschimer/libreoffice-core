@@ -67,7 +67,7 @@ private:
     Timer m_aSearchDataTimer;
 
     DECL_LINK(GearHdl, const OUString&, void);
-    DECL_LINK(SearchUpdateHdl, weld::Entry&, void);
+    DECL_LINK(SearchUpdateHdl, weld::TextWidget&, void);
     DECL_LINK(ImplUpdateDataHdl, Timer*, void);
     DECL_LINK(FocusOut_Impl, weld::Widget&, void);
     DECL_LINK(CloseButtonHdl, weld::Button&, void);

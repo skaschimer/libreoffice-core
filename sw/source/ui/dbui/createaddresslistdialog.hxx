@@ -68,7 +68,7 @@ class SwCreateAddressListDialog : public SfxDialogController
     DECL_LINK(CustomizeHdl_Impl, weld::Button&, void);
     DECL_LINK(OkHdl_Impl, weld::Button&, void);
     DECL_LINK(DBCursorHdl_Impl, weld::Button&, void);
-    DECL_LINK(DBNumCursorHdl_Impl, weld::Entry&, void);
+    DECL_LINK(DBNumCursorHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(RefreshNum_Impl, weld::Widget&, void);
     void DBNumCursor();
 
@@ -93,7 +93,7 @@ class SwFindEntryDialog : public weld::GenericDialogController
     std::unique_ptr<weld::Button> m_xCancel;
 
     DECL_LINK(FindHdl_Impl, weld::Button&, void);
-    DECL_LINK(FindEnableHdl_Impl, weld::Entry&, void);
+    DECL_LINK(FindEnableHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(CloseHdl_Impl, weld::Button&, void);
 
 public:

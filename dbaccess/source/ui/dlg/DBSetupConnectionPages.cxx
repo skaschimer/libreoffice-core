@@ -727,7 +727,7 @@ using namespace ::com::sun::star;
         aMsg.run();
     }
 
-    IMPL_LINK(OJDBCConnectionPageSetup, OnEditModified, weld::Entry&, rEdit, void)
+    IMPL_LINK(OJDBCConnectionPageSetup, OnEditModified, weld::TextWidget&, rEdit, void)
     {
         if (&rEdit == m_xETDriverClass.get())
             m_xPBTestJavaDriver->set_sensitive(!m_xETDriverClass->get_text().isEmpty());

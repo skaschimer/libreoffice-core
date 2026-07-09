@@ -471,7 +471,7 @@ void SwInputWindow::SetFormula( const OUString& rFormula )
     m_bDelSel = true;
 }
 
-IMPL_LINK_NOARG(SwInputWindow, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwInputWindow, ModifyHdl, weld::TextWidget&, void)
 {
     if (m_pWrtShell && m_bIsTable && m_bResetUndo)
     {

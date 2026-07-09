@@ -59,7 +59,7 @@ private:
     DECL_DLLPRIVATE_LINK(LoseFocusHdl, weld::Widget&, void);
     DECL_DLLPRIVATE_LINK(AsyncFocusInHdl, void*, void);
     DECL_DLLPRIVATE_LINK(AsyncFocusOutHdl, void*, void);
-    DECL_DLLPRIVATE_LINK(Modify, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(Modify, weld::TextWidget&, void);
 
     void GetFocus();
     void LoseFocus();

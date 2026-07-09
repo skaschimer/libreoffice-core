@@ -813,7 +813,7 @@ IMPL_LINK( ScImportAsciiDlg, SeparatorComboBoxHdl, weld::ComboBox&, rCtrl, void 
     SeparatorHdl(&rCtrl);
 }
 
-IMPL_LINK( ScImportAsciiDlg, SeparatorEditHdl, weld::Entry&, rEdit, void )
+IMPL_LINK(ScImportAsciiDlg, SeparatorEditHdl, weld::TextWidget&, rEdit, void)
 {
     SeparatorHdl(&rEdit);
 }

@@ -2275,7 +2275,7 @@ IMPL_LINK_NOARG(QueryFolderNameDialog, OKHdl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK_NOARG(QueryFolderNameDialog, NameHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(QueryFolderNameDialog, NameHdl, weld::TextWidget&, void)
 {
     // trim the strings
     OUString aName = comphelper::string::strip(m_xNameEdit->get_text(), ' ');

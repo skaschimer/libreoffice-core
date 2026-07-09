@@ -2264,7 +2264,7 @@ IMPL_LINK_NOARG(SvxNumOptionsTabPage, CharFmtHdl_Impl, weld::ComboBox&, void)
     SetModified(false);
 };
 
-IMPL_LINK(SvxNumOptionsTabPage, EditModifyHdl_Impl, weld::Entry&, rEdit, void)
+IMPL_LINK(SvxNumOptionsTabPage, EditModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     EditModifyHdl_Impl(&rEdit);
 }
@@ -2274,7 +2274,7 @@ IMPL_LINK(SvxNumOptionsTabPage, SpinModifyHdl_Impl, weld::SpinButton&, rSpinButt
     EditModifyHdl_Impl(&rSpinButton);
 }
 
-void SvxNumOptionsTabPage::EditModifyHdl_Impl(const weld::Entry* pEdit)
+void SvxNumOptionsTabPage::EditModifyHdl_Impl(const weld::TextWidget* pEdit)
 {
     bool bPrefixSuffix = (pEdit == m_xPrefixED.get())|| (pEdit == m_xSuffixED.get());
     bool bStart = pEdit == m_xStartED.get();

@@ -67,7 +67,7 @@ IMPL_LINK_NOARG(SwRenameXNamedDlg, OkHdl, weld::Button&, void)
     m_xDialog->response(RET_OK);
 }
 
-IMPL_LINK(SwRenameXNamedDlg, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SwRenameXNamedDlg, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     OUString sTmp(rEdit.get_text());
 

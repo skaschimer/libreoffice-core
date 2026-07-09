@@ -49,7 +49,7 @@ TitleResources::TitleResources(weld::Builder& rBuilder, bool bShowSecondaryAxesT
 
 TitleResources::~TitleResources() {}
 
-void TitleResources::connect_changed(const Link<weld::Entry&, void>& rLink)
+void TitleResources::connect_changed(const Link<weld::TextWidget&, void>& rLink)
 {
     m_xEd_Main->connect_changed(rLink);
     m_xEd_Sub->connect_changed(rLink);

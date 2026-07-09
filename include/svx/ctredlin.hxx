@@ -194,7 +194,7 @@ class SAL_WARN_UNUSED SVX_DLLPUBLIC SvxTPFilter final : public SvxTPage
     DECL_DLLPRIVATE_LINK( SelDateHdl, weld::ComboBox&, void );
     DECL_DLLPRIVATE_LINK( RowEnableHdl, weld::Toggleable&, void );
     DECL_DLLPRIVATE_LINK( TimeHdl, weld::Button&, void );
-    DECL_DLLPRIVATE_LINK( ModifyHdl, weld::Entry&, void );
+    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_DLLPRIVATE_LINK( ModifyListBoxHdl, weld::ComboBox&, void );
     DECL_DLLPRIVATE_LINK( ModifyDate, SvtCalendarBox&, void );
     DECL_DLLPRIVATE_LINK( ModifyTime, weld::FormattedSpinButton&, void );

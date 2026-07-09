@@ -90,7 +90,7 @@ private:
     DECL_LINK(DoubleClickHdl, const weld::TreeIter&, bool);
     DECL_LINK(FieldListSelected, weld::ItemView&, void);
     DECL_LINK(CalcFieldNameSelected, weld::ComboBox&, void);
-    DECL_LINK(CalcEntryChanged, weld::TextView&, void);
+    DECL_LINK(CalcEntryChanged, weld::TextWidget&, void);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

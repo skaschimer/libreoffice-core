@@ -259,7 +259,7 @@ namespace dbaui
         m_xTestConnection->set_sensitive(bEnableTestConnection);
         return true;
     }
-    IMPL_LINK(OConnectionTabPage, OnEditModified, weld::Entry&, rEdit, void)
+    IMPL_LINK(OConnectionTabPage, OnEditModified, weld::TextWidget&, rEdit, void)
     {
         if (&rEdit == m_xJavaDriver.get())
             m_xTestJavaDriver->set_sensitive( !o3tl::trim(m_xJavaDriver->get_text()).empty() );

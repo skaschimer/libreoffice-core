@@ -25,19 +25,23 @@
 #include <RangeSelectionListener.hxx>
 #include <rtl/ref.hxx>
 
-namespace weld { class Builder; }
-namespace weld { class Button; }
-namespace weld { class CheckButton; }
-namespace weld { class ComboBox; }
-namespace weld { class DialogController; }
-namespace weld { class Entry; }
-namespace weld { class Frame; }
-namespace weld { class Image; }
-namespace weld { class Label; }
-namespace weld { class MetricSpinButton; }
-namespace weld { class RadioButton; }
-namespace weld { class Toggleable; }
-namespace weld { class Widget; }
+namespace weld
+{
+class Builder;
+class Button;
+class CheckButton;
+class ComboBox;
+class DialogController;
+class Entry;
+class Frame;
+class Image;
+class Label;
+class MetricSpinButton;
+class RadioButton;
+class TextWidget;
+class Toggleable;
+class Widget;
+}
 
 namespace chart
 {
@@ -130,7 +134,7 @@ private:
     DECL_LINK( PosValueChanged, weld::MetricSpinButton&, void );
     DECL_LINK( IndicatorChanged, weld::Toggleable&, void );
     DECL_LINK( ChooseRange, weld::Button&, void );
-    DECL_LINK( RangeChanged, weld::Entry&, void );
+    DECL_LINK(RangeChanged, weld::TextWidget&, void);
 
     void UpdateControlStates();
     void isRangeFieldContentValid(weld::Entry& rEdit);

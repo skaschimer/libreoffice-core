@@ -17179,7 +17179,7 @@ public:
             m_dValueWhenEmpty = gtk_spin_button_get_value(m_pButton);
     }
 
-    virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override
+    virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override
     {
         if (!m_pFormatter) // once a formatter is set, it takes over "changed"
         {
@@ -17215,7 +17215,7 @@ public:
             auto aFocusOutHdl = m_aFocusOutHdl;
             m_aFocusOutHdl = Link<weld::Widget&, void>();
             auto aChangeHdl = m_aChangeHdl;
-            m_aChangeHdl = Link<weld::Entry&, void>();
+            m_aChangeHdl = Link<weld::TextWidget&, void>();
 
             double fValue = gtk_spin_button_get_value(m_pButton);
             double fMin, fMax;

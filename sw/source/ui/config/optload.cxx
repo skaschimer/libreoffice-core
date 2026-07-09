@@ -1020,7 +1020,7 @@ SwCaptionOptPage::SwCaptionOptPage(weld::Container* pPage, weld::DialogControlle
     m_xEdDelim->set_text(sDelim);
 
     m_xCategoryBox->connect_changed(LINK(this, SwCaptionOptPage, ModifyComboHdl));
-    Link<weld::Entry&,void> aLk = LINK(this, SwCaptionOptPage, ModifyEntryHdl);
+    Link<weld::TextWidget&, void> aLk = LINK(this, SwCaptionOptPage, ModifyEntryHdl);
     m_xNumberingSeparatorED->connect_changed(aLk);
     m_xTextEdit->connect_changed(aLk);
 
@@ -1397,10 +1397,7 @@ void SwCaptionOptPage::ModifyHdl()
     InvalidatePreview();
 }
 
-IMPL_LINK_NOARG(SwCaptionOptPage, ModifyEntryHdl, weld::Entry&, void)
-{
-    ModifyHdl();
-}
+IMPL_LINK_NOARG(SwCaptionOptPage, ModifyEntryHdl, weld::TextWidget&, void) { ModifyHdl(); }
 
 IMPL_LINK_NOARG(SwCaptionOptPage, ModifyComboHdl, weld::ComboBox&, void)
 {

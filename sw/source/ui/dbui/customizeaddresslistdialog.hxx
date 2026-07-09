@@ -57,7 +57,8 @@ class SwAddRenameEntryDialog : public SfxDialogController
     std::unique_ptr<weld::Entry> m_xFieldNameED;
     std::unique_ptr<weld::Button> m_xOK;
 
-    DECL_LINK(ModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl_Impl, weld::TextWidget&, void);
+
 protected:
     SwAddRenameEntryDialog(weld::Window* pParent, const OUString& rUIXMLDescription,
         const OUString& rID, const std::vector< OUString >& rCSVHeader);

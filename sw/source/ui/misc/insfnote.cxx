@@ -70,7 +70,7 @@ void SwInsFootNoteDlg::Apply()
     bFootnote = m_xFootnoteBtn->get_active();
 }
 
-IMPL_LINK_NOARG(SwInsFootNoteDlg, NumberEditHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(SwInsFootNoteDlg, NumberEditHdl, weld::TextWidget&, void)
 {
     m_xNumberCharBtn->set_active(true);
     m_xOkBtn->set_sensitive( !m_xNumberCharEdit->get_text().isEmpty() );

@@ -751,7 +751,7 @@ IMPL_LINK_NOARG(SaneDlg, OptionsBoxSelectHdl, weld::ItemView&, void)
     }
 }
 
-IMPL_LINK(SaneDlg, ModifyHdl, weld::Entry&, rEdit, void)
+IMPL_LINK(SaneDlg, ModifyHdl, weld::TextWidget&, rEdit, void)
 {
     if( !mrSane.IsOpen() )
         return;

@@ -123,7 +123,7 @@ namespace dbaui
         m_xContainer->show();
     }
 
-    IMPL_LINK_NOARG(OTextConnectionHelper, OnEditModified, weld::Entry&, void)
+    IMPL_LINK_NOARG(OTextConnectionHelper, OnEditModified, weld::TextWidget&, void)
     {
         m_aGetExtensionHandler.Call(this);
     }

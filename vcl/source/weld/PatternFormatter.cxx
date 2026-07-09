@@ -24,7 +24,7 @@ PatternFormatter::PatternFormatter(weld::Entry& rEntry)
     m_rEntry.connect_key_press(LINK(this, PatternFormatter, KeyInputHdl));
 }
 
-IMPL_LINK_NOARG(PatternFormatter, ModifyHdl, weld::Entry&, void) { Modify(); }
+IMPL_LINK_NOARG(PatternFormatter, ModifyHdl, weld::TextWidget&, void) { Modify(); }
 
 IMPL_LINK_NOARG(PatternFormatter, FocusOutHdl, weld::Widget&, void)
 {
@@ -40,7 +40,7 @@ IMPL_LINK_NOARG(PatternFormatter, FocusInHdl, weld::Widget&, void)
 
 PatternFormatter::~PatternFormatter()
 {
-    m_rEntry.connect_changed(Link<weld::Entry&, void>());
+    m_rEntry.connect_changed(Link<weld::TextWidget&, void>());
     m_rEntry.connect_focus_out(Link<weld::Widget&, void>());
 }
 }

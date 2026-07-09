@@ -106,7 +106,7 @@ class SwIndexMarkPane
     DECL_LINK(InsertHdl, weld::Button&, void);
     DECL_LINK(CloseHdl, weld::Button&, void);
     DECL_LINK(ResetHdl, weld::Button&, void);
-    DECL_LINK(GenericEntryModifiedHdl, weld::Entry&, void);
+    DECL_LINK(GenericEntryModifiedHdl, weld::TextWidget&, void);
     DECL_LINK(GenericToggleModifiedHdl, weld::Toggleable&, void);
     DECL_LINK(SyncSelectionHdl, weld::Button&, void);
     DECL_LINK(DelHdl, weld::Button&, void);
@@ -115,12 +115,12 @@ class SwIndexMarkPane
     DECL_LINK( PrevHdl, weld::Button&, void );
     DECL_LINK( PrevSameHdl, weld::Button&, void );
     DECL_LINK( ModifyListBoxHdl, weld::ComboBox&, void );
-    DECL_LINK( ModifyEditHdl, weld::Entry&, void );
+    DECL_LINK(ModifyEditHdl, weld::TextWidget&, void);
     void ModifyHdl(const weld::Widget& rWidget);
     DECL_LINK( KeyDCBModifyHdl, weld::ComboBox&, void );
     DECL_LINK( NewUserIdxHdl, weld::Button&, void );
     DECL_LINK( SearchTypeHdl, weld::Toggleable&, void );
-    DECL_LINK( PhoneticEDModifyHdl, weld::Entry&, void );
+    DECL_LINK(PhoneticEDModifyHdl, weld::TextWidget&, void);
 
     //this method updates the values from 'nLangForPhoneticReading' and 'bIsPhoneticReadingEnabled'
     //it needs to be called ones if this dialog is opened to create a new entry (in InitControls),
@@ -209,9 +209,9 @@ class SwAuthorMarkPane
     DECL_LINK(CreateEntryHdl, weld::Button&, void);
     DECL_LINK(CompEntryHdl, weld::ComboBox&, void);
     DECL_LINK(ChangeSourceHdl, weld::Toggleable&, void);
-    DECL_LINK(IsEditAllowedHdl, weld::Entry&, bool);
-    DECL_LINK(IsEntryAllowedHdl, weld::Entry&, bool);
-    DECL_LINK(EditModifyHdl, weld::Entry&, void);
+    DECL_LINK(IsEditAllowedHdl, weld::TextWidget&, bool);
+    DECL_LINK(IsEntryAllowedHdl, weld::TextWidget&, bool);
+    DECL_LINK(EditModifyHdl, weld::TextWidget&, void);
 
     void InitControls();
     void Activate();

@@ -59,7 +59,7 @@ IMPL_LINK_NOARG(ScGoToTabDlg, DblClkHdl, const weld::TreeIter&, bool)
     return true;
 }
 
-IMPL_LINK_NOARG(ScGoToTabDlg, FindNameHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ScGoToTabDlg, FindNameHdl, weld::TextWidget&, void)
 {
     const OUString aMask = m_xEnNameMask->get_text();
     m_xLb->clear();

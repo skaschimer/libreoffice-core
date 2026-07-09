@@ -23,7 +23,7 @@ private:
     std::unique_ptr<weld::Button> m_xHelp;
     std::unique_ptr<weld::Button> m_xOk;
     std::function<bool(OUString)> mCheckEntry;
-    DECL_LINK(EntryChangedHdl, weld::Entry&, void);
+    DECL_LINK(EntryChangedHdl, weld::TextWidget&, void);
 
 public:
     InputDialog(weld::Widget* pParent, const OUString& rLabelText);

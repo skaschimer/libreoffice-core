@@ -198,7 +198,7 @@ private:
     DECL_LINK(NewDelButtonHdl, weld::Button&, void);
     DECL_LINK(NewDelActionHdl, weld::Entry&, bool);
     DECL_LINK(EntrySizeAllocHdl, const Size&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     bool NewDelHdl(const weld::Widget*);
 
     void RefillReplaceBox(  bool bFromReset,
@@ -254,7 +254,7 @@ private:
     DECL_LINK(NewDelButtonHdl, weld::Button&, void);
     DECL_LINK(NewDelActionHdl, weld::Entry&, bool);
     DECL_LINK(SelectHdl, weld::ItemView&, void);
-    DECL_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     bool            NewDelHdl(const weld::Widget*);
                     /// Box filled with new language
     void            RefillReplaceBoxes(bool bFromReset,

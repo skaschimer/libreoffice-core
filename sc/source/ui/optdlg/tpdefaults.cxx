@@ -154,15 +154,9 @@ void ScTpDefaultsOptions::OnFocusPrefixInput()
     maOldPrefixValue = m_xEdSheetPrefix->get_text();
 }
 
-IMPL_LINK_NOARG(ScTpDefaultsOptions, NumModifiedHdl, weld::Entry&, void)
-{
-    CheckNumSheets();
-}
+IMPL_LINK_NOARG(ScTpDefaultsOptions, NumModifiedHdl, weld::TextWidget&, void) { CheckNumSheets(); }
 
-IMPL_LINK_NOARG(ScTpDefaultsOptions, PrefixModifiedHdl, weld::Entry&, void)
-{
-    CheckPrefix();
-}
+IMPL_LINK_NOARG(ScTpDefaultsOptions, PrefixModifiedHdl, weld::TextWidget&, void) { CheckPrefix(); }
 
 IMPL_LINK_NOARG(ScTpDefaultsOptions, PrefixEditOnFocusHdl, weld::Widget&, void)
 {

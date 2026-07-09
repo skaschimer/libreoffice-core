@@ -64,7 +64,10 @@ IMPL_LINK(DropDownFormFieldDialog, KeyPressedHdl, const KeyEvent&, rEvent, bool)
     return false;
 }
 
-IMPL_LINK_NOARG(DropDownFormFieldDialog, EntryChangedHdl, weld::Entry&, void) { UpdateButtons(); }
+IMPL_LINK_NOARG(DropDownFormFieldDialog, EntryChangedHdl, weld::TextWidget&, void)
+{
+    UpdateButtons();
+}
 
 IMPL_LINK(DropDownFormFieldDialog, ButtonPushedHdl, weld::Button&, rButton, void)
 {

@@ -392,7 +392,7 @@ IMPL_LINK(SvxGeneralTabPage, RemoveKeyButtonHdl, weld::Button&, rButton, void)
 void SvxGeneralTabPage::SetLinks ()
 {
     // link for updating the initials
-    Link<weld::Entry&,void> aLink = LINK( this, SvxGeneralTabPage, ModifyHdl_Impl );
+    Link<weld::TextWidget&, void> aLink = LINK(this, SvxGeneralTabPage, ModifyHdl_Impl);
     Row& rNameRow = *vRows[nNameRow];
     for (unsigned i = rNameRow.nFirstField; i != rNameRow.nLastField - 1; ++i)
         vFields[i]->xEdit->connect_changed(aLink);
@@ -466,7 +466,7 @@ void SvxGeneralTabPage::Reset( const SfxItemSet* rSet )
 // ModifyHdl_Impl()
 // This handler updates the initials (short name)
 // when one of the name fields was updated.
-IMPL_LINK( SvxGeneralTabPage, ModifyHdl_Impl, weld::Entry&, rEdit, void )
+IMPL_LINK(SvxGeneralTabPage, ModifyHdl_Impl, weld::TextWidget&, rEdit, void)
 {
     // short name field and row
     Field& rShortName = *vFields[nShortNameField];

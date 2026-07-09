@@ -48,7 +48,7 @@ namespace dbaui
 
         // called when the test connection button was clicked
         DECL_LINK(OnTestJavaClickHdl, weld::Button&, void);
-        DECL_LINK(OnEditModified, weld::Entry&, void);
+        DECL_LINK(OnEditModified, weld::TextWidget&, void);
 
     public:
         OConnectionTabPage(weld::Container* pPage, weld::DialogController* pController, const SfxItemSet& _rCoreAttrs);

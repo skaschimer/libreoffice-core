@@ -34,7 +34,7 @@ EntryFormatter::EntryFormatter(weld::Entry& rEntry)
 
 EntryFormatter::~EntryFormatter()
 {
-    m_rEntry.connect_changed(Link<weld::Entry&, void>());
+    m_rEntry.connect_changed(Link<weld::TextWidget&, void>());
     m_rEntry.connect_focus_out(Link<weld::Widget&, void>());
     if (m_pSpinButton)
         m_pSpinButton->SetFormatter(nullptr);
@@ -116,7 +116,7 @@ SelectionOptions EntryFormatter::GetEntrySelectionOptions() const { return m_eOp
 
 void EntryFormatter::FieldModified() { m_aModifyHdl.Call(m_rEntry); }
 
-IMPL_LINK_NOARG(EntryFormatter, ModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(EntryFormatter, ModifyHdl, weld::TextWidget&, void)
 {
     // This leads to FieldModified getting called at the end of Modify() and
     // FieldModified then calls any modification callback

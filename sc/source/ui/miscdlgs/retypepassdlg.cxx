@@ -294,7 +294,7 @@ void ScRetypePassInputDlg::Init()
     m_xBtnRetypePassword->connect_toggled(LINK(this, ScRetypePassInputDlg, RadioBtnHdl));
     m_xBtnRemovePassword->connect_toggled(LINK(this, ScRetypePassInputDlg, RadioBtnHdl));
     m_xBtnMatchOldPass->connect_toggled(LINK(this, ScRetypePassInputDlg, CheckBoxHdl));
-    Link<weld::Entry&, void> aLink2 = LINK(this, ScRetypePassInputDlg, PasswordModifyHdl);
+    Link<weld::TextWidget&, void> aLink2 = LINK(this, ScRetypePassInputDlg, PasswordModifyHdl);
     m_xPassword1Edit->connect_changed(aLink2);
     m_xPassword2Edit->connect_changed(aLink2);
 
@@ -361,7 +361,7 @@ IMPL_LINK_NOARG(ScRetypePassInputDlg, CheckBoxHdl, weld::Toggleable&, void)
     CheckPasswordInput();
 }
 
-IMPL_LINK_NOARG(ScRetypePassInputDlg, PasswordModifyHdl, weld::Entry&, void)
+IMPL_LINK_NOARG(ScRetypePassInputDlg, PasswordModifyHdl, weld::TextWidget&, void)
 {
     CheckPasswordInput();
 }

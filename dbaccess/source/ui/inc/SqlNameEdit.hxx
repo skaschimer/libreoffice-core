@@ -58,15 +58,15 @@ namespace dbaui
             m_xWidget->connect_changed(LINK(this, OSQLNameEditControl, ModifyHdl));
         }
 
-        virtual void connect_changed(const Link<weld::Entry&, void>& rLink) override
+        virtual void connect_changed(const Link<weld::TextWidget&, void>& rLink) override
         {
             m_ChainChangedHdl = rLink;
         }
 
     private:
-        DECL_LINK(ModifyHdl, weld::Entry&, void);
+        DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
-        Link<weld::Entry&,void> m_ChainChangedHdl;
+        Link<weld::TextWidget&, void> m_ChainChangedHdl;
     };
 
     class OWidgetBase
@@ -100,7 +100,7 @@ namespace dbaui
     private:
         std::unique_ptr<weld::Entry> m_xEntry;
 
-        DECL_LINK(ModifyHdl, weld::Entry&, void);
+        DECL_LINK(ModifyHdl, weld::TextWidget&, void);
 
     public:
         OSQLNameEntry(std::unique_ptr<weld::Entry> xEntry, const OUString& _rAllowedChars,

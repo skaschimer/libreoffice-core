@@ -39,7 +39,7 @@ private:
     bool                m_bNegativeEnabled;
     bool m_bFontRelativeMode;
 
-    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(ModifyHdl, weld::TextWidget&, void);
 
 public:
     SvxRelativeField(std::unique_ptr<weld::MetricSpinButton> pControl);

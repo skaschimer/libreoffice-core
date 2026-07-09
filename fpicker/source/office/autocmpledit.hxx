@@ -26,7 +26,7 @@ private:
     sal_uInt16 m_nLastCharCode;
 
     DECL_LINK(KeyInputHdl, const KeyEvent&, bool);
-    DECL_LINK(ChangedHdl, weld::Entry&, void);
+    DECL_LINK(ChangedHdl, weld::TextWidget&, void);
     DECL_LINK(TryAutoComplete, Timer*, void);
 
     bool Match(std::u16string_view rText);

@@ -119,7 +119,7 @@ public:
     DECL_LINK( FxHdl, ParaWin&, void );
 
     DECL_LINK( MatrixHdl, weld::Toggleable&, void );
-    DECL_LINK( FormulaHdl, weld::TextView&, void);
+    DECL_LINK(FormulaHdl, weld::TextWidget&, void);
     DECL_LINK( FormulaCursorHdl, weld::TextWidget&, void);
     DECL_LINK( BtnHdl, weld::Button&, void );
     DECL_LINK( FavToggleHdl, weld::Button&, void );
@@ -1325,7 +1325,7 @@ IMPL_LINK( FormulaDlg_Impl, ModifyHdl, ParaWin&, rPtr, void )
     }
 }
 
-IMPL_LINK_NOARG( FormulaDlg_Impl, FormulaHdl, weld::TextView&, void)
+IMPL_LINK_NOARG(FormulaDlg_Impl, FormulaHdl, weld::TextWidget&, void)
 {
 
     FormEditData* pData = m_pHelper->getFormEditData();

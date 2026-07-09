@@ -86,7 +86,7 @@ private:
     DECL_LINK( ClickBtnHdl, weld::Button&, void );
     DECL_LINK( ToggleBtnHdl, weld::Toggleable&, void );
     DECL_LINK( SelectHdl, weld::ComboBox&, void );
-    DECL_LINK( ModifyHdl, weld::Entry&, void );
+    DECL_LINK(ModifyHdl, weld::TextWidget&, void);
     DECL_LINK( MetricValueModifyHdl, weld::MetricSpinButton&, void );
     DECL_LINK( ValueModifyHdl, weld::ComboBox&, void );
     DECL_LINK( ReloadSaneOptionsHdl, Sane&, void );

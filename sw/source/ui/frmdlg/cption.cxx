@@ -126,7 +126,7 @@ SwCaptionDialog::SwCaptionDialog(weld::Window *pParent, SwView &rV)
     }
 
     m_xCategoryBox->connect_changed(LINK(this, SwCaptionDialog, ModifyComboHdl));
-    Link<weld::Entry&,void> aLk = LINK(this, SwCaptionDialog, ModifyEntryHdl);
+    Link<weld::TextWidget&, void> aLk = LINK(this, SwCaptionDialog, ModifyEntryHdl);
     m_xTextEdit->connect_changed(aLk);
     m_xNumberingSeparatorED->connect_changed(aLk);
     m_xSepEdit->connect_changed(aLk);
@@ -353,10 +353,7 @@ void SwCaptionDialog::ModifyHdl()
     DrawSample();
 }
 
-IMPL_LINK_NOARG(SwCaptionDialog, ModifyEntryHdl, weld::Entry&, void)
-{
-    ModifyHdl();
-}
+IMPL_LINK_NOARG(SwCaptionDialog, ModifyEntryHdl, weld::TextWidget&, void) { ModifyHdl(); }
 
 IMPL_LINK_NOARG(SwCaptionDialog, ModifyComboHdl, weld::ComboBox&, void)
 {

@@ -295,7 +295,7 @@ class SvxNumOptionsTabPage : public SfxTabPage
     DECL_LINK(SizeHdl_Impl, weld::MetricSpinButton&, void);
     DECL_LINK(RatioHdl_Impl, weld::Toggleable&, void);
     DECL_LINK(CharFmtHdl_Impl, weld::ComboBox&, void);
-    DECL_LINK(EditModifyHdl_Impl, weld::Entry&, void);
+    DECL_LINK(EditModifyHdl_Impl, weld::TextWidget&, void);
     DECL_LINK(SpinModifyHdl_Impl, weld::SpinButton&, void);
     DECL_LINK(AllLevelHdl_Impl, weld::SpinButton&, void);
     DECL_LINK(IsLegalHdl_Impl, weld::Toggleable&, void);
@@ -304,7 +304,7 @@ class SvxNumOptionsTabPage : public SfxTabPage
     DECL_LINK(BulColorHdl_Impl, ColorListBox&, void);
     DECL_LINK(BulRelSizeHdl_Impl, weld::MetricSpinButton&, void);
     DECL_LINK(PreviewInvalidateHdl_Impl, Timer*, void);
-    void EditModifyHdl_Impl(const weld::Entry*);
+    void EditModifyHdl_Impl(const weld::TextWidget*);
 
 public:
     SvxNumOptionsTabPage(weld::Container* pPage, weld::DialogController* pController, const SfxItemSet& rSet);

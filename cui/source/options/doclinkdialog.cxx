@@ -234,7 +234,7 @@ namespace svx
         validate();
     }
 
-    IMPL_LINK_NOARG(ODocumentLinkDialog, OnEntryModified, weld::Entry&, void)
+    IMPL_LINK_NOARG(ODocumentLinkDialog, OnEntryModified, weld::TextWidget&, void)
     {
         validate();
     }

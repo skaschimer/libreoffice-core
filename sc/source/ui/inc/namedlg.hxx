@@ -101,7 +101,7 @@ private:
     DECL_LINK(CancelBtnHdl, weld::Button&, void);
     DECL_LINK(AddBtnHdl, weld::Button&, void);
     DECL_LINK(RemoveBtnHdl, weld::Button&, void);
-    DECL_LINK(EdModifyHdl, weld::Entry&, void);
+    DECL_LINK(EdModifyHdl, weld::TextWidget&, void);
     DECL_LINK(RefEdModifyHdl, formula::RefEdit&, void);
     DECL_LINK(EdModifyCheckBoxHdl, weld::Toggleable&, void);
     DECL_LINK(AssignGetFocusHdl, formula::RefEdit&, void);

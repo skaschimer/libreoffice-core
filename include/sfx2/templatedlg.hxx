@@ -39,6 +39,7 @@ namespace weld
 class ComboBox;
 class Entry;
 class MenuButton;
+class TextWidget;
 class TreeView;
 class Window;
 }
@@ -88,7 +89,7 @@ protected:
 
     SAL_DLLPRIVATE void SearchUpdate();
 
-    DECL_DLLPRIVATE_LINK(SearchUpdateHdl, weld::Entry&, void);
+    DECL_DLLPRIVATE_LINK(SearchUpdateHdl, weld::TextWidget&, void);
     DECL_DLLPRIVATE_LINK(GetFocusHdl, weld::Widget&, void);
     DECL_DLLPRIVATE_LINK(LoseFocusHdl, weld::Widget&, void);
     DECL_DLLPRIVATE_LINK(ImplUpdateDataHdl, Timer*, void);
@@ -155,7 +156,7 @@ private:
     std::unique_ptr<weld::Button> mxOKButton;
 
 public:
-    DECL_LINK(NewCategoryEditHdl, weld::Entry&, void);
+    DECL_LINK(NewCategoryEditHdl, weld::TextWidget&, void);
     DECL_LINK(SelectCategoryHdl, weld::ItemView&, void);
 
     void SetCategoryLBEntries(std::vector<OUString> names);
