@@ -626,7 +626,7 @@ bool SwTextPortion::Format_( SwTextFormatInfo &rInf )
             // calculate line breaking with desired word spacing, also
             // skip hyphenation, if the maximum word spacing allows it
             // TODO complete it, when the desired word spacing is not 100%
-            if ( bWordSpacing || ( bWordSpacingMaximum && bOrigHyphenated ) )
+            if ( bWordSpacing )
             {
                 std::optional<SwTextGuess> pGuess2(std::in_place);
 
