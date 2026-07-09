@@ -27,6 +27,7 @@
 #include <com/sun/star/sdb/CommandType.hpp>
 #include <com/sun/star/sdb/application/XTableUIProvider.hpp>
 #include <com/sun/star/beans/NamedValue.hpp>
+#include <com/sun/star/util/XCloseable.hpp>
 
 #include <connectivity/dbtools.hxx>
 #include <osl/diagnose.h>
@@ -98,10 +99,11 @@ namespace dbaui
         Reference< XComponent > xReturn;
         if ( m_xORB.is() )
         {
+            const bool bWeCreateTheFrame = !m_xFrameLoader.is();
             try
             {
                 // if we have no externally provided frame, create one
-                if ( !m_xFrameLoader.is() )
+                if ( bWeCreateTheFrame )
                 {
                     Reference< XSingleServiceFactory > xFact = TaskCreator::create(m_xORB);
                     Sequence< Any > lArgs{ Any(NamedValue(u"ParentFrame"_ustr, Any(m_xParentFrame))),
@@ -128,6 +130,23 @@ namespace dbaui
                     0,
                     i_rDispatchArgs.getPropertyValues()
                 );
+
+                // close the frame if the user hit "Cancel" on the SQL-comments warning, see
+                // OQueryController::impl_reset
+                if ( !xReturn.is() && bWeCreateTheFrame && m_xFrameLoader.is() )
+                {
+                    try
+                    {
+                        Reference< css::util::XCloseable > xCloseable( m_xFrameLoader, UNO_QUERY );
+                        if ( xCloseable.is() )
+                            xCloseable->close( true );
+                    }
+                    catch( const Exception& )
+                    {
+                        DBG_UNHANDLED_EXCEPTION("dbaccess");
+                    }
+                    m_xFrameLoader.clear();
+                }
             }
             catch( const Exception& )
             {

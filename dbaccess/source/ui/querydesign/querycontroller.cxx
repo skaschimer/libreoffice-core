@@ -613,12 +613,11 @@ void OQueryController::Execute(sal_uInt16 _nId, const Sequence< PropertyValue >&
                                     std::vector<CommentStrip> aComments = getComment(m_sStatement);
                                     if (!aComments.empty())
                                     {
-                                        bool bUserSaysNo = true; // safe default
-                                        if (!Application::IsHeadlessModeEnabled()
-                                            && !o3tl::IsRunningUITest())
+                                        bool bUserSaysNo = true;
+                                        if (!Application::IsHeadlessModeEnabled() && !o3tl::IsRunningUITest())
                                         {
                                             OUString aMessage = lcl_getObjectResourceString(
-                                                STR_QRY_COMMENTS_WARNING, m_nCommandType);
+                                                STR_QRY_COMMENTS_WARNING_2CHOICES, m_nCommandType);
                                             std::unique_ptr<weld::MessageDialog> xDlg(
                                                 Application::CreateMessageDialog(
                                                     getFrameWeld(), VclMessageType::Warning,
@@ -1805,34 +1804,10 @@ void OQueryController::impl_reset( const bool i_bForceCurrentControllerSettings 
         setQueryComposer();
     OSL_ENSURE(m_pSqlIterator,"No SQLIterator set!");
 
-    // When loading (or re-loading) in Design view, check for SQL comments (tdf#42713)
-    // Ask the user if they want to proceed (comments may be lost) or open in SQL view.
-    // If proceeding, cache the statement with comments for roundtrip preservation.
+    // When loading (or re-loading) in Design view, check for SQL comments (tdf#42713).
     if (m_bGraphicalDesign && !m_sStatement.isEmpty() && m_sStatementWithComments.isEmpty())
     {
-        bool bProceed = true;
-        std::vector<CommentStrip> aComments = getComment(m_sStatement);
-        if (!aComments.empty())
-        {
-            bool bUserSaysNo = true; // safe default for headless/test mode
-            if (!Application::IsHeadlessModeEnabled() && !o3tl::IsRunningUITest())
-            {
-                OUString aMessage = lcl_getObjectResourceString(
-                    STR_QRY_COMMENTS_WARNING, m_nCommandType);
-                std::unique_ptr<weld::MessageDialog> xDlg(
-                    Application::CreateMessageDialog(
-                        getFrameWeld(), VclMessageType::Warning,
-                        VclButtonsType::YesNo, aMessage));
-                xDlg->set_default_response(RET_NO);
-                bUserSaysNo = (xDlg->run() == RET_NO);
-            }
-            if (bUserSaysNo)
-            {
-                m_bGraphicalDesign = false;
-                bProceed = false;
-            }
-        }
-        if (bProceed)
+        auto cacheStatementWithComments = [this]
         {
             m_sStatementWithComments = m_sStatement;
             if (m_pSqlIterator && m_pSqlIterator->getParseTree())
@@ -1841,6 +1816,27 @@ void OQueryController::impl_reset( const bool i_bForceCurrentControllerSettings 
                 m_pSqlIterator->getParseTree()->parseNodeToStr(
                     m_sStatementCanonical, getConnection());
             }
+        };
+
+        std::vector<CommentStrip> aComments = getComment(m_sStatement);
+        if (!aComments.empty())
+        {
+            if (Application::IsHeadlessModeEnabled() || o3tl::IsRunningUITest())
+            {
+                // No UI available/desired; keep the existing safe default.
+                m_bGraphicalDesign = false;
+            }
+            else
+            {
+                // Tentatively proceed into Design View and wait for the user's decision.
+                // PostUserEvent triggers OnDecideCommentsHandling
+                cacheStatementWithComments();
+                Application::PostUserEvent(LINK(this, OQueryController, OnDecideCommentsHandling));
+            }
+        }
+        else
+        {
+            cacheStatementWithComments();
         }
     }
 
@@ -1881,6 +1877,37 @@ void OQueryController::setEscapeProcessing_fireEvent( const bool _bEscapeProcess
 IMPL_LINK_NOARG( OQueryController, OnExecuteAddTable, void*, void )
 {
     Execute( ID_BROWSER_ADDTABLE,Sequence<PropertyValue>() );
+}
+
+IMPL_LINK_NOARG( OQueryController, OnDecideCommentsHandling, void*, void )
+{
+    // tdf#42713: ask now that the frame is attached (see impl_reset) whether to
+    // stay in Design View (already tentatively shown), switch back to SQL view,
+    // or abort the open entirely.
+    OUString aMessage = lcl_getObjectResourceString(STR_QRY_COMMENTS_WARNING_3CHOICES, m_nCommandType);
+    std::unique_ptr<weld::MessageDialog> xDlg(
+        Application::CreateMessageDialog(
+            getFrameWeld(), VclMessageType::Warning,
+            VclButtonsType::NONE, aMessage));
+    xDlg->add_button(u"SQL View"_ustr, RET_NO);
+    xDlg->add_button(u"Continue"_ustr, RET_YES);
+    xDlg->add_button(GetStandardText(StandardButtonType::Cancel), RET_CANCEL);
+    xDlg->set_default_response(RET_NO);
+    sal_uInt16 nResult = xDlg->run();
+
+    if (nResult == RET_CANCEL)
+    {
+        closeTask();
+        return;
+    }
+    if (nResult == RET_NO)
+    {
+        m_bGraphicalDesign = false;
+        m_sStatementWithComments.clear();
+        m_sStatementCanonical.clear();
+        impl_setViewMode(nullptr);
+    }
+    // RET_YES: already tentatively in Design View; nothing more to do.
 }
 
 bool OQueryController::allowViews() const

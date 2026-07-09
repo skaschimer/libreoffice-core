@@ -216,6 +216,7 @@ namespace dbaui
 
     private:
         DECL_LINK( OnExecuteAddTable, void*, void );
+        DECL_LINK( OnDecideCommentsHandling, void*, void );
 
     private:
         using OQueryController_PBase::getFastPropertyValue;
