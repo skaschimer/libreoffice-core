@@ -258,13 +258,11 @@ size_t ScTpUserLists::UpdateUserListBox()
         return 0;
 
     size_t nCount = m_pUserLists->size();
-    OUString  aEntry;
-
     for ( size_t i=0; i<nCount; ++i )
     {
-        aEntry = (*m_pUserLists)[i].GetString();
-        OSL_ENSURE( !aEntry.isEmpty(), "Empty UserList-entry :-/" );
-        mxLbLists->append_text( aEntry );
+        const OUString sEntry = (*m_pUserLists)[i].GetString();
+        OSL_ENSURE(!sEntry.isEmpty(), "Empty UserList-entry :-/");
+        mxLbLists->append_text(sEntry);
     }
 
     return nCount;
