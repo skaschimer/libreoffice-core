@@ -81,7 +81,7 @@ struct SwAddressFragment
 
 class SwAddressControl_Impl
 {
-    std::map<weld::Entry*, sal_Int32> m_aEditLines;
+    std::map<weld::TextWidget*, sal_Int32> m_aEditLines;
 
     SwCSVData*                      m_pData;
     sal_uInt32                      m_nCurrentDataSet;
