@@ -886,6 +886,7 @@ void SwView::StateSearch(SfxItemSet &rSet)
                     {
                         s_pSrchItem->SetSearchString( aText );
                         s_pSrchItem->SetSelection( false );
+                        s_pSrchItem->SetReplaceString("");
                     }
                     else
                         s_pSrchItem->SetSelection( true );
