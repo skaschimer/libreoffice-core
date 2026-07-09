@@ -30,6 +30,7 @@
 #include <localedata.hxx>
 #include <com/sun/star/i18n/CollatorOptions.hpp>
 #include <cppuhelper/supportsservice.hxx>
+#include <tools/svlibrary.h>
 
 using namespace ::com::sun::star;
 using namespace ::com::sun::star::i18n;
@@ -156,7 +157,7 @@ Collator_Unicode::loadCollatorAlgorithm(const OUString& rAlgorithm, const lang::
             size_t (*funclen)() = nullptr;
 
 #ifndef DISABLE_DYNLOADING
-            static constexpr OUString sModuleName( u"" SAL_MODULENAME( "i18npool" ) ""_ustr );
+            static constexpr OUString sModuleName( u"" SVLIBRARY( "i18npool" ) ""_ustr );
             hModule = osl_loadModuleRelative( &thisModule, sModuleName.pData, SAL_LOADMODULE_DEFAULT );
             if (hModule) {
                 OUStringBuffer aBuf("get_collator_data_" + rLocale.Language + "_");
