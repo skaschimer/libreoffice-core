@@ -2170,6 +2170,8 @@ void SvxSearchDialog::PaintAttrText_Impl()
 
     if (!m_bFormat && !aDesc.isEmpty())
         m_bFormat = true;
+    else if (m_bFormat && aDesc.isEmpty())
+        NoFormatHdl_Impl(*m_xNoFormatBtn);
 
     bool bSetOptimalLayoutSize = false;
 
