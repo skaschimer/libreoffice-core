@@ -294,52 +294,49 @@ void ScTpUserLists::UpdateEntries( size_t nList )
     }
 }
 
-void ScTpUserLists::MakeListStr( OUString& rListStr )
+OUString ScTpUserLists::MakeListStr(std::u16string_view sListStr)
 {
-    if (rListStr.isEmpty())
-        return;
+    if (sListStr.empty())
+        return OUString();
 
     OUStringBuffer aStr;
 
     for(sal_Int32 nIdx=0; nIdx>=0;)
     {
-        aStr.append(comphelper::string::strip(o3tl::getToken(rListStr, 0, LF, nIdx), ' '));
+        aStr.append(comphelper::string::strip(o3tl::getToken(sListStr, 0, LF, nIdx), ' '));
         aStr.append(cDelimiter);
     }
 
     aStr.strip(cDelimiter);
     sal_Int32 nLen = aStr.getLength();
 
-    rListStr.clear();
+    OUString sResult;
 
     // delete all duplicates of cDelimiter
     sal_Int32 c = 0;
     while ( c < nLen )
     {
-        rListStr += OUStringChar(aStr[c]);
+        sResult += OUStringChar(aStr[c]);
         ++c;
 
         if ((c < nLen) && (aStr[c] == cDelimiter))
         {
-            rListStr += OUStringChar(aStr[c]);
+            sResult += OUStringChar(aStr[c]);
 
             while ((c < nLen) && (aStr[c] == cDelimiter))
                 ++c;
         }
     }
 
+    return sResult;
 }
 
-void ScTpUserLists::AddNewList( const OUString& rEntriesStr )
+void ScTpUserLists::AddNewList(std::u16string_view sEntriesStr)
 {
-    OUString theEntriesStr( rEntriesStr );
-
     if (!m_pUserLists)
         m_pUserLists.reset(new ScUserList);
 
-    MakeListStr( theEntriesStr );
-
-    m_pUserLists->emplace_back(theEntriesStr);
+    m_pUserLists->emplace_back(MakeListStr(sEntriesStr));
 }
 
 void ScTpUserLists::CopyListFromArea( const ScRefAddress& rStartPos,
@@ -427,17 +424,12 @@ void ScTpUserLists::CopyListFromArea( const ScRefAddress& rStartPos,
     m_bCopyDone = true;
 }
 
-void ScTpUserLists::ModifyList( size_t            nSelList,
-                                const OUString&   rEntriesStr )
+void ScTpUserLists::ModifyList(size_t nSelList, std::u16string_view sEntriesStr)
 {
     if (!m_pUserLists)
         return;
 
-    OUString theEntriesStr( rEntriesStr );
-
-    MakeListStr( theEntriesStr );
-
-    (*m_pUserLists)[nSelList].SetString(theEntriesStr);
+    (*m_pUserLists)[nSelList].SetString(MakeListStr(sEntriesStr));
 }
 
 void ScTpUserLists::RemoveList( size_t nList )

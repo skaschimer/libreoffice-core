@@ -77,11 +77,10 @@ private:
 
     size_t  UpdateUserListBox   ();
     void    UpdateEntries       ( size_t nList );
-    static void MakeListStr     ( OUString& rListStr );
-    void    AddNewList          ( const OUString& rEntriesStr );
+    static OUString MakeListStr(std::u16string_view sListStr);
+    void AddNewList(std::u16string_view sEntriesStr);
     void    RemoveList          ( size_t nList );
-    void    ModifyList          ( size_t          nSelList,
-                                  const OUString& rEntriesStr );
+    void ModifyList(size_t nSelList, std::u16string_view sEntriesStr);
     void    CopyListFromArea    ( const ScRefAddress& rStartPos,
                                   const ScRefAddress& rEndPos );
 
