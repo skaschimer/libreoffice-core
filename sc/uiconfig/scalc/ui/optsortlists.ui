@@ -27,70 +27,6 @@
         <property name="row-spacing">12</property>
         <property name="column-spacing">12</property>
         <child>
-          <object class="GtkButton" id="copy">
-            <property name="label" translatable="yes" context="optsortlists|copy">_Copy</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="use-underline">True</property>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="copy-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|copy">Copies the contents of the cells in the Copy list from box. If you select a reference to related rows and columns, the Copy List dialog appears after clicking the button. You can use this dialog to define if the reference is converted to sort lists by row or by column.</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="left-attach">1</property>
-            <property name="top-attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box2">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="spacing">12</property>
-            <child>
-              <object class="GtkLabel" id="copyfromlabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optsortlists|copyfromlabel">Copy list _from:</property>
-                <property name="use-underline">True</property>
-                <property name="mnemonic-widget">copyfrom</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="copyfrom">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="valign">center</property>
-                <property name="hexpand">True</property>
-                <property name="activates-default">True</property>
-                <property name="truncate-multiline">True</property>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="copyfrom-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|copyfrom">Defines the spreadsheet and the cells to copy, in order to include them in the Lists box. The currently selected range in the spreadsheet is the default.</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">1</property>
-          </packing>
-        </child>
-        <child>
           <!-- n-columns=2 n-rows=2 -->
           <object class="GtkGrid" id="grid2">
             <property name="visible">True</property>
@@ -298,6 +234,70 @@
           <packing>
             <property name="left-attach">1</property>
             <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box2">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="copyfromlabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes" context="optsortlists|copyfromlabel">Copy list _from:</property>
+                <property name="use-underline">True</property>
+                <property name="mnemonic-widget">copyfrom</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="copyfrom">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="activates-default">True</property>
+                <property name="truncate-multiline">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="copyfrom-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|copyfrom">Defines the spreadsheet and the cells to copy, in order to include them in the Lists box. The currently selected range in the spreadsheet is the default.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="copy">
+            <property name="label" translatable="yes" context="optsortlists|copy">_Copy</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="use-underline">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="copy-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|copy">Copies the contents of the cells in the Copy list from box. If you select a reference to related rows and columns, the Copy List dialog appears after clicking the button. You can use this dialog to define if the reference is converted to sort lists by row or by column.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
       </object>
