@@ -22,7 +22,7 @@ protected:
     Link<TextView&, void> m_aChangeHdl;
     Link<TextView&, void> m_aVValueChangeHdl;
 
-    void signal_changed() { m_aChangeHdl.Call(*this); }
+    void signal_changed();
 
     void signal_vadjustment_value_changed() { m_aVValueChangeHdl.Call(*this); }
 

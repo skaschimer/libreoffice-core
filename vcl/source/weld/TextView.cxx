@@ -11,6 +11,13 @@
 
 namespace weld
 {
+void TextView::signal_changed()
+{
+    if (notify_events_disabled())
+        return;
+    m_aChangeHdl.Call(*this);
+}
+
 int weld::TextView::get_height_rows(int nRows) const
 {
     // can improve this if needed
