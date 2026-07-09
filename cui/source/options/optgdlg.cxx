@@ -1517,23 +1517,23 @@ IMPL_LINK_NOARG(OfaLanguagesTabPage, LocaleSettingHdl, weld::ComboBox&, void)
     m_xDatePatternsED->set_message_type(weld::EntryMessageType::Normal);
 }
 
-IMPL_LINK( OfaLanguagesTabPage, DatePatternsHdl, weld::Entry&, rEd, void )
+IMPL_LINK_NOARG(OfaLanguagesTabPage, DatePatternsHdl, weld::Entry&, void)
 {
-    OUString aPatterns(rEd.get_text());
+    OUString aPatterns(m_xDatePatternsED->get_text());
     bool bModified = false;
     const bool bValid = validateDatePatterns( bModified, aPatterns);
     if (bModified)
     {
         // gtk3 keeps the cursor position on equal length set_text() but at
         // least the 'gen' backend does not and resets to 0.
-        const int nCursorPos = rEd.get_position();
-        rEd.set_text(aPatterns);
-        rEd.set_position(nCursorPos);
+        const int nCursorPos = m_xDatePatternsED->get_position();
+        m_xDatePatternsED->set_text(aPatterns);
+        m_xDatePatternsED->set_position(nCursorPos);
     }
     if (bValid)
-        rEd.set_message_type(weld::EntryMessageType::Normal);
+        m_xDatePatternsED->set_message_type(weld::EntryMessageType::Normal);
     else
-        rEd.set_message_type(weld::EntryMessageType::Error);
+        m_xDatePatternsED->set_message_type(weld::EntryMessageType::Error);
     m_bDatePatternsValid = bValid;
 }
 
