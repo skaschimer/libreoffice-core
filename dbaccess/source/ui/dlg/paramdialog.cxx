@@ -320,13 +320,13 @@ IMPL_LINK_NOARG(OParameterDialog, OnVisitedTimeout, Timer*, void)
     }
 }
 
-IMPL_LINK(OParameterDialog, OnValueModified, weld::Entry&, rEdit, void)
+IMPL_LINK_NOARG(OParameterDialog, OnValueModified, weld::Entry&, void)
 {
     // mark the currently selected entry as dirty
     OSL_ENSURE(o3tl::make_unsigned(m_nCurrentlySelected) < m_aVisitedParams.size(),
                "OParameterDialog::OnValueModified : invalid entry !");
     m_aVisitedParams[m_nCurrentlySelected] |= VisitFlags::Dirty;
-    rEdit.set_message_type(weld::EntryMessageType::Normal);
+    m_xParam->set_message_type(weld::EntryMessageType::Normal);
 }
 
 } // namespace dbaui
