@@ -54,39 +54,39 @@ OUString GalleryFileStorageEntry::ReadStrFromIni(std::string_view aKeyName) cons
                 continue;
 
             size_t n = aLine.find('=');
-            if (n == std::string_view::npos)
-                continue;
-
-            std::string_view aKey(o3tl::trim(aLine.substr(0, n)));
-            std::string_view aValue(o3tl::trim(aLine.substr(n + 1)));
-
-            n = aKey.find('[');
-            if (n == std::string_view::npos || n < 1)
-                continue;
-
-            std::string_view aLocale = o3tl::trim(aKey.substr(n + 1, aKey.find(']', n + 2) - n - 1));
-            aKey = o3tl::trim(aKey.substr(0, n));
-
-            SAL_INFO("svx", "ini file has '" << aKey << "' [ '" << aLocale << "' ] = '" << aValue << "'");
-
-            if (aKey != aKeyName)
-                continue;
-
-            // grisly language matching, is this not available somewhere else?
-            OUString aLang
-                = OStringToOUString(aLocale, RTL_TEXTENCODING_ASCII_US).replace('_', '-');
-            for (n = 0; n < nRank; ++n)
+            if (n != std::string_view::npos)
             {
-                auto& rFallback = aFallbacks[n];
-                SAL_INFO( "svx", "compare '" << aLang << "' with '" << rFallback << "' rank " << nRank << " vs. " << n );
-                if (rFallback == aLang)
+                std::string_view aKey(o3tl::trim(aLine.substr(0, n)));
+                std::string_view aValue(o3tl::trim(aLine.substr(n + 1)));
+
+                n = aKey.find('[');
+                if (n == std::string_view::npos || n < 1)
+                    continue;
+
+                std::string_view aLocale = o3tl::trim(aKey.substr(n + 1, aKey.find(']', n + 2) - n - 1));
+                aKey = o3tl::trim(aKey.substr(0, n));
+
+                SAL_INFO("svx", "ini file has '" << aKey << "' [ '" << aLocale << "' ] = '" << aValue << "'");
+
+                if (aKey != aKeyName)
+                    continue;
+
+                // grisly language matching, is this not available somewhere else?
+                OUString aLang
+                    = OStringToOUString(aLocale, RTL_TEXTENCODING_ASCII_US).replace('_', '-');
+                for (n = 0; n < nRank; ++n)
                 {
-                    nRank = n; // try to get the most accurate match
-                    aResult = OStringToOUString(aValue, RTL_TEXTENCODING_UTF8);
+                    auto& rFallback = aFallbacks[n];
+                    SAL_INFO( "svx", "compare '" << aLang << "' with '" << rFallback << "' rank " << nRank << " vs. " << n );
+                    if (rFallback == aLang)
+                    {
+                        nRank = n; // try to get the most accurate match
+                        aResult = OStringToOUString(aValue, RTL_TEXTENCODING_UTF8);
+                    }
                 }
+                if (nRank == 0)
+                    break;
             }
-            if (nRank == 0)
-                break;
         }
     }
 
