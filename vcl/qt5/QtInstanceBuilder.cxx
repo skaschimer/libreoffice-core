@@ -102,6 +102,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"cui/ui/formatnumberdialog.ui",
     u"cui/ui/objecttitledescdialog.ui",
     u"cui/ui/objectnamedialog.ui",
+    u"cui/ui/optionsdialog.ui",
     u"cui/ui/optnewdictionarydialog.ui",
     u"cui/ui/password.ui",
     u"cui/ui/pastespecial.ui",
