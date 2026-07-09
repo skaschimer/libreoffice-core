@@ -2637,7 +2637,6 @@ dbaccess/source/ui/dlg/odbcconfig.cxx
 dbaccess/source/ui/dlg/odbcconfig.hxx
 dbaccess/source/ui/dlg/optionalboolitem.cxx
 dbaccess/source/ui/dlg/optionalboolitem.hxx
-dbaccess/source/ui/dlg/paramdialog.cxx
 dbaccess/source/ui/dlg/queryfilter.cxx
 dbaccess/source/ui/dlg/queryorder.cxx
 dbaccess/source/ui/dlg/sqlmessage.cxx
@@ -2741,7 +2740,6 @@ dbaccess/source/ui/inc/indexfieldscontrol.hxx
 dbaccess/source/ui/inc/linkeddocuments.hxx
 dbaccess/source/ui/inc/objectnamecheck.hxx
 dbaccess/source/ui/inc/opendoccontrols.hxx
-dbaccess/source/ui/inc/paramdialog.hxx
 dbaccess/source/ui/inc/propertystorage.hxx
 dbaccess/source/ui/inc/querycontainerwindow.hxx
 dbaccess/source/ui/inc/querycontroller.hxx

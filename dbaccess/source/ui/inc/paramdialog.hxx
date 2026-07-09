@@ -34,69 +34,70 @@
 #include <svx/ParseContext.hxx>
 #include <o3tl/typed_flags_set.hxx>
 
-enum class VisitFlags {
-    NONE        = 0x00,
-    Visited     = 0x01,
-    Dirty       = 0x02,
+enum class VisitFlags
+{
+    NONE = 0x00,
+    Visited = 0x01,
+    Dirty = 0x02,
 };
-namespace o3tl {
-    template<> struct typed_flags<VisitFlags> : is_typed_flags<VisitFlags, 0x03> {};
+namespace o3tl
+{
+template <> struct typed_flags<VisitFlags> : is_typed_flags<VisitFlags, 0x03>
+{
+};
 }
 
 namespace dbaui
 {
-    // OParameterDialog
-    class OParameterDialog final
-            : public weld::GenericDialogController
-            , public ::svxform::OParseContextClient
+// OParameterDialog
+class OParameterDialog final : public weld::GenericDialogController,
+                               public ::svxform::OParseContextClient
+{
+    sal_Int32 m_nCurrentlySelected;
+
+    css::uno::Reference<css::container::XIndexAccess> m_xParams;
+    css::uno::Reference<css::sdbc::XConnection> m_xConnection;
+    css::uno::Reference<css::util::XNumberFormatter> m_xFormatter;
+    ::dbtools::OPredicateInputController m_aPredicateInput;
+
+    std::vector<VisitFlags> m_aVisitedParams;
+    Timer m_aResetVisitFlag;
+    // we reset the "visited flag" 1 second after and entry has been selected
+
+    css::uno::Sequence<css::beans::PropertyValue>
+        m_aFinalValues; /// the final values as entered by the user
+
+    // the controls
+    std::unique_ptr<weld::TreeView> m_xAllParams;
+    std::unique_ptr<weld::Entry> m_xParam;
+    std::unique_ptr<weld::Button> m_xTravelNext;
+    std::unique_ptr<weld::Button> m_xOKBtn;
+    std::unique_ptr<weld::Button> m_xCancelBtn;
+
+public:
+    OParameterDialog(weld::Window* _pParent,
+                     const css::uno::Reference<css::container::XIndexAccess>& _rParamContainer,
+                     const css::uno::Reference<css::sdbc::XConnection>& _rxConnection,
+                     const css::uno::Reference<css::uno::XComponentContext>& rxContext);
+    virtual ~OParameterDialog() override;
+
+    const css::uno::Sequence<css::beans::PropertyValue>& getValues() const
     {
-        sal_Int32              m_nCurrentlySelected;
+        return m_aFinalValues;
+    }
 
-        css::uno::Reference< css::container::XIndexAccess >
-                               m_xParams;
-        css::uno::Reference< css::sdbc::XConnection >
-                               m_xConnection;
-        css::uno::Reference< css::util::XNumberFormatter >
-                               m_xFormatter;
-        ::dbtools::OPredicateInputController
-                               m_aPredicateInput;
+private:
+    void Construct();
 
-        std::vector<VisitFlags>  m_aVisitedParams;
-        Timer                  m_aResetVisitFlag;
-            // we reset the "visited flag" 1 second after and entry has been selected
+    DECL_LINK(OnVisitedTimeout, Timer*, void);
+    DECL_LINK(OnValueModified, weld::Entry&, void);
+    DECL_LINK(OnEntryListBoxSelected, weld::ItemView&, void);
+    DECL_LINK(OnButtonClicked, weld::Button&, void);
+    DECL_LINK(OnValueLoseFocusHdl, weld::Widget&, void);
+    bool CheckValueForError();
+    bool OnEntrySelected();
+};
 
-        css::uno::Sequence< css::beans::PropertyValue >
-                               m_aFinalValues;     /// the final values as entered by the user
-
-        // the controls
-        std::unique_ptr<weld::TreeView> m_xAllParams;
-        std::unique_ptr<weld::Entry> m_xParam;
-        std::unique_ptr<weld::Button> m_xTravelNext;
-        std::unique_ptr<weld::Button> m_xOKBtn;
-        std::unique_ptr<weld::Button> m_xCancelBtn;
-
-    public:
-        OParameterDialog(weld::Window* _pParent,
-            const css::uno::Reference< css::container::XIndexAccess > & _rParamContainer,
-            const css::uno::Reference< css::sdbc::XConnection > & _rxConnection,
-            const css::uno::Reference< css::uno::XComponentContext >& rxContext);
-        virtual ~OParameterDialog() override;
-
-        const css::uno::Sequence< css::beans::PropertyValue >&
-                    getValues() const { return m_aFinalValues; }
-
-    private:
-        void Construct();
-
-        DECL_LINK(OnVisitedTimeout, Timer*, void);
-        DECL_LINK(OnValueModified, weld::Entry&, void);
-        DECL_LINK(OnEntryListBoxSelected, weld::ItemView&, void);
-        DECL_LINK(OnButtonClicked, weld::Button&, void);
-        DECL_LINK(OnValueLoseFocusHdl, weld::Widget&, void);
-        bool CheckValueForError();
-        bool OnEntrySelected();
-    };
-
-}   // namespace dbaui
+} // namespace dbaui
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
