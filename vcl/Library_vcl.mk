@@ -607,7 +607,6 @@ $(eval $(call gb_Library_add_exception_objects,vcl,\
     vcl/source/weld/Dialog \
     vcl/source/weld/DialogController \
     vcl/source/weld/DoubleNumericFormatter \
-    vcl/source/weld/Entry \
     vcl/source/weld/EntryFormatter \
     vcl/source/weld/EntryTreeView \
     vcl/source/weld/IconView \

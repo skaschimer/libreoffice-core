@@ -19,10 +19,7 @@ namespace weld
 class VCL_DLLPUBLIC TextView : virtual public TextWidget
 {
 protected:
-    Link<TextWidget&, void> m_aChangeHdl;
     Link<TextView&, void> m_aVValueChangeHdl;
-
-    void signal_changed();
 
     void signal_vadjustment_value_changed() { m_aVValueChangeHdl.Call(*this); }
 
@@ -31,8 +28,6 @@ public:
     // The maximum length of the entry. Use 0 for no maximum
     virtual void set_max_length(int nChars) = 0;
     int get_height_rows(int nRows) const;
-
-    void connect_changed(const Link<TextWidget&, void>& rLink) { m_aChangeHdl = rLink; }
 
     // returns true if pressing up would move the cursor
     // doesn't matter if that move is to a previous line or to the start of the

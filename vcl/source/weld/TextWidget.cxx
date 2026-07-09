@@ -14,6 +14,13 @@
 
 namespace weld
 {
+void TextWidget::signal_changed()
+{
+    if (notify_events_disabled())
+        return;
+    m_aChangeHdl.Call(*this);
+}
+
 void TextWidget::signal_cursor_position()
 {
     if (notify_events_disabled())

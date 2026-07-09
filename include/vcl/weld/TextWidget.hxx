@@ -21,8 +21,10 @@ private:
     OUString m_sSavedValue;
 
 protected:
+    Link<TextWidget&, void> m_aChangeHdl;
     Link<TextWidget&, void> m_aCursorPositionHdl;
 
+    void signal_changed();
     void signal_cursor_position();
 
     virtual void do_set_text(const OUString& rText) = 0;
@@ -70,6 +72,7 @@ public:
     OUString const& get_saved_value() const { return m_sSavedValue; }
     bool get_value_changed_from_saved() const { return m_sSavedValue != get_text(); }
 
+    virtual void connect_changed(const Link<TextWidget&, void>& rLink) { m_aChangeHdl = rLink; }
     virtual void connect_cursor_position(const Link<TextWidget&, void>& rLink)
     {
         m_aCursorPositionHdl = rLink;
