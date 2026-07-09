@@ -685,11 +685,8 @@ IMPL_LINK( ScTpUserLists, BtnClickHdl, weld::Button&, rBtn, void )
     }
 }
 
-IMPL_LINK( ScTpUserLists, EdEntriesModHdl, weld::TextView&, rEd, void )
+IMPL_LINK_NOARG(ScTpUserLists, EdEntriesModHdl, weld::TextView&, void)
 {
-    if ( &rEd != mxEdEntries.get() )
-        return;
-
     if ( mxBtnCopy->get_sensitive() )
     {
         mxBtnCopy->set_sensitive(false);
