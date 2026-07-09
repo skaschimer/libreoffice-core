@@ -45,7 +45,7 @@
 
 const sal_Unicode cDelimiter = ',';
 
-// Benutzerdefinierte Listen:
+// User-defined lists
 
 ScTpUserLists::ScTpUserLists( weld::Container* pPage, weld::DialogController* pController,
                               const SfxItemSet&     rCoreAttrs )
