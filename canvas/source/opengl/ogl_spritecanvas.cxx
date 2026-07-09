@@ -24,9 +24,8 @@ using namespace ::com::sun::star;
 
 namespace oglcanvas
 {
-    SpriteCanvas::SpriteCanvas( const uno::Sequence< uno::Any >&                aArguments,
-                                const uno::Reference< uno::XComponentContext >& /*rxContext*/ ) :
-        maArguments(aArguments)
+    SpriteCanvas::SpriteCanvas(const uno::Sequence<uno::Any>& aArguments)
+        : maArguments(aArguments)
     {
     }
 
@@ -151,14 +150,13 @@ namespace oglcanvas
 
 }
 
-
 extern "C" SAL_DLLPUBLIC_EXPORT css::uno::XInterface*
 com_sun_star_comp_rendering_SpriteCanvas_OGL_get_implementation(
-    css::uno::XComponentContext* context, css::uno::Sequence<css::uno::Any> const& args)
+    css::uno::XComponentContext*, css::uno::Sequence<css::uno::Any> const& args)
 {
     if( !OpenGLHelper::supportsOpenGL())
         return nullptr;
-    rtl::Reference<oglcanvas::SpriteCanvas> p = new oglcanvas::SpriteCanvas(args, context);
+    rtl::Reference<oglcanvas::SpriteCanvas> p = new oglcanvas::SpriteCanvas(args);
     p->initialize();
     return cppu::acquire(p.get());
 }

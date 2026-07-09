@@ -66,10 +66,7 @@ namespace oglcanvas
     class SpriteCanvas : public SpriteCanvasBaseT
     {
     public:
-        SpriteCanvas( const css::uno::Sequence<
-                            css::uno::Any >&               aArguments,
-                      const css::uno::Reference<
-                            css::uno::XComponentContext >& rxContext );
+        SpriteCanvas(const css::uno::Sequence<css::uno::Any>& aArguments);
 
         void initialize();
 
