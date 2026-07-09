@@ -130,10 +130,10 @@ std::unique_ptr<SfxTabPage> ScTpUserLists::Create( weld::Container* pPage, weld:
     return std::make_unique<ScTpUserLists>(pPage, pController, *rAttrSet);
 }
 
-void ScTpUserLists::Reset( const SfxItemSet* rCoreAttrs )
+void ScTpUserLists::Reset(const SfxItemSet* pCoreAttrs)
 {
     const ScUserListItem& rUserListItem
-        = static_cast<const ScUserListItem&>(rCoreAttrs->Get(m_nWhichUserLists));
+        = static_cast<const ScUserListItem&>(pCoreAttrs->Get(m_nWhichUserLists));
     const ScUserList*     pCoreList     = rUserListItem.GetUserList();
 
     OSL_ENSURE( pCoreList, "UserList not found :-/" );
@@ -203,7 +203,7 @@ OUString ScTpUserLists::GetAllStrings()
     return sAllStrings.toString().replaceAll("_", "");
 }
 
-bool ScTpUserLists::FillItemSet( SfxItemSet* rCoreAttrs )
+bool ScTpUserLists::FillItemSet(SfxItemSet* pCoreAttrs)
 {
     // Changes aren't saved?
     // -> simulate click of Add-Button
@@ -236,7 +236,7 @@ bool ScTpUserLists::FillItemSet( SfxItemSet* rCoreAttrs )
         if (m_pUserLists)
             aULItem.SetUserList(*m_pUserLists);
 
-        rCoreAttrs->Put( aULItem );
+        pCoreAttrs->Put(aULItem);
     }
 
     return bDataModified;

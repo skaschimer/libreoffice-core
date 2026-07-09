@@ -41,8 +41,8 @@ public:
 
     virtual OUString GetAllStrings() override;
 
-    virtual bool        FillItemSet     ( SfxItemSet* rCoreAttrs ) override;
-    virtual void        Reset           ( const SfxItemSet* rCoreAttrs ) override;
+    virtual bool FillItemSet(SfxItemSet* pCoreAttrs) override;
+    virtual void Reset(const SfxItemSet* pCoreAttrs) override;
     virtual DeactivateRC   DeactivatePage  ( SfxItemSet* pSet ) override;
 
 private:
