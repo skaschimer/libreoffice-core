@@ -81,35 +81,31 @@ struct ImplSVEvent;
 class SvxLinguTabPage : public SfxTabPage
 {
 private:
-    OUString            sCapitalWords;
-    OUString            sWordsWithDigits;
-    OUString            sSpellSpecial;
-    OUString            sSpellAuto;
-    OUString            sSpellClosedCompound;
-    OUString            sSpellHyphenatedCompound;
-    OUString            sGrammarAuto;
-    OUString            sNumMinWordlen;
-    OUString            sNumPreBreak;
-    OUString            sNumPostBreak;
-    OUString            sHyphAuto;
-    OUString            sHyphSpecial;
+    OUString m_sCapitalWords;
+    OUString m_sWordsWithDigits;
+    OUString m_sSpellSpecial;
+    OUString m_sSpellAuto;
+    OUString m_sSpellClosedCompound;
+    OUString m_sSpellHyphenatedCompound;
+    OUString m_sGrammarAuto;
+    OUString m_sNumMinWordlen;
+    OUString m_sNumPreBreak;
+    OUString m_sNumPostBreak;
+    OUString m_sHyphAuto;
+    OUString m_sHyphSpecial;
 
-    int nUPN_HYPH_MIN_WORD_LENGTH;
-    int nUPN_HYPH_MIN_LEADING;
-    int nUPN_HYPH_MIN_TRAILING;
+    int m_nUPN_HYPH_MIN_WORD_LENGTH;
+    int m_nUPN_HYPH_MIN_LEADING;
+    int m_nUPN_HYPH_MIN_TRAILING;
 
     ImplSVEvent* m_nDlbClickEventId;
 
-    css::uno::Reference<
-        css::linguistic2::XLinguProperties >     xProp;
+    css::uno::Reference<css::linguistic2::XLinguProperties> m_xProp;
 
-    css::uno::Reference<
-        css::linguistic2::XDictionaryList >      xDicList;
-    css::uno::Sequence<
-        css::uno::Reference<
-            css::linguistic2::XDictionary > >    aDics;
+    css::uno::Reference<css::linguistic2::XDictionaryList> m_xDicList;
+    css::uno::Sequence<css::uno::Reference<css::linguistic2::XDictionary>> m_aDics;
 
-    std::unique_ptr<SvxLinguData_Impl>  pLinguData;
+    std::unique_ptr<SvxLinguData_Impl> m_pLinguData;
 
     std::unique_ptr<weld::Container> m_xLinguModulesFrame;
     std::unique_ptr<weld::TreeView> m_xLinguModulesCLB;

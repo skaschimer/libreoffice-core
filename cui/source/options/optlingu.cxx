@@ -776,23 +776,24 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
 
 // class SvxLinguTabPage -------------------------------------------------
 
-SvxLinguTabPage::SvxLinguTabPage(weld::Container* pPage, weld::DialogController* pController, const SfxItemSet& rSet)
+SvxLinguTabPage::SvxLinguTabPage(weld::Container* pPage, weld::DialogController* pController,
+                                 const SfxItemSet& rSet)
     : SfxTabPage(pPage, pController, u"cui/ui/optlingupage.ui"_ustr, u"OptLinguPage"_ustr, &rSet)
-    , sCapitalWords   (CuiResId(RID_CUISTR_CAPITAL_WORDS))
-    , sWordsWithDigits(CuiResId(RID_CUISTR_WORDS_WITH_DIGITS))
-    , sSpellSpecial   (CuiResId(RID_CUISTR_SPELL_SPECIAL))
-    , sSpellAuto      (CuiResId(RID_CUISTR_SPELL_AUTO))
-    , sSpellClosedCompound (CuiResId(RID_CUISTR_SPELL_CLOSED_COMPOUND))
-    , sSpellHyphenatedCompound (CuiResId(RID_CUISTR_SPELL_HYPHENATED_COMPOUND))
-    , sGrammarAuto    (CuiResId(RID_CUISTR_GRAMMAR_AUTO))
-    , sNumMinWordlen  (CuiResId(RID_CUISTR_NUM_MIN_WORDLEN))
-    , sNumPreBreak    (CuiResId(RID_CUISTR_NUM_PRE_BREAK))
-    , sNumPostBreak   (CuiResId(RID_CUISTR_NUM_POST_BREAK))
-    , sHyphAuto       (CuiResId(RID_CUISTR_HYPH_AUTO))
-    , sHyphSpecial    (CuiResId(RID_CUISTR_HYPH_SPECIAL))
-    , nUPN_HYPH_MIN_WORD_LENGTH(-1)
-    , nUPN_HYPH_MIN_LEADING(-1)
-    , nUPN_HYPH_MIN_TRAILING(-1)
+    , m_sCapitalWords(CuiResId(RID_CUISTR_CAPITAL_WORDS))
+    , m_sWordsWithDigits(CuiResId(RID_CUISTR_WORDS_WITH_DIGITS))
+    , m_sSpellSpecial(CuiResId(RID_CUISTR_SPELL_SPECIAL))
+    , m_sSpellAuto(CuiResId(RID_CUISTR_SPELL_AUTO))
+    , m_sSpellClosedCompound(CuiResId(RID_CUISTR_SPELL_CLOSED_COMPOUND))
+    , m_sSpellHyphenatedCompound(CuiResId(RID_CUISTR_SPELL_HYPHENATED_COMPOUND))
+    , m_sGrammarAuto(CuiResId(RID_CUISTR_GRAMMAR_AUTO))
+    , m_sNumMinWordlen(CuiResId(RID_CUISTR_NUM_MIN_WORDLEN))
+    , m_sNumPreBreak(CuiResId(RID_CUISTR_NUM_PRE_BREAK))
+    , m_sNumPostBreak(CuiResId(RID_CUISTR_NUM_POST_BREAK))
+    , m_sHyphAuto(CuiResId(RID_CUISTR_HYPH_AUTO))
+    , m_sHyphSpecial(CuiResId(RID_CUISTR_HYPH_SPECIAL))
+    , m_nUPN_HYPH_MIN_WORD_LENGTH(-1)
+    , m_nUPN_HYPH_MIN_LEADING(-1)
+    , m_nUPN_HYPH_MIN_TRAILING(-1)
     , m_nDlbClickEventId(nullptr)
     , m_xLinguModulesFrame(m_xBuilder->weld_container(u"lingumodulesframe"_ustr))
     , m_xLinguModulesCLB(m_xBuilder->weld_tree_view(u"lingumodules"_ustr))
@@ -840,9 +841,9 @@ SvxLinguTabPage::SvxLinguTabPage(weld::Container* pPage, weld::DialogController*
         m_xMoreDictsBox->hide();
     }
 
-    xProp = LinguMgr::GetLinguPropertySet();
-    xDicList.set( LinguMgr::GetDictionaryList() );
-    if (xDicList.is())
+    m_xProp = LinguMgr::GetLinguPropertySet();
+    m_xDicList.set(LinguMgr::GetDictionaryList());
+    if (m_xDicList.is())
     {
         // keep references to all **currently** available dictionaries,
         // since the diclist may get changed meanwhile (e.g. through the API).
@@ -852,7 +853,7 @@ SvxLinguTabPage::SvxLinguTabPage(weld::Container* pPage, weld::DialogController*
         // someone else removes a dictionary from the list.
         // removed dics will be replaced by NULL new entries be added to the end
         // Thus we may use indices as consistent references.
-        aDics = xDicList->getDictionaries();
+        m_aDics = m_xDicList->getDictionaries();
 
         UpdateDicBox_Impl();
     }
@@ -873,7 +874,7 @@ SvxLinguTabPage::~SvxLinguTabPage()
         Application::RemoveUserEvent(m_nDlbClickEventId);
         m_nDlbClickEventId = nullptr;
     }
-    pLinguData.reset();
+    m_pLinguData.reset();
 }
 
 std::unique_ptr<SfxTabPage> SvxLinguTabPage::Create( weld::Container* pPage, weld::DialogController* pController,
@@ -905,53 +906,53 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
     // if not HideModulesGroup was called...
     if (m_xLinguModulesCLB->get_visible())
     {
-        DBG_ASSERT( pLinguData, "pLinguData not yet initialized" );
-        if (!pLinguData)
-            pLinguData.reset( new SvxLinguData_Impl );
+        DBG_ASSERT(m_pLinguData, "pLinguData not yet initialized");
+        if (!m_pLinguData)
+            m_pLinguData.reset(new SvxLinguData_Impl);
 
         // update spellchecker configuration entries
-        const LangImplNameTable *pTable = &pLinguData->GetSpellTable();
+        const LangImplNameTable* pTable = &m_pLinguData->GetSpellTable();
         for (auto const& elem : *pTable)
         {
             LanguageType nLang = elem.first;
             const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference< XLinguServiceManager2 > xMgr( pLinguData->GetManager() );
+            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
             Locale aLocale( LanguageTag::convertToLocale(nLang) );
             if (xMgr.is())
                 xMgr->setConfiguredServices( cSpell, aLocale, aImplNames );
         }
 
         // update grammar checker configuration entries
-        pTable = &pLinguData->GetGrammarTable();
+        pTable = &m_pLinguData->GetGrammarTable();
         for (auto const& elem : *pTable)
         {
             LanguageType nLang = elem.first;
             const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference< XLinguServiceManager2 > xMgr( pLinguData->GetManager() );
+            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
             Locale aLocale( LanguageTag::convertToLocale(nLang) );
             if (xMgr.is())
                 xMgr->setConfiguredServices( cGrammar, aLocale, aImplNames );
         }
 
         // update hyphenator configuration entries
-        pTable = &pLinguData->GetHyphTable();
+        pTable = &m_pLinguData->GetHyphTable();
         for (auto const& elem : *pTable)
         {
             LanguageType nLang = elem.first;
             const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference< XLinguServiceManager2 > xMgr( pLinguData->GetManager() );
+            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
             Locale aLocale( LanguageTag::convertToLocale(nLang) );
             if (xMgr.is())
                 xMgr->setConfiguredServices( cHyph, aLocale, aImplNames );
         }
 
         // update thesaurus configuration entries
-        pTable = &pLinguData->GetThesTable();
+        pTable = &m_pLinguData->GetThesTable();
         for (auto const& elem : *pTable)
         {
             LanguageType nLang = elem.first;
             const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference< XLinguServiceManager2 > xMgr( pLinguData->GetManager() );
+            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
             Locale aLocale( LanguageTag::convertToLocale(nLang) );
             if (xMgr.is())
                 xMgr->setConfiguredServices( cThes, aLocale, aImplNames );
@@ -966,7 +967,7 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
     int nEntries = m_xLinguDicsCLB->n_children();
     for (int i = 0; i < nEntries; ++i)
     {
-        sal_Int32 nDics = aDics.getLength();
+        sal_Int32 nDics = m_aDics.getLength();
 
         aActiveDics.realloc( nDics );
         OUString *pActiveDic = aActiveDics.getArray();
@@ -975,7 +976,7 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
         if (aData.GetEntryId() < nDics)
         {
             bool bChecked = m_xLinguDicsCLB->get_toggle(i) == TRISTATE_TRUE;
-            uno::Reference<XDictionary> xDic(aDics[i]);
+            uno::Reference<XDictionary> xDic(m_aDics[i]);
             if (xDic.is())
             {
                 if (LinguMgr::GetIgnoreAllList() == xDic)
@@ -1012,8 +1013,8 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
             aAny <<= nVal;
         }
 
-        if (xProp.is())
-            xProp->setPropertyValue( aPropName, aAny );
+        if (m_xProp.is())
+            m_xProp->setPropertyValue(aPropName, aAny);
         aLngCfg.SetProperty( aPropName, aAny );
     }
 
@@ -1082,9 +1083,9 @@ void SvxLinguTabPage::UpdateDicBox_Impl()
     m_xLinguDicsCLB->freeze();
     m_xLinguDicsCLB->clear();
 
-    for (sal_Int32 i = 0;  i < aDics.getLength();  ++i)
+    for (sal_Int32 i = 0; i < m_aDics.getLength(); ++i)
     {
-        const uno::Reference<XDictionary>& rDic = aDics[i];
+        const uno::Reference<XDictionary>& rDic = m_aDics[i];
         if (rDic.is())
             AddDicBoxEntry( rDic, static_cast<sal_uInt16>(i) );
     }
@@ -1099,11 +1100,11 @@ void SvxLinguTabPage::UpdateDicBox_Impl()
 
 void SvxLinguTabPage::UpdateModulesBox_Impl()
 {
-    if (!pLinguData)
+    if (!m_pLinguData)
         return;
 
-    const ServiceInfoArr &rAllDispSrvcArr = pLinguData->GetDisplayServiceArray();
-    const sal_uInt32 nDispSrvcCount = pLinguData->GetDisplayServiceCount();
+    const ServiceInfoArr& rAllDispSrvcArr = m_pLinguData->GetDisplayServiceArray();
+    const sal_uInt32 nDispSrvcCount = m_pLinguData->GetDisplayServiceCount();
 
     m_xLinguModulesCLB->clear();
 
@@ -1128,8 +1129,8 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     // if not HideModulesGroup was called...
     if (m_xLinguModulesCLB->get_visible())
     {
-        if (!pLinguData)
-            pLinguData.reset( new SvxLinguData_Impl );
+        if (!m_pLinguData)
+            m_pLinguData.reset(new SvxLinguData_Impl);
         UpdateModulesBox_Impl();
     }
 
@@ -1152,7 +1153,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
         bVal = pItem->GetValue();
     nUserData = OptionsUserData( EID_SPELL_AUTO, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sSpellAuto, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sSpellAuto, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_AUTO));
 
@@ -1162,7 +1163,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_GRAMMAR_AUTO ) >>= bVal;
     nUserData = OptionsUserData( EID_GRAMMAR_AUTO, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sGrammarAuto, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sGrammarAuto, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_GRAMMAR_AUTO));
 
@@ -1172,7 +1173,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_SPELL_UPPER_CASE ) >>= bVal;
     nUserData = OptionsUserData( EID_CAPITAL_WORDS, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sCapitalWords, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sCapitalWords, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_UPPER_CASE));
 
@@ -1182,7 +1183,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_SPELL_WITH_DIGITS ) >>= bVal;
     nUserData = OptionsUserData( EID_WORDS_WITH_DIGITS, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sWordsWithDigits, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sWordsWithDigits, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_WITH_DIGITS));
 
@@ -1192,7 +1193,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_SPELL_CLOSED_COMPOUND ) >>= bVal;
     nUserData = OptionsUserData( EID_SPELL_CLOSED_COMPOUND, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sSpellClosedCompound, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sSpellClosedCompound, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_CLOSED_COMPOUND));
 
@@ -1202,7 +1203,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_SPELL_HYPHENATED_COMPOUND ) >>= bVal;
     nUserData = OptionsUserData( EID_SPELL_HYPHENATED_COMPOUND, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sSpellHyphenatedCompound, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sSpellHyphenatedCompound, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_HYPHENATED_COMPOUND));
 
@@ -1212,7 +1213,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_SPELL_SPECIAL ) >>= bVal;
     nUserData = OptionsUserData( EID_SPELL_SPECIAL, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sSpellSpecial, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sSpellSpecial, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_SPELL_SPECIAL));
 
@@ -1221,10 +1222,10 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
 
     aLngCfg.GetProperty( UPN_HYPH_MIN_WORD_LENGTH ) >>= nVal;
     nUserData = OptionsUserData( EID_NUM_MIN_WORDLEN, true, static_cast<sal_uInt16>(nVal), false, false).GetUserData();
-    m_xLinguOptionsCLB->set_text(nEntry, sNumMinWordlen + " " + OUString::number(nVal), 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sNumMinWordlen + " " + OUString::number(nVal), 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_HYPH_MIN_WORD_LENGTH));
-    nUPN_HYPH_MIN_WORD_LENGTH = nEntry;
+    m_nUPN_HYPH_MIN_WORD_LENGTH = nEntry;
 
     const SfxHyphenRegionItem *pHyp = nullptr;
     if ( rSet->GetItemState( SID_ATTR_HYPHENREGION, false ) == SfxItemState::SET )
@@ -1237,10 +1238,10 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     if (pHyp)
         nVal = static_cast<sal_Int16>(pHyp->GetMinLead());
     nUserData = OptionsUserData( EID_NUM_PRE_BREAK, true, static_cast<sal_uInt16>(nVal), false, false).GetUserData();
-    m_xLinguOptionsCLB->set_text(nEntry, sNumPreBreak + " " + OUString::number(nVal), 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sNumPreBreak + " " + OUString::number(nVal), 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_HYPH_MIN_LEADING));
-    nUPN_HYPH_MIN_LEADING = nEntry;
+    m_nUPN_HYPH_MIN_LEADING = nEntry;
 
     m_xLinguOptionsCLB->append();
     ++nEntry;
@@ -1249,10 +1250,10 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     if (pHyp)
         nVal = static_cast<sal_Int16>(pHyp->GetMinTrail());
     nUserData = OptionsUserData( EID_NUM_POST_BREAK, true, static_cast<sal_uInt16>(nVal), false, false).GetUserData();
-    m_xLinguOptionsCLB->set_text(nEntry, sNumPostBreak + " " + OUString::number(nVal), 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sNumPostBreak + " " + OUString::number(nVal), 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_HYPH_MIN_TRAILING));
-    nUPN_HYPH_MIN_TRAILING = nEntry;
+    m_nUPN_HYPH_MIN_TRAILING = nEntry;
 
     m_xLinguOptionsCLB->append();
     ++nEntry;
@@ -1260,7 +1261,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_HYPH_AUTO ) >>= bVal;
     nUserData = OptionsUserData( EID_HYPH_AUTO, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sHyphAuto, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sHyphAuto, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_HYPH_AUTO));
 
@@ -1270,7 +1271,7 @@ void SvxLinguTabPage::Reset( const SfxItemSet* rSet )
     aLngCfg.GetProperty( UPN_IS_HYPH_SPECIAL ) >>= bVal;
     nUserData = OptionsUserData( EID_HYPH_SPECIAL, false, 0, true, bVal).GetUserData();
     m_xLinguOptionsCLB->set_toggle(nEntry, bVal ? TRISTATE_TRUE : TRISTATE_FALSE);
-    m_xLinguOptionsCLB->set_text(nEntry, sHyphSpecial, 0);
+    m_xLinguOptionsCLB->set_text(nEntry, m_sHyphSpecial, 0);
     m_xLinguOptionsCLB->set_id(nEntry, OUString::number(nUserData));
     m_xLinguOptionsCLB->set_sensitive(nEntry, !aLngCfg.IsReadOnly(UPN_IS_HYPH_SPECIAL));
 
@@ -1320,15 +1321,16 @@ IMPL_LINK_NOARG(SvxLinguTabPage, PostDblClickHdl_Impl, void*, void)
 
 IMPL_LINK(SvxLinguTabPage, ModulesBoxCheckButtonHdl_Impl, const weld::TreeView::iter_col&, rRowCol, void)
 {
-    if (!pLinguData)
+    if (!m_pLinguData)
         return;
-    pLinguData->Reconfigure(m_xLinguModulesCLB->get_text(rRowCol.first),
-                            m_xLinguModulesCLB->get_toggle(rRowCol.first) == TRISTATE_TRUE);
+    m_pLinguData->Reconfigure(m_xLinguModulesCLB->get_text(rRowCol.first),
+                              m_xLinguModulesCLB->get_toggle(rRowCol.first) == TRISTATE_TRUE);
 }
 
 IMPL_LINK(SvxLinguTabPage, DicsBoxCheckButtonHdl_Impl, const weld::TreeView::iter_col&, rRowCol, void)
 {
-    const uno::Reference<XDictionary> &rDic = aDics[m_xLinguDicsCLB->get_iter_index_in_parent(rRowCol.first)];
+    const uno::Reference<XDictionary>& rDic
+        = m_aDics[m_xLinguDicsCLB->get_iter_index_in_parent(rRowCol.first)];
     if (LinguMgr::GetIgnoreAllList() == rDic)
         m_xLinguDicsCLB->set_toggle(rRowCol.first, TRISTATE_TRUE);
 }
@@ -1337,29 +1339,29 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
 {
     if (m_xLinguModulesEditPB.get() == &rBtn)
     {
-        if (!pLinguData)
-            pLinguData.reset( new SvxLinguData_Impl );
+        if (!m_pLinguData)
+            m_pLinguData.reset(new SvxLinguData_Impl);
 
-        SvxLinguData_Impl aOldLinguData(*pLinguData);
-        SvxEditModulesDlg aDlg(GetFrameWeld(), *pLinguData);
+        SvxLinguData_Impl aOldLinguData(*m_pLinguData);
+        SvxEditModulesDlg aDlg(GetFrameWeld(), *m_pLinguData);
         if (aDlg.run() != RET_OK)
-            *pLinguData = std::move(aOldLinguData);
+            *m_pLinguData = std::move(aOldLinguData);
 
         // evaluate new status of 'bConfigured' flag
-        sal_uInt32 nLen = pLinguData->GetDisplayServiceCount();
+        sal_uInt32 nLen = m_pLinguData->GetDisplayServiceCount();
         for (sal_uInt32 i = 0;  i < nLen;  ++i)
-            pLinguData->GetDisplayServiceArray()[i].bConfigured = false;
-        for (const auto& locale : pLinguData->GetAllSupportedLocales())
+            m_pLinguData->GetDisplayServiceArray()[i].bConfigured = false;
+        for (const auto& locale : m_pLinguData->GetAllSupportedLocales())
         {
             LanguageType nLang = LanguageTag::convertToLanguageType(locale);
-            if (pLinguData->GetSpellTable().count( nLang ))
-                pLinguData->SetChecked( pLinguData->GetSpellTable()[ nLang ] );
-            if (pLinguData->GetGrammarTable().count( nLang ))
-                pLinguData->SetChecked( pLinguData->GetGrammarTable()[ nLang ] );
-            if (pLinguData->GetHyphTable().count( nLang ))
-                pLinguData->SetChecked( pLinguData->GetHyphTable()[ nLang ] );
-            if (pLinguData->GetThesTable().count( nLang ))
-                pLinguData->SetChecked( pLinguData->GetThesTable()[ nLang ] );
+            if (m_pLinguData->GetSpellTable().count(nLang))
+                m_pLinguData->SetChecked(m_pLinguData->GetSpellTable()[nLang]);
+            if (m_pLinguData->GetGrammarTable().count(nLang))
+                m_pLinguData->SetChecked(m_pLinguData->GetGrammarTable()[nLang]);
+            if (m_pLinguData->GetHyphTable().count(nLang))
+                m_pLinguData->SetChecked(m_pLinguData->GetHyphTable()[nLang]);
+            if (m_pLinguData->GetThesTable().count(nLang))
+                m_pLinguData->SetChecked(m_pLinguData->GetThesTable()[nLang]);
         }
 
         // show new status of modules
@@ -1375,10 +1377,10 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
         if ( xNewDic.is() )
         {
             // add new dics to the end
-            sal_Int32 nLen = aDics.getLength();
-            aDics.realloc( nLen + 1 );
+            sal_Int32 nLen = m_aDics.getLength();
+            m_aDics.realloc(nLen + 1);
 
-            aDics.getArray()[ nLen ] = xNewDic;
+            m_aDics.getArray()[nLen] = xNewDic;
 
             AddDicBoxEntry( xNewDic, static_cast<sal_uInt16>(nLen) );
         }
@@ -1390,10 +1392,10 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
         {
             DicUserData aData(m_xLinguDicsCLB->get_id(nEntry).toUInt32());
             sal_uInt16 nDicPos = aData.GetEntryId();
-            sal_Int32 nDics = aDics.getLength();
+            sal_Int32 nDics = m_aDics.getLength();
             if (nDicPos < nDics)
             {
-                uno::Reference<XDictionary> xDic = aDics[nDicPos];
+                uno::Reference<XDictionary> xDic = m_aDics[nDicPos];
                 if (xDic.is())
                 {
                     SvxAbstractDialogFactory* pFact = SvxAbstractDialogFactory::Create();
@@ -1415,18 +1417,18 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
         {
             DicUserData aData(m_xLinguDicsCLB->get_id(nEntry).toUInt32());
             sal_uInt16 nDicPos = aData.GetEntryId();
-            sal_Int32 nDics = aDics.getLength();
+            sal_Int32 nDics = m_aDics.getLength();
             if (nDicPos < nDics)
             {
-                uno::Reference<XDictionary> xDic = aDics[nDicPos];
+                uno::Reference<XDictionary> xDic = m_aDics[nDicPos];
                 if (xDic.is())
                 {
                     if (LinguMgr::GetIgnoreAllList() == xDic)
                         xDic->clear();
                     else
                     {
-                        if (xDicList.is())
-                            xDicList->removeDictionary( xDic );
+                        if (m_xDicList.is())
+                            m_xDicList->removeDictionary(xDic);
 
                         uno::Reference< frame::XStorable > xStor( xDic, UNO_QUERY );
                         if ( xStor->hasLocation() && !xStor->isReadonly() )
@@ -1441,7 +1443,7 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
                             }
                         }
 
-                        aDics.getArray()[ nDicPos ] = nullptr;
+                        m_aDics.getArray()[nDicPos] = nullptr;
 
                         // remove entry from checklistbox
                         int nCnt = m_xLinguDicsCLB->n_children();
@@ -1480,12 +1482,15 @@ IMPL_LINK(SvxLinguTabPage, ClickHdl_Impl, weld::Button&, rBtn, void)
                     {
                         aData.SetNumericValue( static_cast<sal_uInt8>(nVal) ); //! sets IsModified !
                         m_xLinguOptionsCLB->set_id(nEntry, OUString::number(aData.GetUserData()));
-                        if (nEntry == nUPN_HYPH_MIN_WORD_LENGTH)
-                            m_xLinguOptionsCLB->set_text(nEntry, sNumMinWordlen + " " + OUString::number(nVal), 0);
-                        else if (nEntry == nUPN_HYPH_MIN_LEADING)
-                            m_xLinguOptionsCLB->set_text(nEntry, sNumPreBreak + " " + OUString::number(nVal), 0);
-                        else if (nEntry == nUPN_HYPH_MIN_TRAILING)
-                            m_xLinguOptionsCLB->set_text(nEntry, sNumPostBreak + " " + OUString::number(nVal), 0);
+                        if (nEntry == m_nUPN_HYPH_MIN_WORD_LENGTH)
+                            m_xLinguOptionsCLB->set_text(
+                                nEntry, m_sNumMinWordlen + " " + OUString::number(nVal), 0);
+                        else if (nEntry == m_nUPN_HYPH_MIN_LEADING)
+                            m_xLinguOptionsCLB->set_text(
+                                nEntry, m_sNumPreBreak + " " + OUString::number(nVal), 0);
+                        else if (nEntry == m_nUPN_HYPH_MIN_TRAILING)
+                            m_xLinguOptionsCLB->set_text(
+                                nEntry, m_sNumPostBreak + " " + OUString::number(nVal), 0);
                         m_xLinguOptionsCLB->set_id(nEntry, OUString::number(aData.GetUserData()));
                     }
                 }
