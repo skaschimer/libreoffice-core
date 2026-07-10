@@ -350,16 +350,15 @@ typedef std::vector< ServiceInfo_Impl >                   ServiceInfoArr;
 class SvxLinguData_Impl
 {
     //contains services and implementation names sorted by implementation names
-    ServiceInfoArr                      aDisplayServiceArr;
-    sal_uInt32                          nDisplayServices;
+    ServiceInfoArr m_aDisplayServiceArr;
+    sal_uInt32 m_nDisplayServices;
 
-    std::set<Locale, Locale_less>       aAllServiceLocales;
-    LangImplNameTable                   aCfgSpellTable;
-    LangImplNameTable                   aCfgHyphTable;
-    LangImplNameTable                   aCfgThesTable;
-    LangImplNameTable                   aCfgGrammarTable;
-    uno::Reference< XLinguServiceManager2 >  xLinguSrvcMgr;
-
+    std::set<Locale, Locale_less> m_aAllServiceLocales;
+    LangImplNameTable m_aCfgSpellTable;
+    LangImplNameTable m_aCfgHyphTable;
+    LangImplNameTable m_aCfgThesTable;
+    LangImplNameTable m_aCfgGrammarTable;
+    uno::Reference<XLinguServiceManager2> m_xLinguSrvcMgr;
 
     static bool AddRemove( Sequence< OUString > &rConfigured,
                            const OUString &rImplName, bool bAdd );
@@ -369,21 +368,21 @@ class SvxLinguData_Impl
 public:
     SvxLinguData_Impl();
 
-    uno::Reference<XLinguServiceManager2> &   GetManager() { return xLinguSrvcMgr; }
+    uno::Reference<XLinguServiceManager2>& GetManager() { return m_xLinguSrvcMgr; }
 
     void SetChecked( const Sequence< OUString > &rConfiguredServices );
     void Reconfigure( std::u16string_view rDisplayName, bool bEnable );
 
-    const auto&                 GetAllSupportedLocales() const { return aAllServiceLocales; }
+    const auto& GetAllSupportedLocales() const { return m_aAllServiceLocales; }
 
-    LangImplNameTable &         GetSpellTable()         { return aCfgSpellTable; }
-    LangImplNameTable &         GetHyphTable()          { return aCfgHyphTable; }
-    LangImplNameTable &         GetThesTable()          { return aCfgThesTable; }
-    LangImplNameTable &         GetGrammarTable()       { return aCfgGrammarTable; }
+    LangImplNameTable& GetSpellTable() { return m_aCfgSpellTable; }
+    LangImplNameTable& GetHyphTable() { return m_aCfgHyphTable; }
+    LangImplNameTable& GetThesTable() { return m_aCfgThesTable; }
+    LangImplNameTable& GetGrammarTable() { return m_aCfgGrammarTable; }
 
-    ServiceInfoArr &            GetDisplayServiceArray()        { return aDisplayServiceArr; }
+    ServiceInfoArr& GetDisplayServiceArray() { return m_aDisplayServiceArr; }
 
-    const sal_uInt32 &   GetDisplayServiceCount() const          { return nDisplayServices; }
+    const sal_uInt32& GetDisplayServiceCount() const { return m_nDisplayServices; }
 
     // returns the list of service implementation names for the specified
     // language and service (TYPE_SPELL, TYPE_HYPH, TYPE_THES) sorted in
@@ -403,10 +402,18 @@ Sequence< OUString > SvxLinguData_Impl::GetSortedImplNames( LanguageType nLang, 
     LangImplNameTable *pTable = nullptr;
     switch (nType)
     {
-        case TYPE_SPELL     : pTable = &aCfgSpellTable; break;
-        case TYPE_HYPH      : pTable = &aCfgHyphTable; break;
-        case TYPE_THES      : pTable = &aCfgThesTable; break;
-        case TYPE_GRAMMAR   : pTable = &aCfgGrammarTable; break;
+        case TYPE_SPELL:
+            pTable = &m_aCfgSpellTable;
+            break;
+        case TYPE_HYPH:
+            pTable = &m_aCfgHyphTable;
+            break;
+        case TYPE_THES:
+            pTable = &m_aCfgThesTable;
+            break;
+        case TYPE_GRAMMAR:
+            pTable = &m_aCfgGrammarTable;
+            break;
     }
     Sequence< OUString > aRes;
     if (!pTable)
@@ -417,14 +424,14 @@ Sequence< OUString > SvxLinguData_Impl::GetSortedImplNames( LanguageType nLang, 
     if (pTable->count( nLang ))
         aRes = (*pTable)[ nLang ];      // add configured services
     sal_Int32 nIdx = aRes.getLength();
-    DBG_ASSERT( nDisplayServices >= o3tl::make_unsigned(nIdx), "size mismatch" );
-    aRes.realloc( nDisplayServices );
+    DBG_ASSERT(m_nDisplayServices >= o3tl::make_unsigned(nIdx), "size mismatch");
+    aRes.realloc(m_nDisplayServices);
     OUString *pRes = aRes.getArray();
 
     // add not configured services
-    for (sal_uInt32 i = 0;  i < nDisplayServices;  ++i)
+    for (sal_uInt32 i = 0; i < m_nDisplayServices; ++i)
     {
-        const ServiceInfo_Impl &rInfo = aDisplayServiceArr[ i ];
+        const ServiceInfo_Impl& rInfo = m_aDisplayServiceArr[i];
         OUString aImplName;
         switch (nType)
         {
@@ -451,9 +458,9 @@ Sequence< OUString > SvxLinguData_Impl::GetSortedImplNames( LanguageType nLang, 
 
 ServiceInfo_Impl * SvxLinguData_Impl::GetInfoByImplName( std::u16string_view rSvcImplName )
 {
-    for (sal_uInt32 i = 0;  i < nDisplayServices;  ++i)
+    for (sal_uInt32 i = 0; i < m_nDisplayServices; ++i)
     {
-        ServiceInfo_Impl &rTmp = aDisplayServiceArr[ i ];
+        ServiceInfo_Impl& rTmp = m_aDisplayServiceArr[i];
         if (rTmp.sSpellImplName == rSvcImplName ||
             rTmp.sHyphImplName  == rSvcImplName ||
             rTmp.sThesImplName  == rSvcImplName ||
@@ -470,7 +477,7 @@ void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
     sal_uInt32 nCnt = 0;
 
     ServiceInfoArr& rSvcInfoArr = GetDisplayServiceArray();
-    sal_uInt32 nEntries = nDisplayServices;
+    sal_uInt32 nEntries = m_nDisplayServices;
 
     for (sal_uInt32 i = 0;  i < nEntries;  ++i)
     {
@@ -514,14 +521,14 @@ void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
         ++nCnt;
     }
     GetDisplayServiceArray().push_back(rToAdd);
-    nDisplayServices = nCnt + 1;
+    m_nDisplayServices = nCnt + 1;
 }
 
-SvxLinguData_Impl::SvxLinguData_Impl() :
-    nDisplayServices    (0)
+SvxLinguData_Impl::SvxLinguData_Impl()
+    : m_nDisplayServices(0)
 {
     const uno::Reference< XComponentContext >& xContext = ::comphelper::getProcessComponentContext();
-    xLinguSrvcMgr = LinguServiceManager::create(xContext);
+    m_xLinguSrvcMgr = LinguServiceManager::create(xContext);
 
     const Locale& rCurrentLocale = Application::GetSettings().GetUILanguageTag().getLocale();
     Sequence<Any> aArgs
@@ -531,8 +538,7 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
     };
 
     //read spell checker
-    const Sequence< OUString > aSpellNames = xLinguSrvcMgr->getAvailableServices(
-                    cSpell,    Locale() );
+    const Sequence<OUString> aSpellNames = m_xLinguSrvcMgr->getAvailableServices(cSpell, Locale());
 
     for(const OUString& spellName : aSpellNames)
     {
@@ -549,14 +555,14 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         //! suppress display of entries with no supported languages (see feature 110994)
         if (aLocales.hasElements())
         {
-            aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
+            m_aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
             MergeDisplayArray(aInfo);
         }
     }
 
     //read grammar checker
-    const Sequence< OUString > aGrammarNames = xLinguSrvcMgr->getAvailableServices(
-                    cGrammar, Locale() );
+    const Sequence<OUString> aGrammarNames
+        = m_xLinguSrvcMgr->getAvailableServices(cGrammar, Locale());
     for(const OUString& grammarName : aGrammarNames)
     {
         ServiceInfo_Impl aInfo;
@@ -572,14 +578,13 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         //! suppress display of entries with no supported languages (see feature 110994)
         if (aLocales.hasElements())
         {
-            aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
+            m_aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
             MergeDisplayArray(aInfo);
         }
     }
 
     //read hyphenator
-    const Sequence< OUString > aHyphNames = xLinguSrvcMgr->getAvailableServices(
-                    cHyph, Locale() );
+    const Sequence<OUString> aHyphNames = m_xLinguSrvcMgr->getAvailableServices(cHyph, Locale());
     for(const OUString& hyphName : aHyphNames)
     {
         ServiceInfo_Impl aInfo;
@@ -594,14 +599,13 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         //! suppress display of entries with no supported languages (see feature 110994)
         if (aLocales.hasElements())
         {
-            aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
+            m_aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
             MergeDisplayArray(aInfo);
         }
     }
 
     //read thesauri
-    const Sequence< OUString > aThesNames = xLinguSrvcMgr->getAvailableServices(
-                    cThes,     Locale() );
+    const Sequence<OUString> aThesNames = m_xLinguSrvcMgr->getAvailableServices(cThes, Locale());
     for(const OUString& thesName : aThesNames)
     {
         ServiceInfo_Impl aInfo;
@@ -616,35 +620,35 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         //! suppress display of entries with no supported languages (see feature 110994)
         if (aLocales.hasElements())
         {
-            aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
+            m_aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
             MergeDisplayArray(aInfo);
         }
     }
 
     Sequence< OUString > aCfgSvcs;
-    for (auto const& locale : aAllServiceLocales)
+    for (auto const& locale : m_aAllServiceLocales)
     {
         LanguageType nLang = LanguageTag::convertToLanguageType( locale );
 
-        aCfgSvcs = xLinguSrvcMgr->getConfiguredServices(cSpell, locale);
+        aCfgSvcs = m_xLinguSrvcMgr->getConfiguredServices(cSpell, locale);
         SetChecked( aCfgSvcs );
         if (aCfgSvcs.hasElements())
-            aCfgSpellTable[ nLang ] = aCfgSvcs;
+            m_aCfgSpellTable[nLang] = aCfgSvcs;
 
-        aCfgSvcs = xLinguSrvcMgr->getConfiguredServices(cGrammar, locale);
+        aCfgSvcs = m_xLinguSrvcMgr->getConfiguredServices(cGrammar, locale);
         SetChecked( aCfgSvcs );
         if (aCfgSvcs.hasElements())
-            aCfgGrammarTable[ nLang ] = aCfgSvcs;
+            m_aCfgGrammarTable[nLang] = aCfgSvcs;
 
-        aCfgSvcs = xLinguSrvcMgr->getConfiguredServices(cHyph, locale);
+        aCfgSvcs = m_xLinguSrvcMgr->getConfiguredServices(cHyph, locale);
         SetChecked( aCfgSvcs );
         if (aCfgSvcs.hasElements())
-            aCfgHyphTable[ nLang ] = aCfgSvcs;
+            m_aCfgHyphTable[nLang] = aCfgSvcs;
 
-        aCfgSvcs = xLinguSrvcMgr->getConfiguredServices(cThes, locale);
+        aCfgSvcs = m_xLinguSrvcMgr->getConfiguredServices(cThes, locale);
         SetChecked( aCfgSvcs );
         if (aCfgSvcs.hasElements())
-            aCfgThesTable[ nLang ] = aCfgSvcs;
+            m_aCfgThesTable[nLang] = aCfgSvcs;
     }
 }
 
@@ -652,9 +656,9 @@ void SvxLinguData_Impl::SetChecked(const Sequence<OUString>& rConfiguredServices
 {
     for(OUString const & configService : rConfiguredServices)
     {
-        for (sal_uInt32 i = 0;  i < nDisplayServices;  ++i)
+        for (sal_uInt32 i = 0; i < m_nDisplayServices; ++i)
         {
-            ServiceInfo_Impl& rEntry = aDisplayServiceArr[i];
+            ServiceInfo_Impl& rEntry = m_aDisplayServiceArr[i];
             if (!rEntry.bConfigured)
             {
                 const OUString &rSrvcImplName = configService;
@@ -702,9 +706,9 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
     DBG_ASSERT( !rDisplayName.empty(), "empty DisplayName" );
 
     ServiceInfo_Impl *pInfo = nullptr;
-    for (sal_uInt32 i = 0;  i < nDisplayServices;  ++i)
+    for (sal_uInt32 i = 0; i < m_nDisplayServices; ++i)
     {
-        ServiceInfo_Impl& rTmp = aDisplayServiceArr[i];
+        ServiceInfo_Impl& rTmp = m_aDisplayServiceArr[i];
         if (rTmp.sDisplayName == rDisplayName)
         {
             pInfo = &rTmp;
@@ -723,10 +727,10 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
         for (auto& locale : pInfo->xSpell->getLocales())
         {
             LanguageType nLang = LanguageTag::convertToLanguageType(locale);
-            if (!aCfgSpellTable.count( nLang ) && bEnable)
-                aCfgSpellTable[ nLang ] = Sequence< OUString >();
-            if (aCfgSpellTable.count( nLang ))
-                AddRemove( aCfgSpellTable[ nLang ], pInfo->sSpellImplName, bEnable );
+            if (!m_aCfgSpellTable.count(nLang) && bEnable)
+                m_aCfgSpellTable[nLang] = Sequence<OUString>();
+            if (m_aCfgSpellTable.count(nLang))
+                AddRemove(m_aCfgSpellTable[nLang], pInfo->sSpellImplName, bEnable);
         }
     }
 
@@ -736,10 +740,10 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
         for (auto& locale : pInfo->xGrammar->getLocales())
         {
             LanguageType nLang = LanguageTag::convertToLanguageType(locale);
-            if (!aCfgGrammarTable.count( nLang ) && bEnable)
-                aCfgGrammarTable[ nLang ] = Sequence< OUString >();
-            if (aCfgGrammarTable.count( nLang ))
-                AddRemove( aCfgGrammarTable[ nLang ], pInfo->sGrammarImplName, bEnable );
+            if (!m_aCfgGrammarTable.count(nLang) && bEnable)
+                m_aCfgGrammarTable[nLang] = Sequence<OUString>();
+            if (m_aCfgGrammarTable.count(nLang))
+                AddRemove(m_aCfgGrammarTable[nLang], pInfo->sGrammarImplName, bEnable);
         }
     }
 
@@ -749,10 +753,10 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
         for (auto& locale : pInfo->xHyph->getLocales())
         {
             LanguageType nLang = LanguageTag::convertToLanguageType(locale);
-            if (!aCfgHyphTable.count( nLang ) && bEnable)
-                aCfgHyphTable[ nLang ] = Sequence< OUString >();
-            if (aCfgHyphTable.count( nLang ))
-                AddRemove( aCfgHyphTable[ nLang ], pInfo->sHyphImplName, bEnable );
+            if (!m_aCfgHyphTable.count(nLang) && bEnable)
+                m_aCfgHyphTable[nLang] = Sequence<OUString>();
+            if (m_aCfgHyphTable.count(nLang))
+                AddRemove(m_aCfgHyphTable[nLang], pInfo->sHyphImplName, bEnable);
         }
     }
 
@@ -763,10 +767,10 @@ void SvxLinguData_Impl::Reconfigure( std::u16string_view rDisplayName, bool bEna
     for (auto& locale : pInfo->xThes->getLocales())
     {
         LanguageType nLang = LanguageTag::convertToLanguageType(locale);
-        if (!aCfgThesTable.count( nLang ) && bEnable)
-            aCfgThesTable[ nLang ] = Sequence< OUString >();
-        if (aCfgThesTable.count( nLang ))
-            AddRemove( aCfgThesTable[ nLang ], pInfo->sThesImplName, bEnable );
+        if (!m_aCfgThesTable.count(nLang) && bEnable)
+            m_aCfgThesTable[nLang] = Sequence<OUString>();
+        if (m_aCfgThesTable.count(nLang))
+            AddRemove(m_aCfgThesTable[nLang], pInfo->sThesImplName, bEnable);
     }
 }
 
