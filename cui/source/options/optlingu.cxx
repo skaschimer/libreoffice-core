@@ -901,8 +901,6 @@ OUString SvxLinguTabPage::GetAllStrings()
 
 bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
 {
-    bool bModified = true; // !!!!
-
     // if not HideModulesGroup was called...
     if (m_xLinguModulesCLB->get_visible())
     {
@@ -1034,10 +1032,9 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
     if ( !pOld || static_cast<const SfxBoolItem*>(pOld)->GetValue() != bNewAutoCheck )
     {
         rCoreSet->Put( SfxBoolItem( SID_AUTOSPELL_CHECK, bNewAutoCheck ) );
-        bModified = true;
     }
 
-    return bModified;
+    return true;
 }
 
 sal_uInt32 SvxLinguTabPage::GetDicUserData( const uno::Reference< XDictionary > &rxDic, sal_uInt16 nIdx )
