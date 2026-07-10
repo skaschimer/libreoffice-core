@@ -31,6 +31,8 @@
 #include <vcl/weld/LinkButton.hxx>
 #include <vcl/weld/TreeView.hxx>
 
+#include <map>
+
 namespace com::sun::star{
     namespace linguistic2{
         class XDictionary;
@@ -76,6 +78,8 @@ public:
 };
 
 struct ImplSVEvent;
+
+typedef std::map<LanguageType, css::uno::Sequence<OUString>> LangImplNameTable;
 
 // class SvxLinguTabPage -------------------------------------------------
 class SvxLinguTabPage : public SfxTabPage
@@ -133,6 +137,8 @@ private:
 
     void                UpdateModulesBox_Impl();
     void                UpdateDicBox_Impl();
+
+    void SetConfiguredServices(const OUString& rServiceName, const LangImplNameTable& rTable);
 
 public:
     SvxLinguTabPage(weld::Container* pPage, weld::DialogController* pController, const SfxItemSet& rCoreSet);

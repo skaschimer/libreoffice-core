@@ -71,7 +71,6 @@
 
 #include <set>
 #include <vector>
-#include <map>
 
 using namespace ::ucbhelper;
 using namespace ::com::sun::star;
@@ -344,7 +343,6 @@ struct Locale_less
 }
 
 typedef std::vector< ServiceInfo_Impl >                   ServiceInfoArr;
-typedef std::map< LanguageType, Sequence< OUString > >    LangImplNameTable;
 
 
 // SvxLinguData_Impl ----------------------------------------------------
@@ -899,6 +897,20 @@ OUString SvxLinguTabPage::GetAllStrings()
     return sAllStrings.toString().replaceAll("_", "");
 }
 
+void SvxLinguTabPage::SetConfiguredServices(const OUString& rServiceName,
+                                            const LangImplNameTable& rTable)
+{
+    for (auto const& elem : rTable)
+    {
+        LanguageType nLang = elem.first;
+        const Sequence<OUString> aImplNames(elem.second);
+        uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
+        Locale aLocale(LanguageTag::convertToLocale(nLang));
+        if (xMgr.is())
+            xMgr->setConfiguredServices(rServiceName, aLocale, aImplNames);
+    }
+}
+
 bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
 {
     // if not HideModulesGroup was called...
@@ -909,52 +921,16 @@ bool SvxLinguTabPage::FillItemSet( SfxItemSet* rCoreSet )
             m_pLinguData.reset(new SvxLinguData_Impl);
 
         // update spellchecker configuration entries
-        const LangImplNameTable* pTable = &m_pLinguData->GetSpellTable();
-        for (auto const& elem : *pTable)
-        {
-            LanguageType nLang = elem.first;
-            const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
-            Locale aLocale( LanguageTag::convertToLocale(nLang) );
-            if (xMgr.is())
-                xMgr->setConfiguredServices( cSpell, aLocale, aImplNames );
-        }
+        SetConfiguredServices(cSpell, m_pLinguData->GetSpellTable());
 
         // update grammar checker configuration entries
-        pTable = &m_pLinguData->GetGrammarTable();
-        for (auto const& elem : *pTable)
-        {
-            LanguageType nLang = elem.first;
-            const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
-            Locale aLocale( LanguageTag::convertToLocale(nLang) );
-            if (xMgr.is())
-                xMgr->setConfiguredServices( cGrammar, aLocale, aImplNames );
-        }
+        SetConfiguredServices(cGrammar, m_pLinguData->GetGrammarTable());
 
         // update hyphenator configuration entries
-        pTable = &m_pLinguData->GetHyphTable();
-        for (auto const& elem : *pTable)
-        {
-            LanguageType nLang = elem.first;
-            const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
-            Locale aLocale( LanguageTag::convertToLocale(nLang) );
-            if (xMgr.is())
-                xMgr->setConfiguredServices( cHyph, aLocale, aImplNames );
-        }
+        SetConfiguredServices(cHyph, m_pLinguData->GetHyphTable());
 
         // update thesaurus configuration entries
-        pTable = &m_pLinguData->GetThesTable();
-        for (auto const& elem : *pTable)
-        {
-            LanguageType nLang = elem.first;
-            const Sequence< OUString > aImplNames(elem.second);
-            uno::Reference<XLinguServiceManager2> xMgr(m_pLinguData->GetManager());
-            Locale aLocale( LanguageTag::convertToLocale(nLang) );
-            if (xMgr.is())
-                xMgr->setConfiguredServices( cThes, aLocale, aImplNames );
-        }
+        SetConfiguredServices(cThes, m_pLinguData->GetThesTable());
     }
 
 
