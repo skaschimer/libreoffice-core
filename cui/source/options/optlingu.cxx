@@ -384,7 +384,6 @@ public:
     ServiceInfoArr &            GetDisplayServiceArray()        { return aDisplayServiceArr; }
 
     const sal_uInt32 &   GetDisplayServiceCount() const          { return nDisplayServices; }
-    void            SetDisplayServiceCount( sal_uInt32 nVal )    { nDisplayServices = nVal; }
 
     // returns the list of service implementation names for the specified
     // language and service (TYPE_SPELL, TYPE_HYPH, TYPE_THES) sorted in
@@ -471,7 +470,7 @@ void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
     sal_uInt32 nCnt = 0;
 
     ServiceInfoArr& rSvcInfoArr = GetDisplayServiceArray();
-    sal_uInt32 nEntries = GetDisplayServiceCount();
+    sal_uInt32 nEntries = nDisplayServices;
 
     for (sal_uInt32 i = 0;  i < nEntries;  ++i)
     {
@@ -515,7 +514,7 @@ void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
         ++nCnt;
     }
     GetDisplayServiceArray().push_back(rToAdd);
-    SetDisplayServiceCount(nCnt + 1);
+    nDisplayServices = nCnt + 1;
 }
 
 SvxLinguData_Impl::SvxLinguData_Impl() :
