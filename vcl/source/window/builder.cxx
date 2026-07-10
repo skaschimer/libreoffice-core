@@ -984,13 +984,13 @@ void VclBuilderPreload()
 #else
 // find -name '*ui*' | xargs grep 'class=".*lo-' |
 //     sed 's/.*class="//' | sed 's/-.*$//' | sort | uniq
-    static const char* const aWidgetLibs[] = {
-        "sfxlo",  "svtlo"
+    static constexpr OUString aWidgetLibs[] = {
+        u"sfxlo"_ustr,  u"svtlo"_ustr
     };
-    for (const auto & lib : aWidgetLibs)
+    for (const OUString& rLib : aWidgetLibs)
     {
         std::unique_ptr<NoAutoUnloadModule> pModule(new NoAutoUnloadModule);
-        OUString sModule = SAL_DLLPREFIX + OUString::createFromAscii(lib) + SAL_DLLEXTENSION;
+        OUString sModule = SAL_DLLPREFIX + rLib + SAL_DLLEXTENSION;
         if (pModule->loadRelative(&thisModule, sModule))
             g_aModuleMap.insert(std::make_pair(sModule, std::move(pModule)));
     }
