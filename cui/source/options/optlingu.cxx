@@ -474,10 +474,8 @@ ServiceInfo_Impl * SvxLinguData_Impl::GetInfoByImplName( std::u16string_view rSv
 
 void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
 {
-    sal_uInt32 nCnt = 0;
-
     ServiceInfoArr& rSvcInfoArr = GetDisplayServiceArray();
-    sal_uInt32 nEntries = m_nDisplayServices;
+    const sal_uInt32 nEntries = m_nDisplayServices;
 
     for (sal_uInt32 i = 0;  i < nEntries;  ++i)
     {
@@ -518,10 +516,9 @@ void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
             }
             return ;
         }
-        ++nCnt;
     }
     GetDisplayServiceArray().push_back(rToAdd);
-    m_nDisplayServices = nCnt + 1;
+    m_nDisplayServices = nEntries + 1;
 }
 
 SvxLinguData_Impl::SvxLinguData_Impl()
