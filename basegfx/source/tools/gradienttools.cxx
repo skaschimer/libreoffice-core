@@ -111,7 +111,12 @@ namespace basegfx
         aTextureTransform.translate(fTargetOffsetX, fTargetOffsetY);
 
         // prepare aspect for texture
-        const double fAspectRatio(fTools::equalZero(fTargetSizeY) ?  1.0 : fTargetSizeX / fTargetSizeY);
+        double fAspectRatio(1.0);
+        if(!fTools::equalZero(fTargetSizeY))
+        {
+            assert(fTargetSizeY != 0.0 && "help coverity see it's not zero");
+            fAspectRatio = fTargetSizeX / fTargetSizeY;
+        }
 
         return ODFGradientInfo(aTextureTransform, fAspectRatio, nSteps);
     }
