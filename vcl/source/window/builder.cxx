@@ -984,15 +984,14 @@ void VclBuilderPreload()
 #else
 // find -name '*ui*' | xargs grep 'class=".*lo-' |
 //     sed 's/.*class="//' | sed 's/-.*$//' | sort | uniq
-    static constexpr OUString aWidgetLibs[] = {
-        u"sfxlo"_ustr,  u"svtlo"_ustr
+    static constexpr OUString aWidgetModules[] = {
+        u"" SVLIBRARY("sfx") ""_ustr, u"" SVLIBRARY("svt") ""_ustr
     };
-    for (const OUString& rLib : aWidgetLibs)
+    for (const OUString& rModule : aWidgetModules)
     {
         std::unique_ptr<NoAutoUnloadModule> pModule(new NoAutoUnloadModule);
-        OUString sModule = SAL_DLLPREFIX + rLib + SAL_DLLEXTENSION;
-        if (pModule->loadRelative(&thisModule, sModule))
-            g_aModuleMap.insert(std::make_pair(sModule, std::move(pModule)));
+        if (pModule->loadRelative(&thisModule, rModule))
+            g_aModuleMap.insert(std::make_pair(rModule, std::move(pModule)));
     }
 #endif // ENABLE_MERGELIBS
 #endif // DISABLE_DYNLOADING
