@@ -10705,7 +10705,7 @@ bool ScInterpreter::GetMacroArg( formula::FormulaConstTokenRef pArgIn, SbxVariab
             ScExternalRefCache::TokenArrayRef pArray;
 
             GetExternalDoubleRef(nFileId, aTabName, aData, pArray);
-            if (nGlobalError != FormulaError::NONE)
+            if (nGlobalError != FormulaError::NONE || !pArray)
                 return false;
 
             // For now, we only support single range data for external
