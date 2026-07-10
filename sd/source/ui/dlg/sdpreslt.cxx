@@ -119,15 +119,18 @@ void SdPresLayoutDlg::GetAttr(SfxItemSet& rOutAttrs)
 
     OUString aLayoutName;
 
-    if( bLoad )
+    if (nIndex >= 0)
     {
-        aLayoutName = maName + "#" + maLayoutNames.at(nIndex);
-    }
-    else if (nIndex >= 0)
-    {
-        aLayoutName = maLayoutNames.at(nIndex);
-        if( aLayoutName == maStrNone )
-            aLayoutName.clear(); // that way we encode "- nothing -" (see below)
+        if( bLoad )
+        {
+            aLayoutName = maName + "#" + maLayoutNames.at(nIndex);
+        }
+        else
+        {
+            aLayoutName = maLayoutNames.at(nIndex);
+            if( aLayoutName == maStrNone )
+                aLayoutName.clear(); // that way we encode "- nothing -" (see below)
+        }
     }
 
     rOutAttrs.Put( SfxStringItem( ATTR_PRESLAYOUT_NAME, aLayoutName ) );
