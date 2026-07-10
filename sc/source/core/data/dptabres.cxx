@@ -1597,8 +1597,8 @@ void ScDPResultMember::FillMemberResults(uno::Sequence<sheet::MemberResult>* pSe
                 {
                     // single data field layout.
                     const std::optional<OUString> & pSubtotalName = pParentDim->GetSubtotalName();
-                    if (pSubtotalName)
-                        aSubStr = lcl_parseSubtotalName(*pSubtotalName, aCaption);
+                    if (pSubtotalName.has_value())
+                        aSubStr = lcl_parseSubtotalName(pSubtotalName.value(), aCaption);
                     pArray[rPos].Flags &= ~sheet::MemberResultFlags::GRANDTOTAL;
                 }
                 else
