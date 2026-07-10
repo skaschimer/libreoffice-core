@@ -364,6 +364,8 @@ class SvxLinguData_Impl
     static bool AddRemove( Sequence< OUString > &rConfigured,
                            const OUString &rImplName, bool bAdd );
 
+    void MergeDisplayArray(const ServiceInfo_Impl& rToAdd);
+
 public:
     SvxLinguData_Impl();
 
@@ -464,14 +466,12 @@ ServiceInfo_Impl * SvxLinguData_Impl::GetInfoByImplName( std::u16string_view rSv
     return nullptr;
 }
 
-static void lcl_MergeDisplayArray(
-        SvxLinguData_Impl &rData,
-        const ServiceInfo_Impl &rToAdd )
+void SvxLinguData_Impl::MergeDisplayArray(const ServiceInfo_Impl& rToAdd)
 {
     sal_uInt32 nCnt = 0;
 
-    ServiceInfoArr &rSvcInfoArr = rData.GetDisplayServiceArray();
-    sal_uInt32 nEntries = rData.GetDisplayServiceCount();
+    ServiceInfoArr& rSvcInfoArr = GetDisplayServiceArray();
+    sal_uInt32 nEntries = GetDisplayServiceCount();
 
     for (sal_uInt32 i = 0;  i < nEntries;  ++i)
     {
@@ -514,8 +514,8 @@ static void lcl_MergeDisplayArray(
         }
         ++nCnt;
     }
-    rData.GetDisplayServiceArray().push_back( rToAdd );
-    rData.SetDisplayServiceCount( nCnt + 1 );
+    GetDisplayServiceArray().push_back(rToAdd);
+    SetDisplayServiceCount(nCnt + 1);
 }
 
 SvxLinguData_Impl::SvxLinguData_Impl() :
@@ -551,7 +551,7 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         if (aLocales.hasElements())
         {
             aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
-            lcl_MergeDisplayArray( *this, aInfo );
+            MergeDisplayArray(aInfo);
         }
     }
 
@@ -574,7 +574,7 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         if (aLocales.hasElements())
         {
             aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
-            lcl_MergeDisplayArray( *this, aInfo );
+            MergeDisplayArray(aInfo);
         }
     }
 
@@ -596,7 +596,7 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         if (aLocales.hasElements())
         {
             aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
-            lcl_MergeDisplayArray( *this, aInfo );
+            MergeDisplayArray(aInfo);
         }
     }
 
@@ -618,7 +618,7 @@ SvxLinguData_Impl::SvxLinguData_Impl() :
         if (aLocales.hasElements())
         {
             aAllServiceLocales.insert(aLocales.begin(), aLocales.end());
-            lcl_MergeDisplayArray( *this, aInfo );
+            MergeDisplayArray(aInfo);
         }
     }
 
