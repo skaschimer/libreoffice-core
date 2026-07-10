@@ -247,6 +247,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/spropctrlr/ui/taborder.ui",
     u"modules/swriter/ui/addentrydialog.ui",
     u"modules/swriter/ui/assignfieldsdialog.ui",
+    u"modules/swriter/ui/assignstylesdialog.ui",
     u"modules/swriter/ui/authenticationsettingsdialog.ui",
     u"modules/swriter/ui/autoformattable.ui",
     u"modules/swriter/ui/bibliographyentry.ui",
