@@ -1042,6 +1042,11 @@ sc::ExternalDataMapper& ScDocument::GetExternalDataMapper()
     return *mpDataMapper;
 }
 
+bool ScDocument::HasDataProviderMappings() const
+{
+    return mpDataMapper && !mpDataMapper->getDataSources().empty();
+}
+
 void ScDocument::StoreTabToCache(SCTAB nTab, SvStream& rStrm) const
 {
     const ScTable* pTab = FetchTable(nTab);

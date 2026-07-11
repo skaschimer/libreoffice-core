@@ -1695,7 +1695,7 @@ void ScTabViewShell::Construct( TriState nForceDesignMode )
                 const sc::DocumentLinkManager& rMgr = rDoc.GetDocLinkManager();
                 const ScDrawLayer* pDrawLayer = rDoc.GetDrawLayer();
                 if (rDoc.HasLinkFormulaNeedingCheck() || rDoc.HasAreaLinks()
-                    || rMgr.hasExternalLinks()
+                    || rDoc.HasDataProviderMappings() || rMgr.hasExternalLinks()
                     || (pDrawLayer && hasDeferredFillBitmapLinks(pDrawLayer->GetItemPool()))
                     || !pDocSh->GetDeferredFormControlImages().empty())
                     bLink = true;
