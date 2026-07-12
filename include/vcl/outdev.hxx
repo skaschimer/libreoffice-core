@@ -1200,7 +1200,7 @@ public:
 
     bool                        GetGlyphBoundRects( const Point& rOrigin, const OUString& rStr, int nIndex,
                                                     int nLen, std::vector< tools::Rectangle >& rVector ) const;
-
+    bool                        SupportsOpenTypeMath() const;
     sal_Int32                   HasGlyphs( const vcl::Font& rFont, std::u16string_view rStr,
                                            sal_Int32 nIndex = 0, sal_Int32 nLen = -1 ) const;
 

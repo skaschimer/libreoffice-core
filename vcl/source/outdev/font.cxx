@@ -1405,6 +1405,20 @@ sal_Int32 OutputDevice::HasGlyphs( const vcl::Font& rTempFont, std::u16string_vi
     return -1;
 }
 
+bool OutputDevice::SupportsOpenTypeMath() const
+{
+    if (!ImplNewFont())
+        return false;
+
+    LogicalFontInstance* pFontInstance = mpFontInstance.get();
+
+    if (pFontInstance) {
+        auto pFace = pFontInstance->GetFontFace();
+        return pFace->HasOpenTypeMathTable();
+    }
+    return false;
+}
+
 void OutputDevice::ReleaseFontCache() { mxFontCache.reset(); }
 
 void OutputDevice::ReleaseFontCollection() { mxFontCollection.reset(); }
