@@ -188,9 +188,8 @@ public:
     /// Update settings based on the platform values
     static void updateSettingsNative( AllSettings& rSettings );
 
-    // Returns base HFONT, an optional HFONT for non-rotated CJK glyphs,
-    // and tmDescent value for adjusting offset in vertical writing mode.
-    std::tuple<HFONT, HFONT, sal_Int32>
+    // Returns base HFONT, and an optional HFONT for non-rotated CJK glyphs.
+    std::tuple<HFONT, HFONT>
     ImplDoSetFont(HDC hDC, vcl::font::FontSelectPattern const& i_rFont,
                   const vcl::font::PhysicalFontFace& i_rFontFace, HFONT& o_rOldFont);
 

@@ -46,7 +46,6 @@ public:
 
     // Return true if the font is for vertical writing.
     bool IsCJKVerticalFont() const { return m_hVerticalFont != nullptr; }
-    sal_Int32 GetTmDescent() const { return m_nTmDescent; }
 
     const WinFontFace * GetFontFace() const { return static_cast<const WinFontFace *>(LogicalFontInstance::GetFontFace()); }
     WinFontFace * GetFontFace() { return static_cast<WinFontFace *>(LogicalFontInstance::GetFontFace()); }
@@ -61,7 +60,6 @@ private:
     WinSalGraphics *m_pGraphics;
     HFONT m_hFont;
     HFONT m_hVerticalFont = nullptr;
-    sal_Int32 m_nTmDescent;
     mutable sal::systools::COMReference<IDWriteFontFace> mxDWFontFace;
 };
 

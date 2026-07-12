@@ -119,7 +119,6 @@ WinFontInstance::WinFontInstance(const WinFontFace& rPFF, const vcl::font::FontS
     , m_pGraphics(nullptr)
     , m_hFont(nullptr)
     , m_hVerticalFont(nullptr)
-    , m_nTmDescent(0)
 {
 }
 
@@ -147,7 +146,7 @@ void WinFontInstance::SetGraphics(WinSalGraphics* pGraphics)
         return;
     HFONT hOrigFont;
     HDC hDC = m_pGraphics->getHDC();
-    std::tie(m_hFont, m_hVerticalFont, m_nTmDescent)
+    std::tie(m_hFont, m_hVerticalFont)
         = m_pGraphics->ImplDoSetFont(hDC, GetFontSelectPattern(), *GetFontFace(), hOrigFont);
     SelectObject(hDC, hOrigFont);
 }

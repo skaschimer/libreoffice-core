@@ -694,7 +694,7 @@ void ImplGetLogFontFromFontSelect( const vcl::font::FontSelectPattern& rFont,
         rLogFont.lfQuality = bAntiAliased ? ANTIALIASED_QUALITY : NONANTIALIASED_QUALITY;
 }
 
-std::tuple<HFONT, HFONT, sal_Int32>
+std::tuple<HFONT, HFONT>
 WinSalGraphics::ImplDoSetFont(HDC hDC, vcl::font::FontSelectPattern const& i_rFont,
                               const vcl::font::PhysicalFontFace& i_rFontFace, HFONT& o_rOldFont)
 {
@@ -730,7 +730,6 @@ WinSalGraphics::ImplDoSetFont(HDC hDC, vcl::font::FontSelectPattern const& i_rFo
         ::SelectFont(hDC, hStretchedFont);
         ::DeleteFont(hNewFont);
         hNewFont = hStretchedFont;
-        ::GetTextMetricsW(hDC, &aTextMetricW);
     }
 
     // Optionally create a secondary font for non-rotated CJK glyphs in vertical context
@@ -742,8 +741,7 @@ WinSalGraphics::ImplDoSetFont(HDC hDC, vcl::font::FontSelectPattern const& i_rFo
         hNewVerticalFont = ::CreateFontIndirectW(&aLogFont);
     }
 
-    return std::make_tuple(hNewFont, hNewVerticalFont,
-                           static_cast<sal_Int32>(aTextMetricW.tmDescent));
+    return std::make_tuple(hNewFont, hNewVerticalFont);
 }
 
 void WinSalGraphics::SetFont(LogicalFontInstance* pFont, int nFallbackLevel)
