@@ -203,6 +203,20 @@ sal_Bool SAL_CALL ScriptProvider::editNode()
         return false;
 }
 
+std::shared_ptr<SingleScriptFactory> ScriptProvider::getScriptFactory() const
+{
+    return m_pProviderContext->m_pSingleScriptFactory;
+}
+
+std::optional<OUString> ScriptProvider::getDirectoryUri() const
+{
+    if (const DirectoryNode* pDirectoryNode
+        = dynamic_cast<const DirectoryNode*>(m_xRootBrowser.get()))
+        return pDirectoryNode->getDirectoryUri();
+    else
+        return std::nullopt;
+}
+
 OUString SAL_CALL ScriptProvider::getImplementationName()
 {
     return getImplementationNameStatic(

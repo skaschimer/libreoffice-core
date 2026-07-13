@@ -134,6 +134,16 @@ css::uno::Reference<css::script::browse::XBrowseNode>
 
     return new ScriptFile(m_pProviderContext, sMacroName, sUrl);
 }
+
+std::shared_ptr<SingleScriptFactory> ScriptDir::getScriptFactory() const
+{
+    return m_pProviderContext->m_pSingleScriptFactory;
+}
+
+std::optional<OUString> ScriptDir::getDirectoryUri() const
+{
+    return std::make_optional(m_sBaseUri);
+}
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <singleprov/directorynode.hxx>
+
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
 #include <com/sun/star/script/browse/XCreatableBrowseNode.hpp>
 #include <cppuhelper/implbase.hxx>
@@ -19,7 +21,8 @@ namespace singleprovider
 class ProviderContext;
 
 class ScriptDir : public cppu::WeakImplHelper<css::script::browse::XBrowseNode,
-                                              css::script::browse::XCreatableBrowseNode>
+                                              css::script::browse::XCreatableBrowseNode>,
+                  public DirectoryNode
 {
 public:
     ScriptDir(const std::shared_ptr<ProviderContext>& pProviderContext);
@@ -37,6 +40,10 @@ public:
     sal_Bool SAL_CALL isCreatableNode() override;
     css::uno::Reference<css::script::browse::XBrowseNode>
         SAL_CALL createNode(const OUString& sName) override;
+
+    // DirectoryNode
+    std::shared_ptr<SingleScriptFactory> getScriptFactory() const override;
+    std::optional<OUString> getDirectoryUri() const override;
 
 private:
     OUString nameFromUrl(const OUString& sUrl);

@@ -10,15 +10,18 @@
 #pragma once
 
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
+#include <com/sun/star/script/browse/XCopyableBrowseNode.hpp>
 #include <com/sun/star/script/browse/XEditableBrowseNode.hpp>
 #include <cppuhelper/implbase.hxx>
 #include <memory>
+#include <optional>
 
 namespace singleprovider
 {
 class ProviderContext;
 
 class ScriptFile : public cppu::WeakImplHelper<css::script::browse::XBrowseNode,
+                                               css::script::browse::XCopyableBrowseNode,
                                                css::script::browse::XEditableBrowseNode>
 {
 public:
@@ -32,6 +35,13 @@ public:
     sal_Bool SAL_CALL hasChildNodes() override;
     sal_Int16 SAL_CALL getType() override;
 
+    // XCopyableBrowseNode
+    sal_Bool SAL_CALL isCopyableNode() override;
+    sal_Bool SAL_CALL nodeCanBeCopiedTo(
+        const css::uno::Reference<css::script::browse::XBrowseNode>& xParentNode) override;
+    css::uno::Reference<css::script::browse::XBrowseNode> SAL_CALL
+    copyNode(const css::uno::Reference<css::script::browse::XBrowseNode>& xParentNode) override;
+
     // XEditableBrowseNode
     sal_Bool SAL_CALL isEditableNode() override;
     sal_Bool SAL_CALL editNode() override;
@@ -41,6 +51,9 @@ private:
 
     OUString m_sName;
     OUString m_sBaseUri;
+
+    std::optional<OUString>
+    getCopyDestinationUri(const css::uno::Reference<css::script::browse::XBrowseNode>& xDest) const;
 };
 }
 

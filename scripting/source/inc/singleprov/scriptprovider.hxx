@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <singleprov/directorynode.hxx>
+
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/script/browse/XBrowseNode.hpp>
 #include <com/sun/star/script/browse/XCreatableBrowseNode.hpp>
@@ -27,10 +29,12 @@ class ScriptBrowser;
 class SingleScriptFactory;
 
 class ScriptProvider
-    : public cppu::WeakImplHelper<
-          css::lang::XInitialization, css::script::browse::XBrowseNode,
-          css::script::browse::XCreatableBrowseNode, css::script::browse::XEditableBrowseNode,
-          css::beans::XPropertySet, css::script::provider::XScriptProvider, css::lang::XServiceInfo>
+    : public cppu::WeakImplHelper<css::lang::XInitialization, css::script::browse::XBrowseNode,
+                                  css::script::browse::XCreatableBrowseNode,
+                                  css::script::browse::XEditableBrowseNode,
+                                  css::beans::XPropertySet, css::script::provider::XScriptProvider,
+                                  css::lang::XServiceInfo>,
+      public DirectoryNode
 {
 public:
     // XInitialization
@@ -78,6 +82,10 @@ public:
     void SAL_CALL removeVetoableChangeListener(
         const OUString& PropertyName,
         const css::uno::Reference<css::beans::XVetoableChangeListener>& aListener) override;
+
+    // DirectoryNode
+    std::shared_ptr<SingleScriptFactory> getScriptFactory() const override;
+    std::optional<OUString> getDirectoryUri() const override;
 
     static SAL_DLLPUBLIC_EXPORT OUString
     getImplementationNameStatic(std::u16string_view sLanguageName);

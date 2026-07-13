@@ -12,6 +12,7 @@
 #include <com/sun/star/script/browse/BrowseNodeTypes.hpp>
 #include <com/sun/star/ucb/SimpleFileAccess.hpp>
 
+#include <singleprov/directorynode.hxx>
 #include <singleprov/singlescriptfactory.hxx>
 
 #include "externaledit.hxx"
@@ -44,6 +45,67 @@ css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
 sal_Bool SAL_CALL ScriptFile::hasChildNodes() { return true; }
 
 sal_Int16 SAL_CALL ScriptFile::getType() { return css::script::browse::BrowseNodeTypes::CONTAINER; }
+
+sal_Bool SAL_CALL ScriptFile::isCopyableNode() { return true; }
+
+std::optional<OUString> ScriptFile::getCopyDestinationUri(
+    const css::uno::Reference<css::script::browse::XBrowseNode>& xDest) const
+{
+    const DirectoryNode* pDirectoryNode = dynamic_cast<const DirectoryNode*>(xDest.get());
+
+    if (!pDirectoryNode)
+        return std::nullopt;
+
+    // Don’t allow copying into providers for other languages
+    if (pDirectoryNode->getScriptFactory()->getLanguageName()
+        != m_pProviderContext->m_pSingleScriptFactory->getLanguageName())
+    {
+        return std::nullopt;
+    }
+
+    std::optional<OUString> sDirectoryUri = pDirectoryNode->getDirectoryUri();
+
+    // Don’t allow copying into the same directory
+    if (sDirectoryUri)
+    {
+        sal_Int32 nDirEnd = m_sBaseUri.lastIndexOf(u'/');
+
+        if (sDirectoryUri.value() == (nDirEnd == -1 ? m_sBaseUri : m_sBaseUri.copy(0, nDirEnd)))
+            return std::nullopt;
+    }
+
+    return sDirectoryUri;
+}
+
+sal_Bool SAL_CALL ScriptFile::nodeCanBeCopiedTo(
+    const css::uno::Reference<css::script::browse::XBrowseNode>& xParentNode)
+{
+    return getCopyDestinationUri(xParentNode).has_value();
+}
+
+css::uno::Reference<css::script::browse::XBrowseNode> SAL_CALL
+ScriptFile::copyNode(const css::uno::Reference<css::script::browse::XBrowseNode>& xParentNode)
+{
+    std::optional<OUString> sDirectoryUri = getCopyDestinationUri(xParentNode);
+
+    if (!sDirectoryUri)
+    {
+        throw css::lang::IllegalArgumentException(u"Invalid parent node passed to copyNode"_ustr,
+                                                  getXWeak(), 0);
+    }
+
+    const css::uno::Reference<css::ucb::XSimpleFileAccess3>& xFileAccess
+        = m_pProviderContext->m_xFileAccess;
+
+    xFileAccess->createFolder(sDirectoryUri.value());
+
+    std::u16string_view sBaseName = m_sBaseUri.subView(m_sBaseUri.lastIndexOf(u'/') + 1);
+    OUString sTargetUri = sDirectoryUri.value() + OUStringChar('/') + sBaseName;
+
+    xFileAccess->copy(m_sBaseUri, sTargetUri);
+
+    return new ScriptFile(m_pProviderContext, m_sName, sTargetUri);
+}
 
 sal_Bool SAL_CALL ScriptFile::isEditableNode()
 {
