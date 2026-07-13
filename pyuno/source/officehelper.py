@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- tab-width: 4; indent-tabs-mode: nil; py-indent-offset: 4 -*-
 #
 # This file is part of the LibreOffice project.
@@ -160,8 +161,18 @@ def bootstrap(soffice=None, delays=(1, 3, 5, 7), report=lambda *args: None):
                 sOffice = os.path.join(os.environ["UNO_PATH"], sOffice)
             elif platform == "darwin":  # any other un-hardcoded suggestion?
                 sOffice = "/Applications/LibreOffice.App/Contents/MacOS/soffice"
-            if platform.startswith("win"):
-                sOffice += ".exe"
+
+        # Intercept and correct the path for LODE macOS build environments
+        if platform == "darwin":
+            if "instdir/program/soffice" in sOffice and not os.path.exists(sOffice):
+                sOffice = sOffice.replace(
+                    "instdir/program/soffice",
+                    "instdir/LibreOfficeDev.app/Contents/MacOS/soffice"
+                )
+
+        if platform.startswith("win"):
+            sOffice += ".exe"
+
         # Generate a random pipe name.
         random.seed()
         sPipeName = "uno" + str(random.random())[2:]
