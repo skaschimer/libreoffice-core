@@ -26,7 +26,7 @@
 #include <vcl/dllapi.h>
 #include <vcl/timer.hxx>
 #include <com/sun/star/lang/Locale.hpp>
-#include <unx/fc_fontoptions.hxx>
+#include <unx/font/fc_fontoptions.hxx>
 
 #include <font/PhysicalFontFace.hxx>
 

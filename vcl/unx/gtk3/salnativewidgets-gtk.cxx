@@ -22,7 +22,7 @@
 #include <vcl/CairoFormats.hxx>
 #include <vcl/decoview.hxx>
 #include <vcl/settings.hxx>
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <o3tl/string_view.hxx>
 #include <scrollbarvalue.hxx>
 

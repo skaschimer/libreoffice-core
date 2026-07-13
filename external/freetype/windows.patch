@@ -3,7 +3,7 @@ we don't define DLL_EXPORT as there in general is no need to export
 freetype symbols from the (dynamkic) library that freetype gets linked
 into, cairo.dll and vcllo.dll (or mergedlo.dll). But there is one
 exception: FT_Done_MM_Var *must* be exported as the code in
-dlFT_Done_MM_Var() in vcl/unx/generic/glyphs/freetype_glyphcache.cxx
+dlFT_Done_MM_Var() in vcl/unx/generic/font/freetype_glyphcache.cxx
 wants to look it up and call it.
 
 --- include/freetype/ftmm.h

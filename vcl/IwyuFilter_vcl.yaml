@@ -73,7 +73,7 @@ excludelist:
     vcl/unx/generic/gdi/font.cxx:
     # Complete type needed for implicit dtor
     - vcl/fontcharmap.hxx
-    vcl/unx/generic/glyphs/freetype_glyphcache.cxx:
+    vcl/unx/generic/font/freetype_glyphcache.cxx:
     # Needed for FreeType header macros
     - ft2build.h
     vcl/unx/generic/print/genpspgraphics.cxx:

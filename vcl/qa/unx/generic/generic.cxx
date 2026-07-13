@@ -16,7 +16,7 @@
 #include <vcl/glyphitemcache.hxx>
 
 #include <font/FontSelectPattern.hxx>
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 
 using namespace ::com::sun::star;
 

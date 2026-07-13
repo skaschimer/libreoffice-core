@@ -22,7 +22,7 @@
 #include <unx/geninst.h>
 #include <font/PhysicalFontCollection.hxx>
 #include <font/fontsubstitution.hxx>
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <unotools/fontdefs.hxx>
 
 // platform specific font substitution hooks

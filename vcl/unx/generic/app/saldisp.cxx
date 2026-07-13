@@ -60,7 +60,7 @@
 #include <unx/salobj.h>
 #include <unx/sm.hxx>
 #include <unx/wmadaptor.hxx>
-#include <unx/glyphcache.hxx>
+#include <unx/font/glyphcache.hxx>
 #include <o3tl/string_view.hxx>
 
 #include <poll.h>

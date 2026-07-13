@@ -20,7 +20,7 @@
 #include <sal/config.h>
 
 #include <stdlib.h>
-#include <unx/freetype_glyphcache.hxx>
+#include <unx/font/freetype_glyphcache.hxx>
 #include <unx/gendata.hxx>
 
 #include <font/LogicalFontInstance.hxx>

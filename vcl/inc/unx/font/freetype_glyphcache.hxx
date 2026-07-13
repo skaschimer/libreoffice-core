@@ -21,7 +21,7 @@
 
 #include <sal/config.h>
 
-#include <unx/glyphcache.hxx>
+#include <unx/font/glyphcache.hxx>
 #include <font/PhysicalFontFace.hxx>
 #include <font/LogicalFontInstance.hxx>
 

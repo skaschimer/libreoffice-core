@@ -29,9 +29,9 @@
 #include <QtPainter.hxx>
 #include <font/PhysicalFontCollection.hxx>
 #if USE_HEADLESS_CODE
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <unx/geninst.h>
-#include <unx/glyphcache.hxx>
+#include <unx/font/glyphcache.hxx>
 #endif
 #include <sallayout.hxx>
 

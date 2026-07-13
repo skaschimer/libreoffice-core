@@ -1174,7 +1174,7 @@ vcl/source/font/font.cxx:777
 vcl/source/outdev/textline.cxx:97
     (anonymous namespace)::WavyLineCache m_aItems
     10
-vcl/unx/generic/fontmanager/fontconfig.cxx:119
+vcl/unx/generic/font/fontconfig.cxx:119
     (anonymous namespace)::CachedFontConfigFontOptions lru_options_cache
     10
 vcl/unx/gtk3/a11y/atkutil.cxx:618

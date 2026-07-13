@@ -24,7 +24,7 @@
 #include <string_view>
 
 #include <o3tl/lru_map.hxx>
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <comphelper/sequence.hxx>
 #include <vcl/dropcache.hxx>
 #include <vcl/svapp.hxx>

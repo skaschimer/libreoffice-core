@@ -28,11 +28,11 @@
 #include <vcl/fontcharmap.hxx>
 #include <sal/log.hxx>
 
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <unx/geninst.h>
-#include <unx/glyphcache.hxx>
-#include <unx/fc_fontoptions.hxx>
-#include <unx/freetype_glyphcache.hxx>
+#include <unx/font/glyphcache.hxx>
+#include <unx/font/fc_fontoptions.hxx>
+#include <unx/font/freetype_glyphcache.hxx>
 #include <font/PhysicalFontFace.hxx>
 #include <font/FontMetricData.hxx>
 

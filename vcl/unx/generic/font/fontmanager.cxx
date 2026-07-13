@@ -19,7 +19,7 @@
 
 #include <osl/thread.h>
 
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <unx/gendata.hxx>
 #include <unx/helper.hxx>
 

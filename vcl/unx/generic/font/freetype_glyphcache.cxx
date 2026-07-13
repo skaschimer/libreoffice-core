@@ -23,7 +23,7 @@
 #include <utility>
 #include <vcl/fontcharmap.hxx>
 
-#include <unx/freetype_glyphcache.hxx>
+#include <unx/font/freetype_glyphcache.hxx>
 
 #include <font/LogicalFontInstance.hxx>
 #include <fontattributes.hxx>
@@ -57,7 +57,7 @@
 #include <tools/UnixWrappers.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <impfontcharmap.hxx>
 
 static FT_Library aLibFT = nullptr;

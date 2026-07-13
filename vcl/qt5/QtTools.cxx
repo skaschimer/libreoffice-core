@@ -26,7 +26,7 @@
 #include <QtTools.hxx>
 #include <QtTransferable.hxx>
 #if USE_HEADLESS_CODE
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 #endif
 
 #include <o3tl/enumarray.hxx>

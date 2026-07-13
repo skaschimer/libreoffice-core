@@ -35,7 +35,7 @@ $(eval $(call gb_Module_add_targets,postprocess,\
 endif
 
 # For configurations that use fontconfig (cf. inclusion of
-# vcl/unx/generic/fontmanager/fontconfig.cxx in Library_vcl), add
+# vcl/unx/generic/font/fontconfig.cxx in Library_vcl), add
 # instdir/share/fonts/truetype/fc_local.conf when it shall
 # contain content from at least one of external/more_fonts/fc_local.snippet
 # (conditional on MORE_FONTS in BUILD_TYPE) and

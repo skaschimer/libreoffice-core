@@ -23,11 +23,11 @@
 
 #include <unx/gendata.hxx>
 
-#include <unx/fontmanager.hxx>
+#include <unx/font/fontmanager.hxx>
 
 #ifndef IOS
 
-#include <unx/glyphcache.hxx>
+#include <unx/font/glyphcache.hxx>
 #include <printerinfomanager.hxx>
 
 SalData::SalData() {}
