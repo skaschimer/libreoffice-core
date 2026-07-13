@@ -2441,6 +2441,30 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter3, testDoubleLineBrackets)
 }
 #endif
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter3, testHardBlankOverflow)
+{
+    createSwDoc("hard_blank_overflow.fodt");
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
+    CPPUNIT_ASSERT(pXmlDoc);
+
+    // Assert that the layout engine successfully processed the overflow
+    // by breaking it into at least two SwLineLayout lines
+    assertXPath(pXmlDoc, "/root/page/body/txt/SwParaPortion/SwLineLayout", 3);
+}
+
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter3, testDropAdjustCenter)
+{
+    createSwDoc("drop_adjust_center.fodt");
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
+    CPPUNIT_ASSERT(pXmlDoc);
+
+    // Assert that the layout engine successfully processed the Drop Portion
+    assertXPath(pXmlDoc,
+                "/root/page/body/txt/SwParaPortion/SwLineLayout[1]/"
+                "SwLinePortion[@type='PortionType::Drop']",
+                1);
+}
+
 } // end of anonymous namespace
 
 CPPUNIT_PLUGIN_IMPLEMENT();
