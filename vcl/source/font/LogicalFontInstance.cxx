@@ -162,7 +162,7 @@ void LogicalFontInstance::GetScale(double* nXScale, double* nYScale) const
     }
 }
 
-double LogicalFontInstance::GetOpenTypeMathConstant(OpenTypeMathConstant aConstant) const
+double LogicalFontInstance::GetOpenTypeMathConstant(vcl::OpenTypeMathConstant aConstant) const
 {
     auto* pHbFont = const_cast<LogicalFontInstance*>(this)->GetHbFont();
 
@@ -171,9 +171,9 @@ double LogicalFontInstance::GetOpenTypeMathConstant(OpenTypeMathConstant aConsta
 
     switch (aConstant)
     {
-        case ScriptPercentScaleDown:
-        case ScriptScriptPercentScaleDown:
-        case RadicalDegreeBottomRaisePercent:
+        case vcl::OpenTypeMathConstant::ScriptPercentScaleDown:
+        case vcl::OpenTypeMathConstant::ScriptScriptPercentScaleDown:
+        case vcl::OpenTypeMathConstant::RadicalDegreeBottomRaisePercent:
             return nHBValue / 100.0;
 
         default:

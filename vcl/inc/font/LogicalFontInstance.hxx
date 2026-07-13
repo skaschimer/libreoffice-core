@@ -34,6 +34,8 @@
 #include <font/FontMetricData.hxx>
 #include <glyphid.hxx>
 
+#include <vcl/outdev/OpenTypeMathConstant.hxx>
+
 #include <optional>
 #include <unordered_map>
 
@@ -127,69 +129,7 @@ public: // TODO: make data members private
     bool NeedsArtificialItalic() const;
     bool NeedsArtificialBold() const;
 
-    enum OpenTypeMathConstant
-    {
-        // The order of the constants must match the order of the fields
-        // defined in the MATH table.
-        ScriptPercentScaleDown,
-        ScriptScriptPercentScaleDown,
-        DelimitedSubFormulaMinHeight,
-        DisplayOperatorMinHeight,
-        MathLeading,
-        AxisHeight,
-        AccentBaseHeight,
-        FlattenedAccentBaseHeight,
-        SubscriptShiftDown,
-        SubscriptTopMax,
-        SubscriptBaselineDropMin,
-        SuperscriptShiftUp,
-        SuperscriptShiftUpCramped,
-        SuperscriptBottomMin,
-        SuperscriptBaselineDropMax,
-        SubSuperscriptGapMin,
-        SuperscriptBottomMaxWithSubscript,
-        SpaceAfterScript,
-        UpperLimitGapMin,
-        UpperLimitBaselineRiseMin,
-        LowerLimitGapMin,
-        LowerLimitBaselineDropMin,
-        StackTopShiftUp,
-        StackTopDisplayStyleShiftUp,
-        StackBottomShiftDown,
-        StackBottomDisplayStyleShiftDown,
-        StackGapMin,
-        StackDisplayStyleGapMin,
-        StretchStackTopShiftUp,
-        StretchStackBottomShiftDown,
-        StretchStackGapAboveMin,
-        StretchStackGapBelowMin,
-        FractionNumeratorShiftUp,
-        FractionNumeratorDisplayStyleShiftUp,
-        FractionDenominatorShiftDown,
-        FractionDenominatorDisplayStyleShiftDown,
-        FractionNumeratorGapMin,
-        FractionNumDisplayStyleGapMin,
-        FractionRuleThickness,
-        FractionDenominatorGapMin,
-        FractionDenomDisplayStyleGapMin,
-        SkewedFractionHorizontalGap,
-        SkewedFractionVerticalGap,
-        OverbarVerticalGap,
-        OverbarRuleThickness,
-        OverbarExtraAscender,
-        UnderbarVerticalGap,
-        UnderbarRuleThickness,
-        UnderbarExtraDescender,
-        RadicalVerticalGap,
-        RadicalDisplayStyleVerticalGap,
-        RadicalRuleThickness,
-        RadicalExtraAscender,
-        RadicalKernBeforeDegree,
-        RadicalKernAfterDegree,
-        RadicalDegreeBottomRaisePercent
-    };
-
-    double GetOpenTypeMathConstant(OpenTypeMathConstant aConstant) const;
+    double GetOpenTypeMathConstant(vcl::OpenTypeMathConstant aConstant) const;
 
 protected:
     explicit LogicalFontInstance(const vcl::font::PhysicalFontFace&,

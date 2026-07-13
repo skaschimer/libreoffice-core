@@ -1419,6 +1419,19 @@ bool OutputDevice::SupportsOpenTypeMath() const
     return false;
 }
 
+double OutputDevice::GetOpenTypeMathConstant(vcl::OpenTypeMathConstant aConstant) const
+{
+    if (!ImplNewFont())
+        return 0;
+
+    LogicalFontInstance* pFontInstance = mpFontInstance.get();
+    if (pFontInstance) {
+        return pFontInstance->GetOpenTypeMathConstant(aConstant);
+    }
+
+    return 0;
+}
+
 void OutputDevice::ReleaseFontCache() { mxFontCache.reset(); }
 
 void OutputDevice::ReleaseFontCollection() { mxFontCollection.reset(); }

@@ -39,6 +39,7 @@
 #include <vcl/rendercontext/SalLayoutFlags.hxx>
 #include <vcl/rendercontext/State.hxx>
 #include <vcl/mapmod.hxx>
+#include <vcl/outdev/OpenTypeMathConstant.hxx>
 #include <vcl/wall.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/vclptr.hxx>
@@ -1201,6 +1202,8 @@ public:
     bool                        GetGlyphBoundRects( const Point& rOrigin, const OUString& rStr, int nIndex,
                                                     int nLen, std::vector< tools::Rectangle >& rVector ) const;
     bool                        SupportsOpenTypeMath() const;
+    double                      GetOpenTypeMathConstant(vcl::OpenTypeMathConstant aConstant) const;
+
     sal_Int32                   HasGlyphs( const vcl::Font& rFont, std::u16string_view rStr,
                                            sal_Int32 nIndex = 0, sal_Int32 nLen = -1 ) const;
 
