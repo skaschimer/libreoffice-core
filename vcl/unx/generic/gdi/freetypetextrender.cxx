@@ -96,85 +96,28 @@ FreeTypeTextRenderImpl::SetTextColor( Color nColor )
 bool FreeTypeTextRenderImpl::AddTempDevFont(vcl::font::PhysicalFontCollection* pFontCollection,
                                             const OUString& rFileURL, const OUString& rFontName)
 {
-    // inform PSP font manager
-    psp::PrintFontManager& rMgr = psp::PrintFontManager::get();
-    std::vector<psp::fontID> aFontIds = rMgr.addFontFile(rFileURL);
-    if (aFontIds.empty())
+    FreetypeFontList& rFontList = FreetypeFontList::get();
+    if (!rFontList.AddFontFile(rFileURL, rFontName))
         return false;
 
-    FreetypeManager& rFreetypeManager = FreetypeManager::get();
-    for (auto const& nFontId : aFontIds)
-    {
-        // prepare font data
-        auto const* pFont = rMgr.getFont(nFontId);
-        if (!pFont)
-            continue;
-
-        // inform glyph cache of new font
-        FontAttributes aDFA = pFont->m_aFontAttributes;
-        aDFA.IncreaseQualityBy(5800);
-        if (!rFontName.isEmpty())
-            aDFA.SetFamilyName(rFontName);
-
-        int nFaceNum = rMgr.getFontFaceNumber(nFontId);
-        int nVariantNum = rMgr.getFontFaceVariation(nFontId);
-
-        const OString aFileName = rMgr.getFontFileSysPath(nFontId);
-        rFreetypeManager.AddFontFile(aFileName, nFaceNum, nVariantNum, nFontId, aDFA);
-    }
-
     // announce new font to device's font list
-    rFreetypeManager.AnnounceFonts(pFontCollection);
+    rFontList.AnnounceFonts(pFontCollection);
     return true;
 }
 
 bool FreeTypeTextRenderImpl::RemoveTempDevFont(const OUString& rFileURL, const OUString& /*rFontName*/)
 {
-    // inform PSP font manager
-    psp::PrintFontManager& rMgr = psp::PrintFontManager::get();
-    std::vector<psp::fontID> aFontIds = rMgr.findFontFileIDs(rFileURL);
-    if (aFontIds.empty())
-        return true; // Nothing to remove -> safe to delete the file
-
-    FreetypeManager& rFreetypeManager = FreetypeManager::get();
-    for (auto const& nFontId : aFontIds)
-        rFreetypeManager.RemoveFontFile(nFontId);
-
-    rMgr.removeFontFile(rFileURL);
+    FreetypeFontList::get().RemoveFontFile(rFileURL);
     return true;
 }
 
 void FreeTypeTextRenderImpl::ClearDevFontCache()
 {
-    FreetypeManager::get().ClearFontCache();
 }
 
 void FreeTypeTextRenderImpl::GetDevFontList(vcl::font::PhysicalFontCollection* pFontCollection)
 {
-    // prepare the FreetypeManager using psprint's font infos
-    FreetypeManager& rFreetypeManager = FreetypeManager::get();
-
-    psp::PrintFontManager& rMgr = psp::PrintFontManager::get();
-    std::vector<psp::fontID> aList = rMgr.getFontList();
-    for (auto const& nFontId : aList)
-    {
-        auto const* pFont = rMgr.getFont(nFontId);
-        if (!pFont)
-            continue;
-
-        // normalize face number to the FreetypeManager
-        int nFaceNum = rMgr.getFontFaceNumber(nFontId);
-        int nVariantNum = rMgr.getFontFaceVariation(nFontId);
-
-        // inform FreetypeManager about this font provided by the PsPrint subsystem
-        FontAttributes aDFA = pFont->m_aFontAttributes;
-        aDFA.IncreaseQualityBy(4096);
-        const OString aFileName = rMgr.getFontFileSysPath(nFontId);
-        rFreetypeManager.AddFontFile(aFileName, nFaceNum, nVariantNum, nFontId, aDFA);
-    }
-
-    // announce glyphcache fonts
-    rFreetypeManager.AnnounceFonts(pFontCollection);
+    FreetypeFontList::get().AnnounceFonts(pFontCollection);
 
     // register platform specific font substitutions if available
     SalGenericInstance::RegisterFontSubstitutors(pFontCollection);

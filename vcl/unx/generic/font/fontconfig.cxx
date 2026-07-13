@@ -25,6 +25,7 @@
 
 #include <o3tl/lru_map.hxx>
 #include <unx/font/fontmanager.hxx>
+#include <unx/font/freetype_glyphcache.hxx>
 #include <comphelper/sequence.hxx>
 #include <vcl/dropcache.hxx>
 #include <vcl/svapp.hxx>
@@ -610,7 +611,7 @@ namespace
     }
 }
 
-std::optional<PrintFontManager::PrintFont> PrintFontManager::fontFromFcPattern(FcPattern* pPattern)
+std::optional<FontconfigFont> PrintFontManager::fontFromFcPattern(FcPattern* pPattern)
 {
     FontCfgWrapper& rWrapper = FontCfgWrapper::get();
 
@@ -664,7 +665,7 @@ std::optional<PrintFontManager::PrintFont> PrintFontManager::fontFromFcPattern(F
     if( eScalableRes == FcResultMatch && ! scalable )
         return std::nullopt;
 
-    PrintFont aFont;
+    FontconfigFont aFont;
     aFont.m_aFontFile = reinterpret_cast<char*>(file);
     if (eIndexRes == FcResultMatch)
     {
@@ -695,9 +696,9 @@ std::optional<PrintFontManager::PrintFont> PrintFontManager::fontFromFcPattern(F
     return aFont;
 }
 
-std::vector<PrintFontManager::PrintFont> PrintFontManager::fontsFromFontconfigFile(std::string_view rFilePath)
+std::vector<FontconfigFont> PrintFontManager::fontsFromFontconfigFile(std::string_view rFilePath)
 {
-    std::vector<PrintFont> aFonts;
+    std::vector<FontconfigFont> aFonts;
 
     FcFontSet* pFSet = FcConfigGetFonts(FcConfigGetCurrent(), FcSetApplication);
     if (!pFSet)
@@ -720,9 +721,8 @@ std::vector<PrintFontManager::PrintFont> PrintFontManager::fontsFromFontconfigFi
     return aFonts;
 }
 
-void PrintFontManager::countFontconfigFonts()
+void PrintFontManager::collectSystemFonts()
 {
-    int nFonts = 0;
     FontCfgWrapper& rWrapper = FontCfgWrapper::get();
 
     FcFontSet* pFSet = rWrapper.getFontSet();
@@ -755,18 +755,11 @@ void PrintFontManager::countFontconfigFonts()
             if (!oFont)
                 continue;
 
-            // sort into known fonts
-            fontID nFontID = m_nNextFontID++;
-            const OString aFontFile = oFont->m_aFontFile;
-            m_aFonts.emplace(nFontID, std::move(*oFont));
-            m_aFontFileToFontID[aFontFile].insert(nFontID);
-            nFonts++;
+            m_aSystemFonts.push_back(std::move(*oFont));
 
             FcPattern* pPattern = pFSet->fonts[i];
             FcPatternReference(pPattern);
             FcFontSetAdd(pFilteredSet, pPattern);
-
-            SAL_INFO("vcl.fonts.detail", "inserted font as fontID " << nFontID);
         }
 
         // tdf#157939 if we drop fonts, drop them from the FcConfig set too so they are not
@@ -778,8 +771,7 @@ void PrintFontManager::countFontconfigFonts()
 
     }
 
-    // how does one get rid of the config ?
-    SAL_INFO("vcl.fonts", "inserted " << nFonts << " fonts from fontconfig");
+    SAL_INFO("vcl.fonts", "collected " << m_aSystemFonts.size() << " fonts from fontconfig");
 }
 
 void PrintFontManager::deinitFontconfig()
@@ -1184,11 +1176,11 @@ void PrintFontManager::Substitute(vcl::font::FontSelectPattern &rPattern, OUStri
             if( eFileRes == FcResultMatch )
             {
                 OString aOrgPath( reinterpret_cast<char*>(file) );
-                fontID nFontID = findFontFileID(aOrgPath, GetCollectionIndex(nEntryId), GetVariationIndex(nEntryId));
-                auto const* pFont = getFont(nFontID);
-                if (pFont)
+                auto const* pFace = FreetypeFontList::get().FindFontFace(
+                    aOrgPath, GetCollectionIndex(nEntryId), GetVariationIndex(nEntryId));
+                if (pFace)
                 {
-                    rPattern.maSearchName = pFont->m_aFontAttributes.GetFamilyName();
+                    rPattern.maSearchName = pFace->GetFamilyName();
                     bRet = true;
                 }
             }
@@ -1441,13 +1433,11 @@ bool PrintFontManager::matchFont(FontAttributes& rDFA, const css::lang::Locale& 
             if( eFileRes == FcResultMatch )
             {
                 OString aOrgPath( reinterpret_cast<char*>(file) );
-                fontID nFontID = findFontFileID(aOrgPath,
-                                              GetCollectionIndex(nEntryId),
-                                              GetVariationIndex(nEntryId));
-                auto const* pFont = getFont(nFontID);
-                if (pFont)
+                auto const* pFace = FreetypeFontList::get().FindFontFace(
+                    aOrgPath, GetCollectionIndex(nEntryId), GetVariationIndex(nEntryId));
+                if (pFace)
                 {
-                    rDFA = pFont->m_aFontAttributes;
+                    rDFA = *pFace;
                     bFound = true;
                 }
             }

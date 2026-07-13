@@ -57,6 +57,7 @@
 #include <tools/UnixWrappers.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <tools/urlobj.hxx>
 #include <unx/font/fontmanager.hxx>
 #include <impfontcharmap.hxx>
 
@@ -269,7 +270,7 @@ void FreetypeFontFace::ReleaseFaceFT() const
     assert(mnRefCount >= 0 && "how did this go negative\n");
 }
 
-void FreetypeManager::InitFreetype()
+void FreetypeFontList::InitFreetype()
 {
     /*FT_Error rcFT =*/ FT_Init_FreeType( &aLibFT );
 
@@ -287,27 +288,81 @@ FT_Face FreetypeFont::GetFtFace() const
     return maFaceFT;
 }
 
-void FreetypeManager::AddFontFile(const OString& rNormalizedName,
-    int nFaceNum, int nVariantNum, sal_IntPtr nFontId, const FontAttributes& rDevFontAttr)
+void FreetypeFontList::AddFontFace(const FontAttributes& rDevFontAttr, const OString& rFileName,
+                                   int nFaceNum, int nVariationNum)
 {
-    if( rNormalizedName.isEmpty() )
+    if( rFileName.isEmpty() )
         return;
 
-    if( m_aFontFaceList.find( nFontId ) != m_aFontFaceList.end() )
-        return;
-
+    const sal_IntPtr nFontId = m_nNextFontId++;
     m_aFontFaceList[ nFontId ] = new FreetypeFontFace( rDevFontAttr,
-        FindFontFile(rNormalizedName), nFaceNum, nVariantNum, nFontId);
+        FindFontFile(rFileName), nFaceNum, nVariationNum, nFontId);
+    m_aFontFileToFontId[ rFileName ].insert( nFontId );
 }
 
-void FreetypeManager::RemoveFontFile(sal_IntPtr nFontId)
+bool FreetypeFontList::AddFontFile(std::u16string_view rFileUrl, const OUString& rFontName)
 {
-    auto it = m_aFontFaceList.find(nFontId);
-    if (it != m_aFontFaceList.end())
-        m_aFontFaceList.erase(it);
+    INetURLObject aPath( rFileUrl );
+    const OString aFullPath = OUStringToOString(aPath.GetFull(), osl_getThreadTextEncoding());
+
+    // already added? then the faces are there already
+    if (m_aFontFileToFontId.contains(aFullPath))
+        return true;
+
+    std::vector<psp::FontconfigFont> aFonts = psp::PrintFontManager::get().addFontFile(aFullPath);
+    if (aFonts.empty())
+        return false;
+
+    for (const auto& rFont : aFonts)
+    {
+        FontAttributes aDFA = rFont.m_aFontAttributes;
+        aDFA.IncreaseQualityBy(5800);
+        if (!rFontName.isEmpty())
+            aDFA.SetFamilyName(rFontName);
+        AddFontFace(aDFA, rFont.m_aFontFile, rFont.m_nCollectionEntry, rFont.m_nVariationEntry);
+    }
+
+    return true;
 }
 
-void FreetypeManager::AnnounceFonts( vcl::font::PhysicalFontCollection* pToAdd ) const
+void FreetypeFontList::RemoveFontFile(std::u16string_view rFileUrl)
+{
+    INetURLObject aPath( rFileUrl );
+    const OString aFullPath = OUStringToOString(aPath.GetFull(), osl_getThreadTextEncoding());
+
+    auto it = m_aFontFileToFontId.find(aFullPath);
+    if (it == m_aFontFileToFontId.end())
+        return; // not a font of ours; leave fontconfig alone
+
+    for (sal_IntPtr nFontId : it->second)
+        m_aFontFaceList.erase(nFontId);
+    m_aFontFileToFontId.erase(it);
+
+    psp::PrintFontManager::removeFontFile(aFullPath);
+}
+
+const FreetypeFontFace* FreetypeFontList::FindFontFace(const OString& rFileName, int nFaceNum,
+                                                       int nVariationNum) const
+{
+    auto it = m_aFontFileToFontId.find(rFileName);
+    if (it == m_aFontFileToFontId.end())
+        return nullptr;
+
+    for (sal_IntPtr nFontId : it->second)
+    {
+        auto face_it = m_aFontFaceList.find(nFontId);
+        if (face_it == m_aFontFaceList.end())
+            continue;
+        const FreetypeFontFace* pFace = face_it->second.get();
+        if (pFace->GetFontFaceIndex() == nFaceNum
+            && pFace->GetFontFaceVariation() == nVariationNum)
+            return pFace;
+    }
+
+    return nullptr;
+}
+
+void FreetypeFontList::AnnounceFonts( vcl::font::PhysicalFontCollection* pToAdd ) const
 {
     for (auto const& font : m_aFontFaceList)
         pToAdd->Add( font.second.get() );

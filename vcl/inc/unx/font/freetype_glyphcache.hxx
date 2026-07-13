@@ -44,7 +44,7 @@ public:
     int                     GetLangBoost() const { return mnLangBoost; }
 
 private:
-    friend class FreetypeManager;
+    friend class FreetypeFontList;
     explicit                FreetypeFontFile( OString aNativeFileName );
 
     const OString    maNativeFileName;

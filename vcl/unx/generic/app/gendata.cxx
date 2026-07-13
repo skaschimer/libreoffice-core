@@ -41,30 +41,31 @@ GenericUnixSalData::GenericUnixSalData() {}
 GenericUnixSalData::~GenericUnixSalData()
 {
 #ifndef IOS
-    // at least for GetPrintFontManager the sequence is important
+    // the font list was enumerated from fontconfig, so it goes first
+    m_pFreetypeFontList.reset();
     m_pPrintFontManager.reset();
-    m_pFreetypeManager.reset();
     m_pPrinterInfoManager.reset();
 #endif
 }
 
 #ifndef IOS
-FreetypeManager* GenericUnixSalData::GetFreetypeManager()
+FreetypeFontList* GenericUnixSalData::GetFreetypeFontList()
 {
-    if (!m_pFreetypeManager)
-        m_pFreetypeManager.reset(new FreetypeManager);
-    return m_pFreetypeManager.get();
+    if (!m_pFreetypeFontList)
+    {
+        // fontconfig has to be up, and know about our own font directories,
+        // before it can hand the system fonts over to the font list
+        GetPrintFontManager();
+        m_pFreetypeFontList.reset(new FreetypeFontList);
+        m_pFreetypeFontList->Init();
+    }
+    return m_pFreetypeFontList.get();
 }
 
 psp::PrintFontManager* GenericUnixSalData::GetPrintFontManager()
 {
     if (!m_pPrintFontManager)
-    {
-        GetFreetypeManager();
         m_pPrintFontManager.reset(new psp::PrintFontManager);
-    }
-    // PrintFontManager needs the FreetypeManager
-    assert(m_pFreetypeManager);
     return m_pPrintFontManager.get();
 }
 #endif

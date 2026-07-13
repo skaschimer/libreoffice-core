@@ -14,7 +14,7 @@
 #include <memory>
 
 #ifndef IOS
-class FreetypeManager;
+class FreetypeFontList;
 
 namespace psp
 {
@@ -46,7 +46,7 @@ class VCL_PLUGIN_PUBLIC GenericUnixSalData : public SalData
 #ifndef IOS
     friend class ::psp::PrinterInfoManager;
 
-    std::unique_ptr<FreetypeManager> m_pFreetypeManager;
+    std::unique_ptr<FreetypeFontList> m_pFreetypeFontList;
     std::unique_ptr<psp::PrintFontManager> m_pPrintFontManager;
     std::unique_ptr<psp::PrinterInfoManager> m_pPrinterInfoManager;
 #endif
@@ -56,7 +56,7 @@ public:
     virtual ~GenericUnixSalData() override;
 
 #ifndef IOS
-    FreetypeManager* GetFreetypeManager();
+    FreetypeFontList* GetFreetypeFontList();
     psp::PrintFontManager* GetPrintFontManager();
 #endif
 };

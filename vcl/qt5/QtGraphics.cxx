@@ -31,7 +31,6 @@
 #if USE_HEADLESS_CODE
 #include <unx/font/fontmanager.hxx>
 #include <unx/geninst.h>
-#include <unx/font/glyphcache.hxx>
 #endif
 #include <sallayout.hxx>
 
@@ -144,25 +143,7 @@ void QtGraphics::GetDevFontList(vcl::font::PhysicalFontCollection* pPFC)
         return;
 
 #if USE_HEADLESS_CODE
-    FreetypeManager& rFontManager = FreetypeManager::get();
-    psp::PrintFontManager& rMgr = psp::PrintFontManager::get();
-    std::vector<psp::fontID> aList = rMgr.getFontList();
-    for (auto const& nFontId : aList)
-    {
-        auto const* pFont = rMgr.getFont(nFontId);
-        if (!pFont)
-            continue;
-
-        // normalize face number to the FreetypeManager
-        int nFaceNum = rMgr.getFontFaceNumber(nFontId);
-        int nVariantNum = rMgr.getFontFaceVariation(nFontId);
-
-        // inform FreetypeManager about this font provided by the PsPrint subsystem
-        FontAttributes aFA = pFont->m_aFontAttributes;
-        aFA.IncreaseQualityBy(4096);
-        const OString aFileName = rMgr.getFontFileSysPath(nFontId);
-        rFontManager.AddFontFile(aFileName, nFaceNum, nVariantNum, nFontId, aFA);
-    }
+    psp::PrintFontManager::get();
 
     static const bool bUseFontconfig = (nullptr == getenv("SAL_VCL_QT_NO_FONTCONFIG"));
     if (bUseFontconfig)

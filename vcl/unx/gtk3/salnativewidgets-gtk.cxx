@@ -2271,7 +2271,7 @@ vcl::Font pango_to_vcl(const PangoFontDescription* font, const css::lang::Locale
 #endif
 
     // match font to e.g. resolve "Sans"
-    bool bFound = psp::PrintFontManager::get().matchFont(aDFA, rLocale);
+    bool bFound = psp::PrintFontManager::matchFont(aDFA, rLocale);
 
 #if OSL_DEBUG_LEVEL > 1
     SAL_INFO("vcl.gtk3", "font match "

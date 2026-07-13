@@ -60,7 +60,6 @@
 #include <unx/salobj.h>
 #include <unx/sm.hxx>
 #include <unx/wmadaptor.hxx>
-#include <unx/font/glyphcache.hxx>
 #include <o3tl/string_view.hxx>
 
 #include <poll.h>
@@ -284,8 +283,6 @@ void SalX11Display::doDestruct()
     X11SalData* pData = GetX11SalData();
 
     m_pWMAdaptor.reset();
-
-    FreetypeManager::get().ClearFontCache();
 
     if( IsDisplay() )
     {

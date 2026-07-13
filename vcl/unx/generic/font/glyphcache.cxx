@@ -21,6 +21,7 @@
 
 #include <stdlib.h>
 #include <unx/font/freetype_glyphcache.hxx>
+#include <unx/font/fontmanager.hxx>
 #include <unx/gendata.hxx>
 
 #include <font/LogicalFontInstance.hxx>
@@ -28,29 +29,36 @@
 #include <rtl/ustring.hxx>
 #include <sal/log.hxx>
 
-FreetypeManager::FreetypeManager()
+FreetypeFontList::FreetypeFontList()
 {
     InitFreetype();
 }
 
-FreetypeManager::~FreetypeManager()
+void FreetypeFontList::Init()
 {
-    ClearFontCache();
+    for (const auto& rFont : psp::PrintFontManager::get().takeSystemFonts())
+    {
+        FontAttributes aDFA = rFont.m_aFontAttributes;
+        aDFA.IncreaseQualityBy(4096);
+        AddFontFace(aDFA, rFont.m_aFontFile, rFont.m_nCollectionEntry, rFont.m_nVariationEntry);
+    }
+
+    SAL_INFO("vcl.fonts", "have " << m_aFontFaceList.size() << " fonts");
 }
 
-void FreetypeManager::ClearFontCache()
+FreetypeFontList::~FreetypeFontList()
 {
     m_aFontFaceList.clear();
 }
 
-FreetypeManager& FreetypeManager::get()
+FreetypeFontList& FreetypeFontList::get()
 {
     GenericUnixSalData* const pSalData(GetGenericUnixSalData());
     assert(pSalData);
-    return *pSalData->GetFreetypeManager();
+    return *pSalData->GetFreetypeFontList();
 }
 
-FreetypeFontFile* FreetypeManager::FindFontFile(const OString& rNativeFileName)
+FreetypeFontFile* FreetypeFontList::FindFontFile(const OString& rNativeFileName)
 {
     // font file already known? (e.g. for ttc, synthetic, aliased fonts)
     const char* pFileName = rNativeFileName.getStr();
