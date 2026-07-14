@@ -43,12 +43,12 @@ protected:
     std::unique_ptr<weld::Box> m_xContainer;
 
 private:
-    tools::Rectangle               aInnerRect;
-    tools::Rectangle               aOuterRect;
-    SfxBindings*            pBindings;
-    Size                    aFloatSize;
-    SfxChildWindow*         pMgr;
-    std::unique_ptr< SfxDockingWindow_Impl >  pImpl;
+    tools::Rectangle m_aInnerRect;
+    tools::Rectangle m_aOuterRect;
+    SfxBindings* m_pBindings;
+    Size m_aFloatSize;
+    SfxChildWindow* m_pMgr;
+    std::unique_ptr<SfxDockingWindow_Impl> m_pImpl;
 
     SfxDockingWindow(SfxDockingWindow const &) = delete;
     SfxDockingWindow& operator =(SfxDockingWindow const &) = delete;
@@ -70,7 +70,7 @@ protected:
     virtual bool        Close() override;
     virtual void        Move() override;
 
-    SAL_DLLPRIVATE SfxChildWindow* GetChildWindow_Impl()    { return pMgr; }
+    SAL_DLLPRIVATE SfxChildWindow* GetChildWindow_Impl() { return m_pMgr; }
 
 public:
                         SfxDockingWindow( SfxBindings *pBindings,
@@ -89,15 +89,18 @@ public:
     virtual void        StateChanged( StateChangedType nStateChange ) override;
 
     void                SetDockingRects(const tools::Rectangle& rOuter, const tools::Rectangle& rInner)
-                            { aInnerRect = rInner; aOuterRect = rOuter; }
-    const tools::Rectangle&    GetInnerRect() const                    { return aInnerRect; }
-    const tools::Rectangle&    GetOuterRect() const                    { return aOuterRect; }
-    SfxBindings&        GetBindings() const                     { return *pBindings; }
-    sal_uInt16          GetType() const                         { return pMgr->GetType(); }
-    SfxChildAlignment   GetAlignment() const                    { return pMgr->GetAlignment(); }
-    void                SetAlignment(SfxChildAlignment eAlign)  { pMgr->SetAlignment(eAlign); }
-    const Size&         GetFloatingSize() const                 { return aFloatSize; }
-    void                SetFloatingSize(const Size& rSize)      { aFloatSize=rSize; }
+    {
+        m_aInnerRect = rInner;
+        m_aOuterRect = rOuter;
+    }
+    const tools::Rectangle& GetInnerRect() const { return m_aInnerRect; }
+    const tools::Rectangle& GetOuterRect() const { return m_aOuterRect; }
+    SfxBindings& GetBindings() const { return *m_pBindings; }
+    sal_uInt16 GetType() const { return m_pMgr->GetType(); }
+    SfxChildAlignment GetAlignment() const { return m_pMgr->GetAlignment(); }
+    void SetAlignment(SfxChildAlignment eAlign) { m_pMgr->SetAlignment(eAlign); }
+    const Size& GetFloatingSize() const { return m_aFloatSize; }
+    void SetFloatingSize(const Size& rSize) { m_aFloatSize = rSize; }
 
     void                SetMinOutputSizePixel( const Size& rSize );
     const Size&         GetMinOutputSizePixel() const;
