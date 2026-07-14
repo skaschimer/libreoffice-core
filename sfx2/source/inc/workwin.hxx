@@ -227,8 +227,8 @@ class SfxWorkWindow final
     void                    FlushPendingChildSizes();
 
 public:
-                            SfxWorkWindow( vcl::Window* pWin, SfxFrame* pFrm, SfxFrame* pMaster );
-                            ~SfxWorkWindow();
+    SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaster);
+    ~SfxWorkWindow();
     SfxBindings&            GetBindings()
                             { return *pBindings; }
     vcl::Window*                 GetWindow() const

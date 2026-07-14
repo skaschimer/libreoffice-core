@@ -445,7 +445,7 @@ constexpr OUString g_aProgressBarResName( u"private:resource/progressbar/progres
 
 // constructor for workwin of a Frame
 
-SfxWorkWindow::SfxWorkWindow( vcl::Window *pWin, SfxFrame *pFrm, SfxFrame* pMaster ) :
+SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaster) :
     pBindings(&pFrm->GetCurrentViewFrame()->GetBindings()),
     pWorkWin (pWin),
     pActiveChild( nullptr ),
@@ -467,7 +467,7 @@ SfxWorkWindow::SfxWorkWindow( vcl::Window *pWin, SfxFrame *pFrm, SfxFrame* pMast
     bShowStatusBar( sal_False ),
 #endif
     m_nLock( 0 ),
-    pMasterFrame( pMaster ),
+    pMasterFrame(&rMaster),
     pFrame( pFrm )
 {
     DBG_ASSERT (pBindings, "No Bindings!");

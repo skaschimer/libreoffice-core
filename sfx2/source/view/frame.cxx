@@ -630,7 +630,7 @@ void SfxFrame::CreateWorkWindow_Impl()
         }
     }
 
-    m_pImpl->pWorkWin = new SfxWorkWindow( &pFrame->GetWindow(), this, pFrame );
+    m_pImpl->pWorkWin = new SfxWorkWindow(&pFrame->GetWindow(), this, *pFrame);
 }
 
 void SfxFrame::GrabFocusOnComponent_Impl()
