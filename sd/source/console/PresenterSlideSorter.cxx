@@ -672,6 +672,9 @@ void PresenterSlideSorter::UpdateLayout()
     mpLayout->SetupVisibleArea();
     mpLayout->UpdateScrollBars();
 
+    if (mnCurrentSlideIndex >= 0)
+        ScrollSlideIntoView(mnCurrentSlideIndex);
+
     // Tell the preview cache about some of the values.
     mxPreviewCache->setPreviewSize(mpLayout->maPreviewSize);
     mxPreviewCache->setVisibleRange(
