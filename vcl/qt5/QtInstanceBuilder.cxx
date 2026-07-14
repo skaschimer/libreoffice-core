@@ -176,6 +176,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/scalc/ui/condformatmanager.ui",
     u"modules/scalc/ui/conditionalformatdialog.ui",
     u"modules/scalc/ui/correlationdialog.ui",
+    u"modules/scalc/ui/covariancedialog.ui",
     u"modules/scalc/ui/databaroptions.ui",
     u"modules/scalc/ui/datafieldoptionsdialog.ui",
     u"modules/scalc/ui/definedatabaserangedialog.ui",
