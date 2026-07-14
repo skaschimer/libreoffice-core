@@ -100,16 +100,16 @@ extern SFX2_DLLPUBLIC bool ParentIsFloatingWindow(const vcl::Window *pParent);
 class SFX2_DLLPUBLIC SfxChildWindow
 {
     VclPtr<vcl::Window>        m_pParent;       // parent window (Topwindow)
-    VclPtr<vcl::Window>        pWindow;         // actual contents
-    std::unique_ptr< SfxChildWindow_Impl>       pImpl;            // Implementation data
-    std::shared_ptr<SfxDialogController> xController;     // actual contents
-    SfxChildAlignment          eChildAlignment; // Current css::drawing::Alignment
-    sal_uInt16                 nType;           // ChildWindow-Id
+    VclPtr<vcl::Window> m_pWindow; // actual contents
+    std::unique_ptr<SfxChildWindow_Impl> m_pImpl; // Implementation data
+    std::shared_ptr<SfxDialogController> m_xController; // actual contents
+    SfxChildAlignment m_eChildAlignment; // Current css::drawing::Alignment
+    sal_uInt16 m_nType; // ChildWindow-Id
     SAL_DLLPRIVATE void ClearWorkwin();
 
 protected:
-    void                SetWindow(const VclPtr<vcl::Window>& p) { pWindow = p; }
-                        SfxChildWindow(vcl::Window *pParentWindow, sal_uInt16 nId);
+    void SetWindow(const VclPtr<vcl::Window>& p) { m_pWindow = p; }
+    SfxChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId);
 
 public:
     virtual             ~SfxChildWindow();
@@ -117,21 +117,21 @@ public:
     // the constructor was called (e.g. to avoid calling virtual methods in the constructor)
     virtual             void Initialize() {}
     void                Destroy();
-    vcl::Window*        GetWindow() const
-                        { return pWindow; }
-    void                SetController(const std::shared_ptr<SfxDialogController>& controller) { xController = controller; }
-    std::shared_ptr<SfxDialogController>& GetController() { return xController; }
-    const std::shared_ptr<SfxDialogController>& GetController() const { return xController; }
+    vcl::Window* GetWindow() const { return m_pWindow; }
+    void SetController(const std::shared_ptr<SfxDialogController>& controller)
+    {
+        m_xController = controller;
+    }
+    std::shared_ptr<SfxDialogController>& GetController() { return m_xController; }
+    const std::shared_ptr<SfxDialogController>& GetController() const { return m_xController; }
     vcl::Window*        GetParent() const
                         { return m_pParent; }
-    SfxChildAlignment   GetAlignment() const
-                        { return eChildAlignment; }
+    SfxChildAlignment GetAlignment() const { return m_eChildAlignment; }
     void                SetAlignment(SfxChildAlignment eAlign);
     virtual void        Hide();
     virtual void        Show( ShowFlags nFlags );
     sal_uInt16          GetPosition() const;
-    sal_uInt16          GetType() const
-                        { return nType; }
+    sal_uInt16 GetType() const { return m_nType; }
 
     virtual SfxChildWinInfo GetInfo() const;
     void                SaveStatus(const SfxChildWinInfo& rInfo);

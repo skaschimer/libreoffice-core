@@ -146,16 +146,16 @@ bool GetSplitSizeFromString( std::u16string_view rStr, Size& rSize )
     return false;
 }
 
-SfxChildWindow::SfxChildWindow(vcl::Window *const pParent, sal_uInt16 nId)
+SfxChildWindow::SfxChildWindow(vcl::Window* const pParent, sal_uInt16 nId)
     : m_pParent(pParent)
-    , pImpl(new SfxChildWindow_Impl)
-    , eChildAlignment(SfxChildAlignment::NOALIGNMENT)
-    , nType(nId)
+    , m_pImpl(new SfxChildWindow_Impl)
+    , m_eChildAlignment(SfxChildAlignment::NOALIGNMENT)
+    , m_nType(nId)
 {
-    pImpl->bHideNotDelete = false;
-    pImpl->bWantsFocus = true;
-    pImpl->bVisible = true;
-    pImpl->pWorkWin = nullptr;
+    m_pImpl->bHideNotDelete = false;
+    m_pImpl->bWantsFocus = true;
+    m_pImpl->bVisible = true;
+    m_pImpl->pWorkWin = nullptr;
 }
 
 void SfxChildWindow::Destroy()
@@ -181,23 +181,23 @@ void SfxChildWindow::Destroy()
 
 void SfxChildWindow::ClearWorkwin()
 {
-    if (pImpl->pWorkWin)
+    if (m_pImpl->pWorkWin)
     {
-        if (pImpl->pWorkWin->GetActiveChild_Impl() == pWindow)
-            pImpl->pWorkWin->SetActiveChild_Impl(nullptr);
-        pImpl->pWorkWin = nullptr;
+        if (m_pImpl->pWorkWin->GetActiveChild_Impl() == m_pWindow)
+            m_pImpl->pWorkWin->SetActiveChild_Impl(nullptr);
+        m_pImpl->pWorkWin = nullptr;
     }
 }
 
 SfxChildWindow::~SfxChildWindow()
 {
     ClearWorkwin();
-    if (xController)
+    if (m_xController)
     {
-        xController->ChildWinDispose();
-        xController.reset();
+        m_xController->ChildWinDispose();
+        m_xController.reset();
     }
-    pWindow.disposeAndClear();
+    m_pWindow.disposeAndClear();
 }
 
 std::unique_ptr<SfxChildWindow> SfxChildWindow::CreateChildWindow(sal_uInt16 nId,
@@ -258,7 +258,7 @@ std::unique_ptr<SfxChildWindow> SfxChildWindow::CreateChildWindow(sal_uInt16 nId
 
     DBG_ASSERT(pFact && (pChild || !rInfo.bVisible), "ChildWindow-Typ not registered!");
 
-    if (pChild && (!pChild->pWindow && !pChild->xController))
+    if (pChild && (!pChild->m_pWindow && !pChild->m_xController))
     {
         pChild.reset();
         SAL_INFO("sfx.appl", "ChildWindow has no Window!");
@@ -297,20 +297,17 @@ void SfxChildWindow::SaveStatus(const SfxChildWinInfo& rInfo)
     aWinOpt.SetUserData( aSeq );
 
     // ... but save status at runtime!
-    pImpl->aFact.aInfo = rInfo;
+    m_pImpl->aFact.aInfo = rInfo;
 }
 
-void SfxChildWindow::SetAlignment(SfxChildAlignment eAlign)
-{
-    eChildAlignment = eAlign;
-}
+void SfxChildWindow::SetAlignment(SfxChildAlignment eAlign) { m_eChildAlignment = eAlign; }
 
 SfxChildWinInfo SfxChildWindow::GetInfo() const
 {
-    SfxChildWinInfo aInfo(pImpl->aFact.aInfo);
-    if (xController)
+    SfxChildWinInfo aInfo(m_pImpl->aFact.aInfo);
+    if (m_xController)
     {
-        weld::Dialog* pDialog = xController->getDialog();
+        weld::Dialog* pDialog = m_xController->getDialog();
         aInfo.aPos  = pDialog->get_position();
         aInfo.aSize = pDialog->get_size();
         vcl::WindowDataMask nMask = vcl::WindowDataMask::Pos | vcl::WindowDataMask::State;
@@ -318,18 +315,18 @@ SfxChildWinInfo SfxChildWindow::GetInfo() const
             nMask |= vcl::WindowDataMask::Size;
         aInfo.aWinState = pDialog->get_window_state(nMask);
     }
-    else if (pWindow)
+    else if (m_pWindow)
     {
-        aInfo.aPos  = pWindow->GetPosPixel();
-        aInfo.aSize = pWindow->GetSizePixel();
-        if ( pWindow->IsSystemWindow() )
+        aInfo.aPos = m_pWindow->GetPosPixel();
+        aInfo.aSize = m_pWindow->GetSizePixel();
+        if (m_pWindow->IsSystemWindow())
         {
             vcl::WindowDataMask nMask = vcl::WindowDataMask::Pos | vcl::WindowDataMask::State;
-            if ( pWindow->GetStyle() & WB_SIZEABLE )
+            if (m_pWindow->GetStyle() & WB_SIZEABLE)
                 nMask |= vcl::WindowDataMask::Size;
-            aInfo.aWinState = static_cast<SystemWindow*>(pWindow.get())->GetWindowState( nMask );
+            aInfo.aWinState = static_cast<SystemWindow*>(m_pWindow.get())->GetWindowState(nMask);
         }
-        else if (DockingWindow* pDockingWindow = dynamic_cast<DockingWindow*>(pWindow.get()))
+        else if (DockingWindow* pDockingWindow = dynamic_cast<DockingWindow*>(m_pWindow.get()))
         {
             if (pDockingWindow->GetFloatingWindow())
                 aInfo.aWinState = pDockingWindow->GetFloatingWindow()->GetWindowState();
@@ -342,15 +339,12 @@ SfxChildWinInfo SfxChildWindow::GetInfo() const
         }
     }
 
-    aInfo.bVisible = pImpl->bVisible;
+    aInfo.bVisible = m_pImpl->bVisible;
     aInfo.nFlags = SfxChildWindowFlags::NONE;
     return aInfo;
 }
 
-sal_uInt16 SfxChildWindow::GetPosition() const
-{
-    return pImpl->aFact.nPos;
-}
+sal_uInt16 SfxChildWindow::GetPosition() const { return m_pImpl->aFact.nPos; }
 
 void SfxChildWindow::InitializeChildWinFactory_Impl(sal_uInt16 nId, SfxChildWinInfo& rInfo)
 {
@@ -427,30 +421,15 @@ bool ParentIsFloatingWindow(const vcl::Window *pParent)
     return false;
 }
 
-void SfxChildWindow::SetFactory_Impl( const SfxChildWinFactory *pF )
-{
-    pImpl->aFact = *pF;
-}
+void SfxChildWindow::SetFactory_Impl(const SfxChildWinFactory* pF) { m_pImpl->aFact = *pF; }
 
-void SfxChildWindow::SetHideNotDelete( bool bOn )
-{
-    pImpl->bHideNotDelete = bOn;
-}
+void SfxChildWindow::SetHideNotDelete(bool bOn) { m_pImpl->bHideNotDelete = bOn; }
 
-bool SfxChildWindow::IsHideNotDelete() const
-{
-    return pImpl->bHideNotDelete;
-}
+bool SfxChildWindow::IsHideNotDelete() const { return m_pImpl->bHideNotDelete; }
 
-void SfxChildWindow::SetWantsFocus( bool bSet )
-{
-    pImpl->bWantsFocus = bSet;
-}
+void SfxChildWindow::SetWantsFocus(bool bSet) { m_pImpl->bWantsFocus = bSet; }
 
-bool SfxChildWindow::WantsFocus() const
-{
-    return pImpl->bWantsFocus;
-}
+bool SfxChildWindow::WantsFocus() const { return m_pImpl->bWantsFocus; }
 
 bool SfxChildWinInfo::GetExtraData_Impl
 (
@@ -502,77 +481,72 @@ bool SfxChildWinInfo::GetExtraData_Impl
     return GetPosSizeFromString( aStr, aChildPos, aChildSize );
 }
 
-bool SfxChildWindow::IsVisible() const
-{
-    return pImpl->bVisible;
-}
+bool SfxChildWindow::IsVisible() const { return m_pImpl->bVisible; }
 
-void SfxChildWindow::SetVisible_Impl( bool bVis )
-{
-    pImpl->bVisible = bVis;
-}
+void SfxChildWindow::SetVisible_Impl(bool bVis) { m_pImpl->bVisible = bVis; }
 
 void SfxChildWindow::Hide()
 {
-    if (xController)
-        xController->EndDialog(nCloseResponseToJustHide);
+    if (m_xController)
+        m_xController->EndDialog(nCloseResponseToJustHide);
     else
-        pWindow->Hide();
+        m_pWindow->Hide();
 }
 
 void SfxChildWindow::Show( ShowFlags nFlags )
 {
-    if (xController)
+    if (m_xController)
     {
-        if (!xController->getDialog()->get_visible())
+        if (!m_xController->getDialog()->get_visible())
         {
-            if (!xController->CloseOnHide())
+            if (!m_xController->CloseOnHide())
             {
                 // tdf#155708 - do not run a new (Async) validation window,
                 // because we already have one in sync mode, just show the running one
-                xController->getDialog()->show();
+                m_xController->getDialog()->show();
             }
             else
             {
-                weld::DialogController::runAsync(xController,
-                    [this](sal_Int32 nResult) {
-                        if (nResult == nCloseResponseToJustHide)
-                            return;
-                        xController->Close();
-                    });
+                weld::DialogController::runAsync(m_xController,
+                                                 [this](sal_Int32 nResult)
+                                                 {
+                                                     if (nResult == nCloseResponseToJustHide)
+                                                         return;
+                                                     m_xController->Close();
+                                                 });
             }
         }
     }
     else
-        pWindow->Show(true, nFlags);
+        m_pWindow->Show(true, nFlags);
 }
 
 void SfxChildWindow::SetWorkWindow_Impl( SfxWorkWindow* pWin )
 {
-    pImpl->pWorkWin = pWin;
+    m_pImpl->pWorkWin = pWin;
     if (pWin)
     {
-        if ( (xController && xController->getDialog()->has_toplevel_focus()) ||
-             (pWindow && pWindow->HasChildPathFocus()) )
+        if ((m_xController && m_xController->getDialog()->has_toplevel_focus())
+            || (m_pWindow && m_pWindow->HasChildPathFocus()))
         {
-            pImpl->pWorkWin->SetActiveChild_Impl( pWindow );
+            m_pImpl->pWorkWin->SetActiveChild_Impl(m_pWindow);
         }
     }
 }
 
 void SfxChildWindow::Activate_Impl()
 {
-    if(pImpl->pWorkWin!=nullptr)
-        pImpl->pWorkWin->SetActiveChild_Impl( pWindow );
+    if (m_pImpl->pWorkWin != nullptr)
+        m_pImpl->pWorkWin->SetActiveChild_Impl(m_pWindow);
 }
 
 bool SfxChildWindow::QueryClose()
 {
     bool bAllow = true;
 
-    if ( pImpl->xFrame.is() )
+    if (m_pImpl->xFrame.is())
     {
-        css::uno::Reference< css::frame::XController >  xCtrl = pImpl->xFrame->getController();
+        css::uno::Reference<css::frame::XController> xCtrl = m_pImpl->xFrame->getController();
         if ( xCtrl.is() )
             bAllow = xCtrl->suspend( true );
     }
@@ -593,30 +567,30 @@ bool SfxChildWindow::QueryClose()
 
 const css::uno::Reference< css::frame::XFrame >&  SfxChildWindow::GetFrame() const
 {
-    return pImpl->xFrame;
+    return m_pImpl->xFrame;
 }
 
 void SfxChildWindow::SetFrame( const css::uno::Reference< css::frame::XFrame > & rFrame )
 {
     // Do nothing if nothing will be changed ...
-    if( pImpl->xFrame == rFrame )
+    if (m_pImpl->xFrame == rFrame)
         return;
 
     // ... but stop listening on old frame, if connection exist!
-    if( pImpl->xFrame.is() )
-        pImpl->xFrame->removeEventListener( pImpl->xListener );
+    if (m_pImpl->xFrame.is())
+        m_pImpl->xFrame->removeEventListener(m_pImpl->xListener);
 
     // If new frame is not NULL -> we must guarantee valid listener for disposing events.
     // Use already existing or create new one.
     if( rFrame.is() )
-        if( !pImpl->xListener.is() )
-            pImpl->xListener.set( new DisposeListener( this, pImpl.get() ) );
+        if (!m_pImpl->xListener.is())
+            m_pImpl->xListener.set(new DisposeListener(this, m_pImpl.get()));
 
     // Set new frame in data container
     // and build new listener connection, if necessary.
-    pImpl->xFrame = rFrame;
-    if( pImpl->xFrame.is() )
-        pImpl->xFrame->addEventListener( pImpl->xListener );
+    m_pImpl->xFrame = rFrame;
+    if (m_pImpl->xFrame.is())
+        m_pImpl->xFrame->addEventListener(m_pImpl->xListener);
 }
 
 void SfxChildWindow::RegisterChildWindow(SfxModule* pMod, const SfxChildWinFactory& rFact)
