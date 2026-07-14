@@ -234,9 +234,6 @@ OUString ChooseMacro(weld::Window* pParent,
 
     GetExtraData()->ChoosingMacro() = true;
 
-    OUString aScriptURL;
-    SbMethod* pMethod = nullptr;
-
     MacroChooser aChooser(pParent, xDocFrame);
     if (bChooseOnly || !SvtModuleOptions::IsBasicIDEInstalled())
         aChooser.SetMode(MacroChooser::Mode::ChooseOnly);
@@ -251,103 +248,100 @@ OUString ChooseMacro(weld::Window* pParent,
 
     GetExtraData()->ChoosingMacro() = false;
 
-    switch ( nRetValue )
+    if (nRetValue != static_cast<int>(MacroExitCode::Macro_OkRun))
+        return {};
+
+    bool bError = false;
+
+    SbMethod* pMethod = aChooser.GetMacro();
+    if ( !pMethod && aChooser.GetMode() == MacroChooser::Mode::Recording )
+        pMethod = aChooser.CreateMacro();
+
+    if ( !pMethod )
+        return {};
+
+    SbModule* pModule = pMethod->GetModule();
+    if ( !pModule )
     {
-        case static_cast<int>(MacroExitCode::Macro_OkRun):
+        SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No Module found!" );
+        return {};
+    }
+
+    StarBASIC* pBasic = dynamic_cast<StarBASIC*>(pModule->GetParent());
+    if ( !pBasic )
+    {
+        SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No Basic found!" );
+        return {};
+    }
+
+    BasicManager* pBasMgr = FindBasicManager( pBasic );
+    if ( !pBasMgr )
+    {
+        SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No BasicManager found!" );
+        return {};
+    }
+
+    // name
+    OUString aName = pBasic->GetName() + "." + pModule->GetName() + "." + pMethod->GetName();
+
+    // location
+    OUString aLocation;
+    ScriptDocument aDocument( ScriptDocument::getDocumentForBasicManager( pBasMgr ) );
+    if ( aDocument.isDocument() )
+    {
+        // document basic
+        aLocation = "document" ;
+
+        if ( rxLimitToDocument.is() )
         {
-            bool bError = false;
+            uno::Reference< frame::XModel > xLimitToDocument( rxLimitToDocument );
 
-            pMethod = aChooser.GetMacro();
-            if ( !pMethod && aChooser.GetMode() == MacroChooser::Mode::Recording )
-                pMethod = aChooser.CreateMacro();
-
-            if ( !pMethod )
-                break;
-
-            SbModule* pModule = pMethod->GetModule();
-            if ( !pModule )
-            {
-                SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No Module found!" );
-                break;
-            }
-
-            StarBASIC* pBasic = dynamic_cast<StarBASIC*>(pModule->GetParent());
-            if ( !pBasic )
-            {
-                SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No Basic found!" );
-                break;
-            }
-
-            BasicManager* pBasMgr = FindBasicManager( pBasic );
-            if ( !pBasMgr )
-            {
-                SAL_WARN( "basctl.basicide", "basctl::ChooseMacro: No BasicManager found!" );
-                break;
-            }
-
-            // name
-            OUString aName = pBasic->GetName() + "." + pModule->GetName() + "." + pMethod->GetName();
-
-            // location
-            OUString aLocation;
-            ScriptDocument aDocument( ScriptDocument::getDocumentForBasicManager( pBasMgr ) );
-            if ( aDocument.isDocument() )
-            {
-                // document basic
-                aLocation = "document" ;
-
-                if ( rxLimitToDocument.is() )
-                {
-                    uno::Reference< frame::XModel > xLimitToDocument( rxLimitToDocument );
-
-                    uno::Reference< document::XEmbeddedScripts > xScripts( rxLimitToDocument, UNO_QUERY );
-                    if ( !xScripts.is() )
-                    {   // the document itself does not support embedding scripts
-                        uno::Reference< document::XScriptInvocationContext > xContext( rxLimitToDocument, UNO_QUERY );
-                        if ( xContext.is() )
-                            xScripts = xContext->getScriptContainer();
-                        if ( xScripts.is() )
-                        {   // but it is able to refer to a document which actually does support this
-                            xLimitToDocument.set( xScripts, UNO_QUERY );
-                            if ( !xLimitToDocument.is() )
-                            {
-                                SAL_WARN_IF(!xLimitToDocument.is(), "basctl.basicide", "basctl::ChooseMacro: a script container which is no document!?" );
-                                xLimitToDocument = rxLimitToDocument;
-                            }
-                        }
-                    }
-
-                    if ( xLimitToDocument != aDocument.getDocument() )
+            uno::Reference< document::XEmbeddedScripts > xScripts( rxLimitToDocument, UNO_QUERY );
+            if ( !xScripts.is() )
+            {   // the document itself does not support embedding scripts
+                uno::Reference< document::XScriptInvocationContext > xContext( rxLimitToDocument, UNO_QUERY );
+                if ( xContext.is() )
+                    xScripts = xContext->getScriptContainer();
+                if ( xScripts.is() )
+                {   // but it is able to refer to a document which actually does support this
+                    xLimitToDocument.set( xScripts, UNO_QUERY );
+                    if ( !xLimitToDocument.is() )
                     {
-                        // error
-                        bError = true;
-                        std::unique_ptr<weld::MessageDialog> xError(Application::CreateMessageDialog(nullptr,
-                                                                    VclMessageType::Warning, VclButtonsType::Ok, IDEResId(RID_STR_ERRORCHOOSEMACRO)));
-                        xError->run();
+                        SAL_WARN_IF(!xLimitToDocument.is(), "basctl.basicide", "basctl::ChooseMacro: a script container which is no document!?" );
+                        xLimitToDocument = rxLimitToDocument;
                     }
                 }
             }
-            else
-            {
-                // application basic
-                aLocation = "application" ;
-            }
 
-            // script URL
-            if ( !bError )
+            if ( xLimitToDocument != aDocument.getDocument() )
             {
-                aScriptURL = "vnd.sun.star.script:" + aName + "?language=Basic&location=" + aLocation;
-            }
-
-            if ( !rxLimitToDocument.is() )
-            {
-                MacroExecutionData* pExecData = new MacroExecutionData;
-                pExecData->aDocument = std::move(aDocument);
-                pExecData->xMethod = pMethod;   // keep alive until the event has been processed
-                Application::PostUserEvent( LINK( nullptr, MacroExecution, ExecuteMacroEvent ), pExecData );
+                // error
+                bError = true;
+                std::unique_ptr<weld::MessageDialog> xError(Application::CreateMessageDialog(nullptr,
+                                                            VclMessageType::Warning, VclButtonsType::Ok, IDEResId(RID_STR_ERRORCHOOSEMACRO)));
+                xError->run();
             }
         }
-        break;
+    }
+    else
+    {
+        // application basic
+        aLocation = "application" ;
+    }
+
+    // script URL
+    OUString aScriptURL;
+    if ( !bError )
+    {
+        aScriptURL = "vnd.sun.star.script:" + aName + "?language=Basic&location=" + aLocation;
+    }
+
+    if ( !rxLimitToDocument.is() )
+    {
+        MacroExecutionData* pExecData = new MacroExecutionData;
+        pExecData->aDocument = std::move(aDocument);
+        pExecData->xMethod = pMethod;   // keep alive until the event has been processed
+        Application::PostUserEvent( LINK( nullptr, MacroExecution, ExecuteMacroEvent ), pExecData );
     }
 
     return aScriptURL;
