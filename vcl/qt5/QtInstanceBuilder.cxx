@@ -224,6 +224,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/scalc/ui/textimportoptions.ui",
     u"modules/scalc/ui/ttestdialog.ui",
     u"modules/scalc/ui/validationdialog.ui",
+    u"modules/scalc/ui/xmlsourcedialog.ui",
     u"modules/scalc/ui/ztestdialog.ui",
     u"modules/schart/ui/attributedialog.ui",
     u"modules/schart/ui/charttypedialog.ui",
