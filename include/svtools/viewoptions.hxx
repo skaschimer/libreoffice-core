@@ -18,10 +18,10 @@
  */
 #pragma once
 
-#include <unotools/unotoolsdllapi.h>
 #include <com/sun/star/uno/Reference.hxx>
 #include <sal/types.h>
 #include <rtl/ustring.hxx>
+#include <svtools/svtdllapi.h>
 
 namespace com::sun::star::beans { struct NamedValue; }
 namespace com::sun::star::container { class XNameAccess; }
@@ -91,7 +91,7 @@ enum class EViewType
     @devstatus      ready to use
 *//*-*************************************************************************************************************/
 
-class SAL_WARN_UNUSED UNOTOOLS_DLLPUBLIC SvtViewOptions final
+class SAL_WARN_UNUSED SVT_DLLPUBLIC SvtViewOptions final
 {
 
     //  public methods

@@ -21,7 +21,7 @@
 #include <rtl/ustrbuf.hxx>
 #include <sfx2/request.hxx>
 #include <svl/stritem.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/weldutils.hxx>

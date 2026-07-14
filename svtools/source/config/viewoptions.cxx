@@ -17,13 +17,13 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
-#include <unotools/viewoptions.hxx>
 #include <com/sun/star/uno/Any.hxx>
 
 #include <com/sun/star/beans/NamedValue.hpp>
 #include <com/sun/star/container/XNameContainer.hpp>
 #include <com/sun/star/container/XNameAccess.hpp>
 #include <com/sun/star/beans/XPropertySet.hpp>
+#include <svtools/viewoptions.hxx>
 #include <unotools/configmgr.hxx>
 #include <comphelper/configuration.hxx>
 #include <comphelper/configurationhelper.hxx>

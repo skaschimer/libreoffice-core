@@ -19,11 +19,11 @@
 
 #pragma once
 
+#include <svtools/viewoptions.hxx>
 #include <vcl/weld/DialogController.hxx>
 #include <vcl/weld/RadioButton.hxx>
 #include <vcl/weld/Window.hxx>
 #include <tblenum.hxx>
-#include <unotools/viewoptions.hxx>
 
 class SwWrtShell;
 

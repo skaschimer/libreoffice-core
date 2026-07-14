@@ -25,6 +25,7 @@
 #include <sfx2/objsh.hxx>
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/templatedlglocalview.hxx>
+#include <svtools/viewoptions.hxx>
 #include <templatecontaineritem.hxx>
 #include <templateviewitem.hxx>
 #include <sfx2/thumbnailviewitem.hxx>
@@ -32,7 +33,6 @@
 #include <tools/urlobj.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <unotools/pathoptions.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/event.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>

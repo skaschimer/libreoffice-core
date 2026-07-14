@@ -83,7 +83,6 @@ $(eval $(call gb_Library_add_exception_objects,utl,\
     unotools/source/config/securityoptions \
     unotools/source/config/syslocaleoptions \
     unotools/source/config/useroptions \
-    unotools/source/config/viewoptions \
     unotools/source/i18n/calendarwrapper \
     unotools/source/i18n/caserotate \
     unotools/source/i18n/charclass \

@@ -18,7 +18,6 @@
  */
 
 #include <memory>
-#include <unotools/viewoptions.hxx>
 #include <com/sun/star/frame/XController.hpp>
 #include <com/sun/star/frame/XFrame.hpp>
 #include <com/sun/star/util/XCloseable.hpp>
@@ -38,6 +37,7 @@
 #include <sfx2/module.hxx>
 #include <sfx2/dockwin.hxx>
 #include <sfx2/dispatch.hxx>
+#include <svtools/viewoptions.hxx>
 #include <workwin.hxx>
 
 #include <sfx2/sfxsids.hrc>

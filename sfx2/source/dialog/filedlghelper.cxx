@@ -78,8 +78,8 @@
 #include <vcl/dibtools.hxx>
 #include <vcl/graphicfilter.hxx>
 #include <unotools/filteroptions_settings.hxx>
-#include <unotools/viewoptions.hxx>
 #include <svtools/helpids.h>
+#include <svtools/viewoptions.hxx>
 #include <comphelper/docpasswordrequest.hxx>
 #include <comphelper/docpasswordhelper.hxx>
 #include <ucbhelper/content.hxx>

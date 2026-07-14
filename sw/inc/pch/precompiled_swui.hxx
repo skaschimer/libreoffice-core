@@ -473,6 +473,7 @@
 #include <svtools/toolbarmenu.hxx>
 #include <svtools/unitconv.hxx>
 #include <svtools/valueset.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/Palette.hxx>
 #include <svx/XPropertyEntry.hxx>
 #include <svx/autoformathelper.hxx>
@@ -537,7 +538,6 @@
 #include <unotools/syslocale.hxx>
 #include <unotools/tempfile.hxx>
 #include <unotools/unotoolsdllapi.h>
-#include <unotools/viewoptions.hxx>
 #include <unotools/weakref.hxx>
 #include <vbahelper/vbadllapi.h>
 #include <vbahelper/vbahelper.hxx>

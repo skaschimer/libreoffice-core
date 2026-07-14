@@ -19,11 +19,11 @@
 
 #include <svx/svxdlg.hxx>
 #include <sfx2/filedlghelper.hxx>
+#include <svtools/viewoptions.hxx>
 #include <tools/urlobj.hxx>
 #include <unotools/defaultoptions.hxx>
 #include <unotools/pathoptions.hxx>
 #include <unotools/moduleoptions.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Label.hxx>

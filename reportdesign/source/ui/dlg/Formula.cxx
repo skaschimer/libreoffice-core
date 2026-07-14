@@ -17,11 +17,11 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
-#include <unotools/viewoptions.hxx>
 #include <formula/formdata.hxx>
 #include <formula/funcutl.hxx>
 #include <formula/tokenarray.hxx>
 #include <formula/FormulaCompiler.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/windowstate.hxx>

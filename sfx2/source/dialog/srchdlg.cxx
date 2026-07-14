@@ -21,8 +21,8 @@
 #include <srchdlg.hxx>
 #include <comphelper/string.hxx>
 
+#include <svtools/viewoptions.hxx>
 #include <tools/debug.hxx>
-#include <unotools/viewoptions.hxx>
 #include <o3tl/string_view.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <utility>

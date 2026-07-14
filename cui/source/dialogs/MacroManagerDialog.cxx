@@ -38,9 +38,9 @@
 #include <svl/itemset.hxx>
 #include <svl/stritem.hxx>
 #include <svtools/dlgname.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/passwd.hxx>
 #include <tools/debug.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/commandevent.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>

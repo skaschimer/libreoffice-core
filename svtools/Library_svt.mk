@@ -89,6 +89,7 @@ $(eval $(call gb_Library_add_exception_objects,svt,\
     svtools/source/config/optionsdrawinglayer \
     svtools/source/config/printoptions \
     svtools/source/contnr/querydelete \
+    svtools/source/config/viewoptions \
     svtools/source/control/accessibleruler \
     svtools/source/control/accessibletabbar \
     svtools/source/control/accessibletabbarbase \

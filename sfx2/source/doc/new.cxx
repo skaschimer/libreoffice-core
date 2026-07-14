@@ -26,6 +26,7 @@
 #include <svl/eitem.hxx>
 #include <svtools/sfxecode.hxx>
 #include <svtools/ehdl.hxx>
+#include <svtools/viewoptions.hxx>
 #include <tools/urlobj.hxx>
 #include <tools/debug.hxx>
 
@@ -36,7 +37,6 @@
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/docfile.hxx>
 #include <preview.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Button.hxx>

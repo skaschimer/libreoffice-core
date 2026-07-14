@@ -36,9 +36,9 @@
 #include <vcl/virdev.hxx>
 #include <vcl/settings.hxx>
 
+#include <svtools/viewoptions.hxx>
 #include <svx/strings.hrc>
 #include <svx/dialmgr.hxx>
-#include <unotools/viewoptions.hxx>
 #include <comphelper/string.hxx>
 #include <o3tl/string_view.hxx>
 

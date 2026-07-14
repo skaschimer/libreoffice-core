@@ -41,9 +41,9 @@
 #include <vcl/weld/MessageDialog.hxx>
 #include <unotools/ucbhelper.hxx>
 #include <unotools/pathoptions.hxx>
-#include <unotools/viewoptions.hxx>
 #include <svtools/ehdl.hxx>
 #include <svtools/sfxecode.hxx>
+#include <svtools/viewoptions.hxx>
 
 #include <fpicker/strings.hrc>
 #include <svtools/helpids.h>

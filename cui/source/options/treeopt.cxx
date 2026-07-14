@@ -94,6 +94,7 @@
 #include <svl/intitem.hxx>
 #include <svl/cjkoptions.hxx>
 #include <svl/ctloptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/databaseregistrationui.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <tools/urlobj.hxx>
@@ -101,7 +102,6 @@
 #include <unotools/configmgr.hxx>
 #include <unotools/moduleoptions.hxx>
 #include <unotools/optionsdlg.hxx>
-#include <unotools/viewoptions.hxx>
 #include <utility>
 #include <vcl/help.hxx>
 #include <vcl/svapp.hxx>

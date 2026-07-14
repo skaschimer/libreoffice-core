@@ -123,8 +123,8 @@
 #include <svl/itempool.hxx>
 #include <svl/itemset.hxx>
 #include <svtools/cliplistener.hxx>
+#include <svtools/viewoptions.hxx>
 #include <unotools/syslocale.hxx>
-#include <unotools/viewoptions.hxx>
 #include <unotools/localedatawrapper.hxx>
 
 #include <osl/mutex.hxx>

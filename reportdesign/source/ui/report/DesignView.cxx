@@ -20,7 +20,7 @@
 #include <DesignView.hxx>
 #include <ReportController.hxx>
 #include <svtools/acceleratorexecute.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <RptDef.hxx>
 #include <UITools.hxx>
 #include <RptObject.hxx>

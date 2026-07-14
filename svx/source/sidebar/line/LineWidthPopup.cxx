@@ -16,6 +16,7 @@
  *   except in compliance with the License. You may obtain a copy of
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
+#include <svtools/viewoptions.hxx>
 #include <svx/sidebar/LineWidthPopup.hxx>
 #include <svx/sidebar/LinePropertyPanelBase.hxx>
 #include <com/sun/star/beans/NamedValue.hpp>
@@ -24,7 +25,6 @@
 #include <svx/xlnwtit.hxx>
 #include <tools/fldunit.hxx>
 #include <unotools/localedatawrapper.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/settings.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>

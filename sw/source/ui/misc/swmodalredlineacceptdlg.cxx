@@ -18,8 +18,8 @@
  */
 
 #include <o3tl/deleter.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/ctredlin.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/weld/Dialog.hxx>
 
 #include <redlndlg.hxx>

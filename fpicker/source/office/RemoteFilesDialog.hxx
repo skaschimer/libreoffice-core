@@ -11,9 +11,7 @@
 
 #include "autocmpledit.hxx"
 #include <svtools/place.hxx>
-
-#include <unotools/viewoptions.hxx>
-
+#include <svtools/viewoptions.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Button.hxx>
 #include <vcl/weld/ToggleButton.hxx>

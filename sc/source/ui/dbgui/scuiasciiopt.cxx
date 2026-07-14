@@ -43,9 +43,9 @@
 
 #include <unicode/ucsdet.h>
 #include <sfx2/objsh.hxx>
-#include <svx/txenctab.hxx>
 #include <unotools/filteroptions_settings.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svx/txenctab.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/weld/Button.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/weld/Frame.hxx>

@@ -33,8 +33,8 @@
 #include <tools/mapunit.hxx>
 #include <comphelper/diagnose_ex.hxx>
 #include <unotools/resmgr.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/xmlexchg.hxx>
-#include <unotools/viewoptions.hxx>
 #include <sfx2/chalign.hxx>
 #include <sfx2/filedlghelper.hxx>
 #include <sfx2/viewfrm.hxx>

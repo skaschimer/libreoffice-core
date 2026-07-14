@@ -25,8 +25,8 @@
 #include <svx/xcolit.hxx>
 #include <svl/intitem.hxx>
 
-#include <unotools/viewoptions.hxx>
 #include <svtools/unitconv.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <o3tl/string_view.hxx>
 #include <vcl/weld/Builder.hxx>

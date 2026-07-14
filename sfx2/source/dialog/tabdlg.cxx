@@ -27,7 +27,7 @@
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/sfxdlg.hxx>
 #include <sfx2/viewsh.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <utility>
 #include <vcl/vclenum.hxx>
 #include <vcl/virdev.hxx>

@@ -18,13 +18,13 @@
  */
 #include <sfx2/bindings.hxx>
 #include "TextCharacterSpacingControl.hxx"
-#include <unotools/viewoptions.hxx>
 #include <editeng/editids.hrc>
 #include <editeng/kernitem.hxx>
 #include <sfx2/app.hxx>
 #include <sfx2/dispatch.hxx>
 #include <sfx2/tbxctrl.hxx>
 #include <sfx2/viewfrm.hxx>
+#include <svtools/viewoptions.hxx>
 #include <tools/fldunit.hxx>
 #include <TextCharacterSpacingPopup.hxx>
 #include <svl/itempool.hxx>

@@ -70,10 +70,10 @@
 #include <com/sun/star/view/XSelectionSupplier.hpp>
 #include <com/sun/star/view/XViewSettingsSupplier.hpp>
 #include <unotools/historyoptions.hxx>
-#include <unotools/viewoptions.hxx>
 #include <tools/urlobj.hxx>
 #include <svtools/imagemgr.hxx>
 #include <svtools/miscopt.hxx>
+#include <svtools/viewoptions.hxx>
 #include <utility>
 #include <vcl/commandevent.hxx>
 #include <vcl/event.hxx>

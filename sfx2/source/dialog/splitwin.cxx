@@ -21,9 +21,9 @@
 #include <ctime>
 #endif
 
-#include <unotools/viewoptions.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <sal/log.hxx>
+#include <svtools/viewoptions.hxx>
 #include <tools/debug.hxx>
 
 #include <vcl/dialoghelper.hxx>

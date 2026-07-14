@@ -320,6 +320,7 @@
 #include <svtools/toolboxcontroller.hxx>
 #include <svtools/unitconv.hxx>
 #include <svtools/valueset.hxx>
+#include <svtools/viewoptions.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <tools/UnitConversion.hxx>
 #include <tools/color.hxx>
@@ -349,7 +350,6 @@
 #include <unotools/resmgr.hxx>
 #include <unotools/syslocale.hxx>
 #include <unotools/unotoolsdllapi.h>
-#include <unotools/viewoptions.hxx>
 #include <unotools/weakref.hxx>
 #endif // PCH_LEVEL >= 3
 #if PCH_LEVEL >= 4

@@ -15,6 +15,7 @@
 #include <o3tl/deleter.hxx>
 #include <osl/file.hxx>
 #include <sal/log.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -22,7 +23,6 @@
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/WaitObject.hxx>
 #include <vcl/weld/weldutils.hxx>
-#include <unotools/viewoptions.hxx>
 #include <o3tl/string_view.hxx>
 
 #include <com/sun/star/ui/dialogs/TemplateDescription.hpp>

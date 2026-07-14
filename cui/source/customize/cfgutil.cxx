@@ -46,6 +46,7 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <svtools/imagemgr.hxx>
+#include <svtools/viewoptions.hxx>
 #include <sal/log.hxx>
 #include <osl/diagnose.h>
 #include <dialmgr.hxx>
@@ -61,7 +62,6 @@
 
 #include <sfx2/sidebar/ResourceManager.hxx>
 #include <sfx2/sidebar/Context.hxx>
-#include <unotools/viewoptions.hxx>
 
 using namespace ::com::sun::star;
 using namespace ::com::sun::star::uno;

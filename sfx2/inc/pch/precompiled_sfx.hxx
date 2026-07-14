@@ -346,6 +346,7 @@
 #include <svtools/sfxecode.hxx>
 #include <svtools/soerr.hxx>
 #include <svtools/svtdllapi.h>
+#include <svtools/viewoptions.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <tools/color.hxx>
 #include <tools/datetime.hxx>
@@ -387,7 +388,6 @@
 #include <unotools/ucbstreamhelper.hxx>
 #include <unotools/unotoolsdllapi.h>
 #include <unotools/useroptions.hxx>
-#include <unotools/viewoptions.hxx>
 #endif // PCH_LEVEL >= 3
 #if PCH_LEVEL >= 4
 #include <appbaslib.hxx>

@@ -20,7 +20,7 @@
 #include <dialmgr.hxx>
 #include <o3tl/any.hxx>
 #include <comphelper/propertyvalue.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/bitmap.hxx>
 #include <vcl/graph.hxx>
 #include <vcl/vclenum.hxx>

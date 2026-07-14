@@ -27,9 +27,9 @@
 #include <i18nlangtag/mslangid.hxx>
 #include <com/sun/star/i18n/ScriptType.hpp>
 #include <vcl/rendercontext/GetDefaultFontFlags.hxx>
+#include <svtools/viewoptions.hxx>
 #include <unotools/fontdefs.hxx>
 #include <unotools/lingucfg.hxx>
-#include <unotools/viewoptions.hxx>
 #include <sfx2/sfxsids.hrc>
 #include <sfx2/printer.hxx>
 #include <sfx2/docfile.hxx>

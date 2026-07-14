@@ -31,11 +31,11 @@
 #include <sfx2/objsh.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/weldutils.hxx>
+#include <svtools/viewoptions.hxx>
 #include <svx/dialcontrol.hxx>
 #include <svx/dialmgr.hxx>
 #include <svx/rectenum.hxx>
 #include <svx/sdangitm.hxx>
-#include <unotools/viewoptions.hxx>
 #include <unotools/localedatawrapper.hxx>
 #include <utility>
 #include <vcl/canvastools.hxx>

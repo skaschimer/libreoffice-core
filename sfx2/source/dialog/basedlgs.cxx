@@ -19,7 +19,7 @@
 
 #include <vcl/help.hxx>
 #include <svl/eitem.hxx>
-#include <unotools/viewoptions.hxx>
+#include <svtools/viewoptions.hxx>
 #include <vcl/idle.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Button.hxx>

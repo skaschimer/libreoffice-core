@@ -22,8 +22,8 @@
 #include <scui_def.hxx>
 #include <tpsort.hxx>
 #include <sortdlg.hxx>
-#include <unotools/viewoptions.hxx>
 
+#include <svtools/viewoptions.hxx>
 #include <vcl/tabs.hrc>
 #include <vcl/weld/Dialog.hxx>
 #include <vcl/windowstate.hxx>

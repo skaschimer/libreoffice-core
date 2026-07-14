@@ -44,8 +44,8 @@
 #include <sfx2/objface.hxx>
 #include <sfx2/viewfrm.hxx>
 #include <svl/srchitem.hxx>
+#include <svtools/viewoptions.hxx>
 #include <tools/debug.hxx>
-#include <unotools/viewoptions.hxx>
 #include <vcl/weld/MessageDialog.hxx>
 
 #if defined(DISABLE_DYNLOADING) || ENABLE_MERGELIBS
