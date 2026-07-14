@@ -104,7 +104,6 @@ class SFX2_DLLPUBLIC SfxChildWindow
     std::unique_ptr< SfxChildWindow_Impl>       pImpl;            // Implementation data
     std::shared_ptr<SfxDialogController> xController;     // actual contents
     SfxChildAlignment          eChildAlignment; // Current css::drawing::Alignment
-                                                 // Another window in pWindow
     sal_uInt16                 nType;           // ChildWindow-Id
     SAL_DLLPRIVATE void ClearWorkwin();
 
