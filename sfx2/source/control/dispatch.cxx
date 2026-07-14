@@ -1098,7 +1098,7 @@ void SfxDispatcher::Update_Impl( bool bForce )
         SetMenu_Impl();
 
     SfxWorkWindow *pWorkWin = xImp->pFrame->GetFrame().GetWorkWindow_Impl();
-    pWorkWin->ResetStatusBar_Impl();
+    pWorkWin->ResetStatusBarId();
 
     {
         SfxWorkWindow *pWork = xImp->pFrame->GetFrame().GetWorkWindow_Impl();
@@ -1293,7 +1293,7 @@ void SfxDispatcher::Update_Impl_( bool bUIActive, bool bIsMDIApp, bool bIsIPOwne
     if (bIsTaskActive && eStatBarId != StatusBarId::None && xImp->pFrame)
     {
         // internal frames also may control statusbar
-        xImp->pFrame->GetFrame().GetWorkWindow_Impl()->SetStatusBar_Impl(eStatBarId);
+        xImp->pFrame->GetFrame().GetWorkWindow_Impl()->SetStatusBarId(eStatBarId);
     }
 }
 

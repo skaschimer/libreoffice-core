@@ -55,17 +55,6 @@ struct SfxObjectBar_Impl
     {}
 };
 
-// This struct makes all relevant Information available of the status bar
-
-struct SfxStatBar_Impl
-{
-    StatusBarId eId;
-
-    SfxStatBar_Impl() :
-        eId(StatusBarId::None)
-    {}
-};
-
 enum class SfxChildVisibility
 {
     NOT_VISIBLE  = 0,
@@ -188,7 +177,7 @@ class SfxWorkWindow final
     friend class LayoutManagerListener;
 
     std::vector<sal_uInt16> m_aSortedList;
-    SfxStatBar_Impl m_aStatBar;
+    StatusBarId m_eStatusBarId;
     std::vector<SfxObjectBar_Impl> m_aObjBarList;
     tools::Rectangle m_aClientArea;
     tools::Rectangle m_aUpperClientArea;
@@ -283,8 +272,8 @@ public:
     const VclPtr<vcl::Window>& GetActiveChild_Impl() const { return m_pActiveChild; }
 
     // Methods for StatusBar
-    void                    ResetStatusBar_Impl();
-    void                    SetStatusBar_Impl(StatusBarId eResId);
+    void ResetStatusBarId();
+    void SetStatusBarId(StatusBarId eResId);
     void                    UpdateStatusBar_Impl();
     css::uno::Reference< css::task::XStatusIndicator > GetStatusIndicator();
     css::uno::Reference< css::frame::XFrame > GetFrameInterface();

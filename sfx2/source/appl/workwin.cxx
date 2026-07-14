@@ -446,7 +446,8 @@ constexpr OUString g_aProgressBarResName( u"private:resource/progressbar/progres
 // constructor for workwin of a Frame
 
 SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame& rFrame, SfxFrame& rMaster)
-    : m_pBindings(&rFrame.GetCurrentViewFrame()->GetBindings())
+    : m_eStatusBarId(StatusBarId::None)
+    , m_pBindings(&rFrame.GetCurrentViewFrame()->GetBindings())
     , m_pWorkWin(pWin)
     , m_pActiveChild(nullptr)
     , m_nUpdateMode(SfxVisibilityFlags::Standard)
@@ -633,7 +634,7 @@ void SfxWorkWindow::DeleteControllers_Impl()
         xLayoutManager->reset();
 
         // Delete StatusBar
-        ResetStatusBar_Impl();
+        ResetStatusBarId();
 
         // Delete ObjectBars (this is done last, so that aChildren does not
         // receive dead Pointers)
@@ -1462,12 +1463,12 @@ void SfxWorkWindow::RemoveChildWin_Impl( SfxChildWin_Impl *pCW )
     GetBindings().Invalidate( nId );
 }
 
-void SfxWorkWindow::ResetStatusBar_Impl() { m_aStatBar.eId = StatusBarId::None; }
+void SfxWorkWindow::ResetStatusBarId() { m_eStatusBarId = StatusBarId::None; }
 
-void SfxWorkWindow::SetStatusBar_Impl(StatusBarId eId)
+void SfxWorkWindow::SetStatusBarId(StatusBarId eId)
 {
     if (eId != StatusBarId::None && m_bShowStatusBar && IsVisible_Impl())
-        m_aStatBar.eId = eId;
+        m_eStatusBarId = eId;
 }
 
 void SfxWorkWindow::UpdateStatusBar_Impl()
@@ -1480,7 +1481,7 @@ void SfxWorkWindow::UpdateStatusBar_Impl()
 
     // No status bar, if no ID is required or when in FullScreenView or
     // if disabled
-    if (m_aStatBar.eId != StatusBarId::None && IsDockingAllowed() && m_bInternalDockingAllowed
+    if (m_eStatusBarId != StatusBarId::None && IsDockingAllowed() && m_bInternalDockingAllowed
         && m_bShowStatusBar && !m_bIsFullScreen)
     {
         // Id has changed, thus create a suitable Statusbarmanager, this takes
