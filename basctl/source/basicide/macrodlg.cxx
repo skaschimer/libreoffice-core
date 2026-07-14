@@ -649,45 +649,42 @@ IMPL_LINK(MacroChooser, ButtonHdl, weld::Button&, rButton, void)
             }
             m_xDialog->response(static_cast<int>(MacroExitCode::Macro_Close));
         }
+        else if (&rButton == m_xDelButton.get())
+        {
+            DeleteMacro();
+            CheckButtons();
+            UpdateFields();
+            //if ( m_xMacroBox->GetCurEntry() )    // OV-Bug ?
+            //  m_xMacroBox->Select( m_xMacroBox->GetCurEntry() );
+        }
         else
         {
-            if (&rButton == m_xDelButton.get())
+            if ( !IsValidSbxName(m_xMacroNameEdit->get_text()) )
             {
-                DeleteMacro();
-                CheckButtons();
-                UpdateFields();
-                //if ( m_xMacroBox->GetCurEntry() )    // OV-Bug ?
-                //  m_xMacroBox->Select( m_xMacroBox->GetCurEntry() );
+                std::unique_ptr<weld::MessageDialog> xError(Application::CreateMessageDialog(m_xDialog.get(),
+                                                            VclMessageType::Warning, VclButtonsType::Ok, IDEResId(RID_STR_BADSBXNAME)));
+                xError->run();
+                m_xMacroNameEdit->select_region(0, -1);
+                m_xMacroNameEdit->grab_focus();
+                return;
             }
-            else
+            SbMethod* pMethod = CreateMacro();
+            if ( pMethod )
             {
-                if ( !IsValidSbxName(m_xMacroNameEdit->get_text()) )
-                {
-                    std::unique_ptr<weld::MessageDialog> xError(Application::CreateMessageDialog(m_xDialog.get(),
-                                                                VclMessageType::Warning, VclButtonsType::Ok, IDEResId(RID_STR_BADSBXNAME)));
-                    xError->run();
-                    m_xMacroNameEdit->select_region(0, -1);
-                    m_xMacroNameEdit->grab_focus();
-                    return;
-                }
-                SbMethod* pMethod = CreateMacro();
-                if ( pMethod )
-                {
-                    aInfoItem.SetMethod( pMethod->GetName() );
-                    aInfoItem.SetModule( pMethod->GetModule()->GetName() );
-                    aInfoItem.SetLib( pMethod->GetModule()->GetParent()->GetName() );
-                    SfxAllItemSet aArgs( SfxGetpApp()->GetPool() );
-                    SfxRequest aRequest( SID_BASICIDE_APPEAR, SfxCallMode::SYNCHRON, aArgs );
-                    SfxGetpApp()->ExecuteSlot( aRequest );
+                aInfoItem.SetMethod( pMethod->GetName() );
+                aInfoItem.SetModule( pMethod->GetModule()->GetName() );
+                aInfoItem.SetLib( pMethod->GetModule()->GetParent()->GetName() );
+                SfxAllItemSet aArgs( SfxGetpApp()->GetPool() );
+                SfxRequest aRequest( SID_BASICIDE_APPEAR, SfxCallMode::SYNCHRON, aArgs );
+                SfxGetpApp()->ExecuteSlot( aRequest );
 
-                    if (SfxDispatcher* pDispatcher = GetDispatcher())
-                    {
-                        pDispatcher->ExecuteList(SID_BASICIDE_EDITMACRO,
-                                SfxCallMode::ASYNCHRON, { &aInfoItem });
-                    }
-                    StoreMacroDescription();
-                    m_xDialog->response(static_cast<int>(MacroExitCode::Macro_New));
+                if (SfxDispatcher* pDispatcher = GetDispatcher())
+                {
+                    pDispatcher->ExecuteList(SID_BASICIDE_EDITMACRO,
+                            SfxCallMode::ASYNCHRON, { &aInfoItem });
                 }
+                StoreMacroDescription();
+                m_xDialog->response(static_cast<int>(MacroExitCode::Macro_New));
             }
         }
     }
