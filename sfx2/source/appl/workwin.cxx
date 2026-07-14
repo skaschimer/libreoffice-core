@@ -1364,7 +1364,7 @@ bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
 
     pCW->bCreatingChildWindow = true;
     SfxChildWindow* pChildWin
-        = SfxChildWindow::CreateChildWindow(pCW->nId, m_pWorkWin, &GetBindings(), pCW->aInfo)
+        = SfxChildWindow::CreateChildWindow(pCW->nId, m_pWorkWin, GetBindings(), pCW->aInfo)
               .release();
     pCW->bCreatingChildWindow = false;
 
