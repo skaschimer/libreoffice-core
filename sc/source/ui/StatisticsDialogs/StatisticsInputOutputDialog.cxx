@@ -64,7 +64,7 @@ ScStatisticsInputOutputDialog::ScStatisticsInputOutputDialog(
     , mInputRange(ScAddress::INITIALIZE_INVALID)
     , mAddressDetails(mDocument.GetAddressConvention(), 0, 0)
     , mOutputAddress(ScAddress::INITIALIZE_INVALID)
-    , mGroupedBy(BY_COLUMN)
+    , mGroupedBy(GroupedBy::ByColumn)
     , mxButtonOk(m_xBuilder->weld_button(u"ok"_ustr))
     , mxButtonCancel(m_xBuilder->weld_button(u"cancel"_ustr))
     , mpActiveEdit(nullptr)
@@ -220,9 +220,9 @@ IMPL_LINK_NOARG(ScStatisticsInputOutputDialog, LoseButtonFocusHandler, formula::
 IMPL_LINK_NOARG( ScStatisticsInputOutputDialog, GroupByChanged, weld::Toggleable&, void )
 {
     if (mxGroupByColumnsRadio->get_active())
-        mGroupedBy = BY_COLUMN;
+        mGroupedBy = GroupedBy::ByColumn;
     else if (mxGroupByRowsRadio->get_active())
-        mGroupedBy = BY_ROW;
+        mGroupedBy = GroupedBy::ByRow;
 
     ValidateDialogInput();
 }

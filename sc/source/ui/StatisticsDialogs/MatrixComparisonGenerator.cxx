@@ -63,9 +63,9 @@ ScRange ScMatrixComparisonGenerator::ApplyOutput(ScDocShell* pDocShell)
 
     SCTAB inTab = mInputRange.aStart.Tab();
 
-    ScRangeList aRangeList = (mGroupedBy == BY_COLUMN) ?
-        MakeColumnRangeList(inTab, mInputRange.aStart, mInputRange.aEnd) :
-        MakeRowRangeList(inTab, mInputRange.aStart, mInputRange.aEnd);
+    ScRangeList aRangeList = (mGroupedBy == GroupedBy::ByColumn)
+                                 ? MakeColumnRangeList(inTab, mInputRange.aStart, mInputRange.aEnd)
+                                 : MakeRowRangeList(inTab, mInputRange.aStart, mInputRange.aEnd);
 
     // labels
     output.writeString(getLabel());
@@ -76,7 +76,7 @@ ScRange ScMatrixComparisonGenerator::ApplyOutput(ScDocShell* pDocShell)
     // write labels to columns
     for (size_t i = 0; i < aRangeList.size(); i++)
     {
-        if (mGroupedBy == BY_COLUMN)
+        if (mGroupedBy == GroupedBy::ByColumn)
             aTemplate.setTemplate(ScResId(STR_COLUMN_LABEL_TEMPLATE));
         else
             aTemplate.setTemplate(ScResId(STR_ROW_LABEL_TEMPLATE));
@@ -91,7 +91,7 @@ ScRange ScMatrixComparisonGenerator::ApplyOutput(ScDocShell* pDocShell)
     output.nextRow();
     for (size_t i = 0; i < aRangeList.size(); i++)
     {
-        if (mGroupedBy == BY_COLUMN)
+        if (mGroupedBy == GroupedBy::ByColumn)
             aTemplate.setTemplate(ScResId(STR_COLUMN_LABEL_TEMPLATE));
         else
             aTemplate.setTemplate(ScResId(STR_ROW_LABEL_TEMPLATE));

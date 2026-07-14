@@ -68,10 +68,11 @@ OUString lclCreateMultiParameterFormula(
     return aResult.makeStringAndClear();
 }
 
-void lclMakeSubRangesList(ScRangeList& rRangeList, const ScRange& rInputRange, ScStatisticsInputOutputDialog::GroupedBy aGroupedBy)
+void lclMakeSubRangesList(ScRangeList& rRangeList, const ScRange& rInputRange,
+                          ScStatisticsInputOutputDialog::GroupedBy eGroupedBy)
 {
     std::unique_ptr<DataRangeIterator> pIterator;
-    if (aGroupedBy == ScStatisticsInputOutputDialog::BY_COLUMN)
+    if (eGroupedBy == ScStatisticsInputOutputDialog::GroupedBy::ByColumn)
         pIterator.reset(new DataRangeByColumnIterator(rInputRange));
     else
         pIterator.reset(new DataRangeByRowIterator(rInputRange));
@@ -164,7 +165,8 @@ void ScAnalysisOfVarianceDialog::RowColumn(ScRangeList& rRangeList, AddressWalke
     }
     else
     {
-        TranslateId pLabelId = (aGroupedBy == BY_COLUMN) ? STR_COLUMN_LABEL_TEMPLATE : STR_ROW_LABEL_TEMPLATE;
+        TranslateId pLabelId = (aGroupedBy == GroupedBy::ByColumn) ? STR_COLUMN_LABEL_TEMPLATE
+                                                                   : STR_ROW_LABEL_TEMPLATE;
         OUString aLabelTemplate(ScResId(pLabelId));
 
         for (size_t i = 0; i < rRangeList.size(); i++)
@@ -350,8 +352,8 @@ void ScAnalysisOfVarianceDialog::AnovaTwoFactor(AddressWalkerWriter& output, For
     ScRangeList aColumnRangeList;
     ScRangeList aRowRangeList;
 
-    lclMakeSubRangesList(aColumnRangeList, mInputRange, BY_COLUMN);
-    lclMakeSubRangesList(aRowRangeList, mInputRange, BY_ROW);
+    lclMakeSubRangesList(aColumnRangeList, mInputRange, GroupedBy::ByColumn);
+    lclMakeSubRangesList(aRowRangeList, mInputRange, GroupedBy::ByRow);
 
     // Write ColumnX values
     output.push();
@@ -360,7 +362,8 @@ void ScAnalysisOfVarianceDialog::AnovaTwoFactor(AddressWalkerWriter& output, For
         output.resetRow();
         ScRange aResultRange;
         OUString sFormula = OUString::createFromAscii(lclBasicStatistics[i].aFormula);
-        RowColumn(aColumnRangeList, output, aTemplate, sFormula, BY_COLUMN, &aResultRange);
+        RowColumn(aColumnRangeList, output, aTemplate, sFormula, GroupedBy::ByColumn,
+                  &aResultRange);
         if (lclBasicStatistics[i].aResultRangeName != nullptr)
         {
             OUString sResultRangeName = OUString::createFromAscii(lclBasicStatistics[i].aResultRangeName);
@@ -377,7 +380,7 @@ void ScAnalysisOfVarianceDialog::AnovaTwoFactor(AddressWalkerWriter& output, For
         output.resetRow();
         ScRange aResultRange;
         OUString sFormula = OUString::createFromAscii(lclBasicStatistics[i].aFormula);
-        RowColumn(aRowRangeList, output, aTemplate, sFormula, BY_ROW, &aResultRange);
+        RowColumn(aRowRangeList, output, aTemplate, sFormula, GroupedBy::ByRow, &aResultRange);
 
         if (lclBasicStatistics[i].aResultRangeName != nullptr)
         {

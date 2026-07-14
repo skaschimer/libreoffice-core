@@ -114,7 +114,7 @@ bool ScFourierAnalysisDialog::InputRangesValid()
 
     mInputRange.PutInOrder();
 
-    mbGroupedByColumn = mGroupedBy == BY_COLUMN;
+    mbGroupedByColumn = mGroupedBy == GroupedBy::ByColumn;
     mbWithLabels = mxWithLabelsCheckBox->get_active();
 
     mbUse3DAddresses = mInputRange.aStart.Tab() != mOutputAddress.Tab();

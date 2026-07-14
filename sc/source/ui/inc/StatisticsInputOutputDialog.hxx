@@ -20,9 +20,10 @@
 class ScStatisticsInputOutputDialog : public ScAnyRefDlgController
 {
 public:
-    enum GroupedBy {
-        BY_COLUMN,
-        BY_ROW
+    enum class GroupedBy
+    {
+        ByColumn,
+        ByRow
     };
 
     ScStatisticsInputOutputDialog(

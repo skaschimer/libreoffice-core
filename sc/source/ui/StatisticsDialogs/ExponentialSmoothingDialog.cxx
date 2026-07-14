@@ -63,7 +63,7 @@ ScRange ScExponentialSmoothingDialog::ApplyOutput(ScDocShell* pDocShell)
     output.push();
 
     std::unique_ptr<DataRangeIterator> pIterator;
-    if (mGroupedBy == BY_COLUMN)
+    if (mGroupedBy == GroupedBy::ByColumn)
         pIterator.reset(new DataRangeByColumnIterator(mInputRange));
     else
         pIterator.reset(new DataRangeByRowIterator(mInputRange));
@@ -75,7 +75,7 @@ ScRange ScExponentialSmoothingDialog::ApplyOutput(ScDocShell* pDocShell)
         ScRange aCurrentRange = pIterator->get();
 
         // Write column label
-        if (mGroupedBy == BY_COLUMN)
+        if (mGroupedBy == GroupedBy::ByColumn)
             aTemplate.setTemplate(ScResId(STR_COLUMN_LABEL_TEMPLATE));
         else
             aTemplate.setTemplate(ScResId(STR_ROW_LABEL_TEMPLATE));

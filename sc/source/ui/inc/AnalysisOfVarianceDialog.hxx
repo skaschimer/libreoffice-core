@@ -41,8 +41,8 @@ private:
     std::unique_ptr<weld::SpinButton> mxRowsPerSampleField;
 
     static void RowColumn(ScRangeList& rRangeList, AddressWalkerWriter& aOutput,
-                   FormulaTemplate& aTemplate, const OUString& sFormula,
-                   GroupedBy aGroupedBy, ScRange* pResultRange);
+                          FormulaTemplate& aTemplate, const OUString& sFormula,
+                          GroupedBy eGroupedBy, ScRange* pResultRange);
 
     void AnovaSingleFactor(AddressWalkerWriter& output, FormulaTemplate& aTemplate);
     void AnovaTwoFactor(AddressWalkerWriter& output, FormulaTemplate& aTemplate);

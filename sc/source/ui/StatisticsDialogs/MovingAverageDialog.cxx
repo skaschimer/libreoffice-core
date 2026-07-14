@@ -52,7 +52,7 @@ ScRange ScMovingAverageDialog::ApplyOutput(ScDocShell* pDocShell)
         mDocument.GetDataAreaSubrange(mInputRange);
 
     std::unique_ptr<DataRangeIterator> pIterator;
-    if (mGroupedBy == BY_COLUMN)
+    if (mGroupedBy == GroupedBy::ByColumn)
         pIterator.reset(new DataRangeByColumnIterator(mInputRange));
     else
         pIterator.reset(new DataRangeByRowIterator(mInputRange));
@@ -65,7 +65,7 @@ ScRange ScMovingAverageDialog::ApplyOutput(ScDocShell* pDocShell)
         output.resetRow();
 
         // Write label
-        if (mGroupedBy == BY_COLUMN)
+        if (mGroupedBy == GroupedBy::ByColumn)
             aTemplate.setTemplate(ScResId(STR_COLUMN_LABEL_TEMPLATE));
         else
             aTemplate.setTemplate(ScResId(STR_ROW_LABEL_TEMPLATE));
