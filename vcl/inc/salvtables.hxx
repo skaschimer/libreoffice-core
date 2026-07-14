@@ -497,9 +497,9 @@ public:
 
     virtual void present() override;
 
-    virtual void set_window_state(const OUString& rStr) override;
+    virtual void set_window_state(const vcl::WindowData& rState) override;
 
-    virtual OUString get_window_state(vcl::WindowDataMask nMask) const override;
+    virtual vcl::WindowData get_window_state(vcl::WindowDataMask nMask) const override;
 
     virtual SystemEnvData get_system_data() const override;
 

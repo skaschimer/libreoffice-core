@@ -6494,15 +6494,14 @@ public:
         gtk_window_present(m_pWindow);
     }
 
-    virtual void set_window_state(const OUString& rStr) override
+    virtual void set_window_state(const vcl::WindowData& rState) override
     {
-        const vcl::WindowData aData(rStr);
-        const auto nMask = aData.mask();
-        const auto nState = aData.state() & vcl::WindowState::SystemMask;
+        const auto nMask = rState.mask();
+        const auto nState = rState.state() & vcl::WindowState::SystemMask;
 
         if ((nMask & vcl::WindowDataMask::Size) == vcl::WindowDataMask::Size)
         {
-            gtk_window_set_default_size(m_pWindow, aData.width(), aData.height());
+            gtk_window_set_default_size(m_pWindow, rState.width(), rState.height());
         }
         if (nMask & vcl::WindowDataMask::State)
         {
@@ -6515,12 +6514,12 @@ public:
 #if !GTK_CHECK_VERSION(4, 0, 0)
         if (isPositioningAllowed() && ((nMask & vcl::WindowDataMask::Pos) == vcl::WindowDataMask::Pos))
         {
-            gtk_window_move(m_pWindow, aData.x(), aData.y());
+            gtk_window_move(m_pWindow, rState.x(), rState.y());
         }
 #endif
     }
 
-    virtual OUString get_window_state(vcl::WindowDataMask nMask) const override
+    virtual vcl::WindowData get_window_state(vcl::WindowDataMask nMask) const override
     {
         bool bPositioningAllowed = isPositioningAllowed();
 
@@ -6544,7 +6543,7 @@ public:
         if (nMask & vcl::WindowDataMask::Size)
             aData.setSize(get_size());
 
-        return aData.toStr();
+        return aData;
     }
 
     virtual void connect_container_focus_changed(const Link<Container&, void>& rLink) override

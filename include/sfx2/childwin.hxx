@@ -26,6 +26,7 @@
 #include <sal/types.h>
 #include <o3tl/typed_flags_set.hxx>
 #include <vcl/window.hxx>
+#include <vcl/windowstate.hxx>
 
 #include <comphelper/lok.hxx>
 
@@ -63,7 +64,7 @@ struct SAL_DLLPUBLIC_RTTI SfxChildWinInfo
 {
     OUString            aExtraString;
     OUString            aModule;
-    OUString            aWinState;
+    vcl::WindowData aWinState;
     Point               aPos;
     Size                aSize;
     SfxChildWindowFlags nFlags;

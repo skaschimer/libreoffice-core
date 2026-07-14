@@ -111,29 +111,28 @@ void QtInstanceWindow::present()
     });
 }
 
-void QtInstanceWindow::set_window_state(const OUString& rStr)
+void QtInstanceWindow::set_window_state(const vcl::WindowData& rState)
 {
     SolarMutexGuard g;
 
-    const vcl::WindowData aData(rStr);
-    const vcl::WindowDataMask eMask = aData.mask();
+    const vcl::WindowDataMask eMask = rState.mask();
 
     GetQtInstance().RunInMainThread([&] {
         QRect aGeometry = getQWidget()->geometry();
         if (eMask & vcl::WindowDataMask::X)
-            aGeometry.setX(aData.x());
+            aGeometry.setX(rState.x());
         if (eMask & vcl::WindowDataMask::Y)
-            aGeometry.setY(aData.y());
+            aGeometry.setY(rState.y());
         if (eMask & vcl::WindowDataMask::Width)
-            aGeometry.setWidth(aData.width());
+            aGeometry.setWidth(rState.width());
         if (eMask & vcl::WindowDataMask::Height)
-            aGeometry.setHeight(aData.height());
+            aGeometry.setHeight(rState.height());
 
         getQWidget()->setGeometry(aGeometry);
 
         if (eMask & vcl::WindowDataMask::State)
         {
-            const vcl::WindowState eState = aData.state();
+            const vcl::WindowState eState = rState.state();
             if (eState & vcl::WindowState::Normal)
                 getQWidget()->showNormal();
             else if (eState & vcl::WindowState::Maximized)
@@ -144,7 +143,7 @@ void QtInstanceWindow::set_window_state(const OUString& rStr)
     });
 }
 
-OUString QtInstanceWindow::get_window_state(vcl::WindowDataMask eMask) const
+vcl::WindowData QtInstanceWindow::get_window_state(vcl::WindowDataMask eMask) const
 {
     SolarMutexGuard g;
 
@@ -172,7 +171,7 @@ OUString QtInstanceWindow::get_window_state(vcl::WindowDataMask eMask) const
         }
     });
 
-    return aData.toStr();
+    return aData;
 }
 
 css::uno::Reference<css::awt::XWindow> QtInstanceWindow::GetXWindow()

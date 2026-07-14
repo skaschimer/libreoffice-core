@@ -1814,7 +1814,7 @@ void LoadEnv::impl_applyPersistentWindowState(const css::uno::Reference< css::aw
                 return;
 
             SystemWindow* pSystemWindow = static_cast<SystemWindow*>(pWindowCheck.get());
-            pSystemWindow->SetWindowState(sWindowState);
+            pSystemWindow->SetWindowState(vcl::WindowData(sWindowState));
             // <- SOLAR SAFE
         }
     }

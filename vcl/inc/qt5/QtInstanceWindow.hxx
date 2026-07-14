@@ -34,8 +34,8 @@ public:
     virtual bool has_toplevel_focus() const override;
     virtual void present() override;
 
-    virtual void set_window_state(const OUString& rStr) override;
-    virtual OUString get_window_state(vcl::WindowDataMask eMask) const override;
+    virtual void set_window_state(const vcl::WindowData& rState) override;
+    virtual vcl::WindowData get_window_state(vcl::WindowDataMask eMask) const override;
 
     virtual css::uno::Reference<css::awt::XWindow> GetXWindow() override;
 

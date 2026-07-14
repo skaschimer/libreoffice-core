@@ -761,7 +761,7 @@ void PrintDialog::storeToSettings()
                      mxTabCtrl->get_tab_label_text(mxTabCtrl->get_current_page_ident()), batch);
 
     officecfg::VCL::VCLSettings::PrintDialog::WindowState::set(
-                     m_xDialog->get_window_state(vcl::WindowDataMask::All), batch );
+        m_xDialog->get_window_state(vcl::WindowDataMask::All).toStr(), batch);
 
     officecfg::VCL::VCLSettings::PrintDialog::Collate::set( mxCollateBox->get_active(), batch );
 
@@ -791,7 +791,7 @@ void PrintDialog::readFromSettings()
     // persistent window state
     aValue = officecfg::VCL::VCLSettings::PrintDialog::WindowState::get();
     if (!aValue.isEmpty())
-        m_xDialog->set_window_state(aValue);
+        m_xDialog->set_window_state(vcl::WindowData(aValue));
 
     // collate
     mxCollateBox->set_sensitive( officecfg::VCL::VCLSettings::PrintDialog::Collate::isReadOnly() );

@@ -1600,14 +1600,14 @@ void SalInstanceWindow::present()
     m_xWindow->ToTop(ToTopFlags::RestoreWhenMin | ToTopFlags::ForegroundTask);
 }
 
-void SalInstanceWindow::set_window_state(const OUString& rStr)
+void SalInstanceWindow::set_window_state(const vcl::WindowData& rState)
 {
     SystemWindow* pSysWin = dynamic_cast<SystemWindow*>(m_xWindow.get());
     assert(pSysWin);
-    pSysWin->SetWindowState(rStr);
+    pSysWin->SetWindowState(rState);
 }
 
-OUString SalInstanceWindow::get_window_state(vcl::WindowDataMask nMask) const
+vcl::WindowData SalInstanceWindow::get_window_state(vcl::WindowDataMask nMask) const
 {
     SystemWindow* pSysWin = dynamic_cast<SystemWindow*>(m_xWindow.get());
     assert(pSysWin);

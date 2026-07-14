@@ -126,10 +126,7 @@ void SwFieldDlg::Close()
 
 void SwFieldDlg::Initialize(SfxChildWinInfo const *pInfo)
 {
-    OUString aWinState = pInfo->aWinState;
-    if (aWinState.isEmpty())
-        return;
-    m_xDialog->set_window_state(aWinState);
+    m_xDialog->set_window_state(pInfo->aWinState);
 }
 
 SfxItemSet* SwFieldDlg::CreateInputItemSet(const OUString& rID)

@@ -42,7 +42,7 @@ constexpr OUString USERITEM_NAME = u"UserItem"_ustr;
 class SfxModelessDialog_Impl : public SfxListener
 {
 public:
-    OUString aWinState;
+    vcl::WindowData aWinState;
     SfxChildWindow* pMgr;
     bool            bClosing;
     void            Notify( SfxBroadcaster& rBC, const SfxHint& rHint ) override;
@@ -71,8 +71,6 @@ void SfxModelessDialogController::Initialize(SfxChildWinInfo const *pInfo)
     if (!pInfo)
         return;
     m_xImpl->aWinState = pInfo->aWinState;
-    if (m_xImpl->aWinState.isEmpty())
-        return;
     m_xDialog->set_window_state(m_xImpl->aWinState);
 }
 

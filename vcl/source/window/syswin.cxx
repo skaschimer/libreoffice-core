@@ -840,19 +840,12 @@ void SystemWindow::GetWindowState(vcl::WindowData& rData) const
     }
 }
 
-void SystemWindow::SetWindowState(std::u16string_view rStr)
-{
-    if (rStr.empty())
-        return;
-    SetWindowState(vcl::WindowData(rStr));
-}
-
-OUString SystemWindow::GetWindowState(vcl::WindowDataMask nMask) const
+vcl::WindowData SystemWindow::GetWindowState(vcl::WindowDataMask nMask) const
 {
     vcl::WindowData aData;
     aData.setMask(nMask);
     GetWindowState(aData);
-    return aData.toStr();
+    return aData;
 }
 
 void SystemWindow::SetMenuBar(MenuBar* pMenuBar)

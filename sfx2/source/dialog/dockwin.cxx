@@ -392,7 +392,7 @@ friend class SfxDockingWindow;
     sal_uInt16          nDockPos;
     bool                bNewLine;
     bool                bDockingPrevented;
-    OUString            aWinState;
+    vcl::WindowData aWinState;
 
     explicit            SfxDockingWindow_Impl(SfxDockingWindow *pBase);
     SfxChildAlignment   GetLastAlignment() const
@@ -545,7 +545,7 @@ void SfxDockingWindow::ToggleFloatingMode()
     if (IsFloatingMode())
     {
         SetAlignment(SfxChildAlignment::NOALIGNMENT);
-        if (!m_pImpl->aWinState.isEmpty())
+        if (m_pImpl->aWinState.mask() != vcl::WindowDataMask::NONE)
             GetFloatingWindow()->SetWindowState(m_pImpl->aWinState);
         else
             GetFloatingWindow()->SetOutputSizePixel( GetFloatingSize() );
@@ -915,7 +915,7 @@ void SfxDockingWindow::Initialize(SfxChildWinInfo *pInfo)
         SetFloatingMode( bFloatMode );
         if ( bFloatMode )
         {
-            if (!m_pImpl->aWinState.isEmpty())
+            if (m_pImpl->aWinState.mask() != vcl::WindowDataMask::NONE)
                 GetFloatingWindow()->SetWindowState(m_pImpl->aWinState);
             else
                 GetFloatingWindow()->SetOutputSizePixel( GetFloatingSize() );
@@ -982,7 +982,7 @@ void SfxDockingWindow::Initialize_Impl()
     if ( pFloatWin )
     {
         // initialize floating window
-        if (m_pImpl->aWinState.isEmpty())
+        if (m_pImpl->aWinState.mask() == vcl::WindowDataMask::NONE)
             // window state never set before, get if from defaults
             m_pImpl->aWinState = pFloatWin->GetWindowState();
 

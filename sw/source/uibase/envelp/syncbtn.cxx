@@ -57,7 +57,7 @@ SwSyncChildWin::SwSyncChildWin(vcl::Window* _pParent,
         vcl::WindowData aState;
         aState.setMask(vcl::WindowDataMask::Pos);
         aState.setPos(aPos);
-        pDlg->set_window_state(aState.toStr());
+        pDlg->set_window_state(aState);
 
         pInfo->aPos = pDlg->get_position();
         pInfo->aSize = pDlg->get_size();

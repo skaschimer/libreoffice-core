@@ -226,7 +226,7 @@ OUString PersistentWindowState::implst_getWindowStateFromWindow(const css::uno::
         if ( pWindow && pWindow->IsSystemWindow() )
         {
             vcl::WindowDataMask const nMask = vcl::WindowDataMask::All & ~vcl::WindowDataMask::Minimized;
-            sWindowState = static_cast<SystemWindow*>(pWindow.get())->GetWindowState(nMask);
+            sWindowState = static_cast<SystemWindow*>(pWindow.get())->GetWindowState(nMask).toStr();
         }
         // <- SOLAR SAFE ------------------------
     }
@@ -264,9 +264,9 @@ void PersistentWindowState::implst_setWindowStateOnWindow(const css::uno::Refere
     if (pWorkWindow->IsMinimized())
         return;
 
-    OUString sOldWindowState = pSystemWindow->GetWindowState();
-    if ( sOldWindowState != sWindowState )
-        pSystemWindow->SetWindowState(sWindowState);
+    vcl::WindowData aOldWindowState = pSystemWindow->GetWindowState();
+    if (aOldWindowState.toStr() != sWindowState)
+        pSystemWindow->SetWindowState(vcl::WindowData(sWindowState));
     // <- SOLAR SAFE ------------------------
 }
 

@@ -17,6 +17,7 @@ struct SystemEnvData;
 
 namespace vcl
 {
+class WindowData;
 enum class WindowDataMask;
 }
 
@@ -41,8 +42,8 @@ public:
     virtual bool has_toplevel_focus() const = 0;
     virtual void present() = 0;
 
-    virtual void set_window_state(const OUString& rStr) = 0;
-    virtual OUString get_window_state(vcl::WindowDataMask nMask) const = 0;
+    virtual void set_window_state(const vcl::WindowData& rState) = 0;
+    virtual vcl::WindowData get_window_state(vcl::WindowDataMask nMask) const = 0;
 
     virtual css::uno::Reference<css::awt::XWindow> GetXWindow() = 0;
 

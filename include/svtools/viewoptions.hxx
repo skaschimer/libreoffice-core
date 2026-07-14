@@ -22,6 +22,7 @@
 #include <sal/types.h>
 #include <rtl/ustring.hxx>
 #include <svtools/svtdllapi.h>
+#include <vcl/windowstate.hxx>
 
 namespace com::sun::star::beans { struct NamedValue; }
 namespace com::sun::star::container { class XNameAccess; }
@@ -143,14 +144,12 @@ class SAL_WARN_UNUSED SVT_DLLPUBLIC SvtViewOptions final
         /*-****************************************************************************************************
             @short      use it to set/get the window state of your view
             @descr      These value describe position/size and some other states of a window.
-                        Use it with right vcl methods directly. Normally it's not necessary to
-                        parse given string!
 
             @seealso    vcl methods
         *//*-*****************************************************************************************************/
 
-        OUString GetWindowState(                               ) const;
-        void            SetWindowState( const OUString& sState );
+        vcl::WindowData GetWindowState() const;
+        void SetWindowState(const vcl::WindowData& rState);
 
         /*-****************************************************************************************************
             @short      use it to set/get the page number which was the last active one

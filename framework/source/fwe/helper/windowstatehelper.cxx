@@ -46,7 +46,7 @@ OUString WindowStateHelper::GetFromWindow(vcl::Window* pWin)
     {
         vcl::WindowDataMask const nMask
             = vcl::WindowDataMask::All & ~vcl::WindowDataMask::Minimized;
-        return static_cast<SystemWindow*>(pWin)->GetWindowState(nMask);
+        return static_cast<SystemWindow*>(pWin)->GetWindowState(nMask).toStr();
     }
 
     return {};
