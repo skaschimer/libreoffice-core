@@ -468,7 +468,7 @@ SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame& rFrame, SfxFrame& rMas
     m_bShowStatusBar(true)
     ,
 #else
-    m_bShowStatusBar(sal_False)
+    m_bShowStatusBar(false)
     ,
 #endif
     m_nLock(0)
