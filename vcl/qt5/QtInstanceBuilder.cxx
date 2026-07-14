@@ -171,6 +171,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/sbibliography/ui/mappingdialog.ui",
     u"modules/scalc/ui/analysisofvariancedialog.ui",
     u"modules/scalc/ui/chardialog.ui",
+    u"modules/scalc/ui/chisquaretestdialog.ui",
     u"modules/scalc/ui/colorrowdialog.ui",
     u"modules/scalc/ui/colwidthdialog.ui",
     u"modules/scalc/ui/condformatmanager.ui",
