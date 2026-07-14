@@ -35,7 +35,6 @@ enum class MacroExitCode {
     Macro_Close = 110,
     Macro_OkRun = 111,
     Macro_New   = 112,
-    Macro_Edit  = 114,
 };
 
 class MacroChooser : public SfxDialogController

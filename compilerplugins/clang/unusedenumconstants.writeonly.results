@@ -6,8 +6,6 @@ basctl/source/basicide/macrodlg.hxx:32
     enum basctl::MacroExitCode Macro_Close
 basctl/source/basicide/macrodlg.hxx:34
     enum basctl::MacroExitCode Macro_New
-basctl/source/basicide/macrodlg.hxx:35
-    enum basctl::MacroExitCode Macro_Edit
 basctl/source/inc/bastype2.hxx:40
     enum BrowseMode All
 basctl/source/inc/dlged.hxx:99
