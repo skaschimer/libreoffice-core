@@ -209,7 +209,7 @@ class SfxWorkWindow final
     bool m_bShowStatusBar : 1;
     sal_Int32               m_nLock;
     rtl::Reference< LayoutManagerListener > m_xLayoutManagerListener;
-    SfxFrame* m_pMasterFrame;
+    SfxFrame& m_rMasterFrame;
     SfxFrame* m_pFrame;
 
     bool                    CreateChildWin_Impl(SfxChildWin_Impl*,bool);

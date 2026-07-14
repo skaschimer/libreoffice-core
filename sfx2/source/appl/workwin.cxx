@@ -472,7 +472,7 @@ SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaste
     ,
 #endif
     m_nLock(0)
-    , m_pMasterFrame(&rMaster)
+    , m_rMasterFrame(rMaster)
     , m_pFrame(pFrm)
 {
     DBG_ASSERT(m_pBindings, "No Bindings!");
@@ -687,7 +687,7 @@ void SfxWorkWindow::ArrangeChildren_Impl( bool bForce )
     // ObjectBar arises.
     // (->SfxInPlaceEnv_Impl::ArrangeChildren_Impl())
 
-    m_pMasterFrame->SetToolSpaceBorderPixel_Impl(aBorder);
+    m_rMasterFrame.SetToolSpaceBorderPixel_Impl(aBorder);
 
     ArrangeAutoHideWindows( nullptr );
 }
@@ -2036,7 +2036,7 @@ void SfxWorkWindow::ResetChildWindows_Impl()
 
 tools::Rectangle SfxWorkWindow::GetTopRect_Impl() const
 {
-    return m_pMasterFrame->GetTopOuterRectPixel_Impl();
+    return m_rMasterFrame.GetTopOuterRectPixel_Impl();
 }
 
 
