@@ -187,32 +187,30 @@ class SfxWorkWindow final
 {
     friend class LayoutManagerListener;
 
-    std::vector<sal_uInt16> aSortedList;
-    SfxStatBar_Impl         aStatBar;
-    std::vector< SfxObjectBar_Impl > aObjBarList;
-    tools::Rectangle               aClientArea;
-    tools::Rectangle               aUpperClientArea;
-    VclPtr<SfxSplitWindow>  pSplit[SFX_SPLITWINDOWS_MAX];
-    std::vector<std::unique_ptr<SfxChild_Impl>>
-                            aChildren;
-    std::vector<std::unique_ptr<SfxChildWin_Impl>>
-                            aChildWins;
-    SfxBindings*            pBindings;
-    VclPtr<vcl::Window>     pWorkWin;
-    VclPtr<vcl::Window>     pActiveChild;
-    SfxVisibilityFlags      nUpdateMode;
-    sal_uInt16              nChildren;
-    SfxVisibilityFlags      nOrigMode;
-    bool                    bSorted : 1;
-    bool                    bDockingAllowed : 1;
-    bool                    bInternalDockingAllowed : 1;
-    bool                    bAllChildrenVisible : 1;
-    bool                    bIsFullScreen : 1;
-    bool                    bShowStatusBar : 1;
+    std::vector<sal_uInt16> m_aSortedList;
+    SfxStatBar_Impl m_aStatBar;
+    std::vector<SfxObjectBar_Impl> m_aObjBarList;
+    tools::Rectangle m_aClientArea;
+    tools::Rectangle m_aUpperClientArea;
+    VclPtr<SfxSplitWindow> m_pSplit[SFX_SPLITWINDOWS_MAX];
+    std::vector<std::unique_ptr<SfxChild_Impl>> m_aChildren;
+    std::vector<std::unique_ptr<SfxChildWin_Impl>> m_aChildWins;
+    SfxBindings* m_pBindings;
+    VclPtr<vcl::Window> m_pWorkWin;
+    VclPtr<vcl::Window> m_pActiveChild;
+    SfxVisibilityFlags m_nUpdateMode;
+    sal_uInt16 m_nChildren;
+    SfxVisibilityFlags m_nOrigMode;
+    bool m_bSorted : 1;
+    bool m_bDockingAllowed : 1;
+    bool m_bInternalDockingAllowed : 1;
+    bool m_bAllChildrenVisible : 1;
+    bool m_bIsFullScreen : 1;
+    bool m_bShowStatusBar : 1;
     sal_Int32               m_nLock;
     rtl::Reference< LayoutManagerListener > m_xLayoutManagerListener;
-    SfxFrame*               pMasterFrame;
-    SfxFrame*               pFrame;
+    SfxFrame* m_pMasterFrame;
+    SfxFrame* m_pFrame;
 
     bool                    CreateChildWin_Impl(SfxChildWin_Impl*,bool);
     void                    RemoveChildWin_Impl(SfxChildWin_Impl*);
@@ -229,19 +227,13 @@ class SfxWorkWindow final
 public:
     SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaster);
     ~SfxWorkWindow();
-    SfxBindings&            GetBindings()
-                            { return *pBindings; }
-    vcl::Window*                 GetWindow() const
-                            { return pWorkWin; }
+    SfxBindings& GetBindings() { return *m_pBindings; }
+    vcl::Window* GetWindow() const { return m_pWorkWin; }
     tools::Rectangle               GetFreeArea( bool bAutoHide ) const;
-    void                    SetDockingAllowed(bool bSet)
-                            { bDockingAllowed = bSet; }
-    void                    SetInternalDockingAllowed(bool bSet)
-                            { bInternalDockingAllowed = bSet; }
-    bool                    IsDockingAllowed() const
-                            { return bDockingAllowed; }
-    bool                    IsInternalDockingAllowed() const
-                            { return bInternalDockingAllowed; }
+    void SetDockingAllowed(bool bSet) { m_bDockingAllowed = bSet; }
+    void SetInternalDockingAllowed(bool bSet) { m_bInternalDockingAllowed = bSet; }
+    bool IsDockingAllowed() const { return m_bDockingAllowed; }
+    bool IsInternalDockingAllowed() const { return m_bInternalDockingAllowed; }
 
     // Methods for all Child windows
     void                    DataChanged_Impl();
@@ -261,7 +253,7 @@ public:
     void                    ArrangeAutoHideWindows( SfxSplitWindow *pSplit );
     bool                    IsAutoHideMode( const SfxSplitWindow *pSplit );
     void                    EndAutoShow_Impl( Point aPos );
-    void                    SetFullScreen_Impl( bool bSet ) { bIsFullScreen = bSet; }
+    void SetFullScreen_Impl(bool bSet) { m_bIsFullScreen = bSet; }
 
     // Methods for Objectbars
     void                    UpdateObjectBars_Impl();
@@ -288,7 +280,7 @@ public:
     bool                    IsVisible_Impl( SfxVisibilityFlags nMode ) const;
     bool                    IsFloating( sal_uInt16 nId );
     void                    SetActiveChild_Impl( vcl::Window *pChild );
-    const VclPtr<vcl::Window>& GetActiveChild_Impl() const { return pActiveChild; }
+    const VclPtr<vcl::Window>& GetActiveChild_Impl() const { return m_pActiveChild; }
 
     // Methods for StatusBar
     void                    ResetStatusBar_Impl();
