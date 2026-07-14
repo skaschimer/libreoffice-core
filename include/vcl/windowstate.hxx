@@ -83,7 +83,7 @@ public:
         , mnMaximizedHeight(0)
     {
     }
-    WindowData(std::u16string_view rStr);
+    explicit WindowData(std::u16string_view rStr);
 
     // serialize values to a string (the original WindowState representation)
     OUString toStr() const;
