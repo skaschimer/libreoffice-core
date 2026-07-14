@@ -180,6 +180,7 @@ constexpr auto SUPPORTED_UI_FILES = frozen::make_unordered_set<std::u16string_vi
     u"modules/scalc/ui/definetablerangedialog.ui",
     u"modules/scalc/ui/deletecells.ui",
     u"modules/scalc/ui/deletecontents.ui",
+    u"modules/scalc/ui/descriptivestatisticsdialog.ui",
     u"modules/scalc/ui/drawtemplatedialog.ui",
     u"modules/scalc/ui/duplicaterecordsdlg.ui",
     u"modules/scalc/ui/formatcellsdialog.ui",
