@@ -248,7 +248,7 @@ OUString ChooseMacro(weld::Window* pParent,
 
     GetExtraData()->ChoosingMacro() = false;
 
-    if (nRetValue != static_cast<int>(MacroExitCode::Macro_OkRun))
+    if (nRetValue != RET_OK)
         return {};
 
     bool bError = false;

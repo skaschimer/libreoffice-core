@@ -2,10 +2,6 @@ basctl/source/basicide/baside3.cxx:843
     enum NameClashMode NO_CLASH
 basctl/source/basicide/doceventnotifier.cxx:55
     enum basctl::(anonymous namespace)::ListenerAction RemoveListener
-basctl/source/basicide/macrodlg.hxx:32
-    enum basctl::MacroExitCode Macro_Close
-basctl/source/basicide/macrodlg.hxx:34
-    enum basctl::MacroExitCode Macro_New
 basctl/source/inc/bastype2.hxx:40
     enum BrowseMode All
 basctl/source/inc/dlged.hxx:99

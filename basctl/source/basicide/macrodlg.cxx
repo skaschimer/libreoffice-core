@@ -452,7 +452,7 @@ IMPL_LINK_NOARG(MacroChooser, MacroDoubleClickHdl, const weld::TreeIter&, bool)
             return true;
     }
 
-    m_xDialog->response(static_cast<int>(MacroExitCode::Macro_OkRun));
+    m_xDialog->response(RET_OK);
     return true;
 }
 
@@ -596,12 +596,12 @@ IMPL_LINK(MacroChooser, ButtonHdl, weld::Button&, rButton, void)
                 return;
         }
 
-        m_xDialog->response(static_cast<int>(MacroExitCode::Macro_OkRun));
+        m_xDialog->response(RET_OK);
     }
     else if (&rButton == m_xCloseButton.get())
     {
         StoreMacroDescription();
-        m_xDialog->response(static_cast<int>(MacroExitCode::Macro_Close));
+        m_xDialog->response(RET_CLOSE);
     }
     else if (&rButton == m_xEditButton.get() || &rButton == m_xDelButton.get() || &rButton == m_xNewButton.get())
     {
@@ -647,7 +647,7 @@ IMPL_LINK(MacroChooser, ButtonHdl, weld::Button&, rButton, void)
                 pDispatcher->ExecuteList(SID_BASICIDE_EDITMACRO,
                         SfxCallMode::ASYNCHRON, { &aInfoItem });
             }
-            m_xDialog->response(static_cast<int>(MacroExitCode::Macro_Close));
+            m_xDialog->response(RET_CLOSE);
         }
         else if (&rButton == m_xDelButton.get())
         {
@@ -684,7 +684,7 @@ IMPL_LINK(MacroChooser, ButtonHdl, weld::Button&, rButton, void)
                             SfxCallMode::ASYNCHRON, { &aInfoItem });
                 }
                 StoreMacroDescription();
-                m_xDialog->response(static_cast<int>(MacroExitCode::Macro_New));
+                m_xDialog->response(RET_CLOSE);
             }
         }
     }
@@ -765,7 +765,7 @@ IMPL_LINK(MacroChooser, ButtonHdl, weld::Button&, rButton, void)
         weld::DialogController::runAsync(xDlg, [this](sal_Int32 nRet) {
             if (nRet == RET_OK) // not only closed
             {
-                m_xDialog->response(static_cast<int>(MacroExitCode::Macro_Close));
+                m_xDialog->response(RET_CLOSE);
                 return;
             }
 
