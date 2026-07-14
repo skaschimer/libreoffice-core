@@ -772,6 +772,13 @@ void SAL_CALL PresenterController::keyReleased (const awt::KeyEvent& rEvent)
     switch (rEvent.KeyCode)
     {
         case awt::Key::ESCAPE:
+            if (mpWindowManager
+                && mpWindowManager->GetViewMode() == PresenterWindowManager::VM_SlideOverview)
+            {
+                mpWindowManager->SetSlideSorterState(false);
+                break;
+            }
+            [[fallthrough]];
         case awt::Key::SUBTRACT:
         {
             if( mxController.is() )
