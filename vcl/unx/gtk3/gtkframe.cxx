@@ -2213,15 +2213,12 @@ void GtkSalFrame::SetPosSize( tools::Long nX, tools::Long nY, tools::Long nWidth
     m_bDefaultPos = false;
 }
 
-void GtkSalFrame::GetClientSize( tools::Long& rWidth, tools::Long& rHeight )
+Size GtkSalFrame::GetClientSize()
 {
     if( m_pWindow && !(m_nState & GDK_TOPLEVEL_STATE_MINIMIZED) )
-    {
-        rWidth = maGeometry.width();
-        rHeight = maGeometry.height();
-    }
-    else
-        rWidth = rHeight = 0;
+        return maGeometry.size();
+
+    return Size(0, 0);
 }
 
 void GtkSalFrame::GetWorkArea( AbsoluteScreenPixelRectangle& rRect )

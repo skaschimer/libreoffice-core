@@ -496,10 +496,10 @@ void QtFrame::SetPosSize(tools::Long nX, tools::Long nY, tools::Long nWidth, too
     asChild()->move(round(nX / devicePixelRatioF()), round(nY / devicePixelRatioF()));
 }
 
-void QtFrame::GetClientSize(tools::Long& rWidth, tools::Long& rHeight)
+Size QtFrame::GetClientSize()
 {
-    rWidth = round(m_pQWidget->width() * devicePixelRatioF());
-    rHeight = round(m_pQWidget->height() * devicePixelRatioF());
+    return Size(round(m_pQWidget->width() * devicePixelRatioF()),
+                round(m_pQWidget->height() * devicePixelRatioF()));
 }
 
 SalFrameGeometry QtFrame::GetUnmirroredGeometry() const

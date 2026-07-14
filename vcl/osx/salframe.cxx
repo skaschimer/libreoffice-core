@@ -639,18 +639,12 @@ void AquaSalFrame::SetMaxClientSize( tools::Long nWidth, tools::Long nHeight )
     }
 }
 
-void AquaSalFrame::GetClientSize( tools::Long& rWidth, tools::Long& rHeight )
+Size AquaSalFrame::GetClientSize()
 {
     if (mbShown || mbInitShow || mbHeadlessMode)
-    {
-        rWidth = maGeometry.width();
-        rHeight = maGeometry.height();
-    }
-    else
-    {
-        rWidth  = 0;
-        rHeight = 0;
-    }
+        return maGeometry.size();
+
+    return Size(0, 0);
 }
 
 SalEvent AquaSalFrame::PreparePosSize(tools::Long nX, tools::Long nY, tools::Long nWidth, tools::Long nHeight, sal_uInt16 nFlags)

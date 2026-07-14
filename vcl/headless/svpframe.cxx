@@ -280,11 +280,7 @@ void SvpSalFrame::SetPosSize( tools::Long nX, tools::Long nY, tools::Long nWidth
 #endif
 }
 
-void SvpSalFrame::GetClientSize( tools::Long& rWidth, tools::Long& rHeight )
-{
-    rWidth = maGeometry.width();
-    rHeight = maGeometry.height();
-}
+Size SvpSalFrame::GetClientSize() { return maGeometry.size(); }
 
 void SvpSalFrame::GetWorkArea( AbsoluteScreenPixelRectangle& rRect )
 {

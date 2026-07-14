@@ -1523,10 +1523,9 @@ void WinSalFrame::GetWorkArea( AbsoluteScreenPixelRectangle &rRect )
     rRect.SetBottom( aRect.bottom-1 );
 }
 
-void WinSalFrame::GetClientSize( tools::Long& rWidth, tools::Long& rHeight )
+Size WinSalFrame::GetClientSize()
 {
-    rWidth  = maGeometry.width();
-    rHeight = maGeometry.height();
+    return maGeometry.size();
 }
 
 void WinSalFrame::SetWindowState(const vcl::WindowData* pState)

@@ -2808,10 +2808,8 @@ bool ImplWindowFrameProc( vcl::Window* _pWindow, SalEvent nEvent, const void* pE
 
         case SalEvent::Resize:
             {
-            tools::Long nNewWidth;
-            tools::Long nNewHeight;
-            pWindow->ImplGetWindowImpl()->mpFrame->GetClientSize( nNewWidth, nNewHeight );
-            ImplHandleResize( pWindow, nNewWidth, nNewHeight );
+            const Size aNewSize = pWindow->ImplGetWindowImpl()->mpFrame->GetClientSize();
+            ImplHandleResize( pWindow, aNewSize.Width(), aNewSize.Height());
             }
             break;
 

@@ -1128,13 +1128,10 @@ void Window::ImplInit( vcl::Window* pParent, WinBits nStyle, SystemParentData* p
         // the correct size before we display the window
         if ( nStyle & (WB_MOVEABLE | WB_SIZEABLE | WB_APP) )
         {
-            tools::Long nWidth;
-            tools::Long nHeight;
+            const Size aSize = mpWindowImpl->mpFrame->GetClientSize();
 
-            mpWindowImpl->mpFrame->GetClientSize(nWidth, nHeight);
-
-            mpWindowImpl->mxOutDev->SetOutputWidthPixel(nWidth);
-            mpWindowImpl->mxOutDev->SetOutputHeightPixel(nHeight);
+            mpWindowImpl->mxOutDev->SetOutputWidthPixel(aSize.Width());
+            mpWindowImpl->mxOutDev->SetOutputHeightPixel(aSize.Height());
         }
     }
     else
@@ -2373,10 +2370,8 @@ void Window::Show(bool bVisible, ShowFlags nFlags)
             // a system resize
             if ( mpWindowImpl->mbWaitSystemResize )
             {
-                tools::Long nOutWidth;
-                tools::Long nOutHeight;
-                mpWindowImpl->mpFrame->GetClientSize( nOutWidth, nOutHeight );
-                ImplHandleResize( this, nOutWidth, nOutHeight );
+                const Size aOutSize = mpWindowImpl->mpFrame->GetClientSize();
+                ImplHandleResize(this, aOutSize.Width(), aOutSize.Height());
             }
 
             if (mpWindowImpl->mpFrameData->mpBuffer && mpWindowImpl->mpFrameData->mpBuffer->GetOutputSizePixel() != GetOutputSizePixel())
@@ -2778,13 +2773,13 @@ void Window::setPosSizePixel( tools::Long nX, tools::Long nY,
 
         // Adjust resize with the hack of different client size and frame geometries to fix
         // native menu bars. Eventually this should be replaced by proper mnTopBorder usage.
-        pWindow->mpWindowImpl->mpFrame->GetClientSize(nWidth, nHeight);
+        const Size aClientSize = pWindow->mpWindowImpl->mpFrame->GetClientSize();
 
         // Resize should be called directly. If we haven't
         // set the correct size, we get a second resize from
         // the system with the correct size. This can be happened
         // if the size is too small or too large.
-        ImplHandleResize( pWindow, nWidth, nHeight );
+        ImplHandleResize(pWindow, aClientSize.getWidth(), aClientSize.Height());
     }
     else
     {
