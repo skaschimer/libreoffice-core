@@ -445,8 +445,8 @@ constexpr OUString g_aProgressBarResName( u"private:resource/progressbar/progres
 
 // constructor for workwin of a Frame
 
-SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaster)
-    : m_pBindings(&pFrm->GetCurrentViewFrame()->GetBindings())
+SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame& rFrame, SfxFrame& rMaster)
+    : m_pBindings(&rFrame.GetCurrentViewFrame()->GetBindings())
     , m_pWorkWin(pWin)
     , m_pActiveChild(nullptr)
     , m_nUpdateMode(SfxVisibilityFlags::Standard)
@@ -473,7 +473,7 @@ SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaste
 #endif
     m_nLock(0)
     , m_rMasterFrame(rMaster)
-    , m_pFrame(pFrm)
+    , m_rFrame(rFrame)
 {
     DBG_ASSERT(m_pBindings, "No Bindings!");
 
@@ -489,7 +489,7 @@ SfxWorkWindow::SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaste
     m_xLayoutManagerListener = new LayoutManagerListener( this );
     m_xLayoutManagerListener->setFrame( xFrame );
 
-    SfxShell* pConfigShell = pFrm->GetCurrentViewFrame();
+    SfxShell* pConfigShell = rFrame.GetCurrentViewFrame();
     if ( pConfigShell && pConfigShell->GetObjectShell() )
     {
         m_bShowStatusBar = (!pConfigShell->GetObjectShell()->IsInPlaceActive());
@@ -659,11 +659,11 @@ void SfxWorkWindow::DeleteControllers_Impl()
 
 void SfxWorkWindow::ArrangeChildren_Impl( bool bForce )
 {
-    if (m_pFrame->IsClosing_Impl() || (m_nLock && !bForce))
+    if (m_rFrame.IsClosing_Impl() || (m_nLock && !bForce))
         return;
 
     SfxInPlaceClient *pClient = nullptr;
-    SfxViewFrame* pF = m_pFrame->GetCurrentViewFrame();
+    SfxViewFrame* pF = m_rFrame.GetCurrentViewFrame();
     if ( pF && pF->GetViewShell() )
         pClient = pF->GetViewShell()->GetIPClient();
 
@@ -1094,7 +1094,7 @@ bool SfxWorkWindow::IsVisible_Impl( SfxVisibilityFlags nMode ) const
 
 void SfxWorkWindow::UpdateObjectBars_Impl()
 {
-    if (m_pFrame->IsClosing_Impl())
+    if (m_rFrame.IsClosing_Impl())
         return;
 
     UpdateObjectBars_Impl2();

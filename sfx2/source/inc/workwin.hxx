@@ -210,7 +210,7 @@ class SfxWorkWindow final
     sal_Int32               m_nLock;
     rtl::Reference< LayoutManagerListener > m_xLayoutManagerListener;
     SfxFrame& m_rMasterFrame;
-    SfxFrame* m_pFrame;
+    SfxFrame& m_rFrame;
 
     bool                    CreateChildWin_Impl(SfxChildWin_Impl*,bool);
     void                    RemoveChildWin_Impl(SfxChildWin_Impl*);
@@ -225,7 +225,7 @@ class SfxWorkWindow final
     void                    FlushPendingChildSizes();
 
 public:
-    SfxWorkWindow(vcl::Window* pWin, SfxFrame* pFrm, SfxFrame& rMaster);
+    SfxWorkWindow(vcl::Window* pWin, SfxFrame& rFrame, SfxFrame& rMaster);
     ~SfxWorkWindow();
     SfxBindings& GetBindings() { return *m_pBindings; }
     vcl::Window* GetWindow() const { return m_pWorkWin; }
