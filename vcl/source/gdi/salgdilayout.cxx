@@ -33,24 +33,6 @@
 #include <toolbarvalue.hxx>
 #include <scrollbarvalue.hxx>
 
-// The only common SalFrame method
-
-SalFrameGeometry SalFrame::GetGeometry() const
-{
-    SalFrameGeometry aGeometry = GetUnmirroredGeometry();
-
-    // mirror frame coordinates at parent
-    SalFrame *pParent = GetParent();
-    if( pParent && AllSettings::GetLayoutRTL() )
-    {
-        SalFrameGeometry aParentGeometry = pParent->GetUnmirroredGeometry();
-        const int nParentX = aGeometry.x() - aParentGeometry.x();
-        aGeometry.setX(aParentGeometry.x() + aParentGeometry.width() - aGeometry.width() - nParentX);
-    }
-
-    return aGeometry;
-}
-
 SalGraphics::SalGraphics()
 :   m_nLayout( SalLayoutFlags::NONE ),
     m_eLastMirrorMode(MirrorMode::NONE),
