@@ -24,6 +24,7 @@
 #include <salframe.hxx>
 
 #include <comphelper/solarmutex.hxx>
+#include <vcl/windowstate.hxx>
 
 typedef void (^RuninmainBlock)(void);
 
@@ -31,6 +32,7 @@ union RuninmainResult {
     void* pointer;
     bool boolean;
     struct SalFrame::SalPointerState state;
+    vcl::WindowData windowData;
 
     RuninmainResult() {}
 };

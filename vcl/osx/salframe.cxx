@@ -767,19 +767,20 @@ void AquaSalFrame::SetWindowState(const vcl::WindowData& rState)
     }
 }
 
-bool AquaSalFrame::GetWindowState(vcl::WindowData* pState)
+vcl::WindowData AquaSalFrame::GetWindowState()
 {
+    vcl::WindowData aState;
     if (mbHeadlessMode)
     {
-        pState->setMask(vcl::WindowDataMask::PosSizeState);
-        pState->setPosSize(maGeometry.posSize());
-        pState->setState(vcl::WindowState::Normal);
-        return true;
+        aState.setMask(vcl::WindowDataMask::PosSizeState);
+        aState.setPosSize(maGeometry.posSize());
+        aState.setState(vcl::WindowState::Normal);
+        return aState;
     }
 
-    OSX_SALDATA_RUNINMAIN_UNION( GetWindowState( pState ), boolean )
+    OSX_SALDATA_RUNINMAIN_UNION(GetWindowState(), windowData)
 
-    pState->setMask(vcl::WindowDataMask::PosSizeState);
+    aState.setMask(vcl::WindowDataMask::PosSizeState);
 
     NSRect aStateRect = [mpNSWindow frame];
     aStateRect = [mpNSWindow contentRectForFrameRect: aStateRect];
@@ -787,51 +788,55 @@ bool AquaSalFrame::GetWindowState(vcl::WindowData* pState)
 
     if( mbInternalFullScreen && !NSIsEmptyRect( maInternalFullScreenRestoreRect ) )
     {
-        pState->setX(maInternalFullScreenRestoreRect.origin.x);
-        pState->setY(maInternalFullScreenRestoreRect.origin.y);
-        pState->setWidth(maInternalFullScreenRestoreRect.size.width);
-        pState->setHeight(maInternalFullScreenRestoreRect.size.height);
-        pState->SetMaximizedX(static_cast<sal_Int32>(aStateRect.origin.x));
-        pState->SetMaximizedY(static_cast<sal_Int32>(aStateRect.origin.x));
-        pState->SetMaximizedWidth(static_cast<sal_uInt32>(aStateRect.size.width));
-        pState->SetMaximizedHeight(static_cast<sal_uInt32>(aStateRect.size.height));
+        aState.setX(maInternalFullScreenRestoreRect.origin.x);
+        aState.setY(maInternalFullScreenRestoreRect.origin.y);
+        aState.setWidth(maInternalFullScreenRestoreRect.size.width);
+        aState.setHeight(maInternalFullScreenRestoreRect.size.height);
+        aState.SetMaximizedX(static_cast<sal_Int32>(aStateRect.origin.x));
+        aState.SetMaximizedY(static_cast<sal_Int32>(aStateRect.origin.x));
+        aState.SetMaximizedWidth(static_cast<sal_uInt32>(aStateRect.size.width));
+        aState.SetMaximizedHeight(static_cast<sal_uInt32>(aStateRect.size.height));
 
-        pState->rMask() |= vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY | vcl::WindowDataMask::MaximizedWidth | vcl::WindowDataMask::MaximizedHeight;
+        aState.rMask() |= vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY
+                          | vcl::WindowDataMask::MaximizedWidth
+                          | vcl::WindowDataMask::MaximizedHeight;
 
-        pState->setState(vcl::WindowState::FullScreen);
+        aState.setState(vcl::WindowState::FullScreen);
     }
     else if( mbNativeFullScreen && !NSIsEmptyRect( maNativeFullScreenRestoreRect ) )
     {
-        pState->setX(maNativeFullScreenRestoreRect.origin.x);
-        pState->setY(maNativeFullScreenRestoreRect.origin.y);
-        pState->setWidth(maNativeFullScreenRestoreRect.size.width);
-        pState->setHeight(maNativeFullScreenRestoreRect.size.height);
-        pState->SetMaximizedX(static_cast<sal_Int32>(aStateRect.origin.x));
-        pState->SetMaximizedY(static_cast<sal_Int32>(aStateRect.origin.x));
-        pState->SetMaximizedWidth(static_cast<sal_uInt32>(aStateRect.size.width));
-        pState->SetMaximizedHeight(static_cast<sal_uInt32>(aStateRect.size.height));
+        aState.setX(maNativeFullScreenRestoreRect.origin.x);
+        aState.setY(maNativeFullScreenRestoreRect.origin.y);
+        aState.setWidth(maNativeFullScreenRestoreRect.size.width);
+        aState.setHeight(maNativeFullScreenRestoreRect.size.height);
+        aState.SetMaximizedX(static_cast<sal_Int32>(aStateRect.origin.x));
+        aState.SetMaximizedY(static_cast<sal_Int32>(aStateRect.origin.x));
+        aState.SetMaximizedWidth(static_cast<sal_uInt32>(aStateRect.size.width));
+        aState.SetMaximizedHeight(static_cast<sal_uInt32>(aStateRect.size.height));
 
-        pState->rMask() |= vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY | vcl::WindowDataMask::MaximizedWidth | vcl::WindowDataMask::MaximizedHeight;
+        aState.rMask() |= vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY
+                          | vcl::WindowDataMask::MaximizedWidth
+                          | vcl::WindowDataMask::MaximizedHeight;
 
         // tdf#128186 use non-full screen values for native full screen windows
-        pState->setState(vcl::WindowState::Normal);
+        aState.setState(vcl::WindowState::Normal);
     }
     else
     {
-        pState->setX(static_cast<sal_Int32>(aStateRect.origin.x));
-        pState->setY(static_cast<sal_Int32>(aStateRect.origin.y));
-        pState->setWidth(static_cast<sal_uInt32>(aStateRect.size.width));
-        pState->setHeight(static_cast<sal_uInt32>(aStateRect.size.height));
+        aState.setX(static_cast<sal_Int32>(aStateRect.origin.x));
+        aState.setY(static_cast<sal_Int32>(aStateRect.origin.y));
+        aState.setWidth(static_cast<sal_uInt32>(aStateRect.size.width));
+        aState.setHeight(static_cast<sal_uInt32>(aStateRect.size.height));
 
         if( [mpNSWindow isMiniaturized] )
-            pState->setState(vcl::WindowState::Minimized);
+            aState.setState(vcl::WindowState::Minimized);
         else if( ! [mpNSWindow isZoomed] )
-            pState->setState(vcl::WindowState::Normal);
+            aState.setState(vcl::WindowState::Normal);
         else
-            pState->setState(vcl::WindowState::Maximized);
+            aState.setState(vcl::WindowState::Maximized);
     }
 
-    return true;
+    return aState;
 }
 
 void AquaSalFrame::SetScreenNumber(unsigned int nScreen)

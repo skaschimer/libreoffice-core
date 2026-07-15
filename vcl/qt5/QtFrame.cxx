@@ -614,23 +614,24 @@ void QtFrame::SetWindowState(const vcl::WindowData& rState)
     }
 }
 
-bool QtFrame::GetWindowState(vcl::WindowData* pState)
+vcl::WindowData QtFrame::GetWindowState()
 {
-    pState->setState(vcl::WindowState::Normal);
-    pState->setMask(vcl::WindowDataMask::State);
+    vcl::WindowData aState;
+    aState.setState(vcl::WindowState::Normal);
+    aState.setMask(vcl::WindowDataMask::State);
     if (isMinimized())
-        pState->rState() |= vcl::WindowState::Minimized;
+        aState.rState() |= vcl::WindowState::Minimized;
     else if (isMaximized())
-        pState->rState() |= vcl::WindowState::Maximized;
+        aState.rState() |= vcl::WindowState::Maximized;
     else
     {
         // we want the frame position and the client area size
         QRect rect = scaledQRect({ asChild()->pos(), asChild()->size() }, devicePixelRatioF());
-        pState->setPosSize(toRectangle(rect));
-        pState->rMask() |= vcl::WindowDataMask::PosSize;
+        aState.setPosSize(toRectangle(rect));
+        aState.rMask() |= vcl::WindowDataMask::PosSize;
     }
 
-    return true;
+    return aState;
 }
 
 void QtFrame::ShowFullScreen(bool bFullScreen, sal_Int32 nScreen)

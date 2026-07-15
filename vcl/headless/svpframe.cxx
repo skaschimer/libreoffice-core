@@ -319,12 +319,13 @@ void SvpSalFrame::SetWindowState(const vcl::WindowData& rState)
                 SAL_FRAME_POSSIZE_WIDTH | SAL_FRAME_POSSIZE_HEIGHT );
 }
 
-bool SvpSalFrame::GetWindowState(vcl::WindowData* pState)
+vcl::WindowData SvpSalFrame::GetWindowState()
 {
-    pState->setPosSize(maGeometry.posSize());
-    pState->setState(vcl::WindowState::Normal);
-    pState->setMask(vcl::WindowDataMask::PosSizeState);
-    return true;
+    vcl::WindowData aState;
+    aState.setPosSize(maGeometry.posSize());
+    aState.setState(vcl::WindowState::Normal);
+    aState.setMask(vcl::WindowDataMask::PosSizeState);
+    return aState;
 }
 
 void SvpSalFrame::ShowFullScreen( bool, sal_Int32 )

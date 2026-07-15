@@ -197,11 +197,8 @@ void WorkWindow::StartPresentationMode( bool bPresentation, PresentationFlags nF
 
 bool WorkWindow::IsMinimized() const
 {
-    vcl::WindowData aData;
-    if (mpWindowImpl->mpFrame->GetWindowState(&aData))
-        return bool(aData.state() & vcl::WindowState::Minimized);
-    else
-        return false;
+    vcl::WindowData aData = mpWindowImpl->mpFrame->GetWindowState();
+    return bool(aData.state() & vcl::WindowState::Minimized);
 }
 
 void WorkWindow::SetPluginParent( SystemParentData* pParent )
@@ -255,17 +252,10 @@ void WorkWindow::Maximize( bool bMaximize )
 
 bool WorkWindow::IsMaximized() const
 {
-    bool bRet = false;
-
-    vcl::WindowData aState;
-    if( mpWindowImpl->mpFrame->GetWindowState( &aState ) )
-    {
-        if( aState.state() & (vcl::WindowState::Maximized          |
-                              vcl::WindowState::MaximizedHorz     |
-                              vcl::WindowState::MaximizedVert ) )
-            bRet = true;
-    }
-    return bRet;
+    vcl::WindowData aState = mpWindowImpl->mpFrame->GetWindowState();
+    return bool(aState.state()
+                & (vcl::WindowState::Maximized | vcl::WindowState::MaximizedHorz
+                   | vcl::WindowState::MaximizedVert));
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

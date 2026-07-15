@@ -1559,12 +1559,13 @@ void X11SalFrame::SetWindowState(const vcl::WindowData& rState)
     }
 }
 
-bool X11SalFrame::GetWindowState( vcl::WindowData* pState )
+vcl::WindowData X11SalFrame::GetWindowState()
 {
+    vcl::WindowData aState;
     if( X11ShowState::Minimized == nShowState_ )
-        pState->setState(vcl::WindowState::Minimized);
+        aState.setState(vcl::WindowState::Minimized);
     else
-        pState->setState(vcl::WindowState::Normal);
+        aState.setState(vcl::WindowState::Normal);
 
     AbsoluteScreenPixelRectangle aPosSize;
     if( maRestorePosSize.IsEmpty() )
@@ -1573,25 +1574,25 @@ bool X11SalFrame::GetWindowState( vcl::WindowData* pState )
         aPosSize = maRestorePosSize;
 
     if( mbMaximizedHorz )
-        pState->rState() |= vcl::WindowState::MaximizedHorz;
+        aState.rState() |= vcl::WindowState::MaximizedHorz;
     if( mbMaximizedVert )
-        pState->rState() |= vcl::WindowState::MaximizedVert;
+        aState.rState() |= vcl::WindowState::MaximizedVert;
 
-    pState->setPosSize(tools::Rectangle(aPosSize));
-    pState->setMask(vcl::WindowDataMask::PosSizeState);
+    aState.setPosSize(tools::Rectangle(aPosSize));
+    aState.setMask(vcl::WindowDataMask::PosSizeState);
 
     if (! maRestorePosSize.IsEmpty() )
     {
         GetPosSize( aPosSize );
-        pState->rState() |= vcl::WindowState::Maximized;
-        pState->SetMaximizedX(aPosSize.Left());
-        pState->SetMaximizedY(aPosSize.Top());
-        pState->SetMaximizedWidth(aPosSize.GetWidth());
-        pState->SetMaximizedHeight(aPosSize.GetHeight());
-        pState->rMask() |= FRAMESTATE_MASK_MAXIMIZED_GEOMETRY;
+        aState.rState() |= vcl::WindowState::Maximized;
+        aState.SetMaximizedX(aPosSize.Left());
+        aState.SetMaximizedY(aPosSize.Top());
+        aState.SetMaximizedWidth(aPosSize.GetWidth());
+        aState.SetMaximizedHeight(aPosSize.GetHeight());
+        aState.rMask() |= FRAMESTATE_MASK_MAXIMIZED_GEOMETRY;
     }
 
-    return true;
+    return aState;
 }
 
 void X11SalFrame::SetMenu( SalMenu* )

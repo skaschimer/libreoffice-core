@@ -2351,32 +2351,32 @@ namespace
     }
 }
 
-bool GtkSalFrame::GetWindowState(vcl::WindowData* pState)
+vcl::WindowData GtkSalFrame::GetWindowState()
 {
-    pState->setState(vcl::WindowState::Normal);
-    pState->setMask(vcl::WindowDataMask::PosSizeState);
+    vcl::WindowData aState;
+    aState.setState(vcl::WindowState::Normal);
+    aState.setMask(vcl::WindowDataMask::PosSizeState);
 
     // rollup ? gtk 2.2 does not seem to support the shaded state
     if( m_nState & GDK_TOPLEVEL_STATE_MINIMIZED )
-        pState->rState() |= vcl::WindowState::Minimized;
+        aState.rState() |= vcl::WindowState::Minimized;
     if( m_nState & GDK_TOPLEVEL_STATE_MAXIMIZED )
     {
-        pState->rState() |= vcl::WindowState::Maximized;
-        pState->setPosSize(m_aRestorePosSize);
+        aState.rState() |= vcl::WindowState::Maximized;
+        aState.setPosSize(m_aRestorePosSize);
         tools::Rectangle aPosSize = GetPosAndSize(GTK_WINDOW(m_pWindow));
-        pState->SetMaximizedX(aPosSize.Left());
-        pState->SetMaximizedY(aPosSize.Top());
-        pState->SetMaximizedWidth(aPosSize.GetWidth());
-        pState->SetMaximizedHeight(aPosSize.GetHeight());
-        pState->rMask() |= vcl::WindowDataMask::MaximizedX          |
-                           vcl::WindowDataMask::MaximizedY          |
-                           vcl::WindowDataMask::MaximizedWidth      |
-                           vcl::WindowDataMask::MaximizedHeight;
+        aState.SetMaximizedX(aPosSize.Left());
+        aState.SetMaximizedY(aPosSize.Top());
+        aState.SetMaximizedWidth(aPosSize.GetWidth());
+        aState.SetMaximizedHeight(aPosSize.GetHeight());
+        aState.rMask() |= vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY
+                          | vcl::WindowDataMask::MaximizedWidth
+                          | vcl::WindowDataMask::MaximizedHeight;
     }
     else
-        pState->setPosSize(GetPosAndSize(GTK_WINDOW(m_pWindow)));
+        aState.setPosSize(GetPosAndSize(GTK_WINDOW(m_pWindow)));
 
-    return true;
+    return aState;
 }
 
 void GtkSalFrame::SetScreen( unsigned int nNewScreen, SetType eType, tools::Rectangle const *pSize )

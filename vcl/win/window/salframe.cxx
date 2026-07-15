@@ -1685,12 +1685,13 @@ void WinSalFrame::SetWindowState(const vcl::WindowData& rState)
         mbDefPos = false; // window was positioned
 }
 
-bool WinSalFrame::GetWindowState(vcl::WindowData* pState)
+vcl::WindowData WinSalFrame::GetWindowState()
 {
-    pState->setPosSize(maGeometry.posSize());
-    pState->setState(m_eState);
-    pState->setMask(vcl::WindowDataMask::PosSizeState);
-    return true;
+    vcl::WindowData aState;
+    aState.setPosSize(maGeometry.posSize());
+    aState.setState(m_eState);
+    aState.setMask(vcl::WindowDataMask::PosSizeState);
+    return aState;
 }
 
 void WinSalFrame::SetScreenNumber( unsigned int nNewScreen )

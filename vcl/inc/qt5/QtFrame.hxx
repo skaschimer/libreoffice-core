@@ -192,7 +192,7 @@ public:
     virtual SalFrame* GetParent() const override;
     virtual void SetModal(bool bModal) override;
     virtual void SetWindowState(const vcl::WindowData& rState) override;
-    virtual bool GetWindowState(vcl::WindowData*) override;
+    virtual vcl::WindowData GetWindowState() override;
     virtual void ShowFullScreen(bool bFullScreen, sal_Int32 nDisplay) override;
     virtual void StartPresentation(bool bStart) override;
     virtual void SetAlwaysOnTop(bool bOnTop) override;

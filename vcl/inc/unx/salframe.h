@@ -222,7 +222,7 @@ public:
     virtual void                GetWorkArea( AbsoluteScreenPixelRectangle& rRect ) override;
     virtual SalFrame*           GetParent() const override;
     virtual void SetWindowState(const vcl::WindowData& rState) override;
-    virtual bool GetWindowState(vcl::WindowData*) override;
+    virtual vcl::WindowData GetWindowState() override;
     virtual void                ShowFullScreen( bool bFullScreen, sal_Int32 nMonitor ) override;
     virtual void                StartPresentation( bool bStart ) override;
     virtual void                SetAlwaysOnTop( bool bOnTop ) override;
