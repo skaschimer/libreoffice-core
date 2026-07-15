@@ -54,9 +54,9 @@ void SwVbaContentControlListEntry::setText(const OUString& rSet)
     assert(m_nZIndex < vListItems.size());
 
     // prevent duplicates
-    for (size_t i = 0; i < vListItems.size(); ++i)
+    for (const auto& rListItem : vListItems)
     {
-        if (vListItems[i].ToString() == rSet)
+        if (rListItem.ToString() == rSet)
             return;
     }
 
