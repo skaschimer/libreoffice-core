@@ -156,7 +156,7 @@ void WorkWindow::StartPresentationMode( PresentationFlags nFlags )
 
 void WorkWindow::StartPresentationMode( bool bPresentation, PresentationFlags nFlags, sal_Int32 nDisplayScreen )
 {
-    if ( !bPresentation == !mbPresentationMode )
+    if (bPresentation == mbPresentationMode)
         return;
 
     if ( bPresentation )
