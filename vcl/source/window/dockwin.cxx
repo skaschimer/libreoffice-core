@@ -922,9 +922,7 @@ Point DockingWindow::GetFloatingPos() const
     {
         if ( pWrapper->mpFloatWin )
         {
-            vcl::WindowData aData;
-            aData.setMask(vcl::WindowDataMask::Pos);
-            pWrapper->mpFloatWin->GetWindowState( aData );
+            const vcl::WindowData aData = pWrapper->mpFloatWin->GetWindowState(vcl::WindowDataMask::Pos);
             AbsoluteScreenPixelPoint aPos(aData.x(), aData.y());
             // LOK needs logic coordinates not absolute screen position for autofilter menu
             if (!comphelper::LibreOfficeKit::isActive())
@@ -937,9 +935,7 @@ Point DockingWindow::GetFloatingPos() const
 
     if ( mpFloatWin )
     {
-        vcl::WindowData aData;
-        aData.setMask(vcl::WindowDataMask::Pos);
-        mpFloatWin->GetWindowState( aData );
+        const vcl::WindowData aData = mpFloatWin->GetWindowState(vcl::WindowDataMask::Pos);
         AbsoluteScreenPixelPoint aPos(aData.x(), aData.y());
         return mpFloatWin->GetParent()->ImplGetFrameWindow()->AbsoluteScreenToOutputPixel( aPos );
     }

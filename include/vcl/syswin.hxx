@@ -154,6 +154,8 @@ private:
     // during actions
     SAL_DLLPRIVATE void ensureRepaint();
 
+    SAL_DLLPRIVATE void GetWindowState(vcl::WindowData& rData) const;
+
 protected:
     // Single argument ctors shall be explicit.
     SAL_DLLPRIVATE explicit SystemWindow(
@@ -216,7 +218,6 @@ public:
     VclPtr<NotebookBar> const & GetNotebookBar() const;
 
     TaskPaneList*   GetTaskPaneList();
-    SAL_DLLPRIVATE void GetWindowState(vcl::WindowData& rData) const;
 
     virtual void     SetText( const OUString& rStr ) override;
     virtual OUString GetText() const override;
