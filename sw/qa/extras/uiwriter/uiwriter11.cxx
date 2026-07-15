@@ -102,6 +102,27 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf113213_addToList)
     CPPUNIT_ASSERT_EQUAL(OUString("1."), getProperty<OUString>(getParagraph(6), "ListLabelString"));
 }
 
+CPPUNIT_TEST_FIXTURE(SwUiWriterTest11, testTdf149061_moveNumParas)
+{
+    // given a document with a list containing some subPoints
+    createSwDoc("tdf149061_moveNumParas.odt");
+
+    // Move 'First Point' below 'Second Point' and its subpoint
+    dispatchCommand(mxComponent, u".uno:MoveDownSubItems"_ustr, {});
+    // Without the fix, this action was prevented by the section.
+    getParagraph(3, "First Point.");
+
+    // Position the cursor on 'A Point'
+    dispatchCommand(mxComponent, u".uno:GoToEndOfDoc"_ustr, {}); // subpoint
+    dispatchCommand(mxComponent, u".uno:GoToPrevPara"_ustr, {}); // B Point
+    dispatchCommand(mxComponent, u".uno:GoToPrevPara"_ustr, {}); // A Point
+
+    // Move 'A Point' below 'B Point' and its subpoint
+    dispatchCommand(mxComponent, u".uno:MoveDownSubItems"_ustr, {});
+    // Without the fix, this separated B from its subpoint - leaving the subpoint under A.
+    getParagraph(8, "A Point");
+}
+
 SwPostItMgr* getPostItMgr(SwDocShell* pDocShell)
 {
     CPPUNIT_ASSERT(pDocShell);
