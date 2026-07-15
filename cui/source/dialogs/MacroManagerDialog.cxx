@@ -291,8 +291,12 @@ void ScriptContainersListBox::Fill(const weld::TreeIter* pEntryIter)
                 currentDocTitle = comphelper::DocumentInfo::getDocumentTitle(xModel);
         }
 
-        const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>> children
-            = xNode->getChildNodes();
+        std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> children
+            = comphelper::scriptbrowse::getChildNodes(xNode);
+
+        if (!bIsRootNode)
+            comphelper::scriptbrowse::sortNodes(children);
+
         for (css::uno::Reference<css::script::browse::XBrowseNode> const& theChild : children)
         {
             if (!theChild.is())
@@ -342,8 +346,8 @@ void ScriptContainersListBox::Fill(const weld::TreeIter* pEntryIter)
 
             if (theChild->hasChildNodes())
             {
-                const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
-                    grandchildren = theChild->getChildNodes();
+                const std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>
+                    grandchildren = comphelper::scriptbrowse::getChildNodes(theChild);
                 for (const auto& rxNode : grandchildren)
                 {
                     if (!rxNode.is())
@@ -476,8 +480,8 @@ void ScriptContainersListBox::ScriptContainerSelected()
         {
             if (xBrowseNode->hasChildNodes())
             {
-                const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
-                    children = xBrowseNode->getChildNodes();
+                const std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> children
+                    = comphelper::scriptbrowse::getSortedChildNodes(xBrowseNode);
 
                 for (const css::uno::Reference<css::script::browse::XBrowseNode>& childNode :
                      children)
@@ -2233,8 +2237,8 @@ OUString MacroManagerDialog::getListOfChildren(
     {
         if (node->hasChildNodes())
         {
-            const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>> children
-                = node->getChildNodes();
+            const std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> children
+                = comphelper::scriptbrowse::getSortedChildNodes(node);
             for (const css::uno::Reference<css::script::browse::XBrowseNode>& n : children)
             {
                 result.append(getListOfChildren(n, depth + 1));
@@ -2331,7 +2335,7 @@ void MacroManagerDialog::ScriptingFrameworkScriptsCreateEntry(InputDialogMode eI
         bool bValid = false;
         sal_Int32 i = 1;
 
-        css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>> childNodes;
+        std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> childNodes;
         // no children => ok to create Parcel1 or Script1 without checking ?
         try
         {
@@ -2342,7 +2346,7 @@ void MacroManagerDialog::ScriptingFrameworkScriptsCreateEntry(InputDialogMode eI
             }
             else
             {
-                childNodes = xBrowseNode->getChildNodes();
+                childNodes = comphelper::scriptbrowse::getChildNodes(xBrowseNode);
             }
         }
         catch (css::uno::Exception&)
@@ -2355,7 +2359,7 @@ void MacroManagerDialog::ScriptingFrameworkScriptsCreateEntry(InputDialogMode eI
         {
             aNewName = aNewStdName + OUString::number(i);
             bool bFound = false;
-            if (childNodes.hasElements())
+            if (!childNodes.empty())
             {
                 OUString nodeName = childNodes[0]->getName();
                 sal_Int32 extnPos = nodeName.lastIndexOf('.');

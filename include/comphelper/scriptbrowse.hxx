@@ -15,6 +15,8 @@
 
 #include <com/sun/star/uno/Reference.hxx>
 
+#include <vector>
+
 namespace com::sun::star::script::browse
 {
 class XBrowseNode;
@@ -43,6 +45,13 @@ isRenamable(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode);
 COMPHELPER_DLLPUBLIC css::uno::Reference<css::script::browse::XBrowseNode>
 renameNode(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode,
            const OUString& sName);
+
+COMPHELPER_DLLPUBLIC std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>
+getChildNodes(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode);
+COMPHELPER_DLLPUBLIC void
+sortNodes(std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>& aNodes);
+COMPHELPER_DLLPUBLIC std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>
+getSortedChildNodes(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */

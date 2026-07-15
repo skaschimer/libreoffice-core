@@ -134,7 +134,7 @@ void SvxScriptOrgDialog::Init( std::u16string_view language  )
     const Reference< XComponentContext >& xCtx(
         comphelper::getProcessComponentContext() );
 
-    Sequence< Reference< browse::XBrowseNode > > children;
+    std::vector< Reference< browse::XBrowseNode > > children;
 
     try
     {
@@ -145,7 +145,7 @@ void SvxScriptOrgDialog::Init( std::u16string_view language  )
 
         if (  rootNode.is() && rootNode->hasChildNodes() )
         {
-            children = rootNode->getChildNodes();
+            children = comphelper::scriptbrowse::getChildNodes(rootNode);
         }
     }
     catch( const Exception& )
@@ -215,7 +215,8 @@ SvxScriptOrgDialog::getLangNodeFromRootNode( Reference< browse::XBrowseNode > co
     try
     {
         auto tryFind = [&] {
-            const Sequence<Reference<browse::XBrowseNode>> children = rootNode->getChildNodes();
+            const std::vector<Reference<browse::XBrowseNode>> children
+                = comphelper::scriptbrowse::getChildNodes(rootNode);
             const auto it = std::find_if(children.begin(), children.end(),
                                          [&](const Reference<browse::XBrowseNode>& child) {
                                              return child->getName() == language;
@@ -249,10 +250,10 @@ void SvxScriptOrgDialog::RequestSubEntries(const weld::TreeIter& rRootEntry, Ref
         return;
     }
 
-    Sequence< Reference< browse::XBrowseNode > > children;
+    std::vector< Reference< browse::XBrowseNode > > children;
     try
     {
-        children = node->getChildNodes();
+        children = comphelper::scriptbrowse::getSortedChildNodes(node);
     }
     catch ( Exception& )
     {
@@ -645,7 +646,7 @@ void SvxScriptOrgDialog::createEntry(const weld::TreeIter& rEntry)
         bool bValid = false;
         sal_Int32 i = 1;
 
-        Sequence< Reference< browse::XBrowseNode > > childNodes;
+        std::vector< Reference< browse::XBrowseNode > > childNodes;
         // no children => ok to create Parcel1 or Script1 without checking
         try
         {
@@ -656,7 +657,7 @@ void SvxScriptOrgDialog::createEntry(const weld::TreeIter& rEntry)
             }
             else
             {
-                childNodes = node->getChildNodes();
+                childNodes = comphelper::scriptbrowse::getChildNodes(node);
             }
         }
         catch ( Exception& )
@@ -669,7 +670,7 @@ void SvxScriptOrgDialog::createEntry(const weld::TreeIter& rEntry)
         {
             aNewName = aNewStdName + OUString::number(i);
             bool bFound = false;
-            if(childNodes.hasElements() )
+            if(!childNodes.empty() )
             {
                 OUString nodeName = childNodes[0]->getName();
                 sal_Int32 extnPos = nodeName.lastIndexOf( '.' );
@@ -892,8 +893,8 @@ OUString SvxScriptOrgDialog::getListOfChildren( const Reference< browse::XBrowse
     {
         if ( node->hasChildNodes() )
         {
-            const Sequence< Reference< browse::XBrowseNode > > children
-                = node->getChildNodes();
+            const std::vector< Reference< browse::XBrowseNode > > children
+                = comphelper::scriptbrowse::getSortedChildNodes(node);
             for( const Reference< browse::XBrowseNode >& n : children )
             {
                 result.append( getListOfChildren( n , depth+1 ) );

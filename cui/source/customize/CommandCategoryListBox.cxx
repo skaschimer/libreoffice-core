@@ -43,6 +43,7 @@
 #include <comphelper/processfactory.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <comphelper/SetFlagContextHelper.hxx>
+#include <comphelper/scriptbrowse.hxx>
 #include <comphelper/string.hxx>
 #include <officecfg/Office/Common.hxx>
 #include <i18nlangtag/languagetag.hxx>
@@ -350,8 +351,8 @@ void CommandCategoryListBox::categorySelected(CuiConfigFunctionListBox* pFunctio
                     0));
 
                 // Add main macro groups
-                const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>>
-                    aChildNodes = rootNode->getChildNodes();
+                const std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> aChildNodes
+                    = comphelper::scriptbrowse::getChildNodes(rootNode);
                 for (auto const& childGroup : aChildNodes)
                 {
                     if (childGroup->hasChildNodes())
@@ -498,8 +499,8 @@ void CommandCategoryListBox::addChildren(
     m_searchOptions.searchString = filterTerm;
     utl::TextSearch textSearch(m_searchOptions);
 
-    const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>> aChildNodes
-        = parentNode->getChildNodes();
+    const std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> aChildNodes
+        = comphelper::scriptbrowse::getSortedChildNodes(parentNode);
     for (auto const& child : aChildNodes)
     {
         if (child->hasChildNodes())

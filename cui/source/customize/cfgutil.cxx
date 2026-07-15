@@ -44,6 +44,7 @@
 #include <comphelper/documentinfo.hxx>
 #include <comphelper/lok.hxx>
 #include <comphelper/processfactory.hxx>
+#include <comphelper/scriptbrowse.hxx>
 #include <comphelper/sequenceashashmap.hxx>
 #include <svtools/imagemgr.hxx>
 #include <svtools/viewoptions.hxx>
@@ -475,8 +476,8 @@ void CuiConfigGroupListBox::FillScriptList(const css::uno::Reference< css::scrip
             // tdf#120362: Don't ask to enable disabled Java when filling script list
             css::uno::ContextLayer layer(comphelper::NoEnableJavaInteractionContext());
 
-            const Sequence< Reference< browse::XBrowseNode > > children =
-                xRootNode->getChildNodes();
+            std::vector< Reference< browse::XBrowseNode > > children =
+                comphelper::scriptbrowse::getChildNodes(xRootNode);
             bool bIsRootNode = false;
 
             OUString user(u"user"_ustr);
@@ -484,6 +485,10 @@ void CuiConfigGroupListBox::FillScriptList(const css::uno::Reference< css::scrip
             if ( xRootNode->getName() == "Root" )
             {
                 bIsRootNode = true;
+            }
+            else
+            {
+                comphelper::scriptbrowse::sortNodes(children);
             }
 
             //To mimic current starbasic behaviour we
@@ -540,8 +545,8 @@ void CuiConfigGroupListBox::FillScriptList(const css::uno::Reference< css::scrip
 
                     if ( theChild->hasChildNodes() )
                     {
-                        const Sequence< Reference< browse::XBrowseNode > > grandchildren =
-                            theChild->getChildNodes();
+                        const std::vector< Reference< browse::XBrowseNode > > grandchildren =
+                            comphelper::scriptbrowse::getChildNodes(theChild);
 
                         for ( const auto& rxNode : grandchildren )
                         {
@@ -835,8 +840,8 @@ void CuiConfigGroupListBox::GroupSelected()
             try {
                 if ( rContainerData.xBrowseNode->hasChildNodes() )
                 {
-                    const Sequence< Reference< browse::XBrowseNode > > children =
-                        rContainerData.xBrowseNode->getChildNodes();
+                    const std::vector< Reference< browse::XBrowseNode > > children =
+                        comphelper::scriptbrowse::getSortedChildNodes(rContainerData.xBrowseNode);
 
                     for ( const Reference< browse::XBrowseNode >& childNode : children )
                     {

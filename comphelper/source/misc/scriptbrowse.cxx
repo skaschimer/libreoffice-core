@@ -9,6 +9,7 @@
 
 #include <sal/config.h>
 
+#include <comphelper/diagnose_ex.hxx>
 #include <comphelper/scriptbrowse.hxx>
 
 #include <com/sun/star/beans/XPropertySet.hpp>
@@ -198,6 +199,49 @@ renameNode(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode,
 
         return xResult;
     }
+}
+
+std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>
+getChildNodes(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode)
+{
+    std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> aNodes;
+
+    if (!xNode->hasChildNodes())
+    {
+        // no nodes
+        return aNodes;
+    }
+
+    const css::uno::Sequence<css::uno::Reference<css::script::browse::XBrowseNode>> aNodeSequence
+        = xNode->getChildNodes();
+
+    aNodes.reserve(aNodeSequence.getLength());
+    std::copy_if(aNodeSequence.begin(), aNodeSequence.end(), std::back_inserter(aNodes),
+                 [](const auto& xChild) {
+                     OSL_ENSURE(xChild.is(),
+                                "comphelper::scriptbrowse::getChildNodes(): Invalid BrowseNode");
+                     return xChild.is();
+                 });
+
+    return aNodes;
+}
+
+void sortNodes(std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>& aNodes)
+{
+    std::sort(aNodes.begin(), aNodes.end(), [](const auto& a, const auto& b) {
+        return a->getName().compareTo(b->getName()) < 0;
+    });
+}
+
+std::vector<css::uno::Reference<css::script::browse::XBrowseNode>>
+getSortedChildNodes(const css::uno::Reference<css::script::browse::XBrowseNode>& xNode)
+{
+    std::vector<css::uno::Reference<css::script::browse::XBrowseNode>> aNodes
+        = getChildNodes(xNode);
+
+    sortNodes(aNodes);
+
+    return aNodes;
 }
 }
 
