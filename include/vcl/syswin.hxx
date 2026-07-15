@@ -154,8 +154,6 @@ private:
     // during actions
     SAL_DLLPRIVATE void ensureRepaint();
 
-    SAL_DLLPRIVATE void GetWindowState(vcl::WindowData& rData) const;
-
 protected:
     // Single argument ctors shall be explicit.
     SAL_DLLPRIVATE explicit SystemWindow(
