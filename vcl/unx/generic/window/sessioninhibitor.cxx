@@ -44,8 +44,8 @@
 
 #include <sal/log.hxx>
 
-void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason, ApplicationInhibitFlags eType,
-                                      unsigned int window_system_id, const char* application_id)
+void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason,
+                                      ApplicationInhibitFlags eType, const char* application_id)
 {
     const char* appname = application_id ? application_id : X11Helper::getFrameClassName();
     const OString aReason = OUStringToOString( sReason, RTL_TEXTENCODING_UTF8 );
@@ -56,17 +56,16 @@ void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason
         inhibitFDOPM( bInhibit, appname, aReason.getStr() );
     }
 
-    inhibitGSM(bInhibit, appname, aReason.getStr(), eType, window_system_id);
-
+    inhibitGSM(bInhibit, appname, aReason.getStr(), eType);
 }
 
 
 #if USING_X11
-void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason, ApplicationInhibitFlags eType,
-                                      unsigned int window_system_id, std::optional<Display*> pDisplay,
-                                      const char* application_id)
+void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason,
+                                      ApplicationInhibitFlags eType,
+                                      std::optional<Display*> pDisplay, const char* application_id)
 {
-    inhibit(bInhibit, sReason, eType, window_system_id, application_id);
+    inhibit(bInhibit, sReason, eType, application_id);
 
     if (eType == APPLICATION_INHIBIT_IDLE && pDisplay)
     {
@@ -212,16 +211,20 @@ void SessionManagerInhibitor::inhibitFDOPM( bool bInhibit, const char* appname, 
 #endif // ENABLE_GIO
 }
 
-void SessionManagerInhibitor::inhibitGSM( bool bInhibit, const char* appname, const char* reason, ApplicationInhibitFlags eType, unsigned int window_system_id )
+void SessionManagerInhibitor::inhibitGSM(bool bInhibit, const char* appname, const char* reason,
+                                         ApplicationInhibitFlags eType)
 {
 #if ENABLE_GIO
+    // the second param used to be the toplevel X window identifier in the past, but is ignored now, see
+    // https://gitlab.gnome.org/GNOME/gnome-session/-/commit/4458144dadf44d320f54b332a414813c0fea9e44
+    static constexpr unsigned int nIgnored = 0;
     dbusInhibit( bInhibit,
                  GSM_DBUS_SERVICE, GSM_DBUS_PATH, GSM_DBUS_INTERFACE,
-                 [appname, reason, eType, window_system_id] ( GDBusProxy *proxy, GError*& error ) -> GVariant* {
+                 [appname, reason, eType] ( GDBusProxy *proxy, GError*& error ) -> GVariant* {
                      return g_dbus_proxy_call_sync( proxy, "Inhibit",
                                                     g_variant_new("(susu)",
                                                                   appname,
-                                                                  window_system_id,
+                                                                  nIgnored,
                                                                   reason,
                                                                   eType
                                                                  ),
@@ -239,7 +242,6 @@ void SessionManagerInhibitor::inhibitGSM( bool bInhibit, const char* appname, co
     (void) appname;
     (void) reason;
     (void) eType;
-    (void) window_system_id;
 #endif // ENABLE_GIO
 }
 

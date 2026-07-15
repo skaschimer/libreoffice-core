@@ -31,12 +31,11 @@ class VCL_PLUGIN_PUBLIC SessionManagerInhibitor
 {
 public:
     void inhibit(bool bInhibit, std::u16string_view sReason, ApplicationInhibitFlags eType,
-                 unsigned int window_system_id = 0, const char* application_id = nullptr);
+                 const char* application_id = nullptr);
 #if USING_X11
     // calls the above and direct X11-specific API calls in addition
     void inhibit(bool bInhibit, std::u16string_view sReason, ApplicationInhibitFlags eType,
-                 unsigned int window_system_id, std::optional<Display*> pDisplay,
-                 const char* application_id = nullptr);
+                 std::optional<Display*> pDisplay, const char* application_id = nullptr);
 #endif
 
 private:
@@ -75,7 +74,7 @@ private:
     SAL_DLLPRIVATE void inhibitFDOSS(bool bInhibit, const char* appname, const char* reason);
     SAL_DLLPRIVATE void inhibitFDOPM(bool bInhibit, const char* appname, const char* reason);
     SAL_DLLPRIVATE void inhibitGSM(bool bInhibit, const char* appname, const char* reason,
-                                   ApplicationInhibitFlags eType, unsigned int window_system_id);
+                                   ApplicationInhibitFlags eType);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

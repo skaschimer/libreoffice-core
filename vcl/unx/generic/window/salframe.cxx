@@ -1951,11 +1951,8 @@ void X11SalFrame::ShowFullScreen( bool bFullScreen, sal_Int32 nScreen )
 
 void X11SalFrame::StartPresentation( bool bStart )
 {
-    maSessionManagerInhibitor.inhibit( bStart,
-                                    u"presentation",
-                                    APPLICATION_INHIBIT_IDLE,
-                                    mhWindow,
-                                    GetXDisplay() );
+    maSessionManagerInhibitor.inhibit(bStart, u"presentation", APPLICATION_INHIBIT_IDLE,
+                                      GetXDisplay());
 
     if( ! bStart && hPresentationWindow != None )
         doReparentPresentationDialogues( GetDisplay() );

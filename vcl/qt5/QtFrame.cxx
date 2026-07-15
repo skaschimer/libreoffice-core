@@ -670,15 +670,10 @@ void QtFrame::StartPresentation(bool bStart)
 {
 #if defined LINUX || defined __sun || defined FREEBSD || defined OPENBSD || defined MACOSX
 #if CHECK_QT5_USING_X11
-    unsigned int nRootWindow(0);
     std::optional<Display*> aDisplay;
     if (QX11Info::isPlatformX11())
-    {
-        nRootWindow = QX11Info::appRootWindow();
         aDisplay = QX11Info::display();
-    }
-    m_SessionManagerInhibitor.inhibit(bStart, u"presentation", APPLICATION_INHIBIT_IDLE,
-                                      nRootWindow, aDisplay);
+    m_SessionManagerInhibitor.inhibit(bStart, u"presentation", APPLICATION_INHIBIT_IDLE, aDisplay);
 #else
     m_SessionManagerInhibitor.inhibit(bStart, u"presentation", APPLICATION_INHIBIT_IDLE);
 #endif
