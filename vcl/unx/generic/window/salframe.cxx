@@ -1415,23 +1415,21 @@ constexpr auto FRAMESTATE_MASK_MAXIMIZED_GEOMETRY =
      vcl::WindowDataMask::MaximizedX     | vcl::WindowDataMask::MaximizedY |
      vcl::WindowDataMask::MaximizedWidth | vcl::WindowDataMask::MaximizedHeight;
 
-void X11SalFrame::SetWindowState( const vcl::WindowData *pState )
+void X11SalFrame::SetWindowState(const vcl::WindowData& rState)
 {
-    if (pState == nullptr)
-        return;
-
     // Request for position or size change
-    if (pState->mask() & vcl::WindowDataMask::PosSize)
+    if (rState.mask() & vcl::WindowDataMask::PosSize)
     {
         /* #i44325#
          * if maximized, set restore size and guess maximized size from last time
          * in state change below maximize window
          */
-        if( ! IsChildWindow() &&
-            (pState->mask() & vcl::WindowDataMask::PosSizeState) == vcl::WindowDataMask::PosSizeState &&
-            (pState->state() & vcl::WindowState::Maximized) &&
-            (pState->mask() & FRAMESTATE_MASK_MAXIMIZED_GEOMETRY) == FRAMESTATE_MASK_MAXIMIZED_GEOMETRY
-            )
+        if (!IsChildWindow()
+            && (rState.mask() & vcl::WindowDataMask::PosSizeState)
+                   == vcl::WindowDataMask::PosSizeState
+            && (rState.state() & vcl::WindowState::Maximized)
+            && (rState.mask() & FRAMESTATE_MASK_MAXIMIZED_GEOMETRY)
+                   == FRAMESTATE_MASK_MAXIMIZED_GEOMETRY)
         {
             XSizeHints* pHints = XAllocSizeHints();
             tools::Long nSupplied = 0;
@@ -1440,18 +1438,20 @@ void X11SalFrame::SetWindowState( const vcl::WindowData *pState )
                                pHints,
                                &nSupplied );
             pHints->flags |= PPosition | PWinGravity;
-            pHints->x = pState->x();
-            pHints->y = pState->y();
+            pHints->x = rState.x();
+            pHints->y = rState.y();
             pHints->win_gravity = pDisplay_->getWMAdaptor()->getPositionWinGravity();
             XSetWMNormalHints(GetXDisplay(), GetShellWindow(), pHints);
             XFree( pHints );
 
-            XMoveResizeWindow(GetXDisplay(), GetShellWindow(), pState->x(), pState->y(),
-                              pState->width(), pState->height());
+            XMoveResizeWindow(GetXDisplay(), GetShellWindow(), rState.x(), rState.y(),
+                              rState.width(), rState.height());
             // guess maximized geometry from last time
-            maGeometry.setPos({ pState->GetMaximizedX(), pState->GetMaximizedY() });
-            maGeometry.setSize({ static_cast<tools::Long>(pState->GetMaximizedWidth()), static_cast<tools::Long>(pState->GetMaximizedHeight()) });
-            cairo_xlib_surface_set_size(mpSurface,  pState->GetMaximizedWidth(), pState->GetMaximizedHeight());
+            maGeometry.setPos({ rState.GetMaximizedX(), rState.GetMaximizedY() });
+            maGeometry.setSize({ static_cast<tools::Long>(rState.GetMaximizedWidth()),
+                                 static_cast<tools::Long>(rState.GetMaximizedHeight()) });
+            cairo_xlib_surface_set_size(mpSurface, rState.GetMaximizedWidth(),
+                                        rState.GetMaximizedHeight());
             updateScreenNumber();
         }
         else
@@ -1459,31 +1459,31 @@ void X11SalFrame::SetWindowState( const vcl::WindowData *pState )
             bool bDoAdjust = false;
             AbsoluteScreenPixelRectangle aPosSize;
             // initialize with current geometry
-            if ((pState->mask() & vcl::WindowDataMask::PosSize) != vcl::WindowDataMask::PosSize)
+            if ((rState.mask() & vcl::WindowDataMask::PosSize) != vcl::WindowDataMask::PosSize)
                 GetPosSize(aPosSize);
 
             sal_uInt16 nPosFlags = 0;
 
             // change requested properties
-            if (pState->mask() & vcl::WindowDataMask::X)
+            if (rState.mask() & vcl::WindowDataMask::X)
             {
-                aPosSize.SetPosX(pState->x() - (mpParent ? mpParent->maGeometry.x() : 0));
+                aPosSize.SetPosX(rState.x() - (mpParent ? mpParent->maGeometry.x() : 0));
                 nPosFlags |= SAL_FRAME_POSSIZE_X;
             }
-            if (pState->mask() & vcl::WindowDataMask::Y)
+            if (rState.mask() & vcl::WindowDataMask::Y)
             {
-                aPosSize.SetPosY(pState->y() - (mpParent ? mpParent->maGeometry.y() : 0));
+                aPosSize.SetPosY(rState.y() - (mpParent ? mpParent->maGeometry.y() : 0));
                 nPosFlags |= SAL_FRAME_POSSIZE_Y;
             }
-            if (pState->mask() & vcl::WindowDataMask::Width)
+            if (rState.mask() & vcl::WindowDataMask::Width)
             {
-                tools::Long nWidth = pState->width() > 0 ? pState->width()  - 1 : 0;
+                tools::Long nWidth = rState.width() > 0 ? rState.width() - 1 : 0;
                 aPosSize.setWidth (nWidth);
                 bDoAdjust = true;
             }
-            if (pState->mask() & vcl::WindowDataMask::Height)
+            if (rState.mask() & vcl::WindowDataMask::Height)
             {
-                int nHeight = pState->height() > 0 ? pState->height() - 1 : 0;
+                int nHeight = rState.height() > 0 ? rState.height() - 1 : 0;
                 aPosSize.setHeight (nHeight);
                 bDoAdjust = true;
             }
@@ -1527,32 +1527,32 @@ void X11SalFrame::SetWindowState( const vcl::WindowData *pState )
     }
 
     // request for status change
-    if (!(pState->mask() & vcl::WindowDataMask::State))
+    if (!(rState.mask() & vcl::WindowDataMask::State))
         return;
 
-    if (pState->state() & vcl::WindowState::Maximized)
+    if (rState.state() & vcl::WindowState::Maximized)
     {
         nShowState_ = X11ShowState::Normal;
-        if( ! (pState->state() & (vcl::WindowState::MaximizedHorz|vcl::WindowState::MaximizedVert) ) )
+        if (!(rState.state() & (vcl::WindowState::MaximizedHorz | vcl::WindowState::MaximizedVert)))
             Maximize();
         else
         {
-            bool bHorz(pState->state() & vcl::WindowState::MaximizedHorz);
-            bool bVert(pState->state() & vcl::WindowState::MaximizedVert);
+            bool bHorz(rState.state() & vcl::WindowState::MaximizedHorz);
+            bool bVert(rState.state() & vcl::WindowState::MaximizedVert);
             GetDisplay()->getWMAdaptor()->maximizeFrame( this, bHorz, bVert );
         }
-        maRestorePosSize = AbsoluteScreenPixelRectangle(pState->posSize());
+        maRestorePosSize = AbsoluteScreenPixelRectangle(rState.posSize());
     }
     else if( mbMaximizedHorz || mbMaximizedVert )
         GetDisplay()->getWMAdaptor()->maximizeFrame( this, false, false );
 
-    if (pState->state() & vcl::WindowState::Minimized)
+    if (rState.state() & vcl::WindowState::Minimized)
     {
         if (nShowState_ == X11ShowState::Unknown)
             nShowState_ = X11ShowState::Normal;
         Minimize();
     }
-    if (pState->state() & vcl::WindowState::Normal)
+    if (rState.state() & vcl::WindowState::Normal)
     {
         if (nShowState_ != X11ShowState::Normal)
             Restore();

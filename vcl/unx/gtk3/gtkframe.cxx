@@ -2249,52 +2249,52 @@ SalFrame* GtkSalFrame::GetParent() const
     return m_pParent;
 }
 
-void GtkSalFrame::SetWindowState(const vcl::WindowData* pState)
+void GtkSalFrame::SetWindowState(const vcl::WindowData& rState)
 {
-    if( ! m_pWindow || ! pState || isChild( true, false ) )
+    if (!m_pWindow || isChild(true, false))
         return;
 
     const vcl::WindowDataMask nMaxGeometryMask = vcl::WindowDataMask::PosSize |
         vcl::WindowDataMask::MaximizedX | vcl::WindowDataMask::MaximizedY |
         vcl::WindowDataMask::MaximizedWidth | vcl::WindowDataMask::MaximizedHeight;
 
-    if( (pState->mask() & vcl::WindowDataMask::State) &&
-        ! ( m_nState & GDK_TOPLEVEL_STATE_MAXIMIZED ) &&
-        (pState->state() & vcl::WindowState::Maximized) &&
-        (pState->mask() & nMaxGeometryMask) == nMaxGeometryMask )
+    if ((rState.mask() & vcl::WindowDataMask::State)
+        && !(m_nState & GDK_TOPLEVEL_STATE_MAXIMIZED)
+        && (rState.state() & vcl::WindowState::Maximized)
+        && (rState.mask() & nMaxGeometryMask) == nMaxGeometryMask)
     {
-        resizeWindow(pState->width(), pState->height());
-        moveWindow(pState->x(), pState->y());
+        resizeWindow(rState.width(), rState.height());
+        moveWindow(rState.x(), rState.y());
         m_bDefaultPos = m_bDefaultSize = false;
 
         updateScreenNumber();
 
         m_nState = GdkToplevelState(m_nState | GDK_TOPLEVEL_STATE_MAXIMIZED);
-        m_aRestorePosSize = pState->posSize();
+        m_aRestorePosSize = rState.posSize();
     }
-    else if (pState->mask() & vcl::WindowDataMask::PosSize)
+    else if (rState.mask() & vcl::WindowDataMask::PosSize)
     {
         sal_uInt16 nPosSizeFlags = 0;
-        tools::Long nX = pState->x() - (m_pParent ? m_pParent->maGeometry.x() : 0);
-        tools::Long nY = pState->y() - (m_pParent ? m_pParent->maGeometry.y() : 0);
-        if (pState->mask() & vcl::WindowDataMask::X)
+        tools::Long nX = rState.x() - (m_pParent ? m_pParent->maGeometry.x() : 0);
+        tools::Long nY = rState.y() - (m_pParent ? m_pParent->maGeometry.y() : 0);
+        if (rState.mask() & vcl::WindowDataMask::X)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_X;
         else
             nX = maGeometry.x() - (m_pParent ? m_pParent->maGeometry.x() : 0);
-        if (pState->mask() & vcl::WindowDataMask::Y)
+        if (rState.mask() & vcl::WindowDataMask::Y)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_Y;
         else
             nY = maGeometry.y() - (m_pParent ? m_pParent->maGeometry.y() : 0);
-        if (pState->mask() & vcl::WindowDataMask::Width)
+        if (rState.mask() & vcl::WindowDataMask::Width)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_WIDTH;
-        if (pState->mask() & vcl::WindowDataMask::Height)
+        if (rState.mask() & vcl::WindowDataMask::Height)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_HEIGHT;
-        SetPosSize(nX, nY, pState->width(), pState->height(), nPosSizeFlags);
+        SetPosSize(nX, nY, rState.width(), rState.height(), nPosSizeFlags);
     }
 
-    if (pState->mask() & vcl::WindowDataMask::State && !isChild())
+    if (rState.mask() & vcl::WindowDataMask::State && !isChild())
     {
-        if (pState->state() & vcl::WindowState::Maximized)
+        if (rState.state() & vcl::WindowState::Maximized)
             gtk_window_maximize( GTK_WINDOW(m_pWindow) );
         else
             gtk_window_unmaximize( GTK_WINDOW(m_pWindow) );
@@ -2306,7 +2306,7 @@ void GtkSalFrame::SetWindowState(const vcl::WindowData* pState)
         *  on windows with a parent (that is transient frames) since these tend
         *  to not be represented in an icon task list.
         */
-        bool bMinimize = pState->state() & vcl::WindowState::Minimized && !m_pParent;
+        bool bMinimize = rState.state() & vcl::WindowState::Minimized && !m_pParent;
 #if GTK_CHECK_VERSION(4, 0, 0)
         if (bMinimize)
             gtk_window_minimize(GTK_WINDOW(m_pWindow));

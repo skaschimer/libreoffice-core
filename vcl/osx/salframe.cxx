@@ -692,17 +692,17 @@ SalEvent AquaSalFrame::PreparePosSize(tools::Long nX, tools::Long nY, tools::Lon
     return nEvent;
 }
 
-void AquaSalFrame::SetWindowState(const vcl::WindowData* pState)
+void AquaSalFrame::SetWindowState(const vcl::WindowData& rState)
 {
-    OSX_SALDATA_RUNINMAIN( SetWindowState( pState ) )
+    OSX_SALDATA_RUNINMAIN(SetWindowState(rState))
 
     sal_uInt16 nFlags = 0;
-    nFlags |= ((pState->mask() & vcl::WindowDataMask::X) ? SAL_FRAME_POSSIZE_X : 0);
-    nFlags |= ((pState->mask() & vcl::WindowDataMask::Y) ? SAL_FRAME_POSSIZE_Y : 0);
-    nFlags |= ((pState->mask() & vcl::WindowDataMask::Width) ? SAL_FRAME_POSSIZE_WIDTH : 0);
-    nFlags |= ((pState->mask() & vcl::WindowDataMask::Height) ? SAL_FRAME_POSSIZE_HEIGHT : 0);
+    nFlags |= ((rState.mask() & vcl::WindowDataMask::X) ? SAL_FRAME_POSSIZE_X : 0);
+    nFlags |= ((rState.mask() & vcl::WindowDataMask::Y) ? SAL_FRAME_POSSIZE_Y : 0);
+    nFlags |= ((rState.mask() & vcl::WindowDataMask::Width) ? SAL_FRAME_POSSIZE_WIDTH : 0);
+    nFlags |= ((rState.mask() & vcl::WindowDataMask::Height) ? SAL_FRAME_POSSIZE_HEIGHT : 0);
 
-    SalEvent nEvent = PreparePosSize(pState->x(), pState->y(), pState->width(), pState->height(), nFlags);
+    SalEvent nEvent = PreparePosSize(rState.x(), rState.y(), rState.width(), rState.height(), nFlags);
     if (mbHeadlessMode)
         return;
 
@@ -710,14 +710,14 @@ void AquaSalFrame::SetWindowState(const vcl::WindowData* pState)
     NSRect aStateRect = [mpNSWindow frame];
     aStateRect = [mpNSWindow contentRectForFrameRect: aStateRect];
     CocoaToVCL(aStateRect);
-    if (pState->mask() & vcl::WindowDataMask::X)
-        aStateRect.origin.x = float(pState->x());
-    if (pState->mask() & vcl::WindowDataMask::Y)
-        aStateRect.origin.y = float(pState->y());
-    if (pState->mask() & vcl::WindowDataMask::Width)
-        aStateRect.size.width = float(pState->width());
-    if (pState->mask() & vcl::WindowDataMask::Height)
-        aStateRect.size.height = float(pState->height());
+    if (rState.mask() & vcl::WindowDataMask::X)
+        aStateRect.origin.x = float(rState.x());
+    if (rState.mask() & vcl::WindowDataMask::Y)
+        aStateRect.origin.y = float(rState.y());
+    if (rState.mask() & vcl::WindowDataMask::Width)
+        aStateRect.size.width = float(rState.width());
+    if (rState.mask() & vcl::WindowDataMask::Height)
+        aStateRect.size.height = float(rState.height());
     VCLToCocoa(aStateRect);
 
     // Related: tdf#128186 don't change size of native full screen windows
@@ -730,7 +730,7 @@ void AquaSalFrame::SetWindowState(const vcl::WindowData* pState)
     aStateRect = [mpNSWindow frameRectForContentRect: aStateRect];
     [mpNSWindow setFrame: aStateRect display: NO];
 
-    if (pState->state() == vcl::WindowState::Minimized)
+    if (rState.state() == vcl::WindowState::Minimized)
         [mpNSWindow miniaturize: NSApp];
     else if ([mpNSWindow isMiniaturized])
         [mpNSWindow deminiaturize: NSApp];
@@ -739,7 +739,7 @@ void AquaSalFrame::SetWindowState(const vcl::WindowData* pState)
        the program specified one), but comes closest since the default behavior is
        "maximized" if the user did not intervene
      */
-    if (pState->state() == vcl::WindowState::Maximized)
+    if (rState.state() == vcl::WindowState::Maximized)
     {
         if (![mpNSWindow isZoomed])
             [mpNSWindow zoom: NSApp];

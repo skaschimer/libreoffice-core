@@ -712,7 +712,7 @@ void SystemWindow::SetWindowState(const vcl::WindowData& rData)
                 }
             }
 
-        mpWindowImpl->mpFrame->SetWindowState( &aState );
+        mpWindowImpl->mpFrame->SetWindowState(aState);
 
         // do a synchronous resize for layout reasons
         //  but use rData only when the window is not to be maximized (#i38089#)

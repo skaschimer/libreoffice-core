@@ -563,16 +563,16 @@ void QtFrame::SetModal(bool bModal)
     });
 }
 
-void QtFrame::SetWindowState(const vcl::WindowData* pState)
+void QtFrame::SetWindowState(const vcl::WindowData& rState)
 {
     QtInstance& rQtInstance = GetQtInstance();
     if (!rQtInstance.IsMainThread())
     {
-        rQtInstance.RunInMainThread([this, pState]() { SetWindowState(pState); });
+        rQtInstance.RunInMainThread([this, rState]() { SetWindowState(rState); });
         return;
     }
 
-    if (!isWindow() || !pState || isChild(true, false))
+    if (!isWindow() || isChild(true, false))
         return;
 
     const vcl::WindowDataMask nMaxGeometryMask
@@ -580,34 +580,34 @@ void QtFrame::SetWindowState(const vcl::WindowData* pState)
           | vcl::WindowDataMask::MaximizedY | vcl::WindowDataMask::MaximizedWidth
           | vcl::WindowDataMask::MaximizedHeight;
 
-    if ((pState->mask() & vcl::WindowDataMask::State)
-        && (pState->state() & vcl::WindowState::Maximized) && !isMaximized()
-        && (pState->mask() & nMaxGeometryMask) == nMaxGeometryMask)
+    if ((rState.mask() & vcl::WindowDataMask::State)
+        && (rState.state() & vcl::WindowState::Maximized) && !isMaximized()
+        && (rState.mask() & nMaxGeometryMask) == nMaxGeometryMask)
     {
         const qreal fRatio = devicePixelRatioF();
         QWidget* const pChild = asChild();
-        pChild->resize(ceil(pState->width() / fRatio), ceil(pState->height() / fRatio));
-        pChild->move(ceil(pState->x() / fRatio), ceil(pState->y() / fRatio));
+        pChild->resize(ceil(rState.width() / fRatio), ceil(rState.height() / fRatio));
+        pChild->move(ceil(rState.x() / fRatio), ceil(rState.y() / fRatio));
         SetWindowStateImpl(Qt::WindowMaximized);
     }
-    else if (pState->mask() & vcl::WindowDataMask::PosSize)
+    else if (rState.mask() & vcl::WindowDataMask::PosSize)
     {
         sal_uInt16 nPosSizeFlags = 0;
-        if (pState->mask() & vcl::WindowDataMask::X)
+        if (rState.mask() & vcl::WindowDataMask::X)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_X;
-        if (pState->mask() & vcl::WindowDataMask::Y)
+        if (rState.mask() & vcl::WindowDataMask::Y)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_Y;
-        if (pState->mask() & vcl::WindowDataMask::Width)
+        if (rState.mask() & vcl::WindowDataMask::Width)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_WIDTH;
-        if (pState->mask() & vcl::WindowDataMask::Height)
+        if (rState.mask() & vcl::WindowDataMask::Height)
             nPosSizeFlags |= SAL_FRAME_POSSIZE_HEIGHT;
-        SetPosSize(pState->x(), pState->y(), pState->width(), pState->height(), nPosSizeFlags);
+        SetPosSize(rState.x(), rState.y(), rState.width(), rState.height(), nPosSizeFlags);
     }
-    else if (pState->mask() & vcl::WindowDataMask::State && !isChild())
+    else if (rState.mask() & vcl::WindowDataMask::State && !isChild())
     {
-        if (pState->state() & vcl::WindowState::Maximized)
+        if (rState.state() & vcl::WindowState::Maximized)
             SetWindowStateImpl(Qt::WindowMaximized);
-        else if (pState->state() & vcl::WindowState::Minimized)
+        else if (rState.state() & vcl::WindowState::Minimized)
             SetWindowStateImpl(Qt::WindowMinimized);
         else
             SetWindowStateImpl(Qt::WindowNoState);

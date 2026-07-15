@@ -224,7 +224,7 @@ void WorkWindow::ImplSetFrameState(vcl::WindowState aFrameState )
     vcl::WindowData aState;
     aState.setMask(vcl::WindowDataMask::State);
     aState.setState(aFrameState);
-    mpWindowImpl->mpFrame->SetWindowState(&aState);
+    mpWindowImpl->mpFrame->SetWindowState(aState);
 }
 
 void WorkWindow::Minimize()

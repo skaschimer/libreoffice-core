@@ -1528,7 +1528,7 @@ Size WinSalFrame::GetClientSize()
     return maGeometry.size();
 }
 
-void WinSalFrame::SetWindowState(const vcl::WindowData* pState)
+void WinSalFrame::SetWindowState(const vcl::WindowData& rState)
 {
     // Check if the window fits into the screen, in case the screen
     // resolution changed
@@ -1564,24 +1564,24 @@ void WinSalFrame::SetWindowState(const vcl::WindowData* pState)
     tools::Long nRightDeco = abs( aWinRect.right - aRect2.right );
 
     // adjust window position/size to fit the screen
-    if ( !(pState->mask() & vcl::WindowDataMask::Pos) )
+    if (!(rState.mask() & vcl::WindowDataMask::Pos))
         nPosSize |= SWP_NOMOVE;
-    if ( !(pState->mask() & vcl::WindowDataMask::Size) )
+    if (!(rState.mask() & vcl::WindowDataMask::Size))
         nPosSize |= SWP_NOSIZE;
-    if ( pState->mask() & vcl::WindowDataMask::X )
-        nX = static_cast<int>(pState->x()) - nLeftDeco;
+    if (rState.mask() & vcl::WindowDataMask::X)
+        nX = static_cast<int>(rState.x()) - nLeftDeco;
     else
         nX = aWinRect.left;
-    if ( pState->mask() & vcl::WindowDataMask::Y )
-        nY = static_cast<int>(pState->y()) - nTopDeco;
+    if (rState.mask() & vcl::WindowDataMask::Y)
+        nY = static_cast<int>(rState.y()) - nTopDeco;
     else
         nY = aWinRect.top;
-    if ( pState->mask() & vcl::WindowDataMask::Width )
-        nWidth = static_cast<int>(pState->width()) + nLeftDeco + nRightDeco;
+    if (rState.mask() & vcl::WindowDataMask::Width)
+        nWidth = static_cast<int>(rState.width()) + nLeftDeco + nRightDeco;
     else
         nWidth = aWinRect.right-aWinRect.left;
-    if ( pState->mask() & vcl::WindowDataMask::Height )
-        nHeight = static_cast<int>(pState->height()) + nTopDeco + nBottomDeco;
+    if (rState.mask() & vcl::WindowDataMask::Height)
+        nHeight = static_cast<int>(rState.height()) + nTopDeco + nBottomDeco;
     else
         nHeight = aWinRect.bottom-aWinRect.top;
 
@@ -1615,32 +1615,32 @@ void WinSalFrame::SetWindowState(const vcl::WindowData* pState)
     {
         aPlacement.showCmd = SW_HIDE;
 
-        if (mbOverwriteState && (pState->mask() & vcl::WindowDataMask::State))
+        if (mbOverwriteState && (rState.mask() & vcl::WindowDataMask::State))
         {
-            if (pState->state() & vcl::WindowState::Minimized)
+            if (rState.state() & vcl::WindowState::Minimized)
                 mnShowState = SW_SHOWMINIMIZED;
-            else if (pState->state() & vcl::WindowState::Maximized)
+            else if (rState.state() & vcl::WindowState::Maximized)
             {
                 mnShowState = SW_SHOWMAXIMIZED;
                 bUpdateHiddenFramePos = true;
             }
-            else if (pState->state() & vcl::WindowState::Normal)
+            else if (rState.state() & vcl::WindowState::Normal)
                 mnShowState = SW_SHOWNORMAL;
         }
     }
     else
     {
-        if ( pState->mask() & vcl::WindowDataMask::State )
+        if (rState.mask() & vcl::WindowDataMask::State)
         {
-            if ( pState->state() & vcl::WindowState::Minimized )
+            if (rState.state() & vcl::WindowState::Minimized)
             {
-                if ( pState->state() & vcl::WindowState::Maximized )
+                if (rState.state() & vcl::WindowState::Maximized)
                     aPlacement.flags |= WPF_RESTORETOMAXIMIZED;
                 aPlacement.showCmd = SW_SHOWMINIMIZED;
             }
-            else if ( pState->state() & vcl::WindowState::Maximized )
+            else if (rState.state() & vcl::WindowState::Maximized)
                 aPlacement.showCmd = SW_SHOWMAXIMIZED;
-            else if ( pState->state() & vcl::WindowState::Normal )
+            else if (rState.state() & vcl::WindowState::Normal)
                 aPlacement.showCmd = SW_RESTORE;
         }
     }

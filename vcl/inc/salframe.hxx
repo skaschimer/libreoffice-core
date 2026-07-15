@@ -168,7 +168,7 @@ public:
     // method to return an up-to-date SalFrameGeometry
     virtual SalFrameGeometry GetUnmirroredGeometry() const { return maGeometry; }
 
-    virtual void SetWindowState(const vcl::WindowData*) = 0;
+    virtual void SetWindowState(const vcl::WindowData& rState) = 0;
     // return the absolute, unmirrored system frame state
     // if this returns false the structure is uninitialised
     [[nodiscard]]

@@ -221,7 +221,7 @@ public:
     virtual Size GetClientSize() override;
     virtual void                GetWorkArea( AbsoluteScreenPixelRectangle& rRect ) override;
     virtual SalFrame*           GetParent() const override;
-    virtual void SetWindowState(const vcl::WindowData*) override;
+    virtual void SetWindowState(const vcl::WindowData& rState) override;
     virtual bool GetWindowState(vcl::WindowData*) override;
     virtual void                ShowFullScreen( bool bFullScreen, sal_Int32 nMonitor ) override;
     virtual void                StartPresentation( bool bStart ) override;

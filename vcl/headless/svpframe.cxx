@@ -293,13 +293,10 @@ SalFrame* SvpSalFrame::GetParent() const
     return m_pParent;
 }
 
-void SvpSalFrame::SetWindowState(const vcl::WindowData *pState)
+void SvpSalFrame::SetWindowState(const vcl::WindowData& rState)
 {
-    if (pState == nullptr)
-        return;
-
     // Request for position or size change
-    if (!(pState->mask() & vcl::WindowDataMask::PosSize))
+    if (!(rState.mask() & vcl::WindowDataMask::PosSize))
         return;
 
     tools::Long nX = maGeometry.x();
@@ -308,14 +305,14 @@ void SvpSalFrame::SetWindowState(const vcl::WindowData *pState)
     tools::Long nHeight = maGeometry.height();
 
     // change requested properties
-    if (pState->mask() & vcl::WindowDataMask::X)
-        nX = pState->x();
-    if (pState->mask() & vcl::WindowDataMask::Y)
-        nY = pState->y();
-    if (pState->mask() & vcl::WindowDataMask::Width)
-        nWidth = pState->width();
-    if (pState->mask() & vcl::WindowDataMask::Height)
-        nHeight = pState->height();
+    if (rState.mask() & vcl::WindowDataMask::X)
+        nX = rState.x();
+    if (rState.mask() & vcl::WindowDataMask::Y)
+        nY = rState.y();
+    if (rState.mask() & vcl::WindowDataMask::Width)
+        nWidth = rState.width();
+    if (rState.mask() & vcl::WindowDataMask::Height)
+        nHeight = rState.height();
 
     SetPosSize( nX, nY, nWidth, nHeight,
                 SAL_FRAME_POSSIZE_X | SAL_FRAME_POSSIZE_Y |
