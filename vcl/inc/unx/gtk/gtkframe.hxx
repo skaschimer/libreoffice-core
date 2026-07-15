@@ -590,7 +590,6 @@ public:
     virtual void                SetParent( SalFrame* pNewParent ) override;
     // reparent window to act as a plugin; implementation
     // may choose to use a new system window internally
-    // return false to indicate failure
     virtual void                SetPluginParent( SystemParentData* pNewParent ) override;
 
     virtual void                SetScreenNumber( unsigned int ) override;
