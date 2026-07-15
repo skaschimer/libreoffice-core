@@ -33,9 +33,9 @@
 #include <docuno.hxx>
 #include <document.hxx>
 #include <address.hxx>
+#include <scresid.hxx>
 
 using namespace com::sun::star;
-
 
 constexpr OUStringLiteral STR_NONNEGATIVE = u"NonNegative";
 constexpr OUStringLiteral STR_INTEGER = u"Integer";
@@ -44,14 +44,6 @@ constexpr OUStringLiteral STR_EPSILONLEVEL = u"EpsilonLevel";
 constexpr OUStringLiteral STR_LIMITBBDEPTH = u"LimitBBDepth";
 constexpr OUStringLiteral STR_GEN_SENSITIVITY = u"GenSensitivityReport";
 constexpr OUStringLiteral STR_SENSITIVITY_REPORT = u"SensitivityReport";
-
-
-//  Resources from tools are used for translated strings
-
-OUString SolverComponent::GetResourceString(TranslateId aId)
-{
-    return Translate::get(aId, Translate::Create("sc"));
-}
 
 size_t ScSolverCellHash::operator()( const css::table::CellAddress& rAddress ) const
 {
@@ -166,7 +158,7 @@ OUString SAL_CALL SolverComponent::getPropertyDescription( const OUString& rProp
     }
     OUString aRet;
     if (pResId)
-        aRet = SolverComponent::GetResourceString(pResId);
+        aRet = ScResId(pResId);
     return aRet;
 }
 
