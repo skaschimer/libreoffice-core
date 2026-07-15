@@ -508,13 +508,9 @@ public:
 
     virtual ~GtkSalFrame() override;
 
-    // SalGraphics or NULL, but two Graphics for all SalFrames
-    // must be returned
     virtual SalGraphics*        AcquireGraphics() override;
     virtual void                ReleaseGraphics( SalGraphics* pGraphics ) override;
 
-    // Event must be destroyed, when Frame is destroyed
-    // When Event is called, SalInstance::Yield() must be returned
     virtual bool                PostEvent(std::unique_ptr<ImplSVEvent> pData) override;
 
     virtual void                SetTitle( const OUString& rTitle ) override;
@@ -524,11 +520,7 @@ public:
     void                        EnsureAppMenuWatch();
 
     virtual void                SetExtendedFrameStyle( SalExtStyle nExtStyle ) override;
-    // Before the window is visible, a resize event
-    // must be sent with the correct size
     virtual void                Show( bool bVisible, bool bNoActivate = false ) override;
-    // Set ClientSize and Center the Window to the desktop
-    // and send/post a resize message
     virtual void                SetMinClientSize( tools::Long nWidth, tools::Long nHeight ) override;
     virtual void                SetMaxClientSize( tools::Long nWidth, tools::Long nHeight ) override;
     virtual void                SetPosSize( tools::Long nX, tools::Long nY, tools::Long nWidth, tools::Long nHeight, sal_uInt16 nFlags ) override;
@@ -538,22 +530,16 @@ public:
     virtual void SetWindowState(const vcl::WindowData*) override;
     virtual bool GetWindowState(vcl::WindowData*) override;
     virtual void                ShowFullScreen( bool bFullScreen, sal_Int32 nDisplay ) override;
-    // Enable/Disable ScreenSaver, SystemAgents, ...
     virtual void                StartPresentation( bool bStart ) override;
-    // Show Window over all other Windows
     virtual void                SetAlwaysOnTop( bool bOnTop ) override;
 
-    // Window to top and grab focus
     virtual void                ToTop( SalFrameToTop nFlags ) override;
 
-    // this function can call with the same
-    // pointer style
     virtual void                SetPointer( PointerStyle ePointerStyle ) override;
     virtual void                CaptureMouse( bool bMouse ) override;
     virtual void                GrabFocus() override;
     virtual void                SetPointerPos( tools::Long nX, tools::Long nY ) override;
 
-    // flush output buffer
     using SalFrame::Flush;
     virtual void                Flush() override;
     // flush output buffer, wait till outstanding operations are done
@@ -564,15 +550,12 @@ public:
     virtual OUString            GetKeyName( sal_uInt16 nKeyCode ) override;
     virtual bool                MapUnicodeToKeyCode( sal_Unicode aUnicode, LanguageType aLangType, vcl::KeyCode& rKeyCode ) override;
 
-    // returns the input language used for the last key stroke
-    // may be LANGUAGE_DONTKNOW if not supported by the OS
     virtual LanguageType        GetInputLanguage() override;
 
     virtual void                UpdateSettings( AllSettings& rSettings ) override;
 
     virtual void                Beep() override;
 
-    // returns system data (most prominent: window handle)
     virtual const SystemEnvData& GetSystemData() const override;
 
 #if defined(UNX) && !defined(ANDROID) && !defined(IOS) && !defined(MACOSX)
@@ -586,23 +569,15 @@ public:
 
     virtual void                SimulateKeyPress( sal_uInt16 nKeyCode ) override;
 
-    // set new parent window
     virtual void                SetParent( SalFrame* pNewParent ) override;
-    // reparent window to act as a plugin; implementation
-    // may choose to use a new system window internally
     virtual void                SetPluginParent( SystemParentData* pNewParent ) override;
 
     virtual void                SetScreenNumber( unsigned int ) override;
     virtual void                SetApplicationID( const OUString &rWMClass ) override;
 
-    // shaped system windows
-    // set clip region to none (-> rectangular windows, normal state)
     virtual void                ResetClipRegion() override;
-    // start setting the clipregion consisting of nRects rectangles
     virtual void                BeginSetClipRegion( sal_uInt32 nRects ) override;
-    // add a rectangle to the clip region
     virtual void                UnionClipRegion( tools::Long nX, tools::Long nY, tools::Long nWidth, tools::Long nHeight ) override;
-    // done setting up the clipregion
     virtual void                EndSetClipRegion() override;
 
     virtual void                PositionByToolkit(const tools::Rectangle& rRect, FloatWinPopupFlags nFlags) override;
