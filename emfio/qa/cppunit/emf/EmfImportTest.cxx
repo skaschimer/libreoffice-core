@@ -1618,20 +1618,12 @@ CPPUNIT_TEST_FIXTURE(Test, testExtTextOutScaleGM_COMPATIBLE)
 
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[3]", "text", u"24");
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[3]", "fontcolor", u"#000000");
-#ifndef _WIN32 //FIXME
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[3]", "width", u"201");
-#else
-    assertXPathDoubleValue(pDocument, aXPathPrefix + "textsimpleportion[3]", "width", 199.0, 1.0);
-#endif
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[3]", "height", u"317");
 
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[4]", "text", u"25");
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[4]", "fontcolor", u"#000000");
-#ifndef _WIN32 //FIXME
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[4]", "width", u"268");
-#else
-    assertXPathDoubleValue(pDocument, aXPathPrefix + "textsimpleportion[4]", "width", 267.0, 1.0);
-#endif
     assertXPath(pDocument, aXPathPrefix + "textsimpleportion[4]", "height", u"317");
 
     assertXPath(pDocument, aXPathPrefix + "polygonstroke", 9);
