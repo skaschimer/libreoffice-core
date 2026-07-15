@@ -52,6 +52,10 @@
 #include <o3tl/sorted_vector.hxx>
 #include <rtl/math.hxx>
 
+#ifdef MACOSX
+#include <svdata.hxx>
+#endif
+
 using namespace SkiaHelper;
 
 namespace
@@ -555,8 +559,22 @@ void SkiaSalGraphicsImpl::checkSurface()
             sk_sp<SkImage> snapshot;
             if (!isOffscreen())
             {
-                flushDrawing();
-                snapshot = makeCheckedImageSnapshot(mSurface);
+#ifdef MACOSX
+                // tdf#172399 skip redrawing of old surface during live resize
+                // During live resize on macOS, there is a flood of resize
+                // events in quick succession so not only are most of the
+                // newly created surfaces short lived, but preserving and
+                // redrawing the original content drawn to the old surface
+                // is unnecessary since AquaSalFrame::SendPaintEvent() is
+                // is called after each resize event.
+                if (!ImplGetSVData()->mpWinData->mbIsLiveResize)
+                {
+#endif
+                    flushDrawing();
+                    snapshot = makeCheckedImageSnapshot(mSurface);
+#ifdef MACOSX
+                }
+#endif
             }
 
             destroySurface();
