@@ -273,27 +273,23 @@ void SbRtl_CDate(StarBASIC *, SbxArray & rPar, bool) // JSM
 void SbRtl_CDbl(StarBASIC *, SbxArray & rPar, bool)  // JSM
 {
     double nVal = 0.0;
-    if (rPar.Count() == 2)
+    if (rPar.Count() != 2)
+        return StarBASIC::Error(ERRCODE_BASIC_BAD_ARGUMENT);
+
+    SbxVariable* pSbxVariable = rPar.Get(1);
+    if( pSbxVariable->GetType() == SbxSTRING )
     {
-        SbxVariable* pSbxVariable = rPar.Get(1);
-        if( pSbxVariable->GetType() == SbxSTRING )
+        // #41690
+        OUString aScanStr = pSbxVariable->GetOUString();
+        ErrCode Error = SbxValue::ScanNumIntnl( aScanStr, nVal );
+        if( Error != ERRCODE_NONE )
         {
-            // #41690
-            OUString aScanStr = pSbxVariable->GetOUString();
-            ErrCode Error = SbxValue::ScanNumIntnl( aScanStr, nVal );
-            if( Error != ERRCODE_NONE )
-            {
-                StarBASIC::Error( Error );
-            }
-        }
-        else
-        {
-            nVal = pSbxVariable->GetDouble();
+            StarBASIC::Error( Error );
         }
     }
     else
     {
-        StarBASIC::Error( ERRCODE_BASIC_BAD_ARGUMENT );
+        nVal = pSbxVariable->GetDouble();
     }
 
     rPar.Get(0)->PutDouble(nVal);
