@@ -639,7 +639,7 @@ bool ScTable::SearchStyle(const SvxSearchItem& rSearchItem, SCCOL& rCol, SCROW& 
     bool bBack = rSearchItem.GetBackward();
     short nAdd = bBack ? -1 : 1;
 
-    if (bRows)                                      // by row
+    if (!bRows) // by column
     {
         if ( !IsColValid( nCol ) )
         {
@@ -663,7 +663,7 @@ bool ScTable::SearchStyle(const SvxSearchItem& rSearchItem, SCCOL& rCol, SCROW& 
         }
         while ( !bFound && IsColValid( nCol ) );
     }
-    else                                    // by column
+    else // by row
     {
         SCCOL aColSize = aCol.size();
         std::vector< SCROW > nNextRows ( aColSize );
