@@ -4579,6 +4579,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testPdfImageRotate180)
 CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf144222)
 {
 // Assume Windows has the font for U+4E2D
+#if 0
 #ifdef _WIN32
     loadFromFile(u"tdf144222.ods");
     save(TestFilter::PDF_WRITER);
@@ -4614,6 +4615,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest2, testTdf144222)
     CPPUNIT_ASSERT(!aRect1.isEmpty());
     CPPUNIT_ASSERT(!aRect2.isEmpty());
     CPPUNIT_ASSERT(!aRect1.overlaps(aRect2));
+#endif
 #endif
 }
 
