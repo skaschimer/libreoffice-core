@@ -30,7 +30,7 @@ foreach my $member ( $zip->members() ) {
 }
 
 # overwrite saves to temp file first, then renames the original file and only then renames the temp
-# file to the original name, should be atomic enough, esp. given that some recipies create zipfiles
+# file to the original name, should be atomic enough, esp. given that some recipes create zipfiles
 # in multiple steps and are more prone to errors in case the build is killed midway.
 $zip->overwrite() == Archive::Zip::AZ_OK or die "Error writing file $zip_file ($!)\n";
 
