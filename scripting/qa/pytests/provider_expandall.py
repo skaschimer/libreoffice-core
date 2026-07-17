@@ -46,6 +46,14 @@ class ProviderExpandAllTest(unittest.TestCase):
     # Tries retrieving all nodes from the master script provider to make sure all of the providers
     # are accessible from Python. See tdf#172532
     def test_expand_all(self):
+        # Disable the Java-based JavaScript provider so that we can be sure the QuickJS-based one
+        # will be used. Otherwise a random one will end up getting chosen and if it happens to be
+        # the Java one then the test will fail. The Java code is shared with the BeanShell provider
+        # so that will already be tested that way.
+        self.context.getServiceManager().remove(
+            "com.sun.star.script.framework.provider.javascript.ScriptProviderForJavaScript$"
+            "ScriptProviderForJavaScript_2");
+
         # Create a dummy JavaScript macro to make sure the JavaScript provider is triggered.
         js_path = get_user_script_directory(self.context, "JavaScript")
         os.makedirs(js_path, exist_ok=True)
