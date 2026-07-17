@@ -345,8 +345,10 @@ End Sub
 
 Function getAccessibleContextOfDocument(oDoc)
 Dim oContainerWindow As Object
+Dim oAccessible as Object
 	oContainerWindow = oDoc.getCurrentController().getFrame().getContainerWindow()
-	getAccessibleContextOfDocument = oContainerWindow.getAccessibleContext()
+	oAccessible = oContainerWindow.getProperty(&quot;XAccessible&quot;)
+	getAccessibleContextOfDocument = oAccessible.getAccessibleContext()
 End Function
 
 Function makeKeyStrokeReadable(oKeyStroke, Optional bIgnoreAltModifier)
