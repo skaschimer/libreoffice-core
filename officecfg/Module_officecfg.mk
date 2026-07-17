@@ -28,6 +28,7 @@ $(eval $(call gb_Module_add_targets,officecfg,\
 
 $(eval $(call gb_Module_add_check_targets,officecfg,\
     CppunitTest_officecfg_cppheader_test \
+    CppunitTest_officecfg_accelerator_key_checker_test \
 ))
 
 # vim: set noet sw=4 ts=4:
