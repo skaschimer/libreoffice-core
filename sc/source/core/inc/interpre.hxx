@@ -760,6 +760,7 @@ private:
     void ScTextAfter();
     void ScTextBefore();
     void ScTextSplit();
+    void ScArrayToText();
     void ScToCol();
     void ScToRow();
     void ScUnique();

@@ -3148,6 +3148,7 @@ CPPUNIT_TEST_FIXTURE(Test, testFunctionLists)
 
     const char* aText[] = {
         "ARABIC",
+        "ARRAYTOTEXT",
         "ASC",
         "BAHTTEXT",
         "BASE",
