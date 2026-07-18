@@ -18,6 +18,8 @@ void SessionManagerInhibitor::inhibit(bool bInhibit, std::u16string_view sReason
 {
     (void)sReason;
     assert(eType == APPLICATION_INHIBIT_IDLE);
+    SAL_WARN_IF(eType != APPLICATION_INHIBIT_IDLE, "vcl",
+                "eType should be APPLICATION_INHIBIT_IDLE");
 
     if (bInhibit)
     {
