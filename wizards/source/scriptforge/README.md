@@ -12,7 +12,7 @@ The LibreOffice *build process* incorporates the ScriptForge software in each di
  
 Any pre-existing Basic or Python library in the LibreOffice software is left unchanged.
 
-The numbering of the ScriptForge versions is identical with the numbering used by LibreOffice (so far from 7.1 to 26.2).
+The numbering of the ScriptForge versions is identical with the numbering used by LibreOffice (so far from 7.1 to 26.8).
 
 ## Deliverables summary (Version "master")
 - A set of Basic + Python modules and classes covering next topics
@@ -108,6 +108,12 @@ Above mechanisms make ScriptForge an easily extensible ecosystem combining a cor
 <br>[https://cgit.freedesktop.org/libreoffice/core/tree/wizards/source](URL)
 
 ## Change log
+
+### 26.8
+  * The new ***ui**.EnterValue(...)* method displays a typed input box (cfr. the *InputBox()* Basic function) to the user and returns the entered value as a scalar of the requested type, or *Empty/None* when the user cancels the box. The supported types are: *STRING*, *PASSWORD*, *BOOL*, *INTEGER*, *FLOAT*, *DATE*, *TIME*, *DATETIME*, *COMBO*, *LIST* and *RADIO*.
+  * (Basic only) The new ***array**.Map()*, ***array**.Filter()* and ***array**.Reduce()* methods introduce functional programming techniques on Basic arrays. They mimic their Python equivalents. Those methods allow the programmer to write simpler, shorter code, without neccessarily needing to bother about intricacies like loops, branching and error handling.
+  * The new ***session**.GetUnoProperty()* and ***session**.GetPropertyByName()* methods return the property value of resp. a <u>UNO</u> object or a <u>ScriptForge</u> service instance when the property name is given as a string.
+  * (Python only) Python scripts may run either (1) inside the LibreOffice process, the usual mode, or (2) as a client of a LibreOffice server using a **pipe** or a **socket**. The benefit of (2) is the freedom to choose his/her preferred IDE to edit and debug the script. The drawback is the reference to the pipe/socket in the script source code. Avoid this by using a <u>default pipe</u>, named '*PIPE2LIBREOFFICE*'. The same code will run without change in both (1) and (2) modes.
 
 ### 26.2
   * The new  ***session**.GetRangeFromCalc()* method reads the values contained in a given range located in a given Calc file. The file does not need to be open.
