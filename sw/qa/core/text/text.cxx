@@ -1689,7 +1689,6 @@ CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf112594)
                 u"\u202F\u1824");
 }
 
-#ifndef _WIN32 //FIXME
 CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf161990)
 {
     auto pPDFium = vcl::pdf::PDFiumLibrary::get();
@@ -1747,7 +1746,6 @@ CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf161990)
         CPPUNIT_ASSERT_DOUBLES_EQUAL(expectedOffset, textPPos.getMaxY() - text1Pos.getMaxY(), 0.01);
     }
 }
-#endif
 
 CPPUNIT_TEST_FIXTURE(SwCoreTextTest, testTdf168528)
 {

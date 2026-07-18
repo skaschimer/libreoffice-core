@@ -34,6 +34,7 @@
 
 #include <d2d1.h>
 #include <dwrite_3.h>
+#include <o3tl/lru_map.hxx>
 #include <basegfx/matrix/b2dhommatrixtools.hxx>
 #include <basegfx/polygon/b2dpolygon.hxx>
 #include <i18nlangtag/mslangid.hxx>
@@ -524,20 +525,6 @@ WinFontFace::~WinFontFace()
 {
 }
 
-IDWriteFontFace* WinFontFace::GetDWFontFace() const
-{
-    if (!mxDWFontFace && mxDWFont)
-    {
-        HRESULT hr = mxDWFont->CreateFontFace(&mxDWFontFace);
-        if (FAILED(hr))
-        {
-            SAL_WARN("vcl.fonts", "HRESULT 0x" << OUString::number(hr, 16) << ": "
-                                               << comphelper::WindowsErrorStringFromHRESULT(hr));
-        }
-    }
-    return mxDWFontFace.get();
-}
-
 sal_IntPtr WinFontFace::GetFontId() const
 {
     return mnId;
@@ -573,85 +560,85 @@ WinFontFace::GetVariations(const LogicalFontInstance& rFont) const
     return *mxVariations;
 }
 
-static hb_blob_t* createBlob(const void* pData, unsigned int nSize)
+namespace
 {
-    if (!pData || nSize == 0)
-        return nullptr;
-    char* pBuffer = new char[nSize];
-    memcpy(pBuffer, pData, nSize);
-    return hb_blob_create(pBuffer, nSize, HB_MEMORY_MODE_READONLY, pBuffer,
-                          [](void* pUserData) { delete[] static_cast<char*>(pUserData); });
-}
-
-// The whole font file, read only when requested.
-static hb_blob_t* getFontFile(IDWriteFontFace* pFontFace)
+struct BlobReference
 {
-    UINT32 nFiles = 1;
-    sal::systools::COMReference<IDWriteFontFile> xFile;
-    sal::systools::COMReference<IDWriteFontFileLoader> xLoader;
-    sal::systools::COMReference<IDWriteFontFileStream> xStream;
-    const void* pKey = nullptr;
-    UINT32 nKeySize = 0;
-    UINT64 nSize = 0;
-    const void* pData = nullptr;
-    void* pContext = nullptr;
-    if (FAILED(pFontFace->GetFiles(&nFiles, &xFile))
-        || FAILED(xFile->GetReferenceKey(&pKey, &nKeySize)) || FAILED(xFile->GetLoader(&xLoader))
-        || FAILED(xLoader->CreateStreamFromKey(pKey, nKeySize, &xStream))
-        || FAILED(xStream->GetFileSize(&nSize))
-        || FAILED(xStream->ReadFileFragment(&pData, 0, nSize, &pContext)))
-        return nullptr;
-
-    hb_blob_t* pBlob = createBlob(pData, static_cast<unsigned int>(nSize));
-    xStream->ReleaseFileFragment(pContext);
-    return pBlob;
-}
-
-static hb_blob_t* getFontTable(hb_face_t*, hb_tag_t nTag, void* pUserData)
-{
-    auto pFontFace = static_cast<IDWriteFontFace*>(pUserData);
-
-    // nTag == 0 references the whole font file.
-    if (nTag == 0)
-        return getFontFile(pFontFace);
-
-    const void* pData = nullptr;
-    UINT32 nSize = 0;
-    void* pContext = nullptr;
-    BOOL bExists = FALSE;
-    if (FAILED(
-            pFontFace->TryGetFontTable(OSL_NETDWORD(nTag), &pData, &nSize, &pContext, &bExists)))
-        return nullptr;
-
-    hb_blob_t* pBlob = nullptr;
-    if (bExists)
+    hb_blob_t* mpBlob;
+    BlobReference(hb_blob_t* pBlob)
+        : mpBlob(pBlob)
     {
-        pBlob = createBlob(pData, nSize);
-        pFontFace->ReleaseFontTable(pContext);
+        hb_blob_reference(mpBlob);
     }
-    return pBlob;
+    BlobReference(BlobReference&& other) noexcept
+        : mpBlob(other.mpBlob)
+    {
+        other.mpBlob = nullptr;
+    }
+    BlobReference& operator=(BlobReference&& other)
+    {
+        std::swap(mpBlob, other.mpBlob);
+        return *this;
+    }
+    BlobReference(const BlobReference& other) = delete;
+    BlobReference& operator=(BlobReference& other) = delete;
+    ~BlobReference() { hb_blob_destroy(mpBlob); }
+};
 }
 
-hb_face_t* WinFontFace::GetHbFace() const
+using BlobCacheKey = std::pair<sal_IntPtr, hb_tag_t>;
+
+namespace
 {
-    if (!mpHbFace)
+struct BlobCacheKeyHash
+{
+    std::size_t operator()(BlobCacheKey const& rKey) const
     {
-        if (IDWriteFontFace* pFontFace = GetDWFontFace())
-        {
-            pFontFace->AddRef();
-            mpHbFace = hb_face_create_for_tables(getFontTable, pFontFace, [](void* pUserData) {
-                static_cast<IDWriteFontFace*>(pUserData)->Release();
-            });
-        }
-        else
-            mpHbFace = hb_face_get_empty();
+        std::size_t seed = 0;
+        o3tl::hash_combine(seed, rKey.first);
+        o3tl::hash_combine(seed, rKey.second);
+        return seed;
     }
-    return mpHbFace;
+};
 }
 
 hb_blob_t* WinFontFace::GetHbTable(hb_tag_t nTag) const
 {
-    return hb_face_reference_table(GetHbFace(), nTag);
+    static o3tl::lru_map<BlobCacheKey, BlobReference, BlobCacheKeyHash> gCache(50);
+    BlobCacheKey aCacheKey{ GetFontId(), nTag };
+    auto it = gCache.find(aCacheKey);
+    if (it != gCache.end())
+    {
+        hb_blob_reference(it->second.mpBlob);
+        return it->second.mpBlob;
+    }
+
+    sal_uLong nLength = 0;
+    unsigned char* pBuffer = nullptr;
+
+    HDC hDC(::GetDC(nullptr));
+    HFONT hFont = ::CreateFontIndirectW(&maLogFont);
+    HFONT hOldFont = ::SelectFont(hDC, hFont);
+
+    nLength = ::GetFontData(hDC, OSL_NETDWORD(nTag), 0, nullptr, 0);
+    if (nLength > 0 && nLength != GDI_ERROR)
+    {
+        pBuffer = new unsigned char[nLength];
+        ::GetFontData(hDC, OSL_NETDWORD(nTag), 0, pBuffer, nLength);
+    }
+
+    ::SelectFont(hDC, hOldFont);
+    ::DeleteFont(hFont);
+    ::ReleaseDC(nullptr, hDC);
+
+    hb_blob_t* pBlob = nullptr;
+
+    if (pBuffer)
+        pBlob = hb_blob_create(reinterpret_cast<const char*>(pBuffer), nLength, HB_MEMORY_MODE_READONLY,
+                               pBuffer, [](void* data) { delete[] static_cast<unsigned char*>(data); });
+
+    gCache.insert({ aCacheKey, BlobReference(pBlob) });
+    return pBlob;
 }
 
 void WinSalGraphics::SetTextColor( Color nColor )
@@ -1136,8 +1123,7 @@ const sal::systools::COMReference<IDWriteFontFace>& WinFontInstance::GetDWFontFa
 
         HRESULT hr = S_OK;
         if (eSimulations == DWRITE_FONT_SIMULATIONS_NONE)
-            mxDWFontFace
-                = sal::systools::COMReference<IDWriteFontFace>(GetFontFace()->GetDWFontFace());
+            hr = pDWFont->CreateFontFace(&mxDWFontFace);
         else
         {
             auto xDWFont = sal::systools::COMReference<IDWriteFont>(pDWFont)

@@ -2109,8 +2109,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testVariableFontPSName1)
                                  "STIXTwoTextRoman-SemiBold"_ostr,
                                  "STIXTwoTextItalic-SemiBoldItalic"_ostr };
 #else
-    std::set<OString> aExpected{ "STIXTwoTextRoman-Bold"_ostr, "STIXTwoTextItalic-BoldItalic"_ostr,
-                                 "STIXTwoTextItalic-Italic"_ostr, "STIXTwoTextRoman-Regular"_ostr };
+    std::set<OString> aExpected{
+        "STIXTwoTextItalic-BoldItalic"_ostr,     "STIXTwoTextItalic-Italic"_ostr,
+        "STIXTwoTextItalic-SemiBoldItalic"_ostr, "STIXTwoTextRoman-Bold"_ostr,
+        "STIXTwoTextRoman-Regular"_ostr,         "STIXTwoTextRoman-SemiBold"_ostr
+    };
 #endif
 
     CPPUNIT_ASSERT_EQUAL(aExpected, aFontNames);
@@ -2147,8 +2150,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testVariableFontPSName2)
         "SourceCodePro-SemiBold"_ostr, "SourceCodePro-SemiBoldItalic"_ostr
     };
 #else
-    std::set<OString> aExpected{ "SourceCodePro-Regular"_ostr, "SourceCodePro-Bold"_ostr,
-                                 "SourceCodePro-Italic"_ostr, "SourceCodePro-BoldItalic"_ostr };
+    std::set<OString> aExpected{
+        "SourceCodePro-Bold"_ostr,     "SourceCodePro-BoldItalic"_ostr,
+        "SourceCodePro-Italic"_ostr,   "SourceCodePro-Regular"_ostr,
+        "SourceCodePro-SemiBold"_ostr, "SourceCodePro-SemiBoldItalic"_ostr
+    };
 #endif
 
     CPPUNIT_ASSERT_EQUAL(aExpected, aFontNames);
@@ -2181,13 +2187,9 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testOpticalSizing)
         }
     }
 
-#if !defined _WIN32
     std::set<OString> aExpected{ "Fraunces_144opsz_400wght"_ostr, "Fraunces_80opsz_400wght"_ostr,
                                  "Fraunces_60opsz_400wght"_ostr,  "Fraunces_40opsz_400wght"_ostr,
                                  "Fraunces_20opsz_400wght"_ostr,  "Fraunces-Regular"_ostr };
-#else
-    std::set<OString> aExpected{ "DejaVuSans"_ostr };
-#endif
 
     CPPUNIT_ASSERT_EQUAL(aExpected, aFontNames);
 }
@@ -2279,7 +2281,6 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf128630)
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf106702)
 {
-#ifndef _WIN32 //FIXME
     // Import the bugdoc and export as PDF.
     loadFromFile(u"tdf106702.odt");
     save(TestFilter::PDF_WRITER);
@@ -2324,7 +2325,6 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf106702)
     // This failed, vertical pos is 818 points, was 1674 (outside visible page
     // bounds).
     CPPUNIT_ASSERT_EQUAL(nExpected, nActual);
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf113143)

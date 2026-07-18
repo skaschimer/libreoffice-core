@@ -70,9 +70,7 @@ public:
 
     const LOGFONTW&         GetLogFont() const          { return maLogFont; }
     IDWriteFont*            GetDWFont() const           { return mxDWFont.get(); }
-    IDWriteFontFace*        GetDWFontFace() const;
 
-    hb_face_t*              GetHbFace() const override;
     hb_blob_t*              GetHbTable(hb_tag_t nTag) const override;
 
     const std::vector<vcl::font::Variation>& GetVariations(const LogicalFontInstance&) const override;
@@ -82,7 +80,6 @@ private:
 
     LOGFONTW                maLogFont;
     sal::systools::COMReference<IDWriteFont> mxDWFont;
-    mutable sal::systools::COMReference<IDWriteFontFace> mxDWFontFace;
 };
 
 /**

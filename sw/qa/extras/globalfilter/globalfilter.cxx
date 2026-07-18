@@ -1429,10 +1429,6 @@ CPPUNIT_TEST_FIXTURE(Test, testListLabelPDFExport)
         CPPUNIT_ASSERT(pPdfTextPage);
 
         int nChars = pPdfTextPage->countChars();
-#ifdef _WIN32 //FIXME
-        CPPUNIT_ASSERT_EQUAL(10, nChars);
-    }
-#else
         CPPUNIT_ASSERT_EQUAL(22, nChars);
 
         // Check that the label strings were exported correctly
@@ -1442,7 +1438,6 @@ CPPUNIT_TEST_FIXTURE(Test, testListLabelPDFExport)
         OUString aText(aChars.data(), aChars.size());
         CPPUNIT_ASSERT_EQUAL(u"\u0623\r\n.\r\n\u0623.\u0623\r\n.\r\n\u0623.\u0623.\u0623\r\n."_ustr, aText);
     }
-#endif
 
     // Parse the document again to get its raw content
     // TODO: get the content from PDFiumPage somehow

@@ -786,7 +786,6 @@ CPPUNIT_TEST_FIXTURE(ScPDFExportTest, testTdf120190)
     OUString sText2 = pPageObject2->getText(pTextPage);
     CPPUNIT_ASSERT_EQUAL(u"Page "_ustr, sText2);
 
-#ifndef _WIN32 //FIXME
     std::unique_ptr<vcl::pdf::PDFiumPageObject> pPageObject3 = pPdfPage->getObject(2);
     OUString sText3 = pPageObject3->getText(pTextPage);
     CPPUNIT_ASSERT_EQUAL(u"1"_ustr, sText3);
@@ -802,7 +801,6 @@ CPPUNIT_TEST_FIXTURE(ScPDFExportTest, testTdf120190)
     std::unique_ptr<vcl::pdf::PDFiumPageObject> pPageObject5 = pPdfPage->getObject(4);
     OUString sText5 = pPageObject5->getText(pTextPage);
     CPPUNIT_ASSERT_EQUAL(u"6"_ustr, sText5);
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(ScPDFExportTest, testTdf84012)
