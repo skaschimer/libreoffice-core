@@ -1142,7 +1142,7 @@ void Shell::GetState(SfxItemSet &rSet)
                     mpSearchItem->SetSearchString( GetSelectionText( true ));
                 }
 
-                if ( mbJustOpened && HasSelection() )
+                if (mbJustOpened && HasSelection(/*MustHaveText=*/true))
                 {
                     OUString aText = GetSelectionText( true );
 
