@@ -34,7 +34,6 @@
 
 #include <d2d1.h>
 #include <dwrite_3.h>
-#include <o3tl/lru_map.hxx>
 #include <basegfx/matrix/b2dhommatrixtools.hxx>
 #include <basegfx/polygon/b2dpolygon.hxx>
 #include <i18nlangtag/mslangid.hxx>
@@ -525,6 +524,20 @@ WinFontFace::~WinFontFace()
 {
 }
 
+IDWriteFontFace* WinFontFace::GetDWFontFace() const
+{
+    if (!mxDWFontFace && mxDWFont)
+    {
+        HRESULT hr = mxDWFont->CreateFontFace(&mxDWFontFace);
+        if (FAILED(hr))
+        {
+            SAL_WARN("vcl.fonts", "HRESULT 0x" << OUString::number(hr, 16) << ": "
+                                               << comphelper::WindowsErrorStringFromHRESULT(hr));
+        }
+    }
+    return mxDWFontFace.get();
+}
+
 sal_IntPtr WinFontFace::GetFontId() const
 {
     return mnId;
@@ -562,83 +575,107 @@ WinFontFace::GetVariations(const LogicalFontInstance& rFont) const
 
 namespace
 {
-struct BlobReference
+// Keeps the DirectWrite font table alive until HarfBuzz destroys the blob.
+struct DWFontTableContext
 {
-    hb_blob_t* mpBlob;
-    BlobReference(hb_blob_t* pBlob)
-        : mpBlob(pBlob)
-    {
-        hb_blob_reference(mpBlob);
-    }
-    BlobReference(BlobReference&& other) noexcept
-        : mpBlob(other.mpBlob)
-    {
-        other.mpBlob = nullptr;
-    }
-    BlobReference& operator=(BlobReference&& other)
-    {
-        std::swap(mpBlob, other.mpBlob);
-        return *this;
-    }
-    BlobReference(const BlobReference& other) = delete;
-    BlobReference& operator=(BlobReference& other) = delete;
-    ~BlobReference() { hb_blob_destroy(mpBlob); }
+    IDWriteFontFace* mpFontFace;
+    void* mpTableContext;
 };
 }
 
-using BlobCacheKey = std::pair<sal_IntPtr, hb_tag_t>;
+static void releaseTableData(void* pData)
+{
+    auto* pContext = static_cast<DWFontTableContext*>(pData);
+    pContext->mpFontFace->ReleaseFontTable(pContext->mpTableContext);
+    delete pContext;
+}
 
-namespace
+static hb_blob_t* getFontFile(IDWriteFontFace* pFontFace)
 {
-struct BlobCacheKeyHash
-{
-    std::size_t operator()(BlobCacheKey const& rKey) const
+    UINT32 nFileCount = 0;
+    if (FAILED(pFontFace->GetFiles(&nFileCount, nullptr)))
+        return nullptr;
+
+    std::vector<IDWriteFontFile*> aFiles(nFileCount, nullptr);
+    if (FAILED(pFontFace->GetFiles(&nFileCount, aFiles.data())))
+        return nullptr;
+
+    hb_blob_t* pBlob = nullptr;
+    for (UINT32 i = 0; i < nFileCount; ++i)
     {
-        std::size_t seed = 0;
-        o3tl::hash_combine(seed, rKey.first);
-        o3tl::hash_combine(seed, rKey.second);
-        return seed;
+        sal::systools::COMReference<IDWriteFontFile> xFile(aFiles[i], false);
+        if (pBlob)
+            continue;
+
+        const void* pKey = nullptr;
+        UINT32 nKeySize = 0;
+        sal::systools::COMReference<IDWriteFontFileLoader> xLoader;
+        sal::systools::COMReference<IDWriteFontFileStream> xStream;
+        UINT64 nSize = 0;
+        const void* pData = nullptr;
+        void* pContext = nullptr;
+        if (SUCCEEDED(xFile->GetReferenceKey(&pKey, &nKeySize))
+            && SUCCEEDED(xFile->GetLoader(&xLoader))
+            && SUCCEEDED(xLoader->CreateStreamFromKey(pKey, nKeySize, &xStream))
+            && SUCCEEDED(xStream->GetFileSize(&nSize))
+            && SUCCEEDED(xStream->ReadFileFragment(&pData, 0, nSize, &pContext)))
+        {
+            pBlob = hb_blob_create(static_cast<const char*>(pData),
+                                   static_cast<unsigned int>(nSize), HB_MEMORY_MODE_DUPLICATE,
+                                   nullptr, nullptr);
+            xStream->ReleaseFileFragment(pContext);
+        }
     }
-};
+
+    return pBlob;
+}
+
+static hb_blob_t* getFontTable(hb_face_t*, hb_tag_t nTag, void* pUserData)
+{
+    auto pFontFace = static_cast<IDWriteFontFace*>(pUserData);
+
+    if (nTag == 0)
+        return getFontFile(pFontFace);
+
+    const void* pData = nullptr;
+    UINT32 nSize = 0;
+    void* pContext = nullptr;
+    BOOL bExists = FALSE;
+    if (FAILED(pFontFace->TryGetFontTable(OSL_NETDWORD(nTag), &pData, &nSize, &pContext, &bExists)))
+        return nullptr;
+
+    if (!pData || !bExists || !nSize)
+    {
+        pFontFace->ReleaseFontTable(pContext);
+        return nullptr;
+    }
+
+    return hb_blob_create(static_cast<const char*>(pData), nSize, HB_MEMORY_MODE_READONLY,
+                          new DWFontTableContext{ pFontFace, pContext }, releaseTableData);
+}
+
+hb_face_t* WinFontFace::GetHbFace() const
+{
+    if (!mpHbFace)
+    {
+        if (IDWriteFontFace* pFontFace = GetDWFontFace())
+        {
+            pFontFace->AddRef();
+            mpHbFace = hb_face_create_for_tables(getFontTable, pFontFace, [](void* pUserData) {
+                static_cast<IDWriteFontFace*>(pUserData)->Release();
+            });
+            hb_face_set_index(mpHbFace, pFontFace->GetIndex());
+            hb_face_set_glyph_count(mpHbFace, pFontFace->GetGlyphCount());
+        }
+        else
+            mpHbFace = hb_face_get_empty();
+    }
+    return mpHbFace;
 }
 
 hb_blob_t* WinFontFace::GetHbTable(hb_tag_t nTag) const
 {
-    static o3tl::lru_map<BlobCacheKey, BlobReference, BlobCacheKeyHash> gCache(50);
-    BlobCacheKey aCacheKey{ GetFontId(), nTag };
-    auto it = gCache.find(aCacheKey);
-    if (it != gCache.end())
-    {
-        hb_blob_reference(it->second.mpBlob);
-        return it->second.mpBlob;
-    }
-
-    sal_uLong nLength = 0;
-    unsigned char* pBuffer = nullptr;
-
-    HDC hDC(::GetDC(nullptr));
-    HFONT hFont = ::CreateFontIndirectW(&maLogFont);
-    HFONT hOldFont = ::SelectFont(hDC, hFont);
-
-    nLength = ::GetFontData(hDC, OSL_NETDWORD(nTag), 0, nullptr, 0);
-    if (nLength > 0 && nLength != GDI_ERROR)
-    {
-        pBuffer = new unsigned char[nLength];
-        ::GetFontData(hDC, OSL_NETDWORD(nTag), 0, pBuffer, nLength);
-    }
-
-    ::SelectFont(hDC, hOldFont);
-    ::DeleteFont(hFont);
-    ::ReleaseDC(nullptr, hDC);
-
-    hb_blob_t* pBlob = nullptr;
-
-    if (pBuffer)
-        pBlob = hb_blob_create(reinterpret_cast<const char*>(pBuffer), nLength, HB_MEMORY_MODE_READONLY,
-                               pBuffer, [](void* data) { delete[] static_cast<unsigned char*>(data); });
-
-    gCache.insert({ aCacheKey, BlobReference(pBlob) });
-    return pBlob;
+    return hb_face_reference_table(GetHbFace(), nTag);
 }
 
 void WinSalGraphics::SetTextColor( Color nColor )
@@ -1123,7 +1160,8 @@ const sal::systools::COMReference<IDWriteFontFace>& WinFontInstance::GetDWFontFa
 
         HRESULT hr = S_OK;
         if (eSimulations == DWRITE_FONT_SIMULATIONS_NONE)
-            hr = pDWFont->CreateFontFace(&mxDWFontFace);
+            mxDWFontFace
+                = sal::systools::COMReference<IDWriteFontFace>(GetFontFace()->GetDWFontFace());
         else
         {
             auto xDWFont = sal::systools::COMReference<IDWriteFont>(pDWFont)
