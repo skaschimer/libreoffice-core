@@ -21,7 +21,6 @@ $(eval $(call gb_UnpackedTarball_add_patches,fontconfig,\
 ifneq ($(OS),MACOSX)
 $(eval $(call gb_UnpackedTarball_add_patches,fontconfig,\
 	external/fontconfig/libfontconfig-bundled-soname.patch.0 \
-	external/fontconfig/locale_t_macOS.patch.1 \
 ))
 endif
 
