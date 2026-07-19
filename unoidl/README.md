@@ -43,7 +43,7 @@ considered a limitation in practice (and avoids unnecessary bloat compared to
 Annotations can be added for (non-module) entities and certain parts of such
 entities (e.g., both for an interface type definition and for a direct method of
 an interface type definition; the idea is that it can be added for direct parts
-that forma a "many-to-one" relationship; there is a tradeoff between generality
+that form a "many-to-one" relationship; there is a tradeoff between generality
 of concept and size of representation, esp. for the C++ representation types in
 namespace `unoidl`) and consist of arbitrary sequences of name/value strings.
 Each name/value string is encoded as a single UTF-8 string containing a name (an
@@ -169,7 +169,7 @@ Layout of per-entry payload in the root or a module Map:
                             * `Idx-String` name
                             * `Idx-String` type
                         * `UInt32` number `N8` of exceptions
-                        * N8 * Idx-String
+                        * `N8 * Idx-String`
                         * if annotated: Annotations
 
             * 6: typedef
