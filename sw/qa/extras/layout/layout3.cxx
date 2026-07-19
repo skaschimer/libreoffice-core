@@ -2465,6 +2465,20 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter3, testDropAdjustCenter)
                 1);
 }
 
+CPPUNIT_TEST_FIXTURE(SwLayoutWriter3, testCombinedCharacters5)
+{
+    // Trigger SwCombinedPortion::Format for > 4 characters
+    createSwDoc("combined_chars_5.fodt");
+    xmlDocUniquePtr pXmlDoc = parseLayoutDump();
+    CPPUNIT_ASSERT(pXmlDoc);
+
+    // Assert that the layout engine successfully processed the Combined Portion
+    assertXPath(pXmlDoc,
+                "/root/page/body/txt[1]/SwParaPortion/SwLineLayout[1]/"
+                "SwFieldPortion[@type='PortionType::Combined']",
+                1);
+}
+
 } // end of anonymous namespace
 
 CPPUNIT_PLUGIN_IMPLEMENT();
