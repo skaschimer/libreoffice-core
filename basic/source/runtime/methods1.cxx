@@ -1621,22 +1621,18 @@ void SbRtl_Weekday(StarBASIC *, SbxArray & rPar, bool)
     sal_uInt32 nParCount = rPar.Count();
     if ( nParCount < 2 || nParCount > 3 )
     {
-        StarBASIC::Error( ERRCODE_BASIC_BAD_ARGUMENT );
+        return StarBASIC::Error( ERRCODE_BASIC_BAD_ARGUMENT );
     }
-    else
+    double aDate = rPar.Get(1)->GetDate();
+    bool bFirstDay = false;
+    sal_Int16 nFirstDay = 0;
+    if ( nParCount > 2 )
     {
-        double aDate = rPar.Get(1)->GetDate();
-
-        bool bFirstDay = false;
-        sal_Int16 nFirstDay = 0;
-        if ( nParCount > 2 )
-        {
-            nFirstDay = rPar.Get(2)->GetInteger();
-            bFirstDay = true;
-        }
-        sal_Int16 nDay = implGetWeekDay( aDate, bFirstDay, nFirstDay );
-        rPar.Get(0)->PutInteger(nDay);
+        nFirstDay = rPar.Get(2)->GetInteger();
+        bFirstDay = true;
     }
+    sal_Int16 nDay = implGetWeekDay( aDate, bFirstDay, nFirstDay );
+    rPar.Get(0)->PutInteger(nDay);
 }
 
 namespace {
