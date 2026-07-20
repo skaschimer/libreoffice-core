@@ -66,8 +66,6 @@ class SFX2_DLLPUBLIC SfxModelessDialogController : public SfxDialogController
     SfxModelessDialogController(SfxModelessDialogController&) = delete;
     void operator =(SfxModelessDialogController&) = delete;
 
-    void Init(SfxBindings *pBindinx, SfxChildWindow *pCW);
-
 protected:
     SfxModelessDialogController(SfxBindings*, SfxChildWindow* pChildWin,
         weld::Window* pParent, const OUString& rUIXMLDescription, const OUString& rID);
