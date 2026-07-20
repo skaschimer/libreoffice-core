@@ -70,7 +70,7 @@ SvxContourDlgChildWindow::SvxContourDlgChildWindow(vcl::Window* _pParent, sal_uI
 {
     SetController(std::make_shared<SvxContourDlg>(pBindings, this, _pParent->GetFrameWeld()));
     SvxContourDlg* pDlg = static_cast<SvxContourDlg*>(GetController().get());
-    pDlg->Initialize(&rInfo);
+    pDlg->Initialize(rInfo);
 }
 
 SvxContourDlg::SvxContourDlg(SfxBindings* _pBindings, SfxChildWindow* pCW,

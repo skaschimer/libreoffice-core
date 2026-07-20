@@ -80,7 +80,7 @@ SvxRubyChildWindow::SvxRubyChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
 {
     auto xDlg = std::make_shared<SvxRubyDialog>(pBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
-    xDlg->Initialize(&rInfo);
+    xDlg->Initialize(rInfo);
 }
 
 SfxChildWinInfo SvxRubyChildWindow::GetInfo() const { return SfxChildWindow::GetInfo(); }

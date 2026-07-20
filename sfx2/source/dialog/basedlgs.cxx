@@ -57,7 +57,7 @@ void SfxModelessDialog_Impl::Notify( SfxBroadcaster&, const SfxHint& rHint )
     }
 }
 
-void SfxModelessDialogController::Initialize(SfxChildWinInfo const *pInfo)
+void SfxModelessDialogController::Initialize(const SfxChildWinInfo& rInfo)
 
 /*  [Description]
 
@@ -68,9 +68,7 @@ void SfxModelessDialogController::Initialize(SfxChildWinInfo const *pInfo)
 */
 
 {
-    if (!pInfo)
-        return;
-    m_xImpl->aWinState = pInfo->aWinState;
+    m_xImpl->aWinState = rInfo.aWinState;
     m_xDialog->set_window_state(m_xImpl->aWinState);
 }
 

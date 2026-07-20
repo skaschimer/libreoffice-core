@@ -308,7 +308,7 @@ FmFieldWinMgr::FmFieldWinMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings
     auto xDlg = std::make_shared<FmFieldWin>(_pBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
     SetHideNotDelete(true);
-    xDlg->Initialize(&rInfo);
+    xDlg->Initialize(rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

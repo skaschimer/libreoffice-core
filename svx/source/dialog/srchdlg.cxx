@@ -2332,7 +2332,7 @@ SvxSearchDialogWrapper::SvxSearchDialogWrapper(vcl::Window* _pParent, sal_uInt16
     , m_dialog(std::make_shared<SvxSearchDialog>(_pParent->GetFrameWeld(), this, *pBindings))
 {
     SetController(m_dialog);
-    m_dialog->Initialize(&rInfo);
+    m_dialog->Initialize(rInfo);
 
     pBindings->Update( SID_SEARCH_ITEM );
     pBindings->Update( SID_SEARCH_OPTIONS );

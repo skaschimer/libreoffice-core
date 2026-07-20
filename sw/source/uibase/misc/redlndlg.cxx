@@ -121,7 +121,7 @@ void SwModelessRedlineAcceptDlg::Initialize(SfxChildWinInfo& rInfo)
 {
     m_xImplDlg->Initialize(rInfo.aExtraString);
 
-    SfxModelessDialogController::Initialize(&rInfo);
+    SfxModelessDialogController::Initialize(rInfo);
 }
 
 void SwModelessRedlineAcceptDlg::FillInfo(SfxChildWinInfo& rInfo) const

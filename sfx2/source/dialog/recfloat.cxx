@@ -63,7 +63,7 @@ SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParen
     aState.setPos(aPos);
     pDlg->set_window_state(aState);
 
-    pFloatDlg->Initialize(&rInfo);
+    pFloatDlg->Initialize(rInfo);
 }
 
 SfxRecordingFloatWrapper_Impl::~SfxRecordingFloatWrapper_Impl()

@@ -451,7 +451,7 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
     if (xResult)
     {
         rInfo.nFlags = SfxChildWindowFlags::NEVERHIDE;
-        xResult->Initialize(&rInfo);
+        xResult->Initialize(rInfo);
     }
     return xResult;
 }

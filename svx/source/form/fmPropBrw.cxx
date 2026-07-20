@@ -90,7 +90,7 @@ FmPropBrwMgr::FmPropBrwMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* 
     std::shared_ptr<FmPropBrw> xControl(new FmPropBrw(::comphelper::getProcessComponentContext(), _pBindings,
                                                          this, _pParent->GetFrameWeld(), &rInfo), o3tl::default_delete<FmPropBrw>());
     SetController(std::move(xControl));
-    static_cast<FmPropBrw*>(GetController().get())->Initialize(&rInfo);
+    static_cast<FmPropBrw*>(GetController().get())->Initialize(rInfo);
 }
 
 static OUString GetUIHeadlineName(sal_Int16 nClassId, const Any& aUnoObj)

@@ -75,7 +75,7 @@ protected:
 public:
     virtual ~SfxModelessDialogController() override;
 
-    void                    Initialize (SfxChildWinInfo const * pInfo);
+    void Initialize(const SfxChildWinInfo& rInfo);
     bool                    IsClosing() const;
     virtual void            Close() override;
     virtual void            EndDialog(int nResponse) override;

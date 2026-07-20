@@ -122,7 +122,7 @@ SwWordCountFloatDlg::SwWordCountFloatDlg(SfxBindings* _pBindings, SfxChildWindow
     showCJK(SvtCJKOptions::IsAnyEnabled());
     showStandardizedPages(officecfg::Office::Writer::WordCount::ShowStandardizedPageCount::get());
 
-    Initialize(&rInfo);
+    Initialize(rInfo);
 }
 
 void SwWordCountFloatDlg::UpdateCounts()

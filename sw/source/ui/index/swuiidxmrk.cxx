@@ -1112,7 +1112,7 @@ SwIndexMarkFloatDlg::SwIndexMarkFloatDlg(SfxBindings* _pBindings, SfxChildWindow
 {
     if (SwWrtShell* pWrtShell = ::GetActiveWrtShell())
         m_aContent.ReInitDlg(*pWrtShell);
-    Initialize(&rInfo);
+    Initialize(rInfo);
 }
 
 void SwIndexMarkFloatDlg::Activate()
@@ -2008,7 +2008,7 @@ SwAuthMarkFloatDlg::SwAuthMarkFloatDlg(SfxBindings* _pBindings, SfxChildWindow* 
                                   u"BibliographyEntryDialog"_ustr)
     , m_aContent(*this, *m_xBuilder, bNew)
 {
-    Initialize(&rInfo);
+    Initialize(rInfo);
     if (SwWrtShell* pWrtShell = ::GetActiveWrtShell())
         m_aContent.ReInitDlg(*pWrtShell);
 }

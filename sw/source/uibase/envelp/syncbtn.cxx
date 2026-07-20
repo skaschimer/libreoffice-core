@@ -61,7 +61,7 @@ SwSyncChildWin::SwSyncChildWin(vcl::Window* _pParent, sal_uInt16 nId, SfxBinding
         rInfo.aSize = pDlg->get_size();
     }
 
-    pBtnDlg->Initialize(&rInfo);
+    pBtnDlg->Initialize(rInfo);
 }
 
 SwSyncBtnDlg::SwSyncBtnDlg(SfxBindings* pBindings,

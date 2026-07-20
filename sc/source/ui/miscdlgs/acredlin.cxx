@@ -1667,7 +1667,7 @@ void ScAcceptChgDlg::Initialize(SfxChildWinInfo& rInfo)
     if (!rInfo.aExtraString.isEmpty())
         aStr = lcl_StripAcceptChgDat(rInfo.aExtraString);
 
-    SfxModelessDialogController::Initialize(&rInfo);
+    SfxModelessDialogController::Initialize(rInfo);
 
     if (aStr.isEmpty())
         return;
