@@ -67,7 +67,7 @@ SwRedlineAcceptChild::SwRedlineAcceptChild(vcl::Window* _pParent, sal_uInt16 nId
 {
     auto xDlg = std::make_shared<SwModelessRedlineAcceptDlg>(pBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
-    xDlg->Initialize(&rInfo);
+    xDlg->Initialize(rInfo);
 }
 
 SwModelessRedlineAcceptDlg::SwModelessRedlineAcceptDlg(
@@ -117,12 +117,11 @@ void SwModelessRedlineAcceptDlg::Activate()
     m_xImplDlg->Activate();
 }
 
-void SwModelessRedlineAcceptDlg::Initialize(SfxChildWinInfo* pInfo)
+void SwModelessRedlineAcceptDlg::Initialize(SfxChildWinInfo& rInfo)
 {
-    if (pInfo != nullptr)
-        m_xImplDlg->Initialize(pInfo->aExtraString);
+    m_xImplDlg->Initialize(rInfo.aExtraString);
 
-    SfxModelessDialogController::Initialize(pInfo);
+    SfxModelessDialogController::Initialize(&rInfo);
 }
 
 void SwModelessRedlineAcceptDlg::FillInfo(SfxChildWinInfo& rInfo) const
