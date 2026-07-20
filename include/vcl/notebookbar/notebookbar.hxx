@@ -16,7 +16,6 @@
 
 class NotebookBarContextChangeEventListener;
 class NotebookbarContextControl;
-class SfxViewShell;
 struct NotebookBarAddonsItem;
 
 /// This implements Widget Layout-based notebook-like menu bar.
@@ -49,11 +48,9 @@ private:
     VclPtr<SystemWindow> m_pSystemWindow;
     rtl::Reference<NotebookBarContextChangeEventListener> m_pEventListener;
     std::vector<NotebookbarContextControl*> m_pContextContainers;
-    const SfxViewShell* m_pViewShell;
 
     OUString m_sUIXMLDescription;
     const OUString m_sModule;
-    Link<const SfxViewShell*, void> m_rDisposeLink;
 
     AllSettings DefaultSettings;
 

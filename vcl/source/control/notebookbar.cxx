@@ -79,7 +79,6 @@ NotebookBar::NotebookBar(Window* pParent, const OUString& rID, const OUString& r
                          std::unique_ptr<NotebookBarAddonsItem> pNotebookBarAddonsItem)
     : Control(pParent)
     , m_pEventListener(new NotebookBarContextChangeEventListener(this, rFrame))
-    , m_pViewShell(nullptr)
     , m_sUIXMLDescription(rUIXMLDescription)
     , m_sModule(vcl::CommandInfoProvider::GetModuleIdentifier(rFrame))
 {
@@ -127,11 +126,7 @@ void NotebookBar::dispose()
     if (m_pSystemWindow && m_pSystemWindow->ImplIsInTaskPaneList(this))
         m_pSystemWindow->GetTaskPaneList()->RemoveWindow(this);
     m_pSystemWindow.reset();
-
-    if (m_rDisposeLink.IsSet())
-        m_rDisposeLink.Call(m_pViewShell);
-    else
-        disposeBuilder();
+    disposeBuilder();
 
     m_pEventListener->setupFrameListener(false);
     m_pEventListener->setupListener(false);
