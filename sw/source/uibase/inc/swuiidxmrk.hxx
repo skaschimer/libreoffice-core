@@ -155,11 +155,8 @@ class SwIndexMarkFloatDlg final : public SfxModelessDialogController
 
     virtual void    Activate() override;
 public:
-    SwIndexMarkFloatDlg(SfxBindings* pBindings,
-                        SfxChildWindow* pChild,
-                        weld::Window *pParent,
-                        SfxChildWinInfo const * pInfo,
-                        bool bNew);
+    SwIndexMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
+                        const SfxChildWinInfo& rInfo, bool bNew);
     void    ReInitDlg(SwWrtShell& rWrtShell);
 };
 
