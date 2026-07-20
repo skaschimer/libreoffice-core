@@ -19,7 +19,7 @@ SwWordCountWrapper::SwWordCountWrapper(vcl::Window* pParentWindow, sal_uInt16 nI
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
     m_xAbstDlg.reset(
-        pFact->CreateSwWordCountDialog(pBindings, this, pParentWindow->GetFrameWeld(), &rInfo));
+        pFact->CreateSwWordCountDialog(pBindings, this, pParentWindow->GetFrameWeld(), rInfo));
     SetController(m_xAbstDlg->GetController());
 }
 

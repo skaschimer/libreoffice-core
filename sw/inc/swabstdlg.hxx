@@ -469,8 +469,10 @@ public:
     virtual VclPtr<SfxAbstractDialog> CreateSwDropCapsDialog(weld::Window* pParent, const SfxItemSet& rSet) = 0;
     virtual VclPtr<SfxAbstractDialog> CreateSwBackgroundDialog(weld::Window* pParent, const SfxItemSet& rSet) = 0;
 
-    virtual VclPtr<AbstractSwWordCountFloatDlg> CreateSwWordCountDialog(SfxBindings* pBindings,
-        SfxChildWindow* pChild, weld::Window *pParent, SfxChildWinInfo* pInfo) = 0;
+    virtual VclPtr<AbstractSwWordCountFloatDlg>
+    CreateSwWordCountDialog(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
+                            SfxChildWinInfo& rInfo)
+        = 0;
 
     virtual VclPtr<AbstractSwInsertAbstractDlg> CreateSwInsertAbstractDlg(weld::Window* pParent) = 0;
     virtual VclPtr<SfxAbstractDialog> CreateSwAddressAbstractDlg(weld::Window* pParent, const SfxItemSet& rSet) = 0;

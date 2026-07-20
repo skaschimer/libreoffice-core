@@ -1124,12 +1124,9 @@ public:
 }
 
 VclPtr<AbstractSwWordCountFloatDlg> SwAbstractDialogFactory_Impl::CreateSwWordCountDialog(
-                                                                              SfxBindings* pBindings,
-                                                                              SfxChildWindow* pChild,
-                                                                              weld::Window *pParent,
-                                                                              SfxChildWinInfo* pInfo)
+    SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent, SfxChildWinInfo& rInfo)
 {
-    return VclPtr<AbstractSwWordCountFloatDlg_Impl>::Create(pBindings, pChild, pParent, pInfo);
+    return VclPtr<AbstractSwWordCountFloatDlg_Impl>::Create(pBindings, pChild, pParent, &rInfo);
 }
 
 VclPtr<VclAbstractDialog> SwAbstractDialogFactory_Impl::CreateIndexMarkModalDlg(weld::Window *pParent, SwWrtShell& rSh, SwTOXMark* pCurTOXMark )
