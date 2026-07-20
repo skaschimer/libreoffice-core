@@ -39,8 +39,7 @@ namespace comphelper
     class COMPHELPER_DLLPUBLIC OAccessibleKeyBindingHelper final : public OAccessibleKeyBindingHelper_Base
     {
     private:
-        typedef ::std::vector< css::uno::Sequence< css::awt::KeyStroke > > KeyBindings;
-        KeyBindings     m_aKeyBindings;
+        std::vector<css::uno::Sequence<css::awt::KeyStroke>> m_aKeyBindings;
         std::mutex      m_aMutex;
 
         virtual ~OAccessibleKeyBindingHelper() override;
