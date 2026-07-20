@@ -3575,7 +3575,12 @@ void CairoPixelProcessor2D::processPatternFillPrimitive2D(
     {
         mpTargetOutputDevice->Push(vcl::PushFlags::CLIPREGION);
         mpTargetOutputDevice->IntersectClipRegion(vcl::Region(aMask));
-        mpTargetOutputDevice->DrawWallpaper(aMaskRect, Wallpaper(aTileImage));
+        Wallpaper aWallpaper(aTileImage);
+        aWallpaper.SetColor(COL_TRANSPARENT);
+        Point aPaperPt(aMaskRect.getX() % nTileWidth, aMaskRect.getY() % nTileHeight);
+        tools::Rectangle aPaperRect(aPaperPt, aTileImage.GetSizePixel());
+        aWallpaper.SetRect(aPaperRect);
+        mpTargetOutputDevice->DrawWallpaper(aMaskRect, aWallpaper);
         mpTargetOutputDevice->Pop();
         return;
     }
