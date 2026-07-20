@@ -100,11 +100,10 @@ void SwWordCountFloatDlg::showStandardizedPages(bool bShowStandardizedPages)
     m_xStandardizedPagesLabelFT->set_visible(bShowStandardizedPages);
 }
 
-SwWordCountFloatDlg::SwWordCountFloatDlg(SfxBindings* _pBindings,
-                                         SfxChildWindow* pChild,
-                                         weld::Window *pParent,
-                                         SfxChildWinInfo const * pInfo)
-    : SfxModelessDialogController(_pBindings, pChild, pParent, u"modules/swriter/ui/wordcount.ui"_ustr, u"WordCountDialog"_ustr)
+SwWordCountFloatDlg::SwWordCountFloatDlg(SfxBindings* _pBindings, SfxChildWindow* pChild,
+                                         weld::Window* pParent, const SfxChildWinInfo& rInfo)
+    : SfxModelessDialogController(_pBindings, pChild, pParent,
+                                  u"modules/swriter/ui/wordcount.ui"_ustr, u"WordCountDialog"_ustr)
     , m_xCurrentWordFT(m_xBuilder->weld_label(u"selectwords"_ustr))
     , m_xCurrentCharacterFT(m_xBuilder->weld_label(u"selectchars"_ustr))
     , m_xCurrentCharacterExcludingSpacesFT(m_xBuilder->weld_label(u"selectcharsnospaces"_ustr))
@@ -123,7 +122,7 @@ SwWordCountFloatDlg::SwWordCountFloatDlg(SfxBindings* _pBindings,
     showCJK(SvtCJKOptions::IsAnyEnabled());
     showStandardizedPages(officecfg::Office::Writer::WordCount::ShowStandardizedPageCount::get());
 
-    Initialize(pInfo);
+    Initialize(&rInfo);
 }
 
 void SwWordCountFloatDlg::UpdateCounts()
