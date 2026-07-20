@@ -40,9 +40,8 @@
 SFX_IMPL_MODELESSDIALOGCONTOLLER(SfxRecordingFloatWrapper_Impl, SID_RECORDING_FLOATWINDOW);
 
 SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParentWnd,
-                                                             sal_uInt16 nId,
-                                                             SfxBindings* pBind,
-                                                             SfxChildWinInfo const * pInfo)
+                                                             sal_uInt16 nId, SfxBindings* pBind,
+                                                             const SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWnd, nId)
     , pBindings(pBind)
 {
@@ -64,7 +63,7 @@ SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParen
     aState.setPos(aPos);
     pDlg->set_window_state(aState);
 
-    pFloatDlg->Initialize(pInfo);
+    pFloatDlg->Initialize(&rInfo);
 }
 
 SfxRecordingFloatWrapper_Impl::~SfxRecordingFloatWrapper_Impl()

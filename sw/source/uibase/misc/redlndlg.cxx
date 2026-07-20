@@ -61,15 +61,13 @@
 
 SFX_IMPL_MODELESSDIALOGCONTOLLER_WITHID(SwRedlineAcceptChild, FN_REDLINE_ACCEPT)
 
-SwRedlineAcceptChild::SwRedlineAcceptChild(vcl::Window* _pParent,
-                                           sal_uInt16 nId,
-                                           SfxBindings* pBindings,
-                                           SfxChildWinInfo* pInfo)
+SwRedlineAcceptChild::SwRedlineAcceptChild(vcl::Window* _pParent, sal_uInt16 nId,
+                                           SfxBindings* pBindings, SfxChildWinInfo& rInfo)
     : SwChildWinWrapper(_pParent, nId)
 {
     auto xDlg = std::make_shared<SwModelessRedlineAcceptDlg>(pBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
-    xDlg->Initialize(pInfo);
+    xDlg->Initialize(&rInfo);
 }
 
 SwModelessRedlineAcceptDlg::SwModelessRedlineAcceptDlg(

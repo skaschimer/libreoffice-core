@@ -30,9 +30,8 @@
 class SfxPartChildWnd_Impl final : public SfxChildWindow
 {
 public:
-    SfxPartChildWnd_Impl( vcl::Window* pParent, sal_uInt16 nId,
-                                   SfxBindings* pBindings,
-                                   SfxChildWinInfo* pInfo );
+    SfxPartChildWnd_Impl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+                         SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW(SfxPartChildWnd_Impl);
                             virtual ~SfxPartChildWnd_Impl() override;

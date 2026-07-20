@@ -27,9 +27,8 @@
  */
 class SVX_DLLPUBLIC SvxColorChildWindow final : public SfxChildWindow
 {
- public:
-    SvxColorChildWindow( vcl::Window*, sal_uInt16, SfxBindings*,
-                         SfxChildWinInfo* );
+public:
+    SvxColorChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID(SvxColorChildWindow);
 };

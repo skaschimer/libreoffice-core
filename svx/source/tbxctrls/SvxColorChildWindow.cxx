@@ -25,11 +25,9 @@
 SFX_IMPL_DOCKINGWINDOW_WITHID( SvxColorChildWindow, SID_COLOR_CONTROL )
 
 // Derivation from SfxChildWindow as "container" for animator
-SvxColorChildWindow::SvxColorChildWindow( vcl::Window* _pParent,
-                                          sal_uInt16 nId,
-                                          SfxBindings* pBindings,
-                                          SfxChildWinInfo* pInfo ) :
-    SfxChildWindow( _pParent, nId )
+SvxColorChildWindow::SvxColorChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
+                                         SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, nId)
 {
     VclPtr<SvxColorDockingWindow> pWin = VclPtr<SvxColorDockingWindow>::Create( pBindings, this,
                                         _pParent );
@@ -38,7 +36,7 @@ SvxColorChildWindow::SvxColorChildWindow( vcl::Window* _pParent,
 
     SetAlignment(SfxChildAlignment::RIGHT);
 
-    pWin->Initialize( pInfo );
+    pWin->Initialize(&rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

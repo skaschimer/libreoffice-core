@@ -362,10 +362,8 @@ private:
 class ScInputWindowWrapper : public SfxChildWindow
 {
 public:
-            ScInputWindowWrapper( vcl::Window*           pParent,
-                                  sal_uInt16            nId,
-                                  SfxBindings*      pBindings,
-                                  SfxChildWinInfo*  pInfo );
+    ScInputWindowWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+                         SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(ScInputWindowWrapper);
 };

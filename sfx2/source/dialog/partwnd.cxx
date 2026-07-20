@@ -41,26 +41,20 @@
 
 SFX_IMPL_DOCKINGWINDOW( SfxPartChildWnd_Impl, SID_BROWSER );
 
-SfxPartChildWnd_Impl::SfxPartChildWnd_Impl
-(
-    vcl::Window* pParentWnd,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo
-)
-    : SfxChildWindow( pParentWnd, nId )
+SfxPartChildWnd_Impl::SfxPartChildWnd_Impl(vcl::Window* pParentWnd, sal_uInt16 nId,
+                                           SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    : SfxChildWindow(pParentWnd, nId)
 {
     // Create Window
     SetWindow(VclPtr<SfxPartDockWnd_Impl>::Create( pBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK ));
     SetAlignment(SfxChildAlignment::TOP);
 
-    assert(pInfo);
-    pInfo->nFlags |= SfxChildWindowFlags::FORCEDOCK;
+    rInfo.nFlags |= SfxChildWindowFlags::FORCEDOCK;
 
     static_cast<SfxDockingWindow*>(GetWindow())->SetFloatingSize( Size( 175, 175 ) );
     GetWindow()->SetSizePixel( Size( 175, 175 ) );
 
-    static_cast<SfxDockingWindow*>(GetWindow())->Initialize( pInfo );
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
     SetHideNotDelete( true );
 }
 

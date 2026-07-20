@@ -21,7 +21,7 @@ class SAL_WARN_UNUSED SFX2_DLLPUBLIC DevelopmentToolChildWindow final : public S
     SFX_DECL_CHILDWINDOW_WITHID(DevelopmentToolChildWindow);
 
     DevelopmentToolChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
-                               SfxChildWinInfo* pInfo);
+                               SfxChildWinInfo& rInfo);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

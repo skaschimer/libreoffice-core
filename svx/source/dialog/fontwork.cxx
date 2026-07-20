@@ -162,19 +162,14 @@ void SvxFontWorkControllerItem::StateChangedAtToolBoxControl( sal_uInt16 /*nSID*
 
 // Derivation from SfxChildWindow as "containers" for Fontwork dialog
 
-SvxFontWorkChildWindow::SvxFontWorkChildWindow
-(
-    vcl::Window* _pParent,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo
-) :
-    SfxChildWindow( _pParent, nId )
+SvxFontWorkChildWindow::SvxFontWorkChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
+                                               SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, nId)
 {
     VclPtrInstance<SvxFontWorkDialog> pDlg(pBindings, this, _pParent);
     SetWindow(pDlg);
 
-    pDlg->Initialize( pInfo );
+    pDlg->Initialize(&rInfo);
 }
 
 // Floating Window to the attribution of text effects

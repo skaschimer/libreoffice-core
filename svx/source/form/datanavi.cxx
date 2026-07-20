@@ -2075,16 +2075,17 @@ namespace svxform
 
     SFX_IMPL_DOCKINGWINDOW( DataNavigatorManager, SID_FM_SHOW_DATANAVIGATOR )
 
-    DataNavigatorManager::DataNavigatorManager(
-        vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* _pBindings, SfxChildWinInfo* _pInfo ) :
+    DataNavigatorManager::DataNavigatorManager(vcl::Window* _pParent, sal_uInt16 _nId,
+                                               SfxBindings* _pBindings, SfxChildWinInfo& rInfo)
+        :
 
-        SfxChildWindow( _pParent, _nId )
+        SfxChildWindow(_pParent, _nId)
 
     {
         SetWindow( VclPtr<DataNavigator>::Create( _pBindings, this, _pParent ) );
         SetAlignment(SfxChildAlignment::RIGHT);
         GetWindow()->SetSizePixel( Size( 250, 400 ) );
-        static_cast<SfxDockingWindow*>(GetWindow())->Initialize( _pInfo );
+        static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
     }
 
     AddDataItemDialog::AddDataItemDialog(weld::Window* pParent, ItemNode* _pNode,

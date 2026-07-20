@@ -66,7 +66,7 @@ private:
 
 public:
     SfxInfoBarContainerChild(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
-                             SfxChildWinInfo* pInfo);
+                             SfxChildWinInfo& rInfo);
     virtual ~SfxInfoBarContainerChild() override;
 
     SFX_DECL_CHILDWINDOW_WITHID(SfxInfoBarContainerChild);

@@ -101,10 +101,10 @@ QuickFindPanelWindow::QuickFindPanelWindow(SfxBindings* _pBindings, SfxChildWind
 }
 
 QuickFindPanelWrapper::QuickFindPanelWrapper(vcl::Window* pParent, sal_uInt16 nId,
-                                             SfxBindings* pBindings, SfxChildWinInfo* pInfo)
+                                             SfxBindings* pBindings, SfxChildWinInfo& rInfo)
     : SfxQuickFindWrapper(pParent, nId)
 {
-    SetWindow(VclPtr<QuickFindPanelWindow>::Create(pBindings, this, pParent, pInfo));
+    SetWindow(VclPtr<QuickFindPanelWindow>::Create(pBindings, this, pParent, &rInfo));
     Initialize();
 }
 

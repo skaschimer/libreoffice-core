@@ -301,14 +301,14 @@ void FmFieldWin::FillInfo( SfxChildWinInfo& rInfo ) const
 
 SFX_IMPL_MODELESSDIALOGCONTOLLER(FmFieldWinMgr, SID_FM_ADD_FIELD)
 
-FmFieldWinMgr::FmFieldWinMgr(vcl::Window* _pParent, sal_uInt16 _nId,
-               SfxBindings* _pBindings, SfxChildWinInfo const * _pInfo)
-              :SfxChildWindow(_pParent, _nId)
+FmFieldWinMgr::FmFieldWinMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* _pBindings,
+                             const SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, _nId)
 {
     auto xDlg = std::make_shared<FmFieldWin>(_pBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
     SetHideNotDelete(true);
-    xDlg->Initialize(_pInfo);
+    xDlg->Initialize(&rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

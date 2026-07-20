@@ -68,7 +68,7 @@ namespace
     Class::Class( vcl::Window*               pParentP,                   \
                     sal_uInt16              nId,                        \
                     SfxBindings*        p,                          \
-                    SfxChildWinInfo*  pInfo )                     \
+                    SfxChildWinInfo&  rInfo )                     \
         : SfxChildWindow(pParentP, nId)                             \
     {                                                               \
         /************************************************************************************/\
@@ -82,11 +82,10 @@ namespace
             pViewShell = dynamic_cast<ScTabViewShell*>( SfxViewShell::Current()  ); \
         OSL_ENSURE( pViewShell, "missing view shell :-(" );         \
         SetController( pViewShell ?                                      \
-            pViewShell->CreateRefDialogController( p, this, pInfo, pParentP->GetFrameWeld(), sid ) : nullptr );    \
+            pViewShell->CreateRefDialogController( p, this, &rInfo, pParentP->GetFrameWeld(), sid ) : nullptr );    \
         if (pViewShell && !GetController())                                     \
             pViewShell->GetViewFrame().SetChildWindow( nId, false );           \
     }
-
 
 IMPL_CONTROLLER_CHILD_CTOR( ScNameDlgWrapper, FID_DEFINE_NAME )
 
@@ -127,11 +126,9 @@ static tools::Long         nScSimpleRefX;
 static tools::Long         nScSimpleRefY;
 static bool         bAutoReOpen = true;
 
-ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper( vcl::Window* pParentP,
-                                sal_uInt16              nId,
-                                SfxBindings*        p,
-                                SfxChildWinInfo*    pInfo )
-        : SfxChildWindow(pParentP, nId)
+ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper(vcl::Window* pParentP, sal_uInt16 nId, SfxBindings* p,
+                                             SfxChildWinInfo& rInfo)
+    : SfxChildWindow(pParentP, nId)
 {
 
     ScTabViewShell* pViewShell = nullptr;
@@ -145,17 +142,18 @@ ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper( vcl::Window* pParentP,
 
     OSL_ENSURE( pViewShell, "missing view shell :-(" );
 
-    if(pInfo!=nullptr && bScSimpleRefFlag)
+    if (bScSimpleRefFlag)
     {
-        pInfo->aPos.setX(nScSimpleRefX );
-        pInfo->aPos.setY(nScSimpleRefY );
-        pInfo->aSize.setHeight(nScSimpleRefHeight );
-        pInfo->aSize.setWidth(nScSimpleRefWidth );
+        rInfo.aPos.setX(nScSimpleRefX);
+        rInfo.aPos.setY(nScSimpleRefY);
+        rInfo.aSize.setHeight(nScSimpleRefHeight);
+        rInfo.aSize.setWidth(nScSimpleRefWidth);
     }
     SetController(nullptr);
 
     if (bAutoReOpen && pViewShell)
-        SetController(pViewShell->CreateRefDialogController(p, this, pInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
+        SetController(pViewShell->CreateRefDialogController(
+            p, this, &rInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
 
     if (!GetController())
     {
@@ -216,11 +214,9 @@ void ScSimpleRefDlgWrapper::StartRefInput()
 
 // ScAcceptChgDlgWrapper //FIXME: should be moved into ViewShell
 
-ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP,
-                                            sal_uInt16 nId,
-                                            SfxBindings* pBindings,
-                                            SfxChildWinInfo* pInfo ) :
-                                            SfxChildWindow( pParentP, nId )
+ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP, sal_uInt16 nId,
+                                             SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    : SfxChildWindow(pParentP, nId)
 {
     ScTabViewShell* pViewShell =
         dynamic_cast<ScTabViewShell*>( SfxViewShell::Current()  );
@@ -229,8 +225,8 @@ ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP,
     {
         auto xDlg = std::make_shared<ScAcceptChgDlg>(pBindings, this, pParentP->GetFrameWeld(), pViewShell->GetViewData());
         SetController(xDlg);
-        pInfo->nFlags = SfxChildWindowFlags::NEVERHIDE;
-        xDlg->Initialize( pInfo );
+        rInfo.nFlags = SfxChildWindowFlags::NEVERHIDE;
+        xDlg->Initialize(&rInfo);
     }
     else
         SetController( nullptr );
@@ -268,13 +264,12 @@ namespace
     }
 }
 
-ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP,
-                                             sal_uInt16 nId,
+ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP, sal_uInt16 nId,
                                              const SfxBindings* p,
-                                             SAL_UNUSED_PARAMETER SfxChildWinInfo* /*pInfo*/ )
-                                             : SfxChildWindow(pParentP, nId)
-                                             , m_bVisibleLock(false)
-                                             , m_bFreeWindowLock(false)
+                                             SAL_UNUSED_PARAMETER SfxChildWinInfo& /*rInfo*/)
+    : SfxChildWindow(pParentP, nId)
+    , m_bVisibleLock(false)
+    , m_bFreeWindowLock(false)
 {
     SetWantsFocus( false );
     std::shared_ptr<SfxDialogController> xDlg(ScValidationDlg::Find1AliveObject(pParentP->GetFrameWeld()));

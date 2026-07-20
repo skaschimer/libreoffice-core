@@ -17,7 +17,7 @@ SFX_IMPL_DOCKINGWINDOW_WITHID(DevelopmentToolChildWindow, SID_DEVELOPMENT_TOOLS_
 
 DevelopmentToolChildWindow::DevelopmentToolChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
                                                        SfxBindings* pBindings,
-                                                       SfxChildWinInfo* pInfo)
+                                                       SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
     VclPtr<DevelopmentToolDockingWindow> pWin
@@ -25,7 +25,7 @@ DevelopmentToolChildWindow::DevelopmentToolChildWindow(vcl::Window* pParentWindo
     SetWindow(pWin);
     SetAlignment(SfxChildAlignment::BOTTOM);
     pWin->SetSizePixel(Size(0, 290));
-    pWin->Initialize(pInfo);
+    pWin->Initialize(&rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -534,8 +534,8 @@ namespace svxform
     class UNLESS_MERGELIBS(SVXCORE_DLLPUBLIC) NavigatorFrameManager final : public SfxChildWindow
     {
     public:
-        SVX_DLLPRIVATE NavigatorFrameManager( vcl::Window *pParent, sal_uInt16 nId, SfxBindings *pBindings,
-                          SfxChildWinInfo *pInfo );
+        SVX_DLLPRIVATE NavigatorFrameManager(vcl::Window* pParent, sal_uInt16 nId,
+                                             SfxBindings* pBindings, SfxChildWinInfo& rInfo);
         SFX_DECL_CHILDWINDOW( NavigatorFrameManager );
     };
 }

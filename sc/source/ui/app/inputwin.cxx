@@ -122,11 +122,9 @@ enum ScNameInputType
 
 SFX_IMPL_CHILDWINDOW_WITHID(ScInputWindowWrapper,FID_INPUTLINE_STATUS)
 
-ScInputWindowWrapper::ScInputWindowWrapper( vcl::Window*          pParentP,
-                                            sal_uInt16           nId,
-                                            SfxBindings*     pBindings,
-                                            SfxChildWinInfo* /* pInfo */ )
-    :   SfxChildWindow( pParentP, nId )
+ScInputWindowWrapper::ScInputWindowWrapper(vcl::Window* pParentP, sal_uInt16 nId,
+                                           SfxBindings* pBindings, SfxChildWinInfo&)
+    : SfxChildWindow(pParentP, nId)
 {
     VclPtr<ScInputWindow> pWin = VclPtr<ScInputWindow>::Create( pParentP, pBindings );
     SetWindow( pWin );

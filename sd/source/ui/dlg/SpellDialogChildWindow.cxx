@@ -31,14 +31,12 @@ namespace sd {
 
 SFX_IMPL_CHILDWINDOW_WITHID(SpellDialogChildWindow, SID_SPELL_DIALOG)
 
-SpellDialogChildWindow::SpellDialogChildWindow (
-    vcl::Window* _pParent,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SAL_UNUSED_PARAMETER SfxChildWinInfo* /*pInfo*/)
-    : svx::SpellDialogChildWindow (_pParent, nId, pBindings),
-      mpSdOutliner (nullptr),
-      mbOwnOutliner (false)
+SpellDialogChildWindow::SpellDialogChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
+                                               SfxBindings* pBindings,
+                                               SAL_UNUSED_PARAMETER SfxChildWinInfo& /*rInfo*/)
+    : svx::SpellDialogChildWindow(_pParent, nId, pBindings)
+    , mpSdOutliner(nullptr)
+    , mbOwnOutliner(false)
 {
     ProvideOutliner();
 }

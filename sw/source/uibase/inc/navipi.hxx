@@ -193,8 +193,8 @@ public:
 class SwNavigatorWrapper final : public SfxNavigatorWrapper
 {
 public:
-    SwNavigatorWrapper(vcl::Window *pParent, sal_uInt16 nId,
-                       SfxBindings* pBindings, SfxChildWinInfo* pInfo);
+    SwNavigatorWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+                       SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW_WITHID(SwNavigatorWrapper);
 };
 

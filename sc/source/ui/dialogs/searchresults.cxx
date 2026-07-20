@@ -249,8 +249,8 @@ IMPL_STATIC_LINK( SearchResultsDlg, OnShowToggled, weld::Toggleable&, rButton, v
     }
 }
 
-SearchResultsDlgWrapper::SearchResultsDlgWrapper(
-    vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* pBindings, SfxChildWinInfo* /*pInfo*/)
+SearchResultsDlgWrapper::SearchResultsDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId,
+                                                 SfxBindings* pBindings, SfxChildWinInfo& /*rInfo*/)
     : SfxChildWindow(_pParent, nId)
     , m_xDialog(std::make_shared<SearchResultsDlg>(pBindings, _pParent->GetFrameWeld()))
 {

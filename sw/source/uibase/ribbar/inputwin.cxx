@@ -618,11 +618,9 @@ void InputEdit::UpdateRange(std::u16string_view rBoxes,
 
 }
 
-SwInputChild::SwInputChild(vcl::Window* _pParent,
-                                sal_uInt16 nId,
-                                SfxBindings const * pBindings,
-                                SfxChildWinInfo* ) :
-                                SfxChildWindow( _pParent, nId )
+SwInputChild::SwInputChild(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings const* pBindings,
+                           SfxChildWinInfo&)
+    : SfxChildWindow(_pParent, nId)
 {
     m_pDispatch = pBindings->GetDispatcher();
     SetWindow(VclPtr<SwInputWindow>::Create(_pParent, m_pDispatch));

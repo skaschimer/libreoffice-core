@@ -173,13 +173,10 @@ static void lcl_updateSpellStateCursorPos(SpellState& rSpellState, const SwWrtSh
     }
 }
 
-SwSpellDialogChildWindow::SwSpellDialogChildWindow (
-            vcl::Window* _pParent,
-            sal_uInt16 nId,
-            SfxBindings* pBindings,
-            SfxChildWinInfo* /*pInfo*/)
-    : svx::SpellDialogChildWindow (
-        _pParent, nId, pBindings)
+SwSpellDialogChildWindow::SwSpellDialogChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
+                                                   SfxBindings* pBindings,
+                                                   SfxChildWinInfo& /*rInfo*/)
+    : svx::SpellDialogChildWindow(_pParent, nId, pBindings)
     , m_bIsGrammarCheckingOn(false)
     , m_pSpellState(new SpellState)
 {

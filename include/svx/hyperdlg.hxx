@@ -37,8 +37,8 @@ private:
     VclPtr<VclAbstractDialog>   mpDlg;
 
 public:
-    SvxHlinkDlgWrapper( vcl::Window*pParent, sal_uInt16 nId,
-                        SfxBindings* pBindings, SfxChildWinInfo* pInfo );
+    SvxHlinkDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+                       SfxChildWinInfo& rInfo);
     virtual ~SvxHlinkDlgWrapper() override;
 
     SFX_DECL_CHILDWINDOW_WITHID(SvxHlinkDlgWrapper);

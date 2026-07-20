@@ -28,7 +28,7 @@
     class Class : public SfxChildWindow                                         \
     {                                                                           \
     public:                                                                     \
-        Class( vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo* ); \
+        Class(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);        \
         SFX_DECL_CHILDWINDOW_WITHID(Class);                                     \
     };
 
@@ -178,10 +178,7 @@ private:
 class ScAcceptChgDlgWrapper : public SfxChildWindow
 {
 public:
-    ScAcceptChgDlgWrapper( vcl::Window*,
-                           sal_uInt16,
-                           SfxBindings*,
-                           SfxChildWinInfo* );
+    ScAcceptChgDlgWrapper(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID(Class);
 
@@ -191,10 +188,7 @@ public:
 class ScSimpleRefDlgWrapper: public SfxChildWindow
 {
 public:
-    ScSimpleRefDlgWrapper(vcl::Window*,
-                          sal_uInt16,
-                          SfxBindings*,
-                          SfxChildWinInfo*);
+    ScSimpleRefDlgWrapper(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID(Class);
 
@@ -213,7 +207,7 @@ class ScValidityRefChildWin : public SfxChildWindow
     bool    m_bVisibleLock:1;
     bool    m_bFreeWindowLock:1;
 public:
-    ScValidityRefChildWin( vcl::Window*, sal_uInt16, const SfxBindings*, SfxChildWinInfo* );
+    ScValidityRefChildWin(vcl::Window*, sal_uInt16, const SfxBindings*, SfxChildWinInfo&);
     SFX_DECL_CHILDWINDOW_WITHID(ScValidityRefChildWin);
     virtual ~ScValidityRefChildWin() override;
     bool    LockVisible( bool bLock ){ bool bVis = m_bVisibleLock; m_bVisibleLock = bLock; return bVis; }

@@ -34,7 +34,7 @@ class SpellDialogChildWindow final : public svx::SpellDialogChildWindow, public 
 {
 public:
     SpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
-                           SfxChildWinInfo* pInfo);
+                           SfxChildWinInfo& rInfo);
     virtual ~SpellDialogChildWindow() override;
 
     /** This method makes the one from the base class public so that

@@ -1835,13 +1835,12 @@ void FmFilterNavigatorWin::GetFocus()
 
 SFX_IMPL_DOCKINGWINDOW( FmFilterNavigatorWinMgr, SID_FM_FILTER_NAVIGATOR )
 
-
-FmFilterNavigatorWinMgr::FmFilterNavigatorWinMgr( vcl::Window *_pParent, sal_uInt16 _nId,
-                                    SfxBindings *_pBindings, SfxChildWinInfo* _pInfo )
-                 :SfxChildWindow( _pParent, _nId )
+FmFilterNavigatorWinMgr::FmFilterNavigatorWinMgr(vcl::Window* _pParent, sal_uInt16 _nId,
+                                                 SfxBindings* _pBindings, SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, _nId)
 {
     SetWindow( VclPtr<FmFilterNavigatorWin>::Create( _pBindings, this, _pParent ) );
-    static_cast<SfxDockingWindow*>(GetWindow())->Initialize( _pInfo );
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
 }
 
 

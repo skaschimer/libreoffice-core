@@ -32,7 +32,7 @@ namespace sfx2::sidebar {
 SFX_IMPL_DOCKINGWINDOW_WITHID(SidebarChildWindow, SID_SIDEBAR);
 
 SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
-                                       SfxBindings* pBindings, SfxChildWinInfo* pInfo)
+                                       SfxBindings* pBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
     auto pDockWin = VclPtr<SidebarDockingWindow>::Create(
@@ -44,8 +44,8 @@ SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nI
     pDockWin->SetHelpId(HID_SIDEBAR_WINDOW);
     pDockWin->SetOutputSizePixel(Size(GetDefaultWidth(pDockWin), 450));
 
-    if (pInfo && pInfo->aExtraString.isEmpty() && pInfo->aModule != "sdraw"
-        && pInfo->aModule != "simpress" && pInfo->aModule != "smath")
+    if (rInfo.aExtraString.isEmpty() && rInfo.aModule != "sdraw" && rInfo.aModule != "simpress"
+        && rInfo.aModule != "smath")
     {
         // When this is the first start (never had the sidebar open yet),
         // default to non-expanded sidebars in Writer and Calc.
@@ -61,7 +61,7 @@ SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nI
         }
     }
 
-    pDockWin->Initialize(pInfo);
+    pDockWin->Initialize(&rInfo);
 
     if (comphelper::LibreOfficeKit::isActive())
     {

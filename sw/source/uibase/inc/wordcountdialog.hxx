@@ -69,10 +69,8 @@ class SwWordCountWrapper final : public SfxChildWindow
     VclPtr<AbstractSwWordCountFloatDlg> m_xAbstDlg;
 
 public:
-    SwWordCountWrapper(    vcl::Window *pParentWindow,
-                            sal_uInt16 nId,
-                            SfxBindings* pBindings,
-                            SfxChildWinInfo* pInfo );
+    SwWordCountWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+                       SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW_WITHID(SwWordCountWrapper);
 
     virtual ~SwWordCountWrapper() override;

@@ -53,9 +53,8 @@ typedef ::std::vector< OUString > TargetList;
 
 class SVX_DLLPUBLIC SvxIMapDlgChildWindow final : public SfxChildWindow
 {
- public:
-
-    SvxIMapDlgChildWindow( vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo const * );
+public:
+    SvxIMapDlgChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, const SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID( SvxIMapDlgChildWindow );
 

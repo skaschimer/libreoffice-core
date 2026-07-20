@@ -87,13 +87,12 @@ void SvxIMapDlgItem::StateChangedAtToolBoxControl( sal_uInt16 nSID, SfxItemState
 }
 
 SvxIMapDlgChildWindow::SvxIMapDlgChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
-                                             SfxBindings* pBindings,
-                                             SfxChildWinInfo const * pInfo)
-    : SfxChildWindow( _pParent, nId )
+                                             SfxBindings* pBindings, const SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, nId)
 {
     SetController(std::make_shared<SvxIMapDlg>(pBindings, this, _pParent->GetFrameWeld()));
     SvxIMapDlg* pDlg = static_cast<SvxIMapDlg*>(GetController().get());
-    pDlg->Initialize( pInfo );
+    pDlg->Initialize(&rInfo);
 }
 
 void SvxIMapDlgChildWindow::UpdateIMapDlg( const Graphic& rGraphic, const ImageMap* pImageMap,

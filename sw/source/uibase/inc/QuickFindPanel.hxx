@@ -97,7 +97,7 @@ class QuickFindPanelWrapper : public SfxQuickFindWrapper
 {
 public:
     QuickFindPanelWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
-                          SfxChildWinInfo* pInfo);
+                          SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW(QuickFindPanelWrapper);
 };
 

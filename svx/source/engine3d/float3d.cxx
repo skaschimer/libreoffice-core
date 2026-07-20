@@ -2498,16 +2498,14 @@ LightButton* Svx3DWin::GetLbByButton( const weld::Button* pBtn )
 };
 
 // Derivation from SfxChildWindow as "containers" for effects
-Svx3DChildWindow::Svx3DChildWindow( vcl::Window* _pParent,
-                                                         sal_uInt16 nId,
-                                                         SfxBindings* pBindings,
-                                                         SfxChildWinInfo* pInfo ) :
-    SfxChildWindow( _pParent, nId )
+Svx3DChildWindow::Svx3DChildWindow(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* pBindings,
+                                   SfxChildWinInfo& rInfo)
+    : SfxChildWindow(_pParent, nId)
 {
     VclPtr<Svx3DWin> pWin = VclPtr<Svx3DWin>::Create( pBindings, this, _pParent );
     SetWindow(pWin);
 
-    pWin->Initialize( pInfo );
+    pWin->Initialize(&rInfo);
 }
 
 Svx3DCtrlItem::Svx3DCtrlItem( sal_uInt16 _nId,

@@ -83,14 +83,14 @@ using ::com::sun::star::awt::XWindow;
 //= FmPropBrwMgr
 SFX_IMPL_MODELESSDIALOGCONTOLLER(FmPropBrwMgr, SID_FM_SHOW_PROPERTIES)
 
-FmPropBrwMgr::FmPropBrwMgr( vcl::Window* _pParent, sal_uInt16 _nId,
-                            SfxBindings* _pBindings, const SfxChildWinInfo* _pInfo)
+FmPropBrwMgr::FmPropBrwMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* _pBindings,
+                           const SfxChildWinInfo& rInfo)
               :SfxChildWindow(_pParent, _nId)
 {
     std::shared_ptr<FmPropBrw> xControl(new FmPropBrw(::comphelper::getProcessComponentContext(), _pBindings,
-                                                         this, _pParent->GetFrameWeld(), _pInfo), o3tl::default_delete<FmPropBrw>());
+                                                         this, _pParent->GetFrameWeld(), &rInfo), o3tl::default_delete<FmPropBrw>());
     SetController(std::move(xControl));
-    static_cast<FmPropBrw*>(GetController().get())->Initialize( _pInfo );
+    static_cast<FmPropBrw*>(GetController().get())->Initialize(&rInfo);
 }
 
 static OUString GetUIHeadlineName(sal_Int16 nClassId, const Any& aUnoObj)

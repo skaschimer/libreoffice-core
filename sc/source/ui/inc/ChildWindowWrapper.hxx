@@ -21,8 +21,8 @@ template <sal_Int16 WindowID>
 class ChildControllerWrapper : public SfxChildWindow
 {
 public:
-    ChildControllerWrapper(vcl::Window* pParentP, sal_uInt16 nId,
-                           SfxBindings* pBindings, SfxChildWinInfo* pInfo)
+    ChildControllerWrapper(vcl::Window* pParentP, sal_uInt16 nId, SfxBindings* pBindings,
+                           SfxChildWinInfo& rInfo)
         : SfxChildWindow(pParentP, nId)
     {
         ScTabViewShell* pViewShell = getTabViewShell( pBindings );
@@ -31,17 +31,17 @@ public:
         OSL_ENSURE(pViewShell, "Missing view shell!");
 
         if (pViewShell)
-            SetController(pViewShell->CreateRefDialogController(pBindings, this, pInfo, pParentP->GetFrameWeld(), WindowID));
+            SetController(pViewShell->CreateRefDialogController(
+                pBindings, this, &rInfo, pParentP->GetFrameWeld(), WindowID));
 
         if (pViewShell && !GetController())
             pViewShell->GetViewFrame().SetChildWindow( nId, false );
     }
 
-    static std::unique_ptr<SfxChildWindow> CreateImpl(
-                vcl::Window *pParent, sal_uInt16 nId,
-                SfxBindings *pBindings, SfxChildWinInfo* pInfo )
+    static std::unique_ptr<SfxChildWindow>
+    CreateImpl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings, SfxChildWinInfo& rInfo)
     {
-        return std::make_unique<ChildControllerWrapper>(pParent, nId, pBindings, pInfo);
+        return std::make_unique<ChildControllerWrapper>(pParent, nId, pBindings, rInfo);
     }
 
     static void RegisterChildWindow (

@@ -37,14 +37,10 @@ SFX_IMPL_DOCKINGWINDOW_WITHID(BottomPaneImpressChildWindow, SID_BOTTOM_PANE_IMPR
 SFX_IMPL_DOCKINGWINDOW_WITHID(LeftPaneDrawChildWindow, SID_LEFT_PANE_DRAW)
 
 //===== PaneChildWindow =======================================================
-PaneChildWindow::PaneChildWindow (
-    vcl::Window* pParentWindow,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo,
-    TranslateId pTitleBarResId,
-    SfxChildAlignment eAlignment)
-    : SfxChildWindow (pParentWindow, nId)
+PaneChildWindow::PaneChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+                                 SfxChildWinInfo& rInfo, TranslateId pTitleBarResId,
+                                 SfxChildAlignment eAlignment)
+    : SfxChildWindow(pParentWindow, nId)
 {
     SetWindow( VclPtr<TitledDockingWindow>::Create(
         pBindings,
@@ -54,7 +50,7 @@ PaneChildWindow::PaneChildWindow (
     SetAlignment(eAlignment);
     SfxDockingWindow* pDockingWindow = static_cast<SfxDockingWindow*>(GetWindow());
     pDockingWindow->EnableInput();
-    pDockingWindow->Initialize(pInfo);
+    pDockingWindow->Initialize(&rInfo);
     SetHideNotDelete(true);
 
     ViewShellBase* pBase = ViewShellBase::GetViewShellBase(pBindings->GetDispatcher()->GetFrame());
@@ -76,50 +72,30 @@ PaneChildWindow::~PaneChildWindow()
 }
 
 //===== LeftPaneImpressChildWindow ============================================
-LeftPaneImpressChildWindow::LeftPaneImpressChildWindow (
-    vcl::Window* pParentWindow,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo)
-    : PaneChildWindow(
-        pParentWindow,
-        nId,
-        pBindings,
-        pInfo,
-        STR_LEFT_PANE_IMPRESS_TITLE,
-        SfxChildAlignment::LEFT)
+LeftPaneImpressChildWindow::LeftPaneImpressChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
+                                                       SfxBindings* pBindings,
+                                                       SfxChildWinInfo& rInfo)
+    : PaneChildWindow(pParentWindow, nId, pBindings, rInfo, STR_LEFT_PANE_IMPRESS_TITLE,
+                      SfxChildAlignment::LEFT)
 {
 }
 
 //===== BottomPaneImpressChildWindow ============================================
-BottomPaneImpressChildWindow::BottomPaneImpressChildWindow (
-    vcl::Window* pParentWindow,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo)
+BottomPaneImpressChildWindow::BottomPaneImpressChildWindow(vcl::Window* pParentWindow,
+                                                           sal_uInt16 nId, SfxBindings* pBindings,
+                                                           SfxChildWinInfo& rInfo)
     : PaneChildWindow(
-        pParentWindow,
-        nId,
-        pBindings,
-        pInfo,
-        STR_NOTES_MODE, // TODO this isn't a specific translatable string for this view.
-        SfxChildAlignment::BOTTOM)
+          pParentWindow, nId, pBindings, rInfo,
+          STR_NOTES_MODE, // TODO this isn't a specific translatable string for this view.
+          SfxChildAlignment::BOTTOM)
 {
 }
 
 //===== LeftPaneDrawChildWindow ===============================================
-LeftPaneDrawChildWindow::LeftPaneDrawChildWindow (
-    vcl::Window* pParentWindow,
-    sal_uInt16 nId,
-    SfxBindings* pBindings,
-    SfxChildWinInfo* pInfo)
-    : PaneChildWindow(
-        pParentWindow,
-        nId,
-        pBindings,
-        pInfo,
-        STR_LEFT_PANE_DRAW_TITLE,
-        SfxChildAlignment::LEFT)
+LeftPaneDrawChildWindow::LeftPaneDrawChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
+                                                 SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    : PaneChildWindow(pParentWindow, nId, pBindings, rInfo, STR_LEFT_PANE_DRAW_TITLE,
+                      SfxChildAlignment::LEFT)
 {
 }
 

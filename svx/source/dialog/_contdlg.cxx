@@ -64,12 +64,13 @@ void SvxContourDlgItem::StateChangedAtToolBoxControl( sal_uInt16 nSID, SfxItemSt
 }
 
 SvxContourDlgChildWindow::SvxContourDlgChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
-                                                   SfxBindings* pBindings, SfxChildWinInfo const * pInfo)
+                                                   SfxBindings* pBindings,
+                                                   const SfxChildWinInfo& rInfo)
     : SfxChildWindow( _pParent, nId )
 {
     SetController(std::make_shared<SvxContourDlg>(pBindings, this, _pParent->GetFrameWeld()));
     SvxContourDlg* pDlg = static_cast<SvxContourDlg*>(GetController().get());
-    pDlg->Initialize( pInfo );
+    pDlg->Initialize(&rInfo);
 }
 
 SvxContourDlg::SvxContourDlg(SfxBindings* _pBindings, SfxChildWindow* pCW,

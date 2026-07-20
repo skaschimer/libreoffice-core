@@ -1145,10 +1145,9 @@ void SmCmdBoxWindow::GetFocus()
 
 SFX_IMPL_DOCKINGWINDOW_WITHID(SmCmdBoxWrapper, SID_CMDBOXWINDOW);
 
-SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window *pParentWindow, sal_uInt16 nId,
-                                 SfxBindings *pBindings,
-                                 SfxChildWinInfo *pInfo) :
-    SfxChildWindow(pParentWindow, nId)
+SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+                                 SfxChildWinInfo& rInfo)
+    : SfxChildWindow(pParentWindow, nId)
 {
     VclPtrInstance<SmCmdBoxWindow> pDialog(pBindings, this, pParentWindow);
     SetWindow(pDialog);
@@ -1157,7 +1156,7 @@ SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window *pParentWindow, sal_uInt16 nId,
     pDialog->setDeferredProperties();
     pDialog->set_border_width(CMD_BOX_PADDING);
     pDialog->set_margin_top(CMD_BOX_PADDING_TOP);
-    pDialog->Initialize(pInfo);
+    pDialog->Initialize(&rInfo);
 }
 
 SFX_IMPL_SUPERCLASS_INTERFACE(SmViewShell, SfxViewShell)
