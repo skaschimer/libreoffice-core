@@ -80,7 +80,6 @@ NotebookBar::NotebookBar(Window* pParent, const OUString& rID, const OUString& r
     : Control(pParent)
     , m_pEventListener(new NotebookBarContextChangeEventListener(this, rFrame))
     , m_pViewShell(nullptr)
-    , m_bIsWelded(false)
     , m_sUIXMLDescription(rUIXMLDescription)
     , m_sModule(vcl::CommandInfoProvider::GetModuleIdentifier(rFrame))
 {
@@ -131,9 +130,6 @@ void NotebookBar::dispose()
 
     if (m_rDisposeLink.IsSet())
         m_rDisposeLink.Call(m_pViewShell);
-
-    if (m_bIsWelded)
-        m_xVclContentArea.disposeAndClear();
     else
         disposeBuilder();
 
@@ -203,13 +199,6 @@ void NotebookBar::Resize()
             aSize.setWidth( GetSizePixel().Width() );
             pWindow->SetSizePixel(aSize);
         }
-    }
-    if(m_bIsWelded)
-    {
-        vcl::Window* pChild = GetWindow(GetWindowType::FirstChild);
-        assert(pChild);
-        VclContainer::setLayoutAllocation(*pChild, Point(0, 0), GetSizePixel());
-        Control::Resize();
     }
     Control::Resize();
 }

@@ -51,8 +51,6 @@ private:
     std::vector<NotebookbarContextControl*> m_pContextContainers;
     const SfxViewShell* m_pViewShell;
 
-    VclPtr<vcl::Window> m_xVclContentArea;
-    bool m_bIsWelded;
     OUString m_sUIXMLDescription;
     const OUString m_sModule;
     Link<const SfxViewShell*, void> m_rDisposeLink;
