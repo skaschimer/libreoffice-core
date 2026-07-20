@@ -301,11 +301,11 @@ void FmFieldWin::FillInfo( SfxChildWinInfo& rInfo ) const
 
 SFX_IMPL_MODELESSDIALOGCONTOLLER(FmFieldWinMgr, SID_FM_ADD_FIELD)
 
-FmFieldWinMgr::FmFieldWinMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* _pBindings,
+FmFieldWinMgr::FmFieldWinMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings& rBindings,
                              const SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, _nId)
 {
-    auto xDlg = std::make_shared<FmFieldWin>(_pBindings, this, _pParent->GetFrameWeld());
+    auto xDlg = std::make_shared<FmFieldWin>(&rBindings, this, _pParent->GetFrameWeld());
     SetController(xDlg);
     SetHideNotDelete(true);
     xDlg->Initialize(rInfo);

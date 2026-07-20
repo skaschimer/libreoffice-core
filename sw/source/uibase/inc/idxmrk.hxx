@@ -30,7 +30,7 @@ class SwInsertIdxMarkWrapper final : public SfxChildWindow
     ScopedVclPtr<AbstractMarkFloatDlg> m_xAbstDlg;
 
 public:
-    SwInsertIdxMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    SwInsertIdxMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                            SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(SwInsertIdxMarkWrapper);
@@ -43,7 +43,7 @@ class SwInsertAuthMarkWrapper final : public SfxChildWindow
     ScopedVclPtr<AbstractMarkFloatDlg> m_xAbstDlg;
 
 public:
-    SwInsertAuthMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    SwInsertAuthMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                             SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(SwInsertAuthMarkWrapper);

@@ -64,7 +64,7 @@ public:
 class SAL_WARN_UNUSED SVX_DLLPUBLIC SvxFontWorkChildWindow final : public SfxChildWindow
 {
 public:
-    SvxFontWorkChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
+    SvxFontWorkChildWindow(vcl::Window*, sal_uInt16, SfxBindings&, SfxChildWinInfo&);
     SFX_DECL_CHILDWINDOW_WITHID(SvxFontWorkChildWindow);
 };
 

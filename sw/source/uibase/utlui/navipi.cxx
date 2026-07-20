@@ -1326,10 +1326,10 @@ void SwNavigatorWin::StateChanged(StateChangedType nStateChange)
 SFX_IMPL_DOCKINGWINDOW_WITHID(SwNavigatorWrapper, SID_NAVIGATOR);
 
 SwNavigatorWrapper::SwNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
-                                       SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                       SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<SwNavigatorWin>::Create(pBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<SwNavigatorWin>::Create(&rBindings, this, _pParent, &rInfo));
     Initialize();
 }
 

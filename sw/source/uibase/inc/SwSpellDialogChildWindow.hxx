@@ -48,7 +48,7 @@ class SwSpellDialogChildWindow final
     virtual void LoseFocus() override;
 
 public:
-    SwSpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SwSpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                              SfxChildWinInfo& rInfo);
     virtual ~SwSpellDialogChildWindow() override;
 

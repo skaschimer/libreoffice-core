@@ -174,9 +174,9 @@ static void lcl_updateSpellStateCursorPos(SpellState& rSpellState, const SwWrtSh
 }
 
 SwSpellDialogChildWindow::SwSpellDialogChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
-                                                   SfxBindings* pBindings,
+                                                   SfxBindings& rBindings,
                                                    SfxChildWinInfo& /*rInfo*/)
-    : svx::SpellDialogChildWindow(_pParent, nId, pBindings)
+    : svx::SpellDialogChildWindow(_pParent, nId, &rBindings)
     , m_bIsGrammarCheckingOn(false)
     , m_pSpellState(new SpellState)
 {

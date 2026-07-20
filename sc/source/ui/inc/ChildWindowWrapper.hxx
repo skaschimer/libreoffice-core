@@ -39,9 +39,9 @@ public:
     }
 
     static std::unique_ptr<SfxChildWindow>
-    CreateImpl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+    CreateImpl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     {
-        return std::make_unique<ChildControllerWrapper>(pParent, nId, pBindings, rInfo);
+        return std::make_unique<ChildControllerWrapper>(pParent, nId, &rBindings, rInfo);
     }
 
     static void RegisterChildWindow (

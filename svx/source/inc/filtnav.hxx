@@ -326,7 +326,7 @@ public:
 class FmFilterNavigatorWinMgr final : public SfxChildWindow
 {
 public:
-    FmFilterNavigatorWinMgr(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    FmFilterNavigatorWinMgr(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                             SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW( FmFilterNavigatorWinMgr );
 };

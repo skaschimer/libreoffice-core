@@ -188,7 +188,7 @@ public:
 class ScNavigatorWrapper final : public SfxNavigatorWrapper
 {
 public:
-    ScNavigatorWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    ScNavigatorWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                        SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW(ScNavigatorWrapper);
 };

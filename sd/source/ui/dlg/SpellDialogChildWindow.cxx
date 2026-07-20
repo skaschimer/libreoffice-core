@@ -32,9 +32,9 @@ namespace sd {
 SFX_IMPL_CHILDWINDOW_WITHID(SpellDialogChildWindow, SID_SPELL_DIALOG)
 
 SpellDialogChildWindow::SpellDialogChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
-                                               SfxBindings* pBindings,
+                                               SfxBindings& rBindings,
                                                SAL_UNUSED_PARAMETER SfxChildWinInfo& /*rInfo*/)
-    : svx::SpellDialogChildWindow(_pParent, nId, pBindings)
+    : svx::SpellDialogChildWindow(_pParent, nId, &rBindings)
     , mpSdOutliner(nullptr)
     , mbOwnOutliner(false)
 {

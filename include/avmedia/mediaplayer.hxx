@@ -30,7 +30,7 @@ namespace avmedia
 class AVMEDIA_DLLPUBLIC MediaPlayer final : public SfxChildWindow
 {
 public:
-                        MediaPlayer(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
+                        MediaPlayer(vcl::Window*, sal_uInt16, SfxBindings&, SfxChildWinInfo&);
                         virtual ~MediaPlayer() override;
 
                         SFX_DECL_CHILDWINDOW_WITHID( MediaPlayer );

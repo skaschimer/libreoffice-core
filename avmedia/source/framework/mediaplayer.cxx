@@ -33,11 +33,11 @@
 namespace avmedia
 {
 
-MediaPlayer::MediaPlayer(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* _pBindings,
+MediaPlayer::MediaPlayer(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBindings,
                          SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    SetWindow( VclPtr<MediaFloater>::Create( _pBindings, this, _pParent ) );
+    SetWindow(VclPtr<MediaFloater>::Create(&rBindings, this, _pParent));
     static_cast<MediaFloater*>(GetWindow())->Initialize(&rInfo);
 };
 

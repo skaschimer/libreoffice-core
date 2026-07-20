@@ -26,11 +26,11 @@ SFX_IMPL_DOCKINGWINDOW_WITHID( SvxColorChildWindow, SID_COLOR_CONTROL )
 
 // Derivation from SfxChildWindow as "container" for animator
 SvxColorChildWindow::SvxColorChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
-                                         SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                         SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    VclPtr<SvxColorDockingWindow> pWin = VclPtr<SvxColorDockingWindow>::Create( pBindings, this,
-                                        _pParent );
+    VclPtr<SvxColorDockingWindow> pWin
+        = VclPtr<SvxColorDockingWindow>::Create(&rBindings, this, _pParent);
 
     SetWindow(pWin);
 

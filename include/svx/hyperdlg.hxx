@@ -37,7 +37,7 @@ private:
     VclPtr<VclAbstractDialog>   mpDlg;
 
 public:
-    SvxHlinkDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SvxHlinkDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                        SfxChildWinInfo& rInfo);
     virtual ~SvxHlinkDlgWrapper() override;
 

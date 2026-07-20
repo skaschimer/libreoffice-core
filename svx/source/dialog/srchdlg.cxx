@@ -2327,17 +2327,17 @@ void SvxSearchDialog::executeSubDialog(VclPtr<VclAbstractDialog> dialog, const s
 SFX_IMPL_CHILDWINDOW_WITHID(SvxSearchDialogWrapper, SID_SEARCH_DLG);
 
 SvxSearchDialogWrapper::SvxSearchDialogWrapper(vcl::Window* _pParent, sal_uInt16 nId,
-                                               SfxBindings* pBindings, const SfxChildWinInfo& rInfo)
+                                               SfxBindings& rBindings, const SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
-    , m_dialog(std::make_shared<SvxSearchDialog>(_pParent->GetFrameWeld(), this, *pBindings))
+    , m_dialog(std::make_shared<SvxSearchDialog>(_pParent->GetFrameWeld(), this, rBindings))
 {
     SetController(m_dialog);
     m_dialog->Initialize(rInfo);
 
-    pBindings->Update( SID_SEARCH_ITEM );
-    pBindings->Update( SID_SEARCH_OPTIONS );
-    pBindings->Update( SID_SEARCH_SEARCHSET );
-    pBindings->Update( SID_SEARCH_REPLACESET );
+    rBindings.Update(SID_SEARCH_ITEM);
+    rBindings.Update(SID_SEARCH_OPTIONS);
+    rBindings.Update(SID_SEARCH_SEARCHSET);
+    rBindings.Update(SID_SEARCH_REPLACESET);
     m_dialog->m_bConstruct = false;
 }
 

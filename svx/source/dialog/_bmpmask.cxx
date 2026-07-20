@@ -340,10 +340,10 @@ void SvxBmpMaskSelectItem::StateChangedAtToolBoxControl( sal_uInt16 nSID, SfxIte
 }
 
 SvxBmpMaskChildWindow::SvxBmpMaskChildWindow(vcl::Window* pParent_, sal_uInt16 nId,
-                                             SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                             SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParent_, nId)
 {
-    VclPtr<SvxBmpMask> pDlg = VclPtr<SvxBmpMask>::Create(pBindings, this, pParent_);
+    VclPtr<SvxBmpMask> pDlg = VclPtr<SvxBmpMask>::Create(&rBindings, this, pParent_);
 
     SetWindow( pDlg );
 

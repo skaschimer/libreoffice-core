@@ -30,7 +30,7 @@ namespace sd {
 class SdNavigatorWrapper final : public SfxNavigatorWrapper
 {
 public:
-    SdNavigatorWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SdNavigatorWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                        SfxChildWinInfo& rInfo);
     SFX_DECL_CHILDWINDOW(SdNavigatorWrapper);
 };

@@ -30,7 +30,7 @@
 //#                                                                      #
 SFX_IMPL_CHILDWINDOW_WITHID(SvxHlinkDlgWrapper, SID_HYPERLINK_DIALOG)
 
-SvxHlinkDlgWrapper::SvxHlinkDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings*,
+SvxHlinkDlgWrapper::SvxHlinkDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings&,
                                        SfxChildWinInfo&)
     : SfxChildWindow(_pParent, nId)
 {

@@ -41,7 +41,7 @@ class Graphic;
 class SAL_WARN_UNUSED SVX_DLLPUBLIC SvxContourDlgChildWindow final : public SfxChildWindow
 {
 public:
-    SvxContourDlgChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, const SfxChildWinInfo&);
+    SvxContourDlgChildWindow(vcl::Window*, sal_uInt16, SfxBindings&, const SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID( SvxContourDlgChildWindow );
 };

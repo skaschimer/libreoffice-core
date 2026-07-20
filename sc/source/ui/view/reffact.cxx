@@ -64,27 +64,26 @@ namespace
     ScTabViewShell* lcl_GetTabViewShell( const SfxBindings* pBindings );
 }
 
-#define IMPL_CONTROLLER_CHILD_CTOR(Class,sid) \
-    Class::Class( vcl::Window*               pParentP,                   \
-                    sal_uInt16              nId,                        \
-                    SfxBindings*        p,                          \
-                    SfxChildWinInfo&  rInfo )                     \
-        : SfxChildWindow(pParentP, nId)                             \
-    {                                                               \
-        /************************************************************************************/\
-        /*      When a new document is creating, the SfxViewFrame may be ready,             */\
-        /*      But the ScTabViewShell may have not been activated yet. In this             */\
-        /*      situation, SfxViewShell::Current() does not get the correct shell,          */\
-        /*      and we should lcl_GetTabViewShell( p ) instead of SfxViewShell::Current()   */\
-        /************************************************************************************/\
-        ScTabViewShell* pViewShell = lcl_GetTabViewShell( p );      \
-        if (!pViewShell)                                            \
-            pViewShell = dynamic_cast<ScTabViewShell*>( SfxViewShell::Current()  ); \
-        OSL_ENSURE( pViewShell, "missing view shell :-(" );         \
-        SetController( pViewShell ?                                      \
-            pViewShell->CreateRefDialogController(p, this, rInfo, pParentP->GetFrameWeld(), sid) : nullptr );    \
-        if (pViewShell && !GetController())                                     \
-            pViewShell->GetViewFrame().SetChildWindow( nId, false );           \
+#define IMPL_CONTROLLER_CHILD_CTOR(Class, sid)                                                        \
+    Class::Class(vcl::Window* pParentP, sal_uInt16 nId, SfxBindings& rBindings,                       \
+                 SfxChildWinInfo& rInfo)                                                              \
+        : SfxChildWindow(pParentP, nId)                                                               \
+    {                                                                                                 \
+        /************************************************************************************/        \
+        /*      When a new document is creating, the SfxViewFrame may be ready,             */        \
+        /*      But the ScTabViewShell may have not been activated yet. In this             */        \
+        /*      situation, SfxViewShell::Current() does not get the correct shell,          */        \
+        /*      and we should lcl_GetTabViewShell(&rBindings) instead of SfxViewShell::Current()   */ \
+        /************************************************************************************/        \
+        ScTabViewShell* pViewShell = lcl_GetTabViewShell(&rBindings);                                 \
+        if (!pViewShell)                                                                              \
+            pViewShell = dynamic_cast<ScTabViewShell*>(SfxViewShell::Current());                      \
+        OSL_ENSURE(pViewShell, "missing view shell :-(");                                             \
+        SetController(pViewShell ? pViewShell->CreateRefDialogController(                             \
+                                       &rBindings, this, rInfo, pParentP->GetFrameWeld(), sid)        \
+                                 : nullptr);                                                          \
+        if (pViewShell && !GetController())                                                           \
+            pViewShell->GetViewFrame().SetChildWindow(nId, false);                                    \
     }
 
 IMPL_CONTROLLER_CHILD_CTOR( ScNameDlgWrapper, FID_DEFINE_NAME )
@@ -126,13 +125,13 @@ static tools::Long         nScSimpleRefX;
 static tools::Long         nScSimpleRefY;
 static bool         bAutoReOpen = true;
 
-ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper(vcl::Window* pParentP, sal_uInt16 nId, SfxBindings* p,
-                                             SfxChildWinInfo& rInfo)
+ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper(vcl::Window* pParentP, sal_uInt16 nId,
+                                             SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentP, nId)
 {
 
     ScTabViewShell* pViewShell = nullptr;
-    SfxDispatcher* pDisp = p->GetDispatcher();
+    SfxDispatcher* pDisp = rBindings.GetDispatcher();
     if ( pDisp )
     {
         SfxViewFrame* pViewFrm = pDisp->GetFrame();
@@ -153,7 +152,7 @@ ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper(vcl::Window* pParentP, sal_uInt16 n
 
     if (bAutoReOpen && pViewShell)
         SetController(pViewShell->CreateRefDialogController(
-            p, this, rInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
+            &rBindings, this, rInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
 
     if (!GetController())
     {
@@ -215,7 +214,7 @@ void ScSimpleRefDlgWrapper::StartRefInput()
 // ScAcceptChgDlgWrapper //FIXME: should be moved into ViewShell
 
 ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP, sal_uInt16 nId,
-                                             SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                             SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentP, nId)
 {
     ScTabViewShell* pViewShell =
@@ -223,7 +222,8 @@ ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP, sal_uInt16 n
     OSL_ENSURE( pViewShell, "missing view shell :-(" );
     if (pViewShell)
     {
-        auto xDlg = std::make_shared<ScAcceptChgDlg>(pBindings, this, pParentP->GetFrameWeld(), pViewShell->GetViewData());
+        auto xDlg = std::make_shared<ScAcceptChgDlg>(&rBindings, this, pParentP->GetFrameWeld(),
+                                                     pViewShell->GetViewData());
         SetController(xDlg);
         rInfo.nFlags = SfxChildWindowFlags::NEVERHIDE;
         xDlg->Initialize(rInfo);
@@ -265,7 +265,7 @@ namespace
 }
 
 ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP, sal_uInt16 nId,
-                                             const SfxBindings* p,
+                                             const SfxBindings& rBindings,
                                              SAL_UNUSED_PARAMETER SfxChildWinInfo& /*rInfo*/)
     : SfxChildWindow(pParentP, nId)
     , m_bVisibleLock(false)
@@ -278,7 +278,7 @@ ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP, sal_uInt16 n
     if (xDlg)
         pViewShell = static_cast<ScValidationDlg*>(xDlg.get())->GetTabViewShell();
     else
-        pViewShell = lcl_GetTabViewShell( p );
+        pViewShell = lcl_GetTabViewShell(&rBindings);
     if (!pViewShell)
         pViewShell = dynamic_cast<ScTabViewShell*>( SfxViewShell::Current()  );
     OSL_ENSURE( pViewShell, "missing view shell :-(" );

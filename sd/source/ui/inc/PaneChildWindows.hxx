@@ -29,7 +29,7 @@ class PaneChildWindow
     : public SfxChildWindow
 {
 public:
-    PaneChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    PaneChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                     SfxChildWinInfo& rInfo, TranslateId pTitleBarResId,
                     SfxChildAlignment eAlignment);
     virtual ~PaneChildWindow() override;
@@ -40,7 +40,7 @@ class LeftPaneImpressChildWindow final
     : public PaneChildWindow
 {
 public:
-    LeftPaneImpressChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    LeftPaneImpressChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                                SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(LeftPaneImpressChildWindow);
@@ -50,7 +50,7 @@ public:
 class BottomPaneImpressChildWindow final : public PaneChildWindow
 {
 public:
-    BottomPaneImpressChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    BottomPaneImpressChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                                  SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(BottomPaneImpressChildWindow);
@@ -61,7 +61,7 @@ class LeftPaneDrawChildWindow final
     : public PaneChildWindow
 {
 public:
-    LeftPaneDrawChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    LeftPaneDrawChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                             SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(LeftPaneDrawChildWindow);

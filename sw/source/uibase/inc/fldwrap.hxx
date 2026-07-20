@@ -29,7 +29,7 @@ class SwFieldDlgWrapper final : public SwChildWinWrapper
 {
     ScopedVclPtr<AbstractSwFieldDlg> m_pDlgInterface;
 public:
-    SwFieldDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SwFieldDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                       SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(SwFieldDlgWrapper);
@@ -42,7 +42,7 @@ class SwFieldDataOnlyDlgWrapper final : public SwChildWinWrapper
 {
     ScopedVclPtr<AbstractSwFieldDlg> m_pDlgInterface;
 public:
-    SwFieldDataOnlyDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SwFieldDataOnlyDlgWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                               SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW(SwFieldDataOnlyDlgWrapper);

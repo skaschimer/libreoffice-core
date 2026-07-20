@@ -123,10 +123,10 @@ enum ScNameInputType
 SFX_IMPL_CHILDWINDOW_WITHID(ScInputWindowWrapper,FID_INPUTLINE_STATUS)
 
 ScInputWindowWrapper::ScInputWindowWrapper(vcl::Window* pParentP, sal_uInt16 nId,
-                                           SfxBindings* pBindings, SfxChildWinInfo&)
+                                           SfxBindings& rBindings, SfxChildWinInfo&)
     : SfxChildWindow(pParentP, nId)
 {
-    VclPtr<ScInputWindow> pWin = VclPtr<ScInputWindow>::Create( pParentP, pBindings );
+    VclPtr<ScInputWindow> pWin = VclPtr<ScInputWindow>::Create(pParentP, &rBindings);
     SetWindow( pWin );
 
     pWin->Show();
@@ -134,7 +134,7 @@ ScInputWindowWrapper::ScInputWindowWrapper(vcl::Window* pParentP, sal_uInt16 nId
     pWin->SetSizePixel( pWin->CalcWindowSizePixel() );
 
     SetAlignment(SfxChildAlignment::LOWESTTOP);
-    pBindings->Invalidate( FID_TOGGLEINPUTLINE );
+    rBindings.Invalidate(FID_TOGGLEINPUTLINE);
 }
 
 /**

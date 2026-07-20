@@ -916,10 +916,10 @@ void ScNavigatorDlg::EndOfDataArea()
 SFX_IMPL_DOCKINGWINDOW(ScNavigatorWrapper, SID_NAVIGATOR);
 
 ScNavigatorWrapper::ScNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
-                                       SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                       SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<ScNavigatorWin>::Create(pBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<ScNavigatorWin>::Create(&rBindings, this, _pParent, &rInfo));
     Initialize();
 }
 

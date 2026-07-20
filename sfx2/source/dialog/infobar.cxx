@@ -539,9 +539,9 @@ void SfxInfoBarContainerWindow::Resize()
 SFX_IMPL_POS_CHILDWINDOW_WITHID(SfxInfoBarContainerChild, SID_INFOBAR, SFX_OBJECTBAR_OBJECT);
 
 SfxInfoBarContainerChild::SfxInfoBarContainerChild(vcl::Window* _pParent, sal_uInt16 nId,
-                                                   SfxBindings* pBindings, SfxChildWinInfo&)
+                                                   SfxBindings& rBindings, SfxChildWinInfo&)
     : SfxChildWindow(_pParent, nId)
-    , m_pBindings(pBindings)
+    , m_pBindings(&rBindings)
 {
     SetWindow(VclPtr<SfxInfoBarContainerWindow>::Create(this));
     GetWindow()->SetPosSizePixel(Point(0, 0), Size(_pParent->GetSizePixel().getWidth(), 0));

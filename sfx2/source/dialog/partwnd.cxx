@@ -42,11 +42,12 @@
 SFX_IMPL_DOCKINGWINDOW( SfxPartChildWnd_Impl, SID_BROWSER );
 
 SfxPartChildWnd_Impl::SfxPartChildWnd_Impl(vcl::Window* pParentWnd, sal_uInt16 nId,
-                                           SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                           SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWnd, nId)
 {
     // Create Window
-    SetWindow(VclPtr<SfxPartDockWnd_Impl>::Create( pBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK ));
+    SetWindow(VclPtr<SfxPartDockWnd_Impl>::Create(
+        &rBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK));
     SetAlignment(SfxChildAlignment::TOP);
 
     rInfo.nFlags |= SfxChildWindowFlags::FORCEDOCK;

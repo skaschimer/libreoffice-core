@@ -32,11 +32,11 @@
 
 SFX_IMPL_MODELESSDIALOGCONTOLLER(SwSyncChildWin, FN_SYNC_LABELS)
 
-SwSyncChildWin::SwSyncChildWin(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* pBindings,
+SwSyncChildWin::SwSyncChildWin(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBindings,
                                SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    SetController(std::make_shared<SwSyncBtnDlg>(pBindings, this, _pParent->GetFrameWeld()));
+    SetController(std::make_shared<SwSyncBtnDlg>(&rBindings, this, _pParent->GetFrameWeld()));
     SwSyncBtnDlg* pBtnDlg = static_cast<SwSyncBtnDlg*>(GetController().get());
 
     if (!rInfo.aSize.Width() || !rInfo.aSize.Height())

@@ -20,7 +20,7 @@ class SAL_WARN_UNUSED SFX2_DLLPUBLIC DevelopmentToolChildWindow final : public S
 {
     SFX_DECL_CHILDWINDOW_WITHID(DevelopmentToolChildWindow);
 
-    DevelopmentToolChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+    DevelopmentToolChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                                SfxChildWinInfo& rInfo);
 };
 

@@ -33,7 +33,7 @@ namespace sd
 class SpellDialogChildWindow final : public svx::SpellDialogChildWindow, public SfxListener
 {
 public:
-    SpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                            SfxChildWinInfo& rInfo);
     virtual ~SpellDialogChildWindow() override;
 

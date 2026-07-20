@@ -32,12 +32,12 @@ namespace sfx2::sidebar {
 SFX_IMPL_DOCKINGWINDOW_WITHID(SidebarChildWindow, SID_SIDEBAR);
 
 SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId,
-                                       SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                       SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
     auto pDockWin = VclPtr<SidebarDockingWindow>::Create(
-        pBindings, *this, pParentWindow, WB_STDDOCKWIN | WB_OWNERDRAWDECORATION | WB_CLIPCHILDREN
-                                             | WB_SIZEABLE | WB_3DLOOK);
+        &rBindings, *this, pParentWindow,
+        WB_STDDOCKWIN | WB_OWNERDRAWDECORATION | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK);
     SetWindow(pDockWin);
     SetAlignment(SfxChildAlignment::RIGHT);
 

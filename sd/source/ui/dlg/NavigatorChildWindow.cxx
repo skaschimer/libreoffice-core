@@ -99,10 +99,10 @@ SdNavigatorFloat::~SdNavigatorFloat()
 SFX_IMPL_DOCKINGWINDOW(SdNavigatorWrapper, SID_NAVIGATOR);
 
 SdNavigatorWrapper::SdNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
-                                       SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                       SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<SdNavigatorFloat>::Create(pBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<SdNavigatorFloat>::Create(&rBindings, this, _pParent, &rInfo));
     Initialize();
 }
 

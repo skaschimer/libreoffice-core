@@ -79,10 +79,9 @@ struct SAL_DLLPUBLIC_RTTI SfxChildWinInfo
 };
 
 // ChildWindow factory methods
-typedef std::unique_ptr<SfxChildWindow> (*SfxChildWinCtor)( vcl::Window *pParentWindow,
-                                            sal_uInt16 nId,
-                                            SfxBindings *pBindings,
-                                            SfxChildWinInfo& rInfo);
+typedef std::unique_ptr<SfxChildWindow> (*SfxChildWinCtor)(vcl::Window* pParentWindow,
+                                                           sal_uInt16 nId, SfxBindings& rBindings,
+                                                           SfxChildWinInfo& rInfo);
 
 struct SFX2_DLLPUBLIC SfxChildWinFactory
 {
@@ -164,7 +163,7 @@ const int nCloseResponseToJustHide = -42;
 #define SFX_DECL_CHILDWINDOW(Class) \
     public  :   \
         static  std::unique_ptr<SfxChildWindow> CreateImpl(vcl::Window *pParent, sal_uInt16 nId, \
-                    SfxBindings *pBindings, SfxChildWinInfo& rInfo); \
+                    SfxBindings& rBindings, SfxChildWinInfo& rInfo); \
         static  void RegisterChildWindow (bool bVisible=false, SfxModule *pMod=nullptr, SfxChildWindowFlags nFlags=SfxChildWindowFlags::NONE); \
         virtual SfxChildWinInfo GetInfo() const override
 
@@ -180,9 +179,9 @@ const int nCloseResponseToJustHide = -42;
 
 #define SFX_IMPL_POS_CHILDWINDOW(Class, MyID, Pos) \
         std::unique_ptr<SfxChildWindow> Class::CreateImpl( vcl::Window *pParent, \
-                sal_uInt16 nId, SfxBindings *pBindings, SfxChildWinInfo& rInfo) \
+                sal_uInt16 nId, SfxBindings& rBindings, SfxChildWinInfo& rInfo) \
                 {   \
-                    return std::make_unique<Class>(pParent, nId, pBindings, rInfo);\
+                    return std::make_unique<Class>(pParent, nId, rBindings, rInfo);\
                 } \
         void    Class::RegisterChildWindow (bool bVis, SfxModule *pMod, SfxChildWindowFlags nFlags)   \
                 {   \

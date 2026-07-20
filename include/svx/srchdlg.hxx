@@ -107,7 +107,7 @@ class SVX_DLLPUBLIC SvxSearchDialogWrapper final : public SfxChildWindow
 {
     std::shared_ptr<SvxSearchDialog> m_dialog;
 public:
-    SvxSearchDialogWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SvxSearchDialogWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                            const SfxChildWinInfo& rInfo);
 
     virtual ~SvxSearchDialogWrapper () override;

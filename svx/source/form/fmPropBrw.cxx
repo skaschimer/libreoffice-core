@@ -83,12 +83,14 @@ using ::com::sun::star::awt::XWindow;
 //= FmPropBrwMgr
 SFX_IMPL_MODELESSDIALOGCONTOLLER(FmPropBrwMgr, SID_FM_SHOW_PROPERTIES)
 
-FmPropBrwMgr::FmPropBrwMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings* _pBindings,
+FmPropBrwMgr::FmPropBrwMgr(vcl::Window* _pParent, sal_uInt16 _nId, SfxBindings& rBindings,
                            const SfxChildWinInfo& rInfo)
-              :SfxChildWindow(_pParent, _nId)
+    : SfxChildWindow(_pParent, _nId)
 {
-    std::shared_ptr<FmPropBrw> xControl(new FmPropBrw(::comphelper::getProcessComponentContext(), _pBindings,
-                                                         this, _pParent->GetFrameWeld(), &rInfo), o3tl::default_delete<FmPropBrw>());
+    std::shared_ptr<FmPropBrw> xControl(new FmPropBrw(::comphelper::getProcessComponentContext(),
+                                                      &rBindings, this, _pParent->GetFrameWeld(),
+                                                      &rInfo),
+                                        o3tl::default_delete<FmPropBrw>());
     SetController(std::move(xControl));
     static_cast<FmPropBrw*>(GetController().get())->Initialize(rInfo);
 }

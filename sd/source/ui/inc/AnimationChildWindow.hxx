@@ -31,7 +31,7 @@ class AnimationChildWindow final
     : public SfxChildWindow
 {
 public:
-    AnimationChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
+    AnimationChildWindow(vcl::Window*, sal_uInt16, SfxBindings&, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID(AnimationChildWindow);
 };

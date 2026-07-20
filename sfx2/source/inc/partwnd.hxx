@@ -30,7 +30,7 @@
 class SfxPartChildWnd_Impl final : public SfxChildWindow
 {
 public:
-    SfxPartChildWnd_Impl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SfxPartChildWnd_Impl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                          SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW(SfxPartChildWnd_Impl);

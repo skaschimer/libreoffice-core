@@ -49,7 +49,7 @@ class SearchResultsDlgWrapper : public SfxChildWindow
 {
     std::shared_ptr<SearchResultsDlg> m_xDialog;
 public:
-    SearchResultsDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SearchResultsDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBindings,
                             SfxChildWinInfo& rInfo);
 
     virtual ~SearchResultsDlgWrapper() override;

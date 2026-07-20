@@ -54,12 +54,12 @@ SfxChildWinInfo SwFieldDlgWrapper::GetInfo() const
     return aInfo;
 }
 
-SwFieldDlgWrapper::SwFieldDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings* pB,
+SwFieldDlgWrapper::SwFieldDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBindings,
                                      SfxChildWinInfo&)
     : SwChildWinWrapper(_pParent, nId)
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
-    m_pDlgInterface = pFact->CreateSwFieldDlg(pB, this, _pParent->GetFrameWeld());
+    m_pDlgInterface = pFact->CreateSwFieldDlg(&rBindings, this, _pParent->GetFrameWeld());
     SetController(m_pDlgInterface->GetController());
     m_pDlgInterface->StartExecuteAsync(nullptr);
 }
@@ -81,11 +81,11 @@ SfxChildWinInfo SwFieldDataOnlyDlgWrapper::GetInfo() const
 }
 
 SwFieldDataOnlyDlgWrapper::SwFieldDataOnlyDlgWrapper(vcl::Window* _pParent, sal_uInt16 nId,
-                                                     SfxBindings* pB, SfxChildWinInfo& rInfo)
+                                                     SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SwChildWinWrapper(_pParent, nId)
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
-    m_pDlgInterface = pFact->CreateSwFieldDlg(pB, this, _pParent->GetFrameWeld());
+    m_pDlgInterface = pFact->CreateSwFieldDlg(&rBindings, this, _pParent->GetFrameWeld());
 
     SetController(m_pDlgInterface->GetController());
     m_pDlgInterface->ActivateDatabasePage();

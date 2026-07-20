@@ -70,7 +70,7 @@ public:
 class SAL_WARN_UNUSED SVX_DLLPUBLIC SvxBmpMaskChildWindow final : public SfxChildWindow
 {
 public:
-    SvxBmpMaskChildWindow(vcl::Window*, sal_uInt16, SfxBindings*, SfxChildWinInfo&);
+    SvxBmpMaskChildWindow(vcl::Window*, sal_uInt16, SfxBindings&, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID(SvxBmpMaskChildWindow);
 };

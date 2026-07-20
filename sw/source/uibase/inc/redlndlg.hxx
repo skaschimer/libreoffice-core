@@ -150,7 +150,7 @@ public:
 class SwRedlineAcceptChild final : public SwChildWinWrapper
 {
 public:
-    SwRedlineAcceptChild(vcl::Window*, sal_uInt16 nId, SfxBindings*, SfxChildWinInfo&);
+    SwRedlineAcceptChild(vcl::Window*, sal_uInt16 nId, SfxBindings&, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW_WITHID( SwRedlineAcceptChild );
 };

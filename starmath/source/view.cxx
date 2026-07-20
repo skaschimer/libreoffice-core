@@ -1145,11 +1145,11 @@ void SmCmdBoxWindow::GetFocus()
 
 SFX_IMPL_DOCKINGWINDOW_WITHID(SmCmdBoxWrapper, SID_CMDBOXWINDOW);
 
-SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings* pBindings,
+SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, SfxBindings& rBindings,
                                  SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
-    VclPtrInstance<SmCmdBoxWindow> pDialog(pBindings, this, pParentWindow);
+    VclPtrInstance<SmCmdBoxWindow> pDialog(&rBindings, this, pParentWindow);
     SetWindow(pDialog);
     // make window docked to the bottom initially (after first start)
     SetAlignment(SfxChildAlignment::BOTTOM);

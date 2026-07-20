@@ -65,7 +65,7 @@ private:
     SfxBindings* m_pBindings;
 
 public:
-    SfxInfoBarContainerChild(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SfxInfoBarContainerChild(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                              SfxChildWinInfo& rInfo);
     virtual ~SfxInfoBarContainerChild() override;
 

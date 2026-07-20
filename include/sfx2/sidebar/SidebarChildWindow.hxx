@@ -32,7 +32,7 @@ namespace sfx2::sidebar {
 class SFX2_DLLPUBLIC SidebarChildWindow final : public SfxChildWindow
 {
 public:
-    SidebarChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    SidebarChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                        SfxChildWinInfo& rInfo);
 
     SFX_DECL_CHILDWINDOW_WITHID(SidebarChildWindow);

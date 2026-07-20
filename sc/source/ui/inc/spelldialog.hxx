@@ -40,7 +40,7 @@ class ScSpellDialogChildWindow : public svx::SpellDialogChildWindow
 public:
     SFX_DECL_CHILDWINDOW_WITHID( ScSpellDialogChildWindow );
 
-    explicit ScSpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings* pBindings,
+    explicit ScSpellDialogChildWindow(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                                       SfxChildWinInfo& rInfo);
     virtual             ~ScSpellDialogChildWindow() override;
 

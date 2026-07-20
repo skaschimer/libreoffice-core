@@ -24,12 +24,12 @@
 SFX_IMPL_CHILDWINDOW_WITHID(SwInsertIdxMarkWrapper, FN_INSERT_IDX_ENTRY_DLG)
 
 SwInsertIdxMarkWrapper::SwInsertIdxMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId,
-                                               SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                               SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
     m_xAbstDlg
-        = pFact->CreateIndexMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), rInfo);
+        = pFact->CreateIndexMarkFloatDlg(&rBindings, this, pParentWindow->GetFrameWeld(), rInfo);
     SetController(m_xAbstDlg->GetController());
 }
 
@@ -48,12 +48,12 @@ void SwInsertIdxMarkWrapper::ReInitDlg(SwWrtShell& rWrtShell)
 SFX_IMPL_CHILDWINDOW_WITHID(SwInsertAuthMarkWrapper, FN_INSERT_AUTH_ENTRY_DLG)
 
 SwInsertAuthMarkWrapper::SwInsertAuthMarkWrapper(vcl::Window* pParentWindow, sal_uInt16 nId,
-                                                 SfxBindings* pBindings, SfxChildWinInfo& rInfo)
+                                                 SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
     m_xAbstDlg
-        = pFact->CreateAuthMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), rInfo);
+        = pFact->CreateAuthMarkFloatDlg(&rBindings, this, pParentWindow->GetFrameWeld(), rInfo);
     SetController(m_xAbstDlg->GetController());
 }
 

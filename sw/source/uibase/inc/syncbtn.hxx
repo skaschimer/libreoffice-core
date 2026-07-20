@@ -37,7 +37,7 @@ public:
 class SwSyncChildWin final : public SfxChildWindow
 {
 public:
-    SwSyncChildWin(vcl::Window*, sal_uInt16 nId, SfxBindings*, SfxChildWinInfo&);
+    SwSyncChildWin(vcl::Window*, sal_uInt16 nId, SfxBindings&, SfxChildWinInfo&);
 
     SFX_DECL_CHILDWINDOW(SwSyncChildWin);
 };

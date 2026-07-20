@@ -40,10 +40,10 @@
 SFX_IMPL_MODELESSDIALOGCONTOLLER(SfxRecordingFloatWrapper_Impl, SID_RECORDING_FLOATWINDOW);
 
 SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParentWnd,
-                                                             sal_uInt16 nId, SfxBindings* pBind,
+                                                             sal_uInt16 nId, SfxBindings& rBindings,
                                                              const SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWnd, nId)
-    , pBindings(pBind)
+    , pBindings(&rBindings)
 {
     SetController(std::make_shared<SfxRecordingFloat_Impl>(pBindings, this, pParentWnd->GetFrameWeld()));
     SetWantsFocus(false);
@@ -51,7 +51,7 @@ SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParen
 
     weld::Dialog* pDlg = pFloatDlg->getDialog();
 
-    SfxViewFrame *pFrame = pBind->GetDispatcher_Impl()->GetFrame();
+    SfxViewFrame* pFrame = rBindings.GetDispatcher_Impl()->GetFrame();
     vcl::Window* pEditWin = pFrame->GetViewShell()->GetWindow();
 
     Point aPos = pEditWin->OutputToScreenPixel( pEditWin->GetPosPixel() );

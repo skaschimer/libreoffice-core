@@ -475,10 +475,10 @@ namespace svxform
     SFX_IMPL_DOCKINGWINDOW( NavigatorFrameManager, SID_FM_SHOW_FMEXPLORER )
 
     NavigatorFrameManager::NavigatorFrameManager(vcl::Window* _pParent, sal_uInt16 _nId,
-                                                 SfxBindings* _pBindings, SfxChildWinInfo& rInfo)
+                                                 SfxBindings& rBindings, SfxChildWinInfo& rInfo)
         : SfxChildWindow(_pParent, _nId)
     {
-        SetWindow( VclPtr<NavigatorFrame>::Create( _pBindings, this, _pParent ) );
+        SetWindow(VclPtr<NavigatorFrame>::Create(&rBindings, this, _pParent));
         static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
     }
 }

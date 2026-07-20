@@ -197,7 +197,7 @@ class SwInputChild final : public SfxChildWindow
 {
     SfxDispatcher*  m_pDispatch;
 public:
-    SwInputChild(vcl::Window*, sal_uInt16 nId, SfxBindings const*, SfxChildWinInfo&);
+    SwInputChild(vcl::Window*, sal_uInt16 nId, const SfxBindings&, SfxChildWinInfo&);
     virtual ~SwInputChild() override;
     SFX_DECL_CHILDWINDOW_WITHID( SwInputChild );
     void            SetFormula( const OUString& rFormula )
