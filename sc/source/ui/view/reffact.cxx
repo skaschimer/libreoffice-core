@@ -61,7 +61,7 @@ SfxChildWinInfo ScValidityRefChildWin::GetInfo() const
 
 namespace
 {
-    ScTabViewShell* lcl_GetTabViewShell( const SfxBindings* pBindings );
+ScTabViewShell* lcl_GetTabViewShell(const SfxBindings& rBindings);
 }
 
 #define IMPL_CONTROLLER_CHILD_CTOR(Class, sid)                                                        \
@@ -73,9 +73,9 @@ namespace
         /*      When a new document is creating, the SfxViewFrame may be ready,             */        \
         /*      But the ScTabViewShell may have not been activated yet. In this             */        \
         /*      situation, SfxViewShell::Current() does not get the correct shell,          */        \
-        /*      and we should lcl_GetTabViewShell(&rBindings) instead of SfxViewShell::Current()   */ \
+        /*      and we should lcl_GetTabViewShell(rBindings) instead of SfxViewShell::Current()   */  \
         /************************************************************************************/        \
-        ScTabViewShell* pViewShell = lcl_GetTabViewShell(&rBindings);                                 \
+        ScTabViewShell* pViewShell = lcl_GetTabViewShell(rBindings);                                  \
         if (!pViewShell)                                                                              \
             pViewShell = dynamic_cast<ScTabViewShell*>(SfxViewShell::Current());                      \
         OSL_ENSURE(pViewShell, "missing view shell :-(");                                             \
@@ -252,16 +252,15 @@ IMPL_CONTROLLER_CHILD_CTOR(ScHighlightChgDlgWrapper, FID_CHG_SHOW)
 
 namespace
 {
-    ScTabViewShell * lcl_GetTabViewShell( const SfxBindings *pBindings )
-    {
-        if( pBindings )
-            if( SfxDispatcher* pDisp = pBindings ->GetDispatcher() )
-                if( SfxViewFrame *pFrm = pDisp->GetFrame() )
-                    if( SfxViewShell* pViewSh = pFrm->GetViewShell() )
-                        return dynamic_cast<ScTabViewShell*>( pViewSh );
+ScTabViewShell* lcl_GetTabViewShell(const SfxBindings& rBindings)
+{
+    if (SfxDispatcher* pDisp = rBindings.GetDispatcher())
+        if (SfxViewFrame* pFrm = pDisp->GetFrame())
+            if (SfxViewShell* pViewSh = pFrm->GetViewShell())
+                return dynamic_cast<ScTabViewShell*>(pViewSh);
 
-        return nullptr;
-    }
+    return nullptr;
+}
 }
 
 ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP, sal_uInt16 nId,
@@ -278,7 +277,7 @@ ScValidityRefChildWin::ScValidityRefChildWin(vcl::Window* pParentP, sal_uInt16 n
     if (xDlg)
         pViewShell = static_cast<ScValidationDlg*>(xDlg.get())->GetTabViewShell();
     else
-        pViewShell = lcl_GetTabViewShell(&rBindings);
+        pViewShell = lcl_GetTabViewShell(rBindings);
     if (!pViewShell)
         pViewShell = dynamic_cast<ScTabViewShell*>( SfxViewShell::Current()  );
     OSL_ENSURE( pViewShell, "missing view shell :-(" );
