@@ -1661,13 +1661,13 @@ namespace
     }
 }
 
-void ScAcceptChgDlg::Initialize(SfxChildWinInfo* pInfo)
+void ScAcceptChgDlg::Initialize(SfxChildWinInfo& rInfo)
 {
     OUString aStr;
-    if (pInfo && !pInfo->aExtraString.isEmpty())
-        aStr = lcl_StripAcceptChgDat(pInfo->aExtraString);
+    if (!rInfo.aExtraString.isEmpty())
+        aStr = lcl_StripAcceptChgDat(rInfo.aExtraString);
 
-    SfxModelessDialogController::Initialize(pInfo);
+    SfxModelessDialogController::Initialize(&rInfo);
 
     if (aStr.isEmpty())
         return;

@@ -156,7 +156,7 @@ public:
 
     void            ReInit(ScViewData& rViewData);
 
-    void            Initialize (SfxChildWinInfo* pInfo);
+    void Initialize(SfxChildWinInfo& rInfo);
     virtual void    FillInfo(SfxChildWinInfo&) const override;
 };
 

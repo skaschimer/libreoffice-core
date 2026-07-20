@@ -226,7 +226,7 @@ ScAcceptChgDlgWrapper::ScAcceptChgDlgWrapper(vcl::Window* pParentP, sal_uInt16 n
         auto xDlg = std::make_shared<ScAcceptChgDlg>(pBindings, this, pParentP->GetFrameWeld(), pViewShell->GetViewData());
         SetController(xDlg);
         rInfo.nFlags = SfxChildWindowFlags::NEVERHIDE;
-        xDlg->Initialize(&rInfo);
+        xDlg->Initialize(rInfo);
     }
     else
         SetController( nullptr );
