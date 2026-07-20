@@ -223,11 +223,8 @@ class SwAuthMarkFloatDlg final : public SfxModelessDialogController
     SwAuthorMarkPane m_aContent;
     virtual void    Activate() override;
 public:
-    SwAuthMarkFloatDlg(SfxBindings* pBindings,
-                       SfxChildWindow* pChild,
-                       weld::Window *pParent,
-                       SfxChildWinInfo const * pInfo,
-                       bool bNew);
+    SwAuthMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
+                       const SfxChildWinInfo& rInfo, bool bNew);
     void    ReInitDlg(SwWrtShell& rWrtShell);
 };
 

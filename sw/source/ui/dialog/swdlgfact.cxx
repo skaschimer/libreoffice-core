@@ -1102,7 +1102,7 @@ VclPtr<AbstractMarkFloatDlg>
 SwAbstractDialogFactory_Impl::CreateAuthMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild,
                                                      weld::Window* pParent, SfxChildWinInfo& rInfo)
 {
-    return VclPtr<AbstractAuthMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, &rInfo,
+    return VclPtr<AbstractAuthMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, rInfo,
                                                          true /*bNew*/);
 }
 

@@ -2000,16 +2000,15 @@ IMPL_LINK(SwCreateAuthEntryDlg_Impl, PageNumHdl, weld::Toggleable&, rPageCB, voi
     }
 }
 
-SwAuthMarkFloatDlg::SwAuthMarkFloatDlg(SfxBindings* _pBindings,
-                                       SfxChildWindow* pChild,
-                                       weld::Window *pParent,
-                                       SfxChildWinInfo const * pInfo,
+SwAuthMarkFloatDlg::SwAuthMarkFloatDlg(SfxBindings* _pBindings, SfxChildWindow* pChild,
+                                       weld::Window* pParent, const SfxChildWinInfo& rInfo,
                                        bool bNew)
     : SfxModelessDialogController(_pBindings, pChild, pParent,
-        u"modules/swriter/ui/bibliographyentry.ui"_ustr, u"BibliographyEntryDialog"_ustr)
+                                  u"modules/swriter/ui/bibliographyentry.ui"_ustr,
+                                  u"BibliographyEntryDialog"_ustr)
     , m_aContent(*this, *m_xBuilder, bNew)
 {
-    Initialize(pInfo);
+    Initialize(&rInfo);
     if (SwWrtShell* pWrtShell = ::GetActiveWrtShell())
         m_aContent.ReInitDlg(*pWrtShell);
 }
