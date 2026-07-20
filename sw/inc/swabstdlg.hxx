@@ -597,11 +597,10 @@ public:
     CreateIndexMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
                             SfxChildWinInfo& rInfo)
         = 0;
-    virtual VclPtr<AbstractMarkFloatDlg>       CreateAuthMarkFloatDlg(
-                                                       SfxBindings* pBindings,
-                                                       SfxChildWindow* pChild,
-                                                       weld::Window *pParent,
-                                                       SfxChildWinInfo* pInfo) = 0;
+    virtual VclPtr<AbstractMarkFloatDlg>
+    CreateAuthMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
+                           SfxChildWinInfo& rInfo)
+        = 0;
     virtual VclPtr<VclAbstractDialog>         CreateIndexMarkModalDlg(
                                                 weld::Window *pParent, SwWrtShell& rSh, SwTOXMark* pCurTOXMark) = 0;
 

@@ -53,7 +53,7 @@ SwInsertAuthMarkWrapper::SwInsertAuthMarkWrapper(vcl::Window* pParentWindow, sal
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
     m_xAbstDlg
-        = pFact->CreateAuthMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), &rInfo);
+        = pFact->CreateAuthMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), rInfo);
     SetController(m_xAbstDlg->GetController());
 }
 

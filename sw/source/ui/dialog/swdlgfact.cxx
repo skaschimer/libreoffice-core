@@ -1098,13 +1098,12 @@ public:
 };
 }
 
-VclPtr<AbstractMarkFloatDlg> SwAbstractDialogFactory_Impl::CreateAuthMarkFloatDlg(
-                                                       SfxBindings* pBindings,
-                                                       SfxChildWindow* pChild,
-                                                       weld::Window *pParent,
-                                                       SfxChildWinInfo* pInfo)
+VclPtr<AbstractMarkFloatDlg>
+SwAbstractDialogFactory_Impl::CreateAuthMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild,
+                                                     weld::Window* pParent, SfxChildWinInfo& rInfo)
 {
-    return VclPtr<AbstractAuthMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, pInfo, true/*bNew*/);
+    return VclPtr<AbstractAuthMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, &rInfo,
+                                                         true /*bNew*/);
 }
 
 namespace

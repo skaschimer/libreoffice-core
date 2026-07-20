@@ -182,11 +182,10 @@ public:
                                                                  SfxChildWindow* pChild,
                                                                  weld::Window* pParent,
                                                                  SfxChildWinInfo& rInfo) override;
-    virtual VclPtr<AbstractMarkFloatDlg>       CreateAuthMarkFloatDlg(
-                                                       SfxBindings* pBindings,
-                                                       SfxChildWindow* pChild,
-                                                       weld::Window *pParent,
-                                                       SfxChildWinInfo* pInfo) override;
+    virtual VclPtr<AbstractMarkFloatDlg> CreateAuthMarkFloatDlg(SfxBindings* pBindings,
+                                                                SfxChildWindow* pChild,
+                                                                weld::Window* pParent,
+                                                                SfxChildWinInfo& rInfo) override;
     virtual VclPtr<VclAbstractDialog>         CreateIndexMarkModalDlg(
                                                 weld::Window *pParent, SwWrtShell& rSh, SwTOXMark* pCurTOXMark ) override;
 
