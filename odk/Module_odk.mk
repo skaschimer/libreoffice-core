@@ -30,6 +30,7 @@ $(eval $(call gb_Module_add_targets,odk,\
 	Package_share_readme \
 	Package_share_readme_generated \
 	Package_scripts \
+	$(if $(ENABLE_DOTNET),Package_dotnet) \
 ))
 
 ifeq ($(OS),WNT)
