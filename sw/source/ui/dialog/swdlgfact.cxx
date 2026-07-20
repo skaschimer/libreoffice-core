@@ -1080,12 +1080,10 @@ public:
 }
 
 VclPtr<AbstractMarkFloatDlg> SwAbstractDialogFactory_Impl::CreateIndexMarkFloatDlg(
-                                                       SfxBindings* pBindings,
-                                                       SfxChildWindow* pChild,
-                                                       weld::Window *pParent,
-                                                       SfxChildWinInfo* pInfo )
+    SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent, SfxChildWinInfo& rInfo)
 {
-    return VclPtr<AbstractIndexMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, pInfo, true/*bNew*/);
+    return VclPtr<AbstractIndexMarkFloatDlg_Impl>::Create(pBindings, pChild, pParent, &rInfo,
+                                                          true /*bNew*/);
 }
 
 namespace

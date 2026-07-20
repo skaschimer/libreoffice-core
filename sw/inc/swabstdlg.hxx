@@ -591,11 +591,10 @@ public:
     virtual VclPtr<AbstractEditRegionDlg>      CreateEditRegionDlg(weld::Window* pParent, SwWrtShell& rWrtSh) = 0;
     virtual VclPtr<AbstractInsertSectionTabDialog> CreateInsertSectionTabDialog(weld::Window* pParent,
                                                        const SfxItemSet& rSet, SwWrtShell& rSh) = 0;
-    virtual VclPtr<AbstractMarkFloatDlg>       CreateIndexMarkFloatDlg(
-                                                       SfxBindings* pBindings,
-                                                       SfxChildWindow* pChild,
-                                                       weld::Window *pParent,
-                                                       SfxChildWinInfo* pInfo) = 0;
+    virtual VclPtr<AbstractMarkFloatDlg>
+    CreateIndexMarkFloatDlg(SfxBindings* pBindings, SfxChildWindow* pChild, weld::Window* pParent,
+                            SfxChildWinInfo& rInfo)
+        = 0;
     virtual VclPtr<AbstractMarkFloatDlg>       CreateAuthMarkFloatDlg(
                                                        SfxBindings* pBindings,
                                                        SfxChildWindow* pChild,

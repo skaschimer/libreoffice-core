@@ -29,7 +29,7 @@ SwInsertIdxMarkWrapper::SwInsertIdxMarkWrapper(vcl::Window* pParentWindow, sal_u
 {
     SwAbstractDialogFactory* pFact = SwAbstractDialogFactory::Create();
     m_xAbstDlg
-        = pFact->CreateIndexMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), &rInfo);
+        = pFact->CreateIndexMarkFloatDlg(pBindings, this, pParentWindow->GetFrameWeld(), rInfo);
     SetController(m_xAbstDlg->GetController());
 }
 
