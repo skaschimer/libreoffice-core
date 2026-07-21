@@ -149,6 +149,7 @@ vcl::WindowData QtInstanceWindow::get_window_state(vcl::WindowDataMask eMask) co
 
     vcl::WindowData aData;
     GetQtInstance().RunInMainThread([&] {
+        aData.setMask(eMask);
         QRect aGeometry = getQWidget()->geometry();
         if (eMask & vcl::WindowDataMask::X)
             aData.setX(aGeometry.x());
