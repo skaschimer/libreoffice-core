@@ -202,9 +202,7 @@ class SmCmdBoxWindow final : public SfxDockingWindow
     virtual void    ToggleFloatingMode() override;
 
 public:
-    SmCmdBoxWindow(SfxBindings    *pBindings,
-                   SfxChildWindow *pChildWindow,
-                   Window         *pParent);
+    SmCmdBoxWindow(SfxBindings& rBindings, SfxChildWindow* pChildWindow, Window* pParent);
 
     virtual ~SmCmdBoxWindow () override;
     virtual void dispose() override;

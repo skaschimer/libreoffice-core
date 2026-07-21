@@ -955,11 +955,12 @@ void SmEditController::StateChangedAtToolBoxControl(sal_uInt16 nSID, SfxItemStat
 }
 
 /**************************************************************************/
-SmCmdBoxWindow::SmCmdBoxWindow(SfxBindings *pBindings_, SfxChildWindow *pChildWindow,
-                               vcl::Window *pParent)
-    : SfxDockingWindow(pBindings_, pChildWindow, pParent, u"EditWindow"_ustr, u"modules/smath/ui/editwindow.ui"_ustr)
+SmCmdBoxWindow::SmCmdBoxWindow(SfxBindings& rBindings_, SfxChildWindow* pChildWindow,
+                               vcl::Window* pParent)
+    : SfxDockingWindow(&rBindings_, pChildWindow, pParent, u"EditWindow"_ustr,
+                       u"modules/smath/ui/editwindow.ui"_ustr)
     , m_xEdit(new SmEditWindow(*this, *m_xBuilder))
-    , aController(*m_xEdit, SID_TEXT, *pBindings_)
+    , aController(*m_xEdit, SID_TEXT, rBindings_)
     , bExiting(false)
     , aInitialFocusTimer("SmCmdBoxWindow aInitialFocusTimer")
 {
@@ -1149,7 +1150,7 @@ SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, Sfx
                                  SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWindow, nId)
 {
-    VclPtrInstance<SmCmdBoxWindow> pDialog(&rBindings, this, pParentWindow);
+    VclPtrInstance<SmCmdBoxWindow> pDialog(rBindings, this, pParentWindow);
     SetWindow(pDialog);
     // make window docked to the bottom initially (after first start)
     SetAlignment(SfxChildAlignment::BOTTOM);
