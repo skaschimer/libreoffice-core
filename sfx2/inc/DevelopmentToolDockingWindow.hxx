@@ -54,7 +54,7 @@ private:
     void updateSelection();
 
 public:
-    DevelopmentToolDockingWindow(SfxBindings* pBindings, SfxChildWindow* pChildWindow,
+    DevelopmentToolDockingWindow(SfxBindings& rBindings, SfxChildWindow* pChildWindow,
                                  vcl::Window* pParent);
 
     virtual ~DevelopmentToolDockingWindow() override;

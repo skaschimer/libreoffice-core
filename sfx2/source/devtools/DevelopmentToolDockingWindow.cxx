@@ -26,17 +26,17 @@
 
 using namespace css;
 
-DevelopmentToolDockingWindow::DevelopmentToolDockingWindow(SfxBindings* pInputBindings,
+DevelopmentToolDockingWindow::DevelopmentToolDockingWindow(SfxBindings& rBindings,
                                                            SfxChildWindow* pChildWindow,
                                                            vcl::Window* pParent)
-    : SfxDockingWindow(pInputBindings, pChildWindow, pParent, u"DevelopmentTool"_ustr,
+    : SfxDockingWindow(&rBindings, pChildWindow, pParent, u"DevelopmentTool"_ustr,
                        u"sfx/ui/developmenttool.ui"_ustr)
     , mpObjectInspectorWidgets(new ObjectInspectorWidgets(m_xBuilder))
     , mpDocumentModelTreeView(m_xBuilder->weld_tree_view(u"leftside_treeview_id"_ustr))
     , mpDomToolbar(m_xBuilder->weld_toolbar(u"dom_toolbar"_ustr))
     , maDocumentModelTreeHandler(
           mpDocumentModelTreeView,
-          pInputBindings->GetDispatcher()->GetFrame()->GetObjectShell()->GetBaseModel())
+          rBindings.GetDispatcher()->GetFrame()->GetObjectShell()->GetBaseModel())
     , maObjectInspectorTreeHandler(mpObjectInspectorWidgets)
 {
     mpDocumentModelTreeView->connect_selection_changed(
@@ -44,11 +44,11 @@ DevelopmentToolDockingWindow::DevelopmentToolDockingWindow(SfxBindings* pInputBi
     mpDomToolbar->connect_clicked(
         LINK(this, DevelopmentToolDockingWindow, DomToolbarButtonClicked));
 
-    auto* pViewFrame = pInputBindings->GetDispatcher()->GetFrame();
+    auto* pViewFrame = rBindings.GetDispatcher()->GetFrame();
 
     uno::Reference<frame::XController> xController = pViewFrame->GetFrame().GetController();
 
-    mxRoot = pInputBindings->GetDispatcher()->GetFrame()->GetObjectShell()->GetBaseModel();
+    mxRoot = rBindings.GetDispatcher()->GetFrame()->GetObjectShell()->GetBaseModel();
 
     maDocumentModelTreeHandler.inspectDocument();
     mxSelectionListener.set(new SelectionChangeHandler(xController, this));
