@@ -1631,7 +1631,13 @@ const TranslateId ocMAP_ARY[] =
 // -=*# Resources for function REDUCE #*=-
 const TranslateId ocREDUCE_ARY[] =
 {
-    NC_("ocREDUCE", "placeholder text"),
+    NC_("ocREDUCE", "Applies a custom LAMBDA function to each element in a given array and accumulates results to a single value."),
+    NC_("ocREDUCE", "Initial Value"),
+    NC_("ocREDUCE", "Optional initial value of the accumulator."),
+    NC_("ocREDUCE", "Array"),
+    NC_("ocREDUCE", "The array to be reduced."),
+    NC_("ocREDUCE", "Formula"),
+    NC_("ocREDUCE", "A formula expression or LAMBDA function that will be called on each cell of the array.")
 };
 
 // -=*# Resources for function SCAN #*=-
