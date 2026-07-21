@@ -71,11 +71,8 @@ class SfxTitleDockingWindow : public SfxDockingWindow
     VclPtr<vcl::Window>   m_pWrappedWindow;
 
 public:
-                        SfxTitleDockingWindow(
-                            SfxBindings* pBindings ,
-                            SfxChildWindow* pChildWin ,
-                            vcl::Window* pParent ,
-                            WinBits nBits);
+    SfxTitleDockingWindow(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
+                          WinBits nBits);
     virtual             ~SfxTitleDockingWindow() override;
     virtual void        dispose() override;
 
@@ -130,7 +127,7 @@ SfxDockingWrapper::SfxDockingWrapper(vcl::Window* pParentWnd, sal_uInt16 nId,
     const uno::Reference< uno::XComponentContext >& xContext = ::comphelper::getProcessComponentContext();
 
     VclPtr<SfxTitleDockingWindow> pTitleDockWindow = VclPtr<SfxTitleDockingWindow>::Create(
-        &rBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK);
+        rBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK);
     SetWindow( pTitleDockWindow );
 
     // Use factory manager to retrieve XWindow factory. That can be used to instantiate
@@ -232,9 +229,9 @@ SfxChildWinInfo  SfxDockingWrapper::GetInfo() const
     return aInfo;
 };
 
-SfxTitleDockingWindow::SfxTitleDockingWindow(SfxBindings* pBind, SfxChildWindow* pChildWin,
+SfxTitleDockingWindow::SfxTitleDockingWindow(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                                              vcl::Window* pParent, WinBits nBits)
-    : SfxDockingWindow(pBind, pChildWin, pParent, nBits)
+    : SfxDockingWindow(&rBindings, pChildWin, pParent, nBits)
     , m_pWrappedWindow(nullptr)
 {
 }
