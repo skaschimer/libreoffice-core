@@ -123,23 +123,21 @@ static bool lcl_getWindowState( const uno::Reference< container::XNameAccess >& 
     return bResult;
 }
 
-SfxDockingWrapper::SfxDockingWrapper( vcl::Window* pParentWnd ,
-                                      sal_uInt16 nId ,
-                                      SfxBindings* pBindings ,
-                                      SfxChildWinInfo* pInfo )
-                    : SfxChildWindow( pParentWnd , nId )
+SfxDockingWrapper::SfxDockingWrapper(vcl::Window* pParentWnd, sal_uInt16 nId,
+                                     SfxBindings& rBindings, SfxChildWinInfo* pInfo)
+    : SfxChildWindow(pParentWnd, nId)
 {
     const uno::Reference< uno::XComponentContext >& xContext = ::comphelper::getProcessComponentContext();
 
-    VclPtr<SfxTitleDockingWindow> pTitleDockWindow = VclPtr<SfxTitleDockingWindow>::Create( pBindings, this, pParentWnd,
-        WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK);
+    VclPtr<SfxTitleDockingWindow> pTitleDockWindow = VclPtr<SfxTitleDockingWindow>::Create(
+        &rBindings, this, pParentWnd, WB_STDDOCKWIN | WB_CLIPCHILDREN | WB_SIZEABLE | WB_3DLOOK);
     SetWindow( pTitleDockWindow );
 
     // Use factory manager to retrieve XWindow factory. That can be used to instantiate
     // the real window factory.
     uno::Reference< lang::XSingleComponentFactory > xFactoryMgr = ui::theWindowContentFactoryManager::get(xContext);
 
-    SfxDispatcher* pDispatcher = pBindings->GetDispatcher();
+    SfxDispatcher* pDispatcher = rBindings.GetDispatcher();
     uno::Reference< frame::XFrame > xFrame = pDispatcher->GetFrame()->GetFrame().GetFrameInterface();
     // create a resource URL from the nId provided by the sfx2
     OUString aResourceURL =  "private:resource/dockingwindow/" + OUString::number(nId);
@@ -211,7 +209,7 @@ std::unique_ptr<SfxChildWindow> SfxDockingWrapper::CreateImpl(vcl::Window* pPare
                                                               SfxBindings& rBindings,
                                                               SfxChildWinInfo& rInfo)
 {
-    return std::make_unique<SfxDockingWrapper>(pParent, nId, &rBindings, &rInfo);
+    return std::make_unique<SfxDockingWrapper>(pParent, nId, rBindings, &rInfo);
 }
 
 void SfxDockingWrapper::RegisterChildWindow (bool bVis, SfxModule *pMod, SfxChildWindowFlags nFlags)
