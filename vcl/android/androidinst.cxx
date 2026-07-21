@@ -114,16 +114,6 @@ public:
 
     virtual void UpdateSettings( AllSettings &rSettings )
     {
-        // Clobber the UI fonts
-#if 0
-        psp::FastPrintFontInfo aInfo;
-        aInfo.m_aFamilyName = "Roboto";
-        aInfo.m_eItalic = ITALIC_NORMAL;
-        aInfo.m_eWeight = WEIGHT_NORMAL;
-        aInfo.m_eWidth = WIDTH_NORMAL;
-        psp::PrintFontManager::get().matchFont( aInfo, rSettings.GetUILocale() );
-#endif
-
         // FIXME: is 14 point enough ?
         vcl::Font aFont( OUString( "Roboto" ), Size( 0, 14 ) );
 
