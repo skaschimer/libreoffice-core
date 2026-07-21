@@ -45,7 +45,7 @@ protected:
 private:
     tools::Rectangle m_aInnerRect;
     tools::Rectangle m_aOuterRect;
-    SfxBindings* m_pBindings;
+    SfxBindings& m_rBindings;
     Size m_aFloatSize;
     SfxChildWindow* m_pMgr;
     std::unique_ptr<SfxDockingWindow_Impl> m_pImpl;
@@ -92,7 +92,7 @@ public:
     }
     const tools::Rectangle& GetInnerRect() const { return m_aInnerRect; }
     const tools::Rectangle& GetOuterRect() const { return m_aOuterRect; }
-    SfxBindings& GetBindings() const { return *m_pBindings; }
+    SfxBindings& GetBindings() const { return m_rBindings; }
     sal_uInt16 GetType() const { return m_pMgr->GetType(); }
     SfxChildAlignment GetAlignment() const { return m_pMgr->GetAlignment(); }
     void SetAlignment(SfxChildAlignment eAlign) { m_pMgr->SetAlignment(eAlign); }
