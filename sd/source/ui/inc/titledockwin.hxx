@@ -31,7 +31,7 @@ namespace sd
     {
     public:
         /** Create a new docking window.
-            @param pBindings
+            @param rBindings
                 Used, among others, to determine the ViewShellBase and
                 PaneManager that manage the new docking window.
             @param pChildWindow
@@ -43,7 +43,7 @@ namespace sd
                 the initial title
         */
         TitledDockingWindow(
-            SfxBindings* i_pBindings,
+            SfxBindings& rBindings,
             SfxChildWindow* i_pChildWindow,
             vcl::Window* i_pParent,
             const OUString& rsTitle

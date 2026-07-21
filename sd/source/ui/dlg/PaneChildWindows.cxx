@@ -42,7 +42,7 @@ PaneChildWindow::PaneChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, Sfx
                                  SfxChildAlignment eAlignment)
     : SfxChildWindow(pParentWindow, nId)
 {
-    SetWindow(VclPtr<TitledDockingWindow>::Create(&rBindings, this, pParentWindow,
+    SetWindow(VclPtr<TitledDockingWindow>::Create(rBindings, this, pParentWindow,
                                                   SdResId(pTitleBarResId)));
     SetAlignment(eAlignment);
     SfxDockingWindow* pDockingWindow = static_cast<SfxDockingWindow*>(GetWindow());
