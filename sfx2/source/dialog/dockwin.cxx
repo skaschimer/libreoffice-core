@@ -121,7 +121,7 @@ static bool lcl_getWindowState( const uno::Reference< container::XNameAccess >& 
 }
 
 SfxDockingWrapper::SfxDockingWrapper(vcl::Window* pParentWnd, sal_uInt16 nId,
-                                     SfxBindings& rBindings, SfxChildWinInfo* pInfo)
+                                     SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParentWnd, nId)
 {
     const uno::Reference< uno::XComponentContext >& xContext = ::comphelper::getProcessComponentContext();
@@ -198,7 +198,7 @@ SfxDockingWrapper::SfxDockingWrapper(vcl::Window* pParentWnd, sal_uInt16 nId,
 
     GetWindow()->SetOutputSizePixel( Size( 270, 240 ) );
 
-    static_cast<SfxDockingWindow*>( GetWindow() )->Initialize( pInfo );
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
     SetHideNotDelete( true );
 }
 
@@ -206,7 +206,7 @@ std::unique_ptr<SfxChildWindow> SfxDockingWrapper::CreateImpl(vcl::Window* pPare
                                                               SfxBindings& rBindings,
                                                               SfxChildWinInfo& rInfo)
 {
-    return std::make_unique<SfxDockingWrapper>(pParent, nId, rBindings, &rInfo);
+    return std::make_unique<SfxDockingWrapper>(pParent, nId, rBindings, rInfo);
 }
 
 void SfxDockingWrapper::RegisterChildWindow (bool bVis, SfxModule *pMod, SfxChildWindowFlags nFlags)

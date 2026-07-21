@@ -120,7 +120,7 @@ class SfxDockingWrapper final : public SfxChildWindow
 {
     public:
         SfxDockingWrapper(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
-                          SfxChildWinInfo* pInfo);
+                          SfxChildWinInfo& rInfo);
 
         SFX_DECL_CHILDWINDOW(SfxDockingWrapper);
 };
