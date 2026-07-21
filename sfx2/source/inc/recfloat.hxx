@@ -27,7 +27,8 @@
 
 class SfxRecordingFloatWrapper_Impl final : public SfxChildWindow
 {
-    SfxBindings*        pBindings;
+    SfxBindings& m_rBindings;
+
 public:
     SfxRecordingFloatWrapper_Impl(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
                                   const SfxChildWinInfo& rInfo);
