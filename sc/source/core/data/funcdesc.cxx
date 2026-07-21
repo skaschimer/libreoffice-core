@@ -182,10 +182,10 @@ OUString ScFuncDesc::GetParamList() const
              * parameters. For now parameters are always added, so no special
              * treatment of a trailing "; " necessary. */
             aSig.append(maDefArgNames[nVarArgsStart]
-                + (mxFuncName != "LAMBDA" ? "1" : "2")
+                + (mxFuncName == "LAMBDA" ? "2" : (mxFuncName == "MAP" ? "3" : "1"))
                 + sep + " "
                 + maDefArgNames[nVarArgsStart]
-                + (mxFuncName != "LAMBDA" ? "2" : "3")
+                + (mxFuncName == "LAMBDA" ? "3" : (mxFuncName == "MAP" ? "4" : "2"))
                 + sep + " ... ");
         }
         else

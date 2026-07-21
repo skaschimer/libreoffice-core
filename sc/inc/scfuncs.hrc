@@ -1619,11 +1619,13 @@ const TranslateId ocMAKEARRAY_ARY[] =
 // -=*# Resources for function MAP #*=-
 const TranslateId ocMAP_ARY[] =
 {
-    NC_("ocMAP", "Applies a function to each cell of one or more arrays."),
+    NC_("ocMAP", "Results in an array where each cell is computed by applying a formula to the corresponding cells of one or more input arrays."),
     NC_("ocMAP", "Array 1"),
-    NC_("ocMAP", "The array that provides the first arguments to the function."),
-    NC_("ocMAP", "Function or Array "),
-    NC_("ocMAP", "A function (usually built with LAMBDA) that receives the data provided in the array(s). More than one array may be provided; their corresponding cells are all passed to the function. The function must accept that many parameters.")
+    NC_("ocMAP", "The array that provides the arguments to the formula."),
+    NC_("ocMAP", "Formula or Array 2"),
+    NC_("ocMAP", "Additional arrays or a formula expression defined by a LAMBDA function or similar. The formula or function must be the final argument of the MAP function."),
+    NC_("ocMAP", "Formula or Array "),
+    NC_("ocMAP", "Additional arrays or a formula expression defined by a LAMBDA function or similar. The formula or function must be the final argument of the MAP function.")
 };
 
 // -=*# Resources for function REDUCE #*=-
