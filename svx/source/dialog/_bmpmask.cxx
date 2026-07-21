@@ -343,15 +343,15 @@ SvxBmpMaskChildWindow::SvxBmpMaskChildWindow(vcl::Window* pParent_, sal_uInt16 n
                                              SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(pParent_, nId)
 {
-    VclPtr<SvxBmpMask> pDlg = VclPtr<SvxBmpMask>::Create(&rBindings, this, pParent_);
+    VclPtr<SvxBmpMask> pDlg = VclPtr<SvxBmpMask>::Create(rBindings, this, pParent_);
 
     SetWindow( pDlg );
 
     pDlg->Initialize(rInfo);
 }
 
-SvxBmpMask::SvxBmpMask(SfxBindings *pBindinx, SfxChildWindow *pCW, vcl::Window* pParent)
-    : SfxDockingWindow(pBindinx, pCW, pParent, u"DockingColorReplace"_ustr,
+SvxBmpMask::SvxBmpMask(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
+    : SfxDockingWindow(&rBindings, pCW, pParent, u"DockingColorReplace"_ustr,
                        u"svx/ui/dockingcolorreplace.ui"_ustr)
     , m_xTbxPipette(m_xBuilder->weld_toolbar(u"toolbar"_ustr))
     , m_xCtlPipette(new BmpColorWindow)
@@ -379,9 +379,9 @@ SvxBmpMask::SvxBmpMask(SfxBindings *pBindinx, SfxChildWindow *pCW, vcl::Window* 
     , m_xLbColor4(new ColorListBox(m_xBuilder->weld_menu_button(u"color4"_ustr), [this]{ return GetFrameWeld(); }))
     , m_xCbxTrans(m_xBuilder->weld_check_button(u"cbx5"_ustr))
     , m_xLbColorTrans(new ColorListBox(m_xBuilder->weld_menu_button(u"color5"_ustr), [this]{ return GetFrameWeld(); }))
-    , m_xData(new MaskData(this, *pBindinx))
+    , m_xData(new MaskData(this, rBindings))
     , m_aPipetteColor(COL_WHITE)
-    , m_aSelItem(*this, *pBindinx)
+    , m_aSelItem(*this, rBindings)
 {
     SetText(SvxResId(RID_SVXDLG_BMPMASK_STR_TITLE));
 
