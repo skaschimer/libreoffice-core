@@ -30,7 +30,7 @@ SvxColorChildWindow::SvxColorChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
     : SfxChildWindow(_pParent, nId)
 {
     VclPtr<SvxColorDockingWindow> pWin
-        = VclPtr<SvxColorDockingWindow>::Create(&rBindings, this, _pParent);
+        = VclPtr<SvxColorDockingWindow>::Create(rBindings, this, _pParent);
 
     SetWindow(pWin);
 

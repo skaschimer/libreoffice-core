@@ -89,9 +89,7 @@ private:
     virtual bool    Close() override;
 
 public:
-    SvxColorDockingWindow(SfxBindings* pBindings,
-                          SfxChildWindow *pCW,
-                          vcl::Window* pParent);
+    SvxColorDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent);
     virtual ~SvxColorDockingWindow() override;
     virtual void    dispose() override;
 

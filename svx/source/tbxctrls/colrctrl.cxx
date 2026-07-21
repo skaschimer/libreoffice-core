@@ -178,9 +178,10 @@ bool SvxColorValueSet_docking::StartDrag()
 constexpr sal_uInt16 gnLeftSlot = SID_ATTR_FILL_COLOR;
 constexpr sal_uInt16 gnRightSlot = SID_ATTR_LINE_COLOR;
 
-SvxColorDockingWindow::SvxColorDockingWindow(SfxBindings* _pBindings, SfxChildWindow* pCW, vcl::Window* _pParent)
-    : SfxDockingWindow(_pBindings, pCW, _pParent,
-        u"DockingColorWindow"_ustr, u"svx/ui/dockingcolorwindow.ui"_ustr)
+SvxColorDockingWindow::SvxColorDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW,
+                                             vcl::Window* _pParent)
+    : SfxDockingWindow(&rBindings, pCW, _pParent, u"DockingColorWindow"_ustr,
+                       u"svx/ui/dockingcolorwindow.ui"_ustr)
     , m_pColorSet(
           new SvxColorValueSet_docking(m_xBuilder->weld_scrolled_window(u"valuesetwin"_ustr, true)))
     , m_pColorSetWin(new weld::CustomWeld(*m_xBuilder, u"valueset"_ustr, *m_pColorSet))
@@ -197,18 +198,15 @@ SvxColorDockingWindow::SvxColorDockingWindow(SfxBindings* _pBindings, SfxChildWi
     // Get the model from the view shell.  Using SfxObjectShell::Current()
     // is unreliable when called at the wrong times.
     SfxObjectShell* pDocSh = nullptr;
-    if (_pBindings != nullptr)
+    SfxDispatcher* pDispatcher = rBindings.GetDispatcher();
+    if (pDispatcher != nullptr)
     {
-        SfxDispatcher* pDispatcher = _pBindings->GetDispatcher();
-        if (pDispatcher != nullptr)
+        SfxViewFrame* pFrame = pDispatcher->GetFrame();
+        if (pFrame != nullptr)
         {
-            SfxViewFrame* pFrame = pDispatcher->GetFrame();
-            if (pFrame != nullptr)
-            {
-                SfxViewShell* pViewShell = pFrame->GetViewShell();
-                if (pViewShell != nullptr)
-                    pDocSh = pViewShell->GetObjectShell();
-            }
+            SfxViewShell* pViewShell = pFrame->GetViewShell();
+            if (pViewShell != nullptr)
+                pDocSh = pViewShell->GetObjectShell();
         }
     }
 
@@ -228,8 +226,7 @@ SvxColorDockingWindow::SvxColorDockingWindow(SfxBindings* _pBindings, SfxChildWi
     aItemSize.setHeight( aItemSize.Height() + SvxColorValueSet::getEntryEdgeLength() );
     aItemSize.setHeight( aItemSize.Height() / 2 );
 
-    if (_pBindings != nullptr)
-        StartListening(*_pBindings, DuplicateHandling::Prevent);
+    StartListening(rBindings, DuplicateHandling::Prevent);
 }
 
 SvxColorDockingWindow::~SvxColorDockingWindow()
