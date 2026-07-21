@@ -107,7 +107,7 @@ private:
     std::unique_ptr<QuickFindPanel> m_xQuickFindPanel;
 
 public:
-    QuickFindPanelWindow(SfxBindings* _pBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
+    QuickFindPanelWindow(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
                          SfxChildWinInfo* pInfo);
 };
 }
