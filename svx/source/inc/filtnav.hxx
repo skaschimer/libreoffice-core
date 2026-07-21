@@ -313,8 +313,7 @@ private:
     using SfxDockingWindow::StateChanged;
 
 public:
-    FmFilterNavigatorWin( SfxBindings *pBindings, SfxChildWindow *pMgr,
-                   vcl::Window* pParent );
+    FmFilterNavigatorWin(SfxBindings& rBindings, SfxChildWindow* pMgr, vcl::Window* pParent);
     virtual ~FmFilterNavigatorWin() override;
     virtual void dispose() override;
 
