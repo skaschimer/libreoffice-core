@@ -2023,8 +2023,10 @@ namespace svxform
         }
     }
 
-    DataNavigator::DataNavigator(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* _pParent)
-        : SfxDockingWindow(&rBindings, _pMgr, _pParent, u"DataNavigator"_ustr, u"svx/ui/datanavigator.ui"_ustr)
+    DataNavigator::DataNavigator(SfxBindings& rBindings, SfxChildWindow* _pMgr,
+                                 vcl::Window* _pParent)
+        : SfxDockingWindow(rBindings, _pMgr, _pParent, u"DataNavigator"_ustr,
+                           u"svx/ui/datanavigator.ui"_ustr)
         , SfxControllerItem(SID_FM_DATANAVIGATOR_CONTROL, rBindings)
         , m_xDataWin(new DataNavigatorWindow(this, *m_xBuilder, &rBindings))
     {

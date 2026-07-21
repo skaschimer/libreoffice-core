@@ -85,7 +85,7 @@ bool SfxPartChildWnd_Impl::QueryClose()
 
 SfxPartDockWnd_Impl::SfxPartDockWnd_Impl(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                                          vcl::Window* pParent, WinBits nBits)
-    : SfxDockingWindow(&rBindings, pChildWin, pParent, nBits)
+    : SfxDockingWindow(rBindings, pChildWin, pParent, nBits)
 {
     css::uno::Reference < css::frame::XFrame2 > xFrame = css::frame::Frame::create(
             ::comphelper::getProcessComponentContext() );

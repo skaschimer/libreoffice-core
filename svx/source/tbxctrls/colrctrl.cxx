@@ -180,7 +180,7 @@ constexpr sal_uInt16 gnRightSlot = SID_ATTR_LINE_COLOR;
 
 SvxColorDockingWindow::SvxColorDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW,
                                              vcl::Window* _pParent)
-    : SfxDockingWindow(&rBindings, pCW, _pParent, u"DockingColorWindow"_ustr,
+    : SfxDockingWindow(rBindings, pCW, _pParent, u"DockingColorWindow"_ustr,
                        u"svx/ui/dockingcolorwindow.ui"_ustr)
     , m_pColorSet(
           new SvxColorValueSet_docking(m_xBuilder->weld_scrolled_window(u"valuesetwin"_ustr, true)))

@@ -84,7 +84,7 @@ namespace {
 }
 
 Svx3DWin::Svx3DWin(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
-    : SfxDockingWindow(&rBindings, pCW, pParent, u"Docking3DEffects"_ustr,
+    : SfxDockingWindow(rBindings, pCW, pParent, u"Docking3DEffects"_ustr,
                        u"svx/ui/docking3deffects.ui"_ustr)
 
     , m_xBtnGeo(m_xBuilder->weld_toggle_button(u"geometry"_ustr))

@@ -121,7 +121,7 @@ void SdDisplay::SetDrawingArea(weld::DrawingArea* pDrawingArea)
  *  AnimationWindow - FloatingWindow
  */
 AnimationWindow::AnimationWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
-    : SfxDockingWindow(&rBindings, pCW, pParent, u"DockingAnimation"_ustr,
+    : SfxDockingWindow(rBindings, pCW, pParent, u"DockingAnimation"_ustr,
                        u"modules/simpress/ui/dockinganimation.ui"_ustr)
     , m_xCtlDisplay(new SdDisplay)
     , m_xCtlDisplayWin(new weld::CustomWeld(*m_xBuilder, u"preview"_ustr, *m_xCtlDisplay))

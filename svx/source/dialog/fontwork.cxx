@@ -175,7 +175,7 @@ SvxFontWorkChildWindow::SvxFontWorkChildWindow(vcl::Window* _pParent, sal_uInt16
 // Floating Window to the attribution of text effects
 SvxFontWorkDialog::SvxFontWorkDialog(SfxBindings& rBindings, SfxChildWindow* pCW,
                                      vcl::Window* _pParent)
-    : SfxDockingWindow(&rBindings, pCW, _pParent, u"DockingFontwork"_ustr,
+    : SfxDockingWindow(rBindings, pCW, _pParent, u"DockingFontwork"_ustr,
                        u"svx/ui/dockingfontwork.ui"_ustr)
     , m_rBindings(rBindings)
     , m_aInputIdle("SvxFontWorkDialog Input")

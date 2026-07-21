@@ -73,15 +73,12 @@ protected:
     SAL_DLLPRIVATE SfxChildWindow* GetChildWindow_Impl() { return m_pMgr; }
 
 public:
-                        SfxDockingWindow( SfxBindings *pBindings,
-                                          SfxChildWindow *pCW,
-                                          vcl::Window* pParent,
-                                          WinBits nWinBits);
-                        SfxDockingWindow( SfxBindings *pBindings,
-                                          SfxChildWindow *pCW,
-                                          vcl::Window* pParent,
-                                          const OUString& rID, const OUString& rUIXMLDescription );
-                        virtual ~SfxDockingWindow() override;
+    SfxDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent,
+                     WinBits nWinBits);
+    SfxDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent,
+                     const OUString& rID, const OUString& rUIXMLDescription);
+    virtual ~SfxDockingWindow() override;
+
     virtual void        dispose() override;
 
     void Initialize(SfxChildWinInfo& rInfo);

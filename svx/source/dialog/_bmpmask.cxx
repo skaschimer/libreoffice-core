@@ -351,7 +351,7 @@ SvxBmpMaskChildWindow::SvxBmpMaskChildWindow(vcl::Window* pParent_, sal_uInt16 n
 }
 
 SvxBmpMask::SvxBmpMask(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
-    : SfxDockingWindow(&rBindings, pCW, pParent, u"DockingColorReplace"_ustr,
+    : SfxDockingWindow(rBindings, pCW, pParent, u"DockingColorReplace"_ustr,
                        u"svx/ui/dockingcolorreplace.ui"_ustr)
     , m_xTbxPipette(m_xBuilder->weld_toolbar(u"toolbar"_ustr))
     , m_xCtlPipette(new BmpColorWindow)

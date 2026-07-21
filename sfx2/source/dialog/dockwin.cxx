@@ -231,7 +231,7 @@ SfxChildWinInfo  SfxDockingWrapper::GetInfo() const
 
 SfxTitleDockingWindow::SfxTitleDockingWindow(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                                              vcl::Window* pParent, WinBits nBits)
-    : SfxDockingWindow(&rBindings, pChildWin, pParent, nBits)
+    : SfxDockingWindow(rBindings, pChildWin, pParent, nBits)
     , m_pWrappedWindow(nullptr)
 {
 }
@@ -754,10 +754,10 @@ void SfxDockingWindow::Resizing( Size& /*rSize*/ )
     Constructor for the SfxDockingWindow class. A SfxChildWindow will be
     required because the docking is implemented in Sfx through SfxChildWindows.
 */
-SfxDockingWindow::SfxDockingWindow(SfxBindings* pBindinx, SfxChildWindow* pCW, vcl::Window* pParent,
-                                   WinBits nWinBits)
+SfxDockingWindow::SfxDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW,
+                                   vcl::Window* pParent, WinBits nWinBits)
     : ResizableDockingWindow(pParent, nWinBits)
-    , m_pBindings(pBindinx)
+    , m_pBindings(&rBindings)
     , m_pMgr(pCW)
 {
     m_pImpl.reset(new SfxDockingWindow_Impl(this));
@@ -766,10 +766,11 @@ SfxDockingWindow::SfxDockingWindow(SfxBindings* pBindinx, SfxChildWindow* pCW, v
 /** Constructor for the SfxDockingWindow class. A SfxChildWindow will be
     required because the docking is implemented in Sfx through SfxChildWindows.
 */
-SfxDockingWindow::SfxDockingWindow(SfxBindings* pBindinx, SfxChildWindow* pCW, vcl::Window* pParent,
-                                   const OUString& rID, const OUString& rUIXMLDescription)
+SfxDockingWindow::SfxDockingWindow(SfxBindings& rBindings, SfxChildWindow* pCW,
+                                   vcl::Window* pParent, const OUString& rID,
+                                   const OUString& rUIXMLDescription)
     : ResizableDockingWindow(pParent)
-    , m_pBindings(pBindinx)
+    , m_pBindings(&rBindings)
     , m_pMgr(pCW)
 {
     m_xBuilder = Application::CreateInterimBuilder(m_xBox, rUIXMLDescription, true);

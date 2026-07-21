@@ -29,7 +29,7 @@ using namespace css;
 DevelopmentToolDockingWindow::DevelopmentToolDockingWindow(SfxBindings& rBindings,
                                                            SfxChildWindow* pChildWindow,
                                                            vcl::Window* pParent)
-    : SfxDockingWindow(&rBindings, pChildWindow, pParent, u"DevelopmentTool"_ustr,
+    : SfxDockingWindow(rBindings, pChildWindow, pParent, u"DevelopmentTool"_ustr,
                        u"sfx/ui/developmenttool.ui"_ustr)
     , mpObjectInspectorWidgets(new ObjectInspectorWidgets(m_xBuilder))
     , mpDocumentModelTreeView(m_xBuilder->weld_tree_view(u"leftside_treeview_id"_ustr))

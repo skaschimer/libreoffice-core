@@ -1724,7 +1724,7 @@ void FmFilterNavigator::DeleteSelection()
 
 FmFilterNavigatorWin::FmFilterNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr,
                                            vcl::Window* _pParent)
-    : SfxDockingWindow(&rBindings, _pMgr, _pParent, u"FilterNavigator"_ustr,
+    : SfxDockingWindow(rBindings, _pMgr, _pParent, u"FilterNavigator"_ustr,
                        u"svx/ui/filternavigator.ui"_ustr)
     , SfxControllerItem(SID_FM_FILTER_NAVIGATOR_CONTROL, rBindings)
     , m_xNavigatorTree(new FmFilterNavigator(this, m_xBuilder->weld_tree_view(u"treeview"_ustr)))

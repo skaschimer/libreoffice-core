@@ -50,7 +50,7 @@ MediaPlayer::~MediaPlayer()
 SFX_IMPL_DOCKINGWINDOW_WITHID( MediaPlayer, SID_AVMEDIA_PLAYER )
 
 MediaFloater::MediaFloater(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
-    : SfxDockingWindow(&rBindings, pCW, pParent,
+    : SfxDockingWindow(rBindings, pCW, pParent,
                        WB_CLOSEABLE | WB_MOVEABLE | WB_SIZEABLE | WB_DOCKABLE)
     , mpMediaWindow(new MediaWindow(this, true))
 {

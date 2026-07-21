@@ -25,7 +25,7 @@ void SfxQuickFindWrapper::Initialize() { SetHideNotDelete(true); }
 
 SfxQuickFind::SfxQuickFind(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
                            SfxChildWinInfo& rInfo)
-    : SfxDockingWindow(&rBindings, pChildWin, pParent, u"QuickFind"_ustr,
+    : SfxDockingWindow(rBindings, pChildWin, pParent, u"QuickFind"_ustr,
                        u"sfx/ui/quickfind.ui"_ustr)
 {
     SetText(SfxResId(STR_SID_QUICKFIND));
