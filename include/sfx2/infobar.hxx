@@ -62,7 +62,7 @@ public:
 class SFX2_DLLPUBLIC SfxInfoBarContainerChild final : public SfxChildWindow
 {
 private:
-    SfxBindings* m_pBindings;
+    SfxBindings& m_rBindings;
 
 public:
     SfxInfoBarContainerChild(vcl::Window* pParent, sal_uInt16 nId, SfxBindings& rBindings,
