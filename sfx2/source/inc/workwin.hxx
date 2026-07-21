@@ -201,8 +201,8 @@ class SfxWorkWindow final
     SfxFrame& m_rMasterFrame;
     SfxFrame& m_rFrame;
 
-    bool                    CreateChildWin_Impl(SfxChildWin_Impl*,bool);
-    void                    RemoveChildWin_Impl(SfxChildWin_Impl*);
+    bool CreateChildWin_Impl(SfxChildWin_Impl&, bool);
+    void RemoveChildWin_Impl(SfxChildWin_Impl&);
     void                    Sort_Impl();
     SfxChild_Impl*          FindChild_Impl( const vcl::Window* rWindow ) const;
     bool                    RequestTopToolSpacePixel_Impl( SvBorder aBorder );

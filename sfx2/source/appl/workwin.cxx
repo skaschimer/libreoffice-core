@@ -1304,7 +1304,7 @@ void SfxWorkWindow::UpdateChildWindows_Impl()
                 // Create window and if possible theContext
                 if ( bCreate )
                 {
-                    if (!CreateChildWin_Impl(pCW, false))
+                    if (!CreateChildWin_Impl(*pCW, false))
                         continue;
                 }
 
@@ -1350,23 +1350,23 @@ void SfxWorkWindow::UpdateChildWindows_Impl()
                     static_cast<SfxDockingWindow*>(pChildWin->GetWindow())->Disappear_Impl();
             }
             else
-                RemoveChildWin_Impl( pCW );
+                RemoveChildWin_Impl(*pCW);
         }
     }
 }
 
-bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
+bool SfxWorkWindow::CreateChildWin_Impl(SfxChildWin_Impl& rCW, bool bSetFocus)
 {
-    if (pCW->bCreatingChildWindow)
+    if (rCW.bCreatingChildWindow)
         return false;
 
-    pCW->aInfo.bVisible = true;
+    rCW.aInfo.bVisible = true;
 
-    pCW->bCreatingChildWindow = true;
+    rCW.bCreatingChildWindow = true;
     SfxChildWindow* pChildWin
-        = SfxChildWindow::CreateChildWindow(pCW->nId, m_pWorkWin, GetBindings(), pCW->aInfo)
+        = SfxChildWindow::CreateChildWindow(rCW.nId, m_pWorkWin, GetBindings(), rCW.aInfo)
               .release();
-    pCW->bCreatingChildWindow = false;
+    rCW.bCreatingChildWindow = false;
 
     if (!pChildWin)
         return false;
@@ -1378,12 +1378,12 @@ bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
     // At least the extra string is changed during the evaluation,
     // also get it anewed
     SfxChildWinInfo aInfo = pChildWin->GetInfo();
-    pCW->aInfo.aExtraString = aInfo.aExtraString;
-    pCW->aInfo.bVisible = aInfo.bVisible;
-    pCW->aInfo.nFlags |= aInfo.nFlags;
+    rCW.aInfo.aExtraString = aInfo.aExtraString;
+    rCW.aInfo.bVisible = aInfo.bVisible;
+    rCW.aInfo.nFlags |= aInfo.nFlags;
 
     // The creation was successful
-    GetBindings().Invalidate(pCW->nId);
+    GetBindings().Invalidate(rCW.nId);
 
     sal_uInt16 nPos = pChildWin->GetPosition();
     if (nPos != CHILDWIN_NOPOS)
@@ -1399,7 +1399,7 @@ bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
     // make childwin keyboard accessible
     m_pWorkWin->GetSystemWindow()->GetTaskPaneList()->AddWindow(pChildWin->GetWindow());
 
-    pCW->pWin = pChildWin;
+    rCW.pWin = pChildWin;
 
     if (pChildWin->GetAlignment() == SfxChildAlignment::NOALIGNMENT
         || pChildWin->GetWindow()->GetParent() == m_pWorkWin)
@@ -1407,13 +1407,13 @@ bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
         // The window is not docked or docked outside of one split windows
         // and must therefore be registered explicitly as a Child
         if (pChildWin->GetController())
-            pCW->pCli = RegisterChild_Impl(pChildWin->GetController(), pChildWin->GetAlignment());
+            rCW.pCli = RegisterChild_Impl(pChildWin->GetController(), pChildWin->GetAlignment());
         else
-            pCW->pCli = RegisterChild_Impl(*(pChildWin->GetWindow()), pChildWin->GetAlignment());
-        pCW->pCli->nVisible = SfxChildVisibility::VISIBLE;
+            rCW.pCli = RegisterChild_Impl(*(pChildWin->GetWindow()), pChildWin->GetAlignment());
+        rCW.pCli->nVisible = SfxChildVisibility::VISIBLE;
         if (pChildWin->GetAlignment() != SfxChildAlignment::NOALIGNMENT && m_bIsFullScreen)
-            pCW->pCli->nVisible ^= SfxChildVisibility::ACTIVE;
-        pCW->pCli->bSetFocus = bSetFocus;
+            rCW.pCli->nVisible ^= SfxChildVisibility::ACTIVE;
+        rCW.pCli->bSetFocus = bSetFocus;
     }
     else
     {
@@ -1423,28 +1423,28 @@ bool SfxWorkWindow::CreateChildWin_Impl( SfxChildWin_Impl *pCW, bool bSetFocus )
     }
 
     // Save the information in the INI file
-    SaveStatus_Impl(pChildWin, pCW->aInfo);
+    SaveStatus_Impl(pChildWin, rCW.aInfo);
     return true;
 }
 
-void SfxWorkWindow::RemoveChildWin_Impl( SfxChildWin_Impl *pCW )
+void SfxWorkWindow::RemoveChildWin_Impl(SfxChildWin_Impl& rCW)
 {
-    sal_uInt16 nId = pCW->nSaveId;
-    SfxChildWindow *pChildWin = pCW->pWin;
+    sal_uInt16 nId = rCW.nSaveId;
+    SfxChildWindow* pChildWin = rCW.pWin;
 
     // Save the information in the INI file
-    SfxChildWindowFlags nFlags = pCW->aInfo.nFlags;
-    pCW->aInfo = pChildWin->GetInfo();
-    pCW->aInfo.nFlags |= nFlags;
-    SaveStatus_Impl(pChildWin, pCW->aInfo);
+    SfxChildWindowFlags nFlags = rCW.aInfo.nFlags;
+    rCW.aInfo = pChildWin->GetInfo();
+    rCW.aInfo.nFlags |= nFlags;
+    SaveStatus_Impl(pChildWin, rCW.aInfo);
 
     pChildWin->Hide();
 
-    if ( pCW->pCli )
+    if (rCW.pCli)
     {
         // Child window is a direct child window and must therefore unregister
         // itself from the  WorkWindow
-        pCW->pCli = nullptr;
+        rCW.pCli = nullptr;
         if (pChildWin->GetController())
             ReleaseChild_Impl(*pChildWin->GetController());
         else
@@ -1457,7 +1457,7 @@ void SfxWorkWindow::RemoveChildWin_Impl( SfxChildWin_Impl *pCW )
     }
 
     m_pWorkWin->GetSystemWindow()->GetTaskPaneList()->RemoveWindow(pChildWin->GetWindow());
-    pCW->pWin = nullptr;
+    rCW.pWin = nullptr;
     pChildWin->Destroy();
 
     GetBindings().Invalidate( nId );
@@ -1828,7 +1828,7 @@ void SfxWorkWindow::ToggleChildWindow_Impl(sal_uInt16 nId, bool bSetFocus)
                         pCW->bCreate = false;
                         // The Window should be switched off
                         pChild->SetVisible_Impl( false );
-                        RemoveChildWin_Impl( pCW );
+                        RemoveChildWin_Impl(*pCW);
                     }
                 }
                 else
@@ -1847,7 +1847,7 @@ void SfxWorkWindow::ToggleChildWindow_Impl(sal_uInt16 nId, bool bSetFocus)
                 else
                 {
                     // create actual Window
-                    if (!CreateChildWin_Impl(pCW, bSetFocus))
+                    if (!CreateChildWin_Impl(*pCW, bSetFocus))
                     {
                         // no success
                         pCW->bCreate = false;
