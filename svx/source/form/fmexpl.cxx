@@ -394,10 +394,10 @@ void FmControlData::ModelReplaced(const Reference< XFormComponent >& _rxNew)
 namespace svxform
 {
 
-    NavigatorFrame::NavigatorFrame( SfxBindings* _pBindings, SfxChildWindow* _pMgr,
-                                  vcl::Window* _pParent )
-      : SfxDockingWindow(_pBindings, _pMgr, _pParent, u"FormNavigator"_ustr, u"svx/ui/formnavigator.ui"_ustr)
-      , SfxControllerItem( SID_FM_FMEXPLORER_CONTROL, *_pBindings )
+    NavigatorFrame::NavigatorFrame(SfxBindings& rBindings, SfxChildWindow* _pMgr,
+                                   vcl::Window* _pParent)
+      : SfxDockingWindow(&rBindings, _pMgr, _pParent, u"FormNavigator"_ustr, u"svx/ui/formnavigator.ui"_ustr)
+      , SfxControllerItem(SID_FM_FMEXPLORER_CONTROL, rBindings)
       , m_xNavigatorTree(new NavigatorTree(m_xBuilder->weld_tree_view(u"treeview"_ustr)))
     {
         SetHelpId( HID_FORM_NAVIGATOR_WIN );
@@ -478,7 +478,7 @@ namespace svxform
                                                  SfxBindings& rBindings, SfxChildWinInfo& rInfo)
         : SfxChildWindow(_pParent, _nId)
     {
-        SetWindow(VclPtr<NavigatorFrame>::Create(&rBindings, this, _pParent));
+        SetWindow(VclPtr<NavigatorFrame>::Create(rBindings, this, _pParent));
         static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
     }
 }
