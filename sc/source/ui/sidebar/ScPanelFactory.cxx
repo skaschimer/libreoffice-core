@@ -87,7 +87,7 @@ Reference<ui::XUIElement> SAL_CALL ScPanelFactory::createUIElement (
             xPanel = NumberFormatPropertyPanel::Create( pParent, xFrame, pBindings );
         else if (rsResourceURL.endsWith("/NavigatorPanel"))
         {
-            xPanel = std::make_unique<ScNavigatorDlg>(pBindings, pParent, nullptr);
+            xPanel = std::make_unique<ScNavigatorDlg>(*pBindings, pParent, nullptr);
             nMinimumSize = 0;
         }
         else if (rsResourceURL.endsWith("/FunctionsPanel"))

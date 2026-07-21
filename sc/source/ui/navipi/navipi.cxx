@@ -290,13 +290,14 @@ ScNavigatorWin::ScNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vc
                                SfxChildWinInfo* pInfo)
     : SfxNavigator(&rBindings, _pMgr, _pParent, pInfo)
 {
-    m_xNavigator = std::make_unique<ScNavigatorDlg>(&rBindings, m_xContainer.get(), this);
+    m_xNavigator = std::make_unique<ScNavigatorDlg>(rBindings, m_xContainer.get(), this);
     SetMinOutputSizePixel(GetOptimalSize());
 }
 
-ScNavigatorDlg::ScNavigatorDlg(SfxBindings* pB, weld::Widget* pParent, SfxNavigator* pNavigatorDlg)
+ScNavigatorDlg::ScNavigatorDlg(SfxBindings& rBindings, weld::Widget* pParent,
+                               SfxNavigator* pNavigatorDlg)
     : PanelLayout(pParent, u"NavigatorPanel"_ustr, u"modules/scalc/ui/navigatorpanel.ui"_ustr)
-    , m_rBindings(*pB)
+    , m_rBindings(rBindings)
     , m_xEdCol(m_xBuilder->weld_spin_button(u"column"_ustr))
     , m_xEdRow(m_xBuilder->weld_spin_button(u"row"_ustr))
     , m_xTbxCmd1(m_xBuilder->weld_toolbar(u"toolbox1"_ustr))

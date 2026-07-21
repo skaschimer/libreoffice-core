@@ -177,7 +177,7 @@ private:
     static void ReleaseFocus();
 
 public:
-    ScNavigatorDlg(SfxBindings* pB, weld::Widget* pParent, SfxNavigator* pNavigatorDlg);
+    ScNavigatorDlg(SfxBindings& rBindings, weld::Widget* pParent, SfxNavigator* pNavigatorDlg);
     virtual weld::Window* GetFrameWeld() const override;
     virtual ~ScNavigatorDlg() override;
 
