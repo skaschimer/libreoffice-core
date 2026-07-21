@@ -33,7 +33,7 @@ class SidebarController;
 class SFX2_DLLPUBLIC SidebarDockingWindow final : public SfxDockingWindow
 {
 public:
-    SidebarDockingWindow(SfxBindings* pBindings, SidebarChildWindow& rChildWindow,
+    SidebarDockingWindow(SfxBindings& rBindings, SidebarChildWindow& rChildWindow,
                          vcl::Window* pParent, WinBits nBits);
     virtual ~SidebarDockingWindow() override;
     virtual void dispose() override;

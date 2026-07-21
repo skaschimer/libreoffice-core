@@ -40,16 +40,16 @@ using namespace css::uno;
 
 namespace sfx2::sidebar {
 
-SidebarDockingWindow::SidebarDockingWindow(SfxBindings* pSfxBindings, SidebarChildWindow& rChildWindow,
+SidebarDockingWindow::SidebarDockingWindow(SfxBindings& rSfxBindings,
+                                           SidebarChildWindow& rChildWindow,
                                            vcl::Window* pParentWindow, WinBits nBits)
-    : SfxDockingWindow(pSfxBindings, &rChildWindow, pParentWindow, nBits)
+    : SfxDockingWindow(&rSfxBindings, &rChildWindow, pParentWindow, nBits)
     , mbIsReadyToDrag(false)
 {
     // Get the XFrame from the bindings.
-    if (pSfxBindings==nullptr || pSfxBindings->GetDispatcher()==nullptr)
+    if (rSfxBindings.GetDispatcher() == nullptr)
     {
-        assert(pSfxBindings != nullptr);
-        OSL_ASSERT(pSfxBindings->GetDispatcher()!=nullptr);
+        OSL_ASSERT(rSfxBindings.GetDispatcher() != nullptr);
     }
     else if (!comphelper::LibreOfficeKit::isActive())
     {
