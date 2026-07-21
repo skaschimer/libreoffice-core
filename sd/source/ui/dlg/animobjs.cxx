@@ -120,9 +120,9 @@ void SdDisplay::SetDrawingArea(weld::DrawingArea* pDrawingArea)
 /**
  *  AnimationWindow - FloatingWindow
  */
-AnimationWindow::AnimationWindow(SfxBindings* pInBindings, SfxChildWindow *pCW, vcl::Window* pParent)
-    : SfxDockingWindow(pInBindings, pCW, pParent,
-        u"DockingAnimation"_ustr, u"modules/simpress/ui/dockinganimation.ui"_ustr)
+AnimationWindow::AnimationWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
+    : SfxDockingWindow(&rBindings, pCW, pParent, u"DockingAnimation"_ustr,
+                       u"modules/simpress/ui/dockinganimation.ui"_ustr)
     , m_xCtlDisplay(new SdDisplay)
     , m_xCtlDisplayWin(new weld::CustomWeld(*m_xBuilder, u"preview"_ustr, *m_xCtlDisplay))
     , m_xBtnFirst(m_xBuilder->weld_button(u"first"_ustr))
@@ -160,7 +160,7 @@ AnimationWindow::AnimationWindow(SfxBindings* pInBindings, SfxChildWindow *pCW, 
     rtl::Reference<SdPage> pPage = pMyDoc->AllocSdPage(false);
     pMyDoc->InsertPage(pPage.get());
 
-    pControllerItem.reset( new AnimationControllerItem( SID_ANIMATOR_STATE, this, pInBindings ) );
+    pControllerItem.reset(new AnimationControllerItem(SID_ANIMATOR_STATE, this, &rBindings));
 
     m_xBtnFirst->connect_clicked( LINK( this, AnimationWindow, ClickFirstHdl ) );
     m_xBtnReverse->connect_clicked( LINK( this, AnimationWindow, ClickPlayHdl ) );

@@ -79,7 +79,7 @@ class AnimationWindow final : public SfxDockingWindow
  friend class AnimationControllerItem;
 
 public:
-    AnimationWindow(SfxBindings* pBindings, SfxChildWindow *pCW, vcl::Window* pParent);
+    AnimationWindow(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent);
     virtual ~AnimationWindow() override;
     virtual void dispose() override;
 

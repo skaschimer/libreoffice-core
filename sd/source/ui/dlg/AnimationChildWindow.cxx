@@ -34,7 +34,7 @@ AnimationChildWindow::AnimationChildWindow(vcl::Window* _pParent, sal_uInt16 nId
                                            SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    VclPtr<AnimationWindow> pAnimWin = VclPtr<AnimationWindow>::Create(&rBindings, this, _pParent);
+    VclPtr<AnimationWindow> pAnimWin = VclPtr<AnimationWindow>::Create(rBindings, this, _pParent);
     SetWindow(pAnimWin);
 
     pAnimWin->Initialize(rInfo);
