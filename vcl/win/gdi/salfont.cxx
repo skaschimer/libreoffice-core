@@ -967,14 +967,16 @@ void ImplReleaseTempFonts()
 bool WinSalGraphics::AddTempDevFont(vcl::font::PhysicalFontCollection* pFontCollection,
                                     const OUString& rFontFileURL, const OUString& rFontName)
 {
-    // The font is enumerated from its file under its own names, but GDI registration
-    // is still needed for font selection.
-    int nFonts = lcl_AddFontResource(GetWindowsInstance(), rFontFileURL);
-    if (nFonts <= 0)
-        return false;
+    // Best-effort, GDI rejects fonts that DirectWrite reads fine (e.g. font subsets
+    // extracted from PDF files, which have no OS/2 table), and is only needed for the
+    // text output that still goes through GDI.
+    lcl_AddFontResource(GetWindowsInstance(), rFontFileURL);
 
     OUString aFontSystemPath;
     OSL_VERIFY(!osl::FileBase::getSystemPathFromFileURL(rFontFileURL, aFontSystemPath));
+    // Keep the path even if GDI rejected the font, so it is re-enumerated with the others.
+    GetWindowsInstance().GetData().m_aTempFontPaths.insert(aFontSystemPath);
+
     // Fonts registered with GDI are not in the DirectWrite system collection.
     if (!ImplEnumDWriteFontFiles(pFontCollection, { aFontSystemPath }))
         return false;
