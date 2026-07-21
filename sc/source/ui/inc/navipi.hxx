@@ -96,7 +96,7 @@ friend class ScTabViewShell;
 private:
     static constexpr int CTRL_ITEMS = 4;
 
-    SfxBindings&        rBindings;      // must be first member
+    SfxBindings& m_rBindings; // must be first member
 
     std::unique_ptr<weld::SpinButton> m_xEdCol;
     std::unique_ptr<weld::SpinButton> m_xEdRow;
@@ -110,20 +110,20 @@ private:
 
     VclPtr<SfxNavigator> m_xNavigatorDlg;
 
-    Size            aExpandedSize;
-    Idle            aContentIdle;
+    Size m_aExpandedSize;
+    Idle m_aContentIdle;
 
-    OUString        aStrActive;
-    OUString        aStrNotActive;
-    OUString        aStrActiveWin;
+    OUString m_aStrActive;
+    OUString m_aStrNotActive;
+    OUString m_aStrActiveWin;
 
     std::optional<ScArea> moMarkArea;
 
-    NavListMode     eListMode;
-    sal_uInt16      nDropMode;
-    SCCOL           nCurCol;
-    SCROW           nCurRow;
-    SCTAB           nCurTab;
+    NavListMode m_eListMode;
+    sal_uInt16 m_nDropMode;
+    SCCOL m_nCurCol;
+    SCROW m_nCurRow;
+    SCTAB m_nCurTab;
 
     std::array<std::unique_ptr<ScNavigatorControllerItem>,CTRL_ITEMS> mvBoundItems;
 
@@ -165,7 +165,7 @@ private:
     void    ShowScenarios();
 
     void    SetDropMode(sal_uInt16 nNew);
-    sal_uInt16  GetDropMode() const         { return nDropMode; }
+    sal_uInt16 GetDropMode() const { return m_nDropMode; }
 
     void    MarkDataArea    ();
     void    UnmarkDataArea  ();

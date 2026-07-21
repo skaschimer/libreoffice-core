@@ -172,7 +172,7 @@ IMPL_LINK(ScNavigatorDlg, ToolBoxSelectHdl, const OUString&, rSelId, void)
     //  Switch the mode?
     if (rSelId == "contents" || rSelId == "scenarios")
     {
-        NavListMode eOldMode = eListMode;
+        NavListMode eOldMode = m_eListMode;
         NavListMode eNewMode;
 
         if (rSelId == "scenarios")
@@ -246,7 +246,7 @@ IMPL_LINK(ScNavigatorDlg, MenuSelectHdl, const OUString&, rIdent, void)
 
 void ScNavigatorDlg::UpdateButtons()
 {
-    NavListMode eMode = eListMode;
+    NavListMode eMode = m_eListMode;
     m_xTbxCmd2->set_item_active(u"scenarios"_ustr, eMode == NAV_LMODE_SCENARIOS);
     m_xTbxCmd1->set_item_active(u"contents"_ustr, eMode != NAV_LMODE_NONE);
 
@@ -264,7 +264,7 @@ void ScNavigatorDlg::UpdateButtons()
     }
 
     OUString sImageId;
-    switch (nDropMode)
+    switch (m_nDropMode)
     {
         case SC_DROPMODE_URL:
             sImageId = RID_BMP_DROP_URL;
@@ -296,25 +296,25 @@ ScNavigatorWin::ScNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vc
 
 ScNavigatorDlg::ScNavigatorDlg(SfxBindings* pB, weld::Widget* pParent, SfxNavigator* pNavigatorDlg)
     : PanelLayout(pParent, u"NavigatorPanel"_ustr, u"modules/scalc/ui/navigatorpanel.ui"_ustr)
-    , rBindings(*pB)
+    , m_rBindings(*pB)
     , m_xEdCol(m_xBuilder->weld_spin_button(u"column"_ustr))
     , m_xEdRow(m_xBuilder->weld_spin_button(u"row"_ustr))
     , m_xTbxCmd1(m_xBuilder->weld_toolbar(u"toolbox1"_ustr))
     , m_xTbxCmd2(m_xBuilder->weld_toolbar(u"toolbox2"_ustr))
     , m_xLbEntries(new ScContentTree(m_xBuilder->weld_tree_view(u"contentbox"_ustr), this))
     , m_xScenarioBox(m_xBuilder->weld_widget(u"scenariobox"_ustr))
-    , m_xWndScenarios(new ScScenarioWindow(*m_xBuilder,
-        ScResId(SCSTR_QHLP_SCEN_LISTBOX), ScResId(SCSTR_QHLP_SCEN_COMMENT)))
+    , m_xWndScenarios(new ScScenarioWindow(*m_xBuilder, ScResId(SCSTR_QHLP_SCEN_LISTBOX),
+                                           ScResId(SCSTR_QHLP_SCEN_COMMENT)))
     , m_xLbDocuments(m_xBuilder->weld_combo_box(u"documents"_ustr))
     , m_xDragModeMenu(m_xBuilder->weld_menu(u"dragmodemenu"_ustr))
     , m_xNavigatorDlg(pNavigatorDlg)
-    , aContentIdle("ScNavigatorDlg aContentIdle")
-    , aStrActiveWin(ScResId(SCSTR_ACTIVEWIN))
-    , eListMode(NAV_LMODE_NONE)
-    , nDropMode(SC_DROPMODE_URL)
-    , nCurCol(0)
-    , nCurRow(0)
-    , nCurTab(0)
+    , m_aContentIdle("ScNavigatorDlg aContentIdle")
+    , m_aStrActiveWin(ScResId(SCSTR_ACTIVEWIN))
+    , m_eListMode(NAV_LMODE_NONE)
+    , m_nDropMode(SC_DROPMODE_URL)
+    , m_nCurCol(0)
+    , m_nCurRow(0)
+    , m_nCurTab(0)
 {
     UpdateInitShow();
 
@@ -335,24 +335,24 @@ ScNavigatorDlg::ScNavigatorDlg(SfxBindings* pB, weld::Widget* pParent, SfxNaviga
     m_xTbxCmd2->connect_menu_toggled(LINK(this, ScNavigatorDlg, ToolBoxDropdownClickHdl));
 
     ScNavipiCfg& rCfg = ScModule::get()->GetNavipiCfg();
-    nDropMode = rCfg.GetDragMode();
+    m_nDropMode = rCfg.GetDragMode();
 
     m_xLbDocuments->set_size_request(42, -1); // set a nominal width so it takes width of surroundings
     m_xLbDocuments->connect_changed(LINK(this, ScNavigatorDlg, DocumentSelectHdl));
-    aStrActive    = " (" + ScResId(SCSTR_ACTIVE) + ")";     // " (active)"
-    aStrNotActive = " (" + ScResId(SCSTR_NOTACTIVE) + ")";  // " (not active)"
+    m_aStrActive = " (" + ScResId(SCSTR_ACTIVE) + ")"; // " (active)"
+    m_aStrNotActive = " (" + ScResId(SCSTR_NOTACTIVE) + ")"; // " (not active)"
 
-    rBindings.ENTERREGISTRATIONS();
+    m_rBindings.ENTERREGISTRATIONS();
 
-    mvBoundItems[0].reset(new ScNavigatorControllerItem(SID_CURRENTCELL,*this,rBindings));
-    mvBoundItems[1].reset(new ScNavigatorControllerItem(SID_CURRENTTAB,*this,rBindings));
-    mvBoundItems[2].reset(new ScNavigatorControllerItem(SID_CURRENTDOC,*this,rBindings));
-    mvBoundItems[3].reset(new ScNavigatorControllerItem(SID_SELECT_SCENARIO,*this,rBindings));
+    mvBoundItems[0].reset(new ScNavigatorControllerItem(SID_CURRENTCELL, *this, m_rBindings));
+    mvBoundItems[1].reset(new ScNavigatorControllerItem(SID_CURRENTTAB, *this, m_rBindings));
+    mvBoundItems[2].reset(new ScNavigatorControllerItem(SID_CURRENTDOC, *this, m_rBindings));
+    mvBoundItems[3].reset(new ScNavigatorControllerItem(SID_SELECT_SCENARIO, *this, m_rBindings));
 
-    rBindings.LEAVEREGISTRATIONS();
+    m_rBindings.LEAVEREGISTRATIONS();
 
     StartListening( *(SfxGetpApp()) );
-    StartListening( rBindings );
+    StartListening(m_rBindings);
 
     //  was a category chosen as root?
     ScContentId nLastRoot = rCfg.GetRootType();
@@ -369,8 +369,8 @@ ScNavigatorDlg::ScNavigatorDlg(SfxBindings* pB, weld::Widget* pParent, SfxNaviga
     m_xLbEntries->hide();
     m_xScenarioBox->hide();
 
-    aContentIdle.SetInvokeHandler( LINK( this, ScNavigatorDlg, TimeHdl ) );
-    aContentIdle.SetPriority( TaskPriority::LOWEST );
+    m_aContentIdle.SetInvokeHandler(LINK(this, ScNavigatorDlg, TimeHdl));
+    m_aContentIdle.SetPriority(TaskPriority::LOWEST);
 
     m_xLbEntries->SetNavigatorDlgFlag(true);
 
@@ -424,14 +424,14 @@ void ScNavigatorWin::StateChanged(StateChangedType nStateChange)
 
 ScNavigatorDlg::~ScNavigatorDlg()
 {
-    aContentIdle.Stop();
+    m_aContentIdle.Stop();
 
     for (auto & p : mvBoundItems)
         p.reset();
     moMarkArea.reset();
 
     EndListening( *(SfxGetpApp()) );
-    EndListening( rBindings );
+    EndListening(m_rBindings);
 
     m_xEdCol.reset();
     m_xEdRow.reset();
@@ -475,7 +475,7 @@ void ScNavigatorDlg::Notify( SfxBroadcaster&, const SfxHint& rHint )
         {
             m_xLbEntries->ActiveDocChanged();
         }
-        else if (NAV_LMODE_NONE == eListMode)
+        else if (NAV_LMODE_NONE == m_eListMode)
         {
             //  Table not any more
         }
@@ -499,7 +499,7 @@ void ScNavigatorDlg::Notify( SfxBroadcaster&, const SfxHint& rHint )
                     m_xLbEntries->Refresh( ScContentId::GRAPHIC );
                     m_xLbEntries->Refresh( ScContentId::OLEOBJECT );
                     m_xLbEntries->Refresh( ScContentId::DRAWING );
-                    aContentIdle.Start();      // Do not search notes immediately
+                    m_aContentIdle.Start(); // Do not search notes immediately
                     break;
 
                 case SfxHintId::ScAreaLinksChanged:
@@ -514,7 +514,7 @@ void ScNavigatorDlg::Notify( SfxBroadcaster&, const SfxHint& rHint )
 
                 case SfxHintId::ScDataChanged:
                 case SfxHintId::ScAnyDataChanged:
-                    aContentIdle.Start();      // Do not search notes immediately
+                    m_aContentIdle.Start(); // Do not search notes immediately
                     break;
                 case SfxHintId::ScSelectionChanged:
                     UpdateSelection();
@@ -528,7 +528,7 @@ void ScNavigatorDlg::Notify( SfxBroadcaster&, const SfxHint& rHint )
 
 IMPL_LINK( ScNavigatorDlg, TimeHdl, Timer*, pIdle, void )
 {
-    if ( pIdle != &aContentIdle )
+    if (pIdle != &m_aContentIdle)
         return;
 
     m_xLbEntries->Refresh( ScContentId::NOTE );
@@ -536,15 +536,15 @@ IMPL_LINK( ScNavigatorDlg, TimeHdl, Timer*, pIdle, void )
 
 void ScNavigatorDlg::SetDropMode(sal_uInt16 nNew)
 {
-    nDropMode = nNew;
+    m_nDropMode = nNew;
     UpdateButtons();
     ScNavipiCfg& rCfg = ScModule::get()->GetNavipiCfg();
-    rCfg.SetDragMode(nDropMode);
+    rCfg.SetDragMode(m_nDropMode);
 }
 
 void ScNavigatorDlg::SetCurrentCell( SCCOL nColNo, SCROW nRowNo )
 {
-    if ((nColNo+1 == nCurCol) && (nRowNo+1 == nCurRow))
+    if ((nColNo + 1 == m_nCurCol) && (nRowNo + 1 == m_nCurRow))
         return;
 
     // SID_CURRENTCELL == Item #0 clear cache, so it's possible
@@ -561,9 +561,8 @@ void ScNavigatorDlg::SetCurrentCell( SCCOL nColNo, SCROW nRowNo )
     SfxStringItem   aPosItem( SID_CURRENTCELL, aAddr );
     SfxBoolItem     aUnmarkItem( FN_PARAM_1, bUnmark );     // cancel selection
 
-    rBindings.GetDispatcher()->ExecuteList(SID_CURRENTCELL,
-                              SfxCallMode::SYNCHRON | SfxCallMode::RECORD,
-                              { &aPosItem, &aUnmarkItem });
+    m_rBindings.GetDispatcher()->ExecuteList(
+        SID_CURRENTCELL, SfxCallMode::SYNCHRON | SfxCallMode::RECORD, { &aPosItem, &aUnmarkItem });
 }
 
 void ScNavigatorDlg::SetCurrentCellStr( const OUString& rName )
@@ -571,20 +570,18 @@ void ScNavigatorDlg::SetCurrentCellStr( const OUString& rName )
     mvBoundItems[0]->ClearCache();
     SfxStringItem   aNameItem( SID_CURRENTCELL, rName );
 
-    rBindings.GetDispatcher()->ExecuteList(SID_CURRENTCELL,
-                              SfxCallMode::SYNCHRON | SfxCallMode::RECORD,
-                              { &aNameItem });
+    m_rBindings.GetDispatcher()->ExecuteList(
+        SID_CURRENTCELL, SfxCallMode::SYNCHRON | SfxCallMode::RECORD, { &aNameItem });
 }
 
 void ScNavigatorDlg::SetCurrentTable( SCTAB nTabNo )
 {
-    if ( nTabNo != nCurTab )
+    if (nTabNo != m_nCurTab)
     {
         // Table for basic is base-1
         SfxUInt16Item aTabItem( SID_CURRENTTAB, static_cast<sal_uInt16>(nTabNo) + 1 );
-        rBindings.GetDispatcher()->ExecuteList(SID_CURRENTTAB,
-                                  SfxCallMode::SYNCHRON | SfxCallMode::RECORD,
-                                  { &aTabItem });
+        m_rBindings.GetDispatcher()->ExecuteList(
+            SID_CURRENTTAB, SfxCallMode::SYNCHRON | SfxCallMode::RECORD, { &aTabItem });
     }
 }
 
@@ -628,17 +625,15 @@ void ScNavigatorDlg::SetCurrentTableStr( std::u16string_view rName )
 void ScNavigatorDlg::SetCurrentObject( const OUString& rName )
 {
     SfxStringItem aNameItem( SID_CURRENTOBJECT, rName );
-    rBindings.GetDispatcher()->ExecuteList( SID_CURRENTOBJECT,
-                              SfxCallMode::SYNCHRON | SfxCallMode::RECORD,
-                              { &aNameItem });
+    m_rBindings.GetDispatcher()->ExecuteList(
+        SID_CURRENTOBJECT, SfxCallMode::SYNCHRON | SfxCallMode::RECORD, { &aNameItem });
 }
 
 void ScNavigatorDlg::SetCurrentDoc( const OUString& rDocName )        // activate
 {
     SfxStringItem aDocItem( SID_CURRENTDOC, rDocName );
-    rBindings.GetDispatcher()->ExecuteList( SID_CURRENTDOC,
-                              SfxCallMode::SYNCHRON | SfxCallMode::RECORD,
-                              { &aDocItem });
+    m_rBindings.GetDispatcher()->ExecuteList(
+        SID_CURRENTDOC, SfxCallMode::SYNCHRON | SfxCallMode::RECORD, { &aDocItem });
 }
 
 void ScNavigatorDlg::UpdateSelection()
@@ -692,34 +687,34 @@ ScViewData* ScNavigatorDlg::GetViewData()
 void ScNavigatorDlg::UpdateColumn( const SCCOL* pCol )
 {
     if ( pCol )
-        nCurCol = *pCol;
+        m_nCurCol = *pCol;
     else if ( ScViewData* pData = GetViewData() )
-        nCurCol = pData->GetCurX() + 1;
+        m_nCurCol = pData->GetCurX() + 1;
 
-    m_xEdCol->set_value(nCurCol);
+    m_xEdCol->set_value(m_nCurCol);
 }
 
 void ScNavigatorDlg::UpdateRow( const SCROW* pRow )
 {
     if ( pRow )
-        nCurRow = *pRow;
+        m_nCurRow = *pRow;
     else if ( ScViewData* pData = GetViewData() )
-        nCurRow = pData->GetCurY() + 1;
+        m_nCurRow = pData->GetCurY() + 1;
 
-    m_xEdRow->set_value(nCurRow);
+    m_xEdRow->set_value(m_nCurRow);
 }
 
 void ScNavigatorDlg::UpdateTable( const SCTAB* pTab )
 {
     if ( pTab )
-        nCurTab = *pTab;
+        m_nCurTab = *pTab;
     else if ( ScViewData* pData = GetViewData() )
-        nCurTab = pData->CurrentTabForData();
+        m_nCurTab = pData->CurrentTabForData();
 }
 
 void ScNavigatorDlg::UpdateAll()
 {
-    switch (eListMode)
+    switch (m_eListMode)
     {
         case NAV_LMODE_AREAS:
             m_xLbEntries->Refresh();
@@ -733,22 +728,19 @@ void ScNavigatorDlg::UpdateAll()
     ContentUpdated();       // not again
 }
 
-void ScNavigatorDlg::ContentUpdated()
-{
-    aContentIdle.Stop();
-}
+void ScNavigatorDlg::ContentUpdated() { m_aContentIdle.Stop(); }
 
 void ScNavigatorDlg::SetListMode(NavListMode eMode)
 {
-    if (eMode != eListMode)
+    if (eMode != m_eListMode)
     {
-        bool bForceParentResize = ParentIsFloatingWindow(m_xNavigatorDlg) &&
-                                  (eMode == NAV_LMODE_NONE || eListMode == NAV_LMODE_NONE);
+        bool bForceParentResize = ParentIsFloatingWindow(m_xNavigatorDlg)
+                                  && (eMode == NAV_LMODE_NONE || m_eListMode == NAV_LMODE_NONE);
         SfxNavigator* pNav = bForceParentResize ? m_xNavigatorDlg.get() : nullptr;
         if (pNav && eMode == NAV_LMODE_NONE) //save last normal size on minimizing
-            aExpandedSize = pNav->GetSizePixel();
+            m_aExpandedSize = pNav->GetSizePixel();
 
-        eListMode = eMode;
+        m_eListMode = eMode;
 
         switch (eMode)
         {
@@ -777,7 +769,8 @@ void ScNavigatorDlg::SetListMode(NavListMode eMode)
             pNav->InvalidateChildSizeCache();
             Size aOptimalSize(pNav->GetOptimalSize());
             Size aNewSize(pNav->GetOutputSizePixel());
-            aNewSize.setHeight( eMode == NAV_LMODE_NONE ? aOptimalSize.Height() : aExpandedSize.Height() );
+            aNewSize.setHeight(eMode == NAV_LMODE_NONE ? aOptimalSize.Height()
+                                                       : m_aExpandedSize.Height());
             pNav->SetMinOutputSizePixel(aOptimalSize);
             pNav->SetOutputSizePixel(aNewSize);
         }
@@ -804,8 +797,8 @@ void ScNavigatorDlg::ShowList(bool bShow)
 
 void ScNavigatorDlg::ShowScenarios()
 {
-    rBindings.Invalidate( SID_SELECT_SCENARIO );
-    rBindings.Update( SID_SELECT_SCENARIO );
+    m_rBindings.Invalidate(SID_SELECT_SCENARIO);
+    m_rBindings.Update(SID_SELECT_SCENARIO);
 
     m_xScenarioBox->show();
     m_xLbDocuments->show();
@@ -829,9 +822,9 @@ void ScNavigatorDlg::GetDocNames( const OUString* pManualSel )
             OUString aName = pSh->GetTitle();
             OUString aEntry = aName;
             if (pSh == pCurrentSh)
-                aEntry += aStrActive;
+                aEntry += m_aStrActive;
             else
-                aEntry += aStrNotActive;
+                aEntry += m_aStrNotActive;
             m_xLbDocuments->append_text(aEntry);
 
             if ( pManualSel ? ( aName == *pManualSel )
@@ -842,7 +835,7 @@ void ScNavigatorDlg::GetDocNames( const OUString* pManualSel )
         pSh = SfxObjectShell::GetNext( *pSh );
     }
 
-    m_xLbDocuments->append_text(aStrActiveWin);
+    m_xLbDocuments->append_text(m_aStrActiveWin);
 
     m_xLbDocuments->thaw();
 
