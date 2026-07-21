@@ -1302,12 +1302,13 @@ SwView*  SwNavigationPI::GetCreateView() const
     return m_pCreateView;
 }
 
-SwNavigatorWin::SwNavigatorWin(SfxBindings* _pBindings, SfxChildWindow* _pMgr,
-                               vcl::Window* pParent, SfxChildWinInfo* pInfo)
-    : SfxNavigator(_pBindings, _pMgr, pParent, pInfo)
-    , m_xNavi(std::make_unique<SwNavigationPI>(m_xContainer.get(), _pBindings->GetActiveFrame(), _pBindings, this))
+SwNavigatorWin::SwNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* pParent,
+                               SfxChildWinInfo& rInfo)
+    : SfxNavigator(&rBindings, _pMgr, pParent, &rInfo)
+    , m_xNavi(std::make_unique<SwNavigationPI>(m_xContainer.get(), rBindings.GetActiveFrame(),
+                                               &rBindings, this))
 {
-    _pBindings->Invalidate(SID_NAVIGATOR);
+    rBindings.Invalidate(SID_NAVIGATOR);
 
     SwNavigationConfig* pNaviConfig = SwModule::get()->GetNavigationConfig();
 
@@ -1329,7 +1330,7 @@ SwNavigatorWrapper::SwNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
                                        SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<SwNavigatorWin>::Create(&rBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<SwNavigatorWin>::Create(rBindings, this, _pParent, rInfo));
     Initialize();
 }
 
