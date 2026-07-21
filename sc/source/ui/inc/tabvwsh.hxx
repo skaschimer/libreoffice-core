@@ -393,7 +393,7 @@ public:
     SAL_RET_MAYBENULL SC_DLLPUBLIC static ScTabViewShell* GetActiveViewShell();
 
     std::shared_ptr<SfxModelessDialogController>
-    CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW, SfxChildWinInfo& rInfo,
+    CreateRefDialogController(SfxBindings& rBindings, SfxChildWindow* pCW, SfxChildWinInfo& rInfo,
                               weld::Window* pParent, sal_uInt16 nSlotId);
 
     void            UpdateOleZoom();

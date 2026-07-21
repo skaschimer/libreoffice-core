@@ -80,7 +80,7 @@ ScTabViewShell* lcl_GetTabViewShell(const SfxBindings& rBindings);
             pViewShell = dynamic_cast<ScTabViewShell*>(SfxViewShell::Current());                      \
         OSL_ENSURE(pViewShell, "missing view shell :-(");                                             \
         SetController(pViewShell ? pViewShell->CreateRefDialogController(                             \
-                                       &rBindings, this, rInfo, pParentP->GetFrameWeld(), sid)        \
+                                       rBindings, this, rInfo, pParentP->GetFrameWeld(), sid)         \
                                  : nullptr);                                                          \
         if (pViewShell && !GetController())                                                           \
             pViewShell->GetViewFrame().SetChildWindow(nId, false);                                    \
@@ -152,7 +152,7 @@ ScSimpleRefDlgWrapper::ScSimpleRefDlgWrapper(vcl::Window* pParentP, sal_uInt16 n
 
     if (bAutoReOpen && pViewShell)
         SetController(pViewShell->CreateRefDialogController(
-            &rBindings, this, rInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
+            rBindings, this, rInfo, pParentP->GetFrameWeld(), WID_SIMPLE_REF));
 
     if (!GetController())
     {

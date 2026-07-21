@@ -32,7 +32,7 @@ public:
 
         if (pViewShell)
             SetController(pViewShell->CreateRefDialogController(
-                &rBindings, this, rInfo, pParentP->GetFrameWeld(), WindowID));
+                rBindings, this, rInfo, pParentP->GetFrameWeld(), WindowID));
 
         if (pViewShell && !GetController())
             pViewShell->GetViewFrame().SetChildWindow( nId, false );

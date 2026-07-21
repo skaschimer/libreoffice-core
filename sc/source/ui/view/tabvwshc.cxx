@@ -117,7 +117,7 @@ void ScTabViewShell::SwitchBetweenRefDialogs(SfxModelessDialogController* pDialo
 }
 
 std::shared_ptr<SfxModelessDialogController>
-ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
+ScTabViewShell::CreateRefDialogController(SfxBindings& rBindings, SfxChildWindow* pCW,
                                           SfxChildWinInfo& rInfo, weld::Window* pParent,
                                           sal_uInt16 nSlotId)
 {
@@ -149,43 +149,50 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
     switch( nSlotId )
     {
         case SID_CORRELATION_DIALOG:
-            xResult = std::make_shared<ScCorrelationDialog>(pB, pCW, pParent, GetViewData());
+            xResult
+                = std::make_shared<ScCorrelationDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_SAMPLING_DIALOG:
-            xResult = std::make_shared<ScSamplingDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScSamplingDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_DESCRIPTIVE_STATISTICS_DIALOG:
-            xResult = std::make_shared<ScDescriptiveStatisticsDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScDescriptiveStatisticsDialog>(&rBindings, pCW, pParent,
+                                                                      GetViewData());
             break;
         case SID_ANALYSIS_OF_VARIANCE_DIALOG:
-            xResult = std::make_shared<ScAnalysisOfVarianceDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScAnalysisOfVarianceDialog>(&rBindings, pCW, pParent,
+                                                                   GetViewData());
             break;
         case SID_COVARIANCE_DIALOG:
-            xResult = std::make_shared<ScCovarianceDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScCovarianceDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_EXPONENTIAL_SMOOTHING_DIALOG:
-            xResult = std::make_shared<ScExponentialSmoothingDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScExponentialSmoothingDialog>(&rBindings, pCW, pParent,
+                                                                     GetViewData());
             break;
         case SID_MOVING_AVERAGE_DIALOG:
-            xResult = std::make_shared<ScMovingAverageDialog>(pB, pCW, pParent, GetViewData());
+            xResult
+                = std::make_shared<ScMovingAverageDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_REGRESSION_DIALOG:
-            xResult = std::make_shared<ScRegressionDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScRegressionDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_FTEST_DIALOG:
-            xResult = std::make_shared<ScFTestDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScFTestDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_TTEST_DIALOG:
-            xResult = std::make_shared<ScTTestDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScTTestDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_ZTEST_DIALOG:
-            xResult = std::make_shared<ScZTestDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScZTestDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_CHI_SQUARE_TEST_DIALOG:
-            xResult = std::make_shared<ScChiSquareTestDialog>(pB, pCW, pParent, GetViewData());
+            xResult
+                = std::make_shared<ScChiSquareTestDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_FOURIER_ANALYSIS_DIALOG:
-            xResult = std::make_shared<ScFourierAnalysisDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScFourierAnalysisDialog>(&rBindings, pCW, pParent,
+                                                                GetViewData());
             break;
         case WID_SIMPLE_REF:
         {
@@ -193,24 +200,25 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
 
             ScViewData& rViewData = GetViewData();
             rViewData.SetRefTabNo( rViewData.CurrentTabForData() );
-            xResult = std::make_shared<ScSimpleRefDlg>(pB, pCW, pParent);
+            xResult = std::make_shared<ScSimpleRefDlg>(&rBindings, pCW, pParent);
             break;
         }
         case FID_DEFINE_NAME:
         {
             if (!mbInSwitch)
             {
-                xResult = std::make_shared<ScNameDlg>(pB, pCW, pParent, GetViewData(),
-                                     ScAddress( GetViewData().GetCurX(),
-                                                GetViewData().GetCurY(),
-                                                GetViewData().CurrentTabForData() ) );
+                xResult = std::make_shared<ScNameDlg>(&rBindings, pCW, pParent, GetViewData(),
+                                                      ScAddress(GetViewData().GetCurX(),
+                                                                GetViewData().GetCurY(),
+                                                                GetViewData().CurrentTabForData()));
             }
             else
             {
-                xResult = std::make_shared<ScNameDlg>( pB, pCW, pParent, GetViewData(),
-                                     ScAddress( GetViewData().GetCurX(),
-                                                GetViewData().GetCurY(),
-                                                GetViewData().CurrentTabForData() ), &m_RangeMap);
+                xResult = std::make_shared<ScNameDlg>(&rBindings, pCW, pParent, GetViewData(),
+                                                      ScAddress(GetViewData().GetCurX(),
+                                                                GetViewData().GetCurY(),
+                                                                GetViewData().CurrentTabForData()),
+                                                      &m_RangeMap);
                 static_cast<ScNameDlg*>(xResult.get())->SetEntry(maName, maScope);
                 mbInSwitch = false;
             }
@@ -222,10 +230,11 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
             {
                 std::map<OUString, ScRangeName*> aRangeMap;
                 rDoc.GetRangeNameMap(aRangeMap);
-                xResult = std::make_shared<ScNameDefDlg>(pB, pCW, pParent, GetViewData(), std::move(aRangeMap),
-                                ScAddress(GetViewData().GetCurX(),
-                                          GetViewData().GetCurY(),
-                                          GetViewData().CurrentTabForData()), true);
+                xResult = std::make_shared<ScNameDefDlg>(
+                    &rBindings, pCW, pParent, GetViewData(), std::move(aRangeMap),
+                    ScAddress(GetViewData().GetCurX(), GetViewData().GetCurY(),
+                              GetViewData().CurrentTabForData()),
+                    true);
             }
             else
             {
@@ -234,31 +243,35 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                 {
                     aRangeMap.insert(std::pair<OUString, ScRangeName*>(itr.first, &itr.second));
                 }
-                xResult = std::make_shared<ScNameDefDlg>(pB, pCW, pParent, GetViewData(), std::move(aRangeMap),
-                                ScAddress(GetViewData().GetCurX(),
-                                          GetViewData().GetCurY(),
-                                          GetViewData().CurrentTabForData()), false);
+                xResult = std::make_shared<ScNameDefDlg>(
+                    &rBindings, pCW, pParent, GetViewData(), std::move(aRangeMap),
+                    ScAddress(GetViewData().GetCurX(), GetViewData().GetCurY(),
+                              GetViewData().CurrentTabForData()),
+                    false);
             }
             break;
         }
         case SID_RANDOM_NUMBER_GENERATOR_DIALOG:
-            xResult = std::make_shared<ScRandomNumberGeneratorDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScRandomNumberGeneratorDialog>(&rBindings, pCW, pParent,
+                                                                      GetViewData());
             break;
         case SID_SPARKLINE_DIALOG:
         {
-            xResult = std::make_shared<sc::SparklineDialog>(pB, pCW, pParent, GetViewData());
+            xResult
+                = std::make_shared<sc::SparklineDialog>(&rBindings, pCW, pParent, GetViewData());
             break;
         }
         case SID_SPARKLINE_DATA_RANGE_DIALOG:
         {
-            xResult = std::make_shared<sc::SparklineDataRangeDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<sc::SparklineDataRangeDialog>(&rBindings, pCW, pParent,
+                                                                     GetViewData());
             break;
         }
         case SID_DEFINE_DBNAME:
         {
             // when called for an existing range, then mark
             GetDBData( true, SC_DB_OLD );
-            xResult = std::make_shared<ScDbNameDlg>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScDbNameDlg>(&rBindings, pCW, pParent, GetViewData());
             break;
         }
         case SID_INSERT_CALCTABLE:
@@ -268,14 +281,15 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
             if ( !rMark.IsMarked() && !rMark.IsMultiMarked() )
                 MarkDataArea( false );
 
-            xResult = std::make_shared<ScDbTableDlg>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScDbTableDlg>(&rBindings, pCW, pParent, GetViewData());
             break;
         }
         case SID_OPENDLG_EDIT_PRINTAREA:
-            xResult = std::make_shared<ScPrintAreasDlg>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScPrintAreasDlg>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_DEFINE_COLROWNAMERANGES:
-            xResult = std::make_shared<ScColRowNameRangesDlg>(pB, pCW, pParent, GetViewData());
+            xResult
+                = std::make_shared<ScColRowNameRangesDlg>(&rBindings, pCW, pParent, GetViewData());
             break;
         case SID_OPENDLG_SOLVE:
         {
@@ -283,7 +297,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
             ScAddress   aCurPos( rViewData.GetCurX(),
                                  rViewData.GetCurY(),
                                  rViewData.CurrentTabForData());
-            xResult = std::make_shared<ScSolverDlg>(pB, pCW, pParent, &rViewData.GetDocument(), aCurPos);
+            xResult = std::make_shared<ScSolverDlg>(&rBindings, pCW, pParent,
+                                                    &rViewData.GetDocument(), aCurPos);
             break;
         }
         case SID_OPENDLG_TABOP:
@@ -293,7 +308,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                                       rViewData.GetCurY(),
                                       rViewData.CurrentTabForData());
 
-            xResult = std::make_shared<ScTabOpDlg>(pB, pCW, pParent, &rViewData.GetDocument(), aCurPos);
+            xResult = std::make_shared<ScTabOpDlg>(&rBindings, pCW, pParent,
+                                                   &rViewData.GetDocument(), aCurPos);
             break;
         }
         case SID_OPENDLG_CONSOLIDATE:
@@ -329,12 +345,13 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
             {
                 aArgSet.Put( ScConsolidateItem( SCITEM_CONSOLIDATEDATA, pDlgData ) );
             }
-            xResult = std::make_shared<ScConsolidateDlg>(pB, pCW, pParent, aArgSet);
+            xResult = std::make_shared<ScConsolidateDlg>(&rBindings, pCW, pParent, aArgSet);
             break;
         }
         case SID_EASY_CONDITIONAL_FORMAT_DIALOG:
         {
-            xResult = std::make_shared<sc::ConditionalFormatEasyDialog>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<sc::ConditionalFormatEasyDialog>(&rBindings, pCW, pParent,
+                                                                        GetViewData());
             break;
         }
         case SID_FILTER:
@@ -356,7 +373,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                 // mark current sheet (due to RefInput in dialog)
                 GetViewData().SetRefTabNo( GetViewData().CurrentTabForData() );
 
-                xResult = std::make_shared<ScFilterDlg>(pB, pCW, pParent, GetViewData(), aArgSet);
+                xResult = std::make_shared<ScFilterDlg>(&rBindings, pCW, pParent, GetViewData(),
+                                                        aArgSet);
             }
             break;
         }
@@ -385,7 +403,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                 // mark current sheet (due to RefInput in dialog)
                 GetViewData().SetRefTabNo( GetViewData().CurrentTabForData() );
 
-                xResult = std::make_shared<ScSpecialFilterDlg>(pB, pCW, pParent, GetViewData(), aArgSet);
+                xResult = std::make_shared<ScSpecialFilterDlg>(&rBindings, pCW, pParent,
+                                                               GetViewData(), aArgSet);
             }
             break;
         }
@@ -393,18 +412,19 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
         {
             ScViewData& rViewData = GetViewData();
             ScAddress aCurPos( rViewData.GetCurX(), rViewData.GetCurY(), rViewData.CurrentTabForData());
-            xResult = std::make_shared<ScOptSolverDlg>(pB, pCW, pParent, rViewData.GetDocShell(), aCurPos);
+            xResult = std::make_shared<ScOptSolverDlg>(&rBindings, pCW, pParent,
+                                                       rViewData.GetDocShell(), aCurPos);
             break;
         }
         case FID_CHG_SHOW:
         {
             // dialog checks, what is in the cell
-            xResult = std::make_shared<ScHighlightChgDlg>(pB, pCW, pParent, GetViewData());
+            xResult = std::make_shared<ScHighlightChgDlg>(&rBindings, pCW, pParent, GetViewData());
             break;
         }
         case SID_MANAGE_XML_SOURCE:
         {
-            xResult = std::make_shared<ScXMLSourceDlg>(pB, pCW, pParent, rDoc);
+            xResult = std::make_shared<ScXMLSourceDlg>(&rBindings, pCW, pParent, rDoc);
             break;
         }
         case SID_OPENDLG_PIVOTTABLE:
@@ -417,7 +437,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                 ScViewData& rViewData = GetViewData();
                 rViewData.SetRefTabNo( rViewData.CurrentTabForData() );
                 ScDPObject* pObj = rDoc.GetDPAtCursor(rViewData.GetCurX(), rViewData.GetCurY(), rViewData.CurrentTabForData());
-                xResult = std::make_shared<ScPivotLayoutDialog>(pB, pCW, pParent, rViewData, pDialogDPObject.get(), pObj == nullptr);
+                xResult = std::make_shared<ScPivotLayoutDialog>(
+                    &rBindings, pCW, pParent, rViewData, pDialogDPObject.get(), pObj == nullptr);
             }
 
             break;
@@ -425,7 +446,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
         case SID_OPENDLG_FUNCTION:
         {
             // dialog checks, what is in the cell
-            xResult = std::make_shared<ScFormulaDlg>(pB, pCW, pParent, GetViewData(), ScGlobal::GetStarCalcFunctionMgr());
+            xResult = std::make_shared<ScFormulaDlg>(&rBindings, pCW, pParent, GetViewData(),
+                                                     ScGlobal::GetStarCalcFunctionMgr());
             break;
         }
         case WID_CONDFRMT_REF:
@@ -438,7 +460,8 @@ ScTabViewShell::CreateRefDialogController(SfxBindings* pB, SfxChildWindow* pCW,
                 ScViewData& rViewData = GetViewData();
                 rViewData.SetRefTabNo( rViewData.CurrentTabForData() );
 
-                xResult = std::make_shared<ScCondFormatDlg>(pB, pCW, pParent, rViewData, rDlgData);
+                xResult = std::make_shared<ScCondFormatDlg>(&rBindings, pCW, pParent, rViewData,
+                                                            rDlgData);
 
                 // Remove the DialogData stored by Conditional Format Manager Dialog.
                 setScCondFormatDlgData(nullptr);
