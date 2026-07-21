@@ -46,7 +46,7 @@ SfxRecordingFloatWrapper_Impl::SfxRecordingFloatWrapper_Impl(vcl::Window* pParen
     , m_rBindings(rBindings)
 {
     SetController(
-        std::make_shared<SfxRecordingFloat_Impl>(&m_rBindings, this, pParentWnd->GetFrameWeld()));
+        std::make_shared<SfxRecordingFloat_Impl>(m_rBindings, this, pParentWnd->GetFrameWeld()));
     SetWantsFocus(false);
     SfxRecordingFloat_Impl* pFloatDlg = static_cast<SfxRecordingFloat_Impl*>(GetController().get());
 
@@ -98,12 +98,12 @@ bool SfxRecordingFloatWrapper_Impl::QueryClose()
     return bRet;
 }
 
-SfxRecordingFloat_Impl::SfxRecordingFloat_Impl(SfxBindings* pBind, SfxChildWindow* pChildWin,
+SfxRecordingFloat_Impl::SfxRecordingFloat_Impl(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                                                weld::Window* pParent)
-    : SfxModelessDialogController(pBind, pChildWin, pParent, u"sfx/ui/floatingrecord.ui"_ustr,
+    : SfxModelessDialogController(&rBindings, pChildWin, pParent, u"sfx/ui/floatingrecord.ui"_ustr,
                                   u"FloatingRecord"_ustr)
     , m_xToolbar(m_xBuilder->weld_toolbar(u"toolbar"_ustr))
-    , m_xDispatcher(new ToolbarUnoDispatcher(*m_xToolbar, *m_xBuilder, pBind->GetActiveFrame()))
+    , m_xDispatcher(new ToolbarUnoDispatcher(*m_xToolbar, *m_xBuilder, rBindings.GetActiveFrame()))
     , mnPostUserEventId(nullptr)
     , m_bFirstActivate(true)
 {

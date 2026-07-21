@@ -48,8 +48,7 @@ class SfxRecordingFloat_Impl final : public SfxModelessDialogController
     DECL_LINK(PresentParentFrame, void*, void);
 
 public:
-    SfxRecordingFloat_Impl(SfxBindings* pBindings,
-                           SfxChildWindow* pChildWin,
+    SfxRecordingFloat_Impl(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                            weld::Window* pParent);
     virtual ~SfxRecordingFloat_Impl() override;
     virtual void FillInfo(SfxChildWinInfo& rInfo) const override;
