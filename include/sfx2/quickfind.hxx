@@ -26,7 +26,7 @@ class SFX2_DLLPUBLIC SfxQuickFind : public SfxDockingWindow
 {
 public:
     SfxQuickFind(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
-                 SfxChildWinInfo* pInfo);
+                 SfxChildWinInfo& rInfo);
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

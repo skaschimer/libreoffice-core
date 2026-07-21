@@ -93,7 +93,7 @@ IMPL_LINK_NOARG(QuickFindPanel, SimilaritySettingsDialogButtonClickedHandler, we
 
 QuickFindPanelWindow::QuickFindPanelWindow(SfxBindings& rBindings, SfxChildWindow* pChildWin,
                                            vcl::Window* pParent, SfxChildWinInfo& rInfo)
-    : SfxQuickFind(rBindings, pChildWin, pParent, &rInfo)
+    : SfxQuickFind(rBindings, pChildWin, pParent, rInfo)
     , m_xQuickFindPanel(std::make_unique<QuickFindPanel>(m_xContainer.get(),
                                                          rBindings.GetActiveFrame(), &rBindings))
 {
