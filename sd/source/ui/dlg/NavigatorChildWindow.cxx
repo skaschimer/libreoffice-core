@@ -44,20 +44,20 @@ static void RequestNavigatorUpdate (SfxBindings const * pBindings)
     }
 }
 
-SdNavigatorFloat::SdNavigatorFloat(SfxBindings* _pBindings, SfxChildWindow* _pMgr,
-                                   vcl::Window* _pParent, SfxChildWinInfo* pInfo)
-    : SfxNavigator(_pBindings, _pMgr, _pParent, pInfo)
-    , m_xNavWin(std::make_unique<SdNavigatorWin>(m_xContainer.get(), _pBindings, this))
+SdNavigatorFloat::SdNavigatorFloat(SfxBindings& rBindings, SfxChildWindow* _pMgr,
+                                   vcl::Window* _pParent, SfxChildWinInfo& rInfo)
+    : SfxNavigator(&rBindings, _pMgr, _pParent, &rInfo)
+    , m_xNavWin(std::make_unique<SdNavigatorWin>(m_xContainer.get(), &rBindings, this))
     , m_bSetInitialFocusOnActivate(true)
 {
-    m_xNavWin->SetUpdateRequestFunctor(
-        [_pBindings] () { return RequestNavigatorUpdate(_pBindings); });
+    SfxBindings* pBindings = &rBindings;
+    m_xNavWin->SetUpdateRequestFunctor([pBindings]() { return RequestNavigatorUpdate(pBindings); });
 
     SetMinOutputSizePixel(GetOptimalSize());
 
     // Set the toolbox navigation button tooltips
     // Tunnel through the controller to obtain a ViewShellBase.
-    css::uno::Reference<css::frame::XFrame> xFrame = _pBindings->GetActiveFrame();
+    css::uno::Reference<css::frame::XFrame> xFrame = rBindings.GetActiveFrame();
     ViewShellBase* pViewShellBase = nullptr;
     rtl::Reference<sd::DrawController> pController
         = dynamic_cast<sd::DrawController*>(xFrame->getController().get());
@@ -102,7 +102,7 @@ SdNavigatorWrapper::SdNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
                                        SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<SdNavigatorFloat>::Create(&rBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<SdNavigatorFloat>::Create(rBindings, this, _pParent, rInfo));
     Initialize();
 }
 

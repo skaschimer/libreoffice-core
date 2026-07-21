@@ -90,8 +90,8 @@ private:
     bool m_bSetInitialFocusOnActivate;
 
 public:
-    SdNavigatorFloat(SfxBindings* _pBindings, SfxChildWindow* pMgr,
-                     vcl::Window* pParent, SfxChildWinInfo* pInfo);
+    SdNavigatorFloat(SfxBindings& rBindings, SfxChildWindow* pMgr, vcl::Window* pParent,
+                     SfxChildWinInfo& rInfo);
     void InitTreeLB(const SdDrawDocument* pDoc);
     virtual void Activate() override;
     virtual void dispose() override;
