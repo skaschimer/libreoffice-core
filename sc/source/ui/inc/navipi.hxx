@@ -199,8 +199,8 @@ class ScNavigatorWin : public SfxNavigator
 private:
     std::unique_ptr<ScNavigatorDlg> m_xNavigator;
 public:
-    ScNavigatorWin(SfxBindings* _pBindings, SfxChildWindow* pMgr,
-                   vcl::Window* pParent, SfxChildWinInfo* pInfo);
+    ScNavigatorWin(SfxBindings& rBindings, SfxChildWindow* pMgr, vcl::Window* pParent,
+                   SfxChildWinInfo* pInfo);
     virtual void StateChanged(StateChangedType nStateChange) override;
     virtual void dispose() override
     {

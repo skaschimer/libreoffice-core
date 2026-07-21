@@ -286,11 +286,11 @@ ScNavigatorSettings::ScNavigatorSettings()
     maExpandedVec.fill(false);
 }
 
-ScNavigatorWin::ScNavigatorWin(SfxBindings* _pBindings, SfxChildWindow* _pMgr,
-                               vcl::Window* _pParent, SfxChildWinInfo* pInfo)
-    : SfxNavigator(_pBindings, _pMgr, _pParent, pInfo)
+ScNavigatorWin::ScNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* _pParent,
+                               SfxChildWinInfo* pInfo)
+    : SfxNavigator(&rBindings, _pMgr, _pParent, pInfo)
 {
-    m_xNavigator = std::make_unique<ScNavigatorDlg>(_pBindings, m_xContainer.get(), this);
+    m_xNavigator = std::make_unique<ScNavigatorDlg>(&rBindings, m_xContainer.get(), this);
     SetMinOutputSizePixel(GetOptimalSize());
 }
 
@@ -919,7 +919,7 @@ ScNavigatorWrapper::ScNavigatorWrapper(vcl::Window* _pParent, sal_uInt16 nId,
                                        SfxBindings& rBindings, SfxChildWinInfo& rInfo)
     : SfxNavigatorWrapper(_pParent, nId)
 {
-    SetWindow(VclPtr<ScNavigatorWin>::Create(&rBindings, this, _pParent, &rInfo));
+    SetWindow(VclPtr<ScNavigatorWin>::Create(rBindings, this, _pParent, &rInfo));
     Initialize();
 }
 
