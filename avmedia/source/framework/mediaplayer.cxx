@@ -38,7 +38,7 @@ MediaPlayer::MediaPlayer(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBi
     : SfxChildWindow(_pParent, nId)
 {
     SetWindow(VclPtr<MediaFloater>::Create(rBindings, this, _pParent));
-    static_cast<MediaFloater*>(GetWindow())->Initialize(&rInfo);
+    static_cast<MediaFloater*>(GetWindow())->Initialize(rInfo);
 };
 
 

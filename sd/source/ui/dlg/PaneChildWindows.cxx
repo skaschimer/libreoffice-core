@@ -47,7 +47,7 @@ PaneChildWindow::PaneChildWindow(vcl::Window* pParentWindow, sal_uInt16 nId, Sfx
     SetAlignment(eAlignment);
     SfxDockingWindow* pDockingWindow = static_cast<SfxDockingWindow*>(GetWindow());
     pDockingWindow->EnableInput();
-    pDockingWindow->Initialize(&rInfo);
+    pDockingWindow->Initialize(rInfo);
     SetHideNotDelete(true);
 
     ViewShellBase* pBase = ViewShellBase::GetViewShellBase(rBindings.GetDispatcher()->GetFrame());

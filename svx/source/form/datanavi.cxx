@@ -2085,7 +2085,7 @@ namespace svxform
         SetWindow(VclPtr<DataNavigator>::Create(&rBindings, this, _pParent));
         SetAlignment(SfxChildAlignment::RIGHT);
         GetWindow()->SetSizePixel( Size( 250, 400 ) );
-        static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
+        static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
     }
 
     AddDataItemDialog::AddDataItemDialog(weld::Window* pParent, ItemNode* _pNode,

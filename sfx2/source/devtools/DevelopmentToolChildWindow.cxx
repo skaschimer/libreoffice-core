@@ -25,7 +25,7 @@ DevelopmentToolChildWindow::DevelopmentToolChildWindow(vcl::Window* pParentWindo
     SetWindow(pWin);
     SetAlignment(SfxChildAlignment::BOTTOM);
     pWin->SetSizePixel(Size(0, 290));
-    pWin->Initialize(&rInfo);
+    pWin->Initialize(rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

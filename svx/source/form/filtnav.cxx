@@ -1840,7 +1840,7 @@ FmFilterNavigatorWinMgr::FmFilterNavigatorWinMgr(vcl::Window* _pParent, sal_uInt
     : SfxChildWindow(_pParent, _nId)
 {
     SetWindow(VclPtr<FmFilterNavigatorWin>::Create(&rBindings, this, _pParent));
-    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
 }
 
 

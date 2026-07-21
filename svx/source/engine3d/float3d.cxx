@@ -2505,7 +2505,7 @@ Svx3DChildWindow::Svx3DChildWindow(vcl::Window* _pParent, sal_uInt16 nId, SfxBin
     VclPtr<Svx3DWin> pWin = VclPtr<Svx3DWin>::Create(&rBindings, this, _pParent);
     SetWindow(pWin);
 
-    pWin->Initialize(&rInfo);
+    pWin->Initialize(rInfo);
 }
 
 Svx3DCtrlItem::Svx3DCtrlItem( sal_uInt16 _nId,

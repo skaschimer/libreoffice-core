@@ -169,7 +169,7 @@ SvxFontWorkChildWindow::SvxFontWorkChildWindow(vcl::Window* _pParent, sal_uInt16
     VclPtrInstance<SvxFontWorkDialog> pDlg(&rBindings, this, _pParent);
     SetWindow(pDlg);
 
-    pDlg->Initialize(&rInfo);
+    pDlg->Initialize(rInfo);
 }
 
 // Floating Window to the attribution of text effects

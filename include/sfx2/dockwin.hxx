@@ -84,7 +84,7 @@ public:
                         virtual ~SfxDockingWindow() override;
     virtual void        dispose() override;
 
-    void                Initialize (SfxChildWinInfo* pInfo);
+    void Initialize(SfxChildWinInfo& rInfo);
     virtual void        FillInfo(SfxChildWinInfo&) const;
     virtual void        StateChanged( StateChangedType nStateChange ) override;
 

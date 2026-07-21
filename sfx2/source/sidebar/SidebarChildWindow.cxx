@@ -61,7 +61,7 @@ SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nI
         }
     }
 
-    pDockWin->Initialize(&rInfo);
+    pDockWin->Initialize(rInfo);
 
     if (comphelper::LibreOfficeKit::isActive())
     {

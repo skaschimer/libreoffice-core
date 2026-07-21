@@ -198,7 +198,7 @@ SfxDockingWrapper::SfxDockingWrapper(vcl::Window* pParentWnd, sal_uInt16 nId,
 
     GetWindow()->SetOutputSizePixel( Size( 270, 240 ) );
 
-    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
     SetHideNotDelete( true );
 }
 
@@ -783,7 +783,7 @@ SfxDockingWindow::SfxDockingWindow(SfxBindings* pBindinx, SfxChildWindow* pCW, v
     constructor should be called from the derived class or from the
     SfxChildWindows.
 */
-void SfxDockingWindow::Initialize(SfxChildWinInfo *pInfo)
+void SfxDockingWindow::Initialize(SfxChildWinInfo& rInfo)
 {
     if (!m_pMgr)
     {
@@ -792,7 +792,7 @@ void SfxDockingWindow::Initialize(SfxChildWinInfo *pInfo)
         return;
     }
 
-    if (pInfo && (pInfo->nFlags & SfxChildWindowFlags::FORCEDOCK))
+    if (rInfo.nFlags & SfxChildWindowFlags::FORCEDOCK)
         m_pImpl->bDockingPrevented = true;
 
     m_pImpl->aSplitSize = GetOutputSizePixel();
@@ -807,23 +807,23 @@ void SfxDockingWindow::Initialize(SfxChildWinInfo *pInfo)
     }
 
     bool bVertHorzRead( false );
-    if (pInfo && !pInfo->aExtraString.isEmpty())
+    if (!rInfo.aExtraString.isEmpty())
     {
         // get information about alignment, split size and position in SplitWindow
         OUString aStr;
-        sal_Int32 nPos = pInfo->aExtraString.indexOf("AL:");
+        sal_Int32 nPos = rInfo.aExtraString.indexOf("AL:");
         if ( nPos != -1 )
         {
             // alignment information
-            sal_Int32 n1 = pInfo->aExtraString.indexOf('(', nPos);
+            sal_Int32 n1 = rInfo.aExtraString.indexOf('(', nPos);
             if ( n1 != -1 )
             {
-                sal_Int32 n2 = pInfo->aExtraString.indexOf(')', n1);
+                sal_Int32 n2 = rInfo.aExtraString.indexOf(')', n1);
                 if ( n2 != -1 )
                 {
                     // extract alignment information from extrastring
-                    aStr = pInfo->aExtraString.copy(nPos, n2 - nPos + 1);
-                    pInfo->aExtraString = pInfo->aExtraString.replaceAt(nPos, n2 - nPos + 1, u"");
+                    aStr = rInfo.aExtraString.copy(nPos, n2 - nPos + 1);
+                    rInfo.aExtraString = rInfo.aExtraString.replaceAt(nPos, n2 - nPos + 1, u"");
                     aStr = aStr.replaceAt(nPos, n1-nPos+1, u"");
                 }
             }
@@ -832,7 +832,7 @@ void SfxDockingWindow::Initialize(SfxChildWinInfo *pInfo)
         if ( !aStr.isEmpty() )
         {
             // accept window state only if alignment is also set
-            m_pImpl->aWinState = pInfo->aWinState;
+            m_pImpl->aWinState = rInfo.aWinState;
 
             // check for valid alignment
             SfxChildAlignment eLocalAlignment = static_cast<SfxChildAlignment>(static_cast<sal_uInt16>(aStr.toInt32()));

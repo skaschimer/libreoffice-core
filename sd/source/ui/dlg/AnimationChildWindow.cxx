@@ -37,7 +37,7 @@ AnimationChildWindow::AnimationChildWindow(vcl::Window* _pParent, sal_uInt16 nId
     VclPtr<AnimationWindow> pAnimWin = VclPtr<AnimationWindow>::Create(&rBindings, this, _pParent);
     SetWindow(pAnimWin);
 
-    pAnimWin->Initialize(&rInfo);
+    pAnimWin->Initialize(rInfo);
 
     SetHideNotDelete( true );
 }

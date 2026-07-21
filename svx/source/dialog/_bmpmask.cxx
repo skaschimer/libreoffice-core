@@ -347,7 +347,7 @@ SvxBmpMaskChildWindow::SvxBmpMaskChildWindow(vcl::Window* pParent_, sal_uInt16 n
 
     SetWindow( pDlg );
 
-    pDlg->Initialize(&rInfo);
+    pDlg->Initialize(rInfo);
 }
 
 SvxBmpMask::SvxBmpMask(SfxBindings *pBindinx, SfxChildWindow *pCW, vcl::Window* pParent)

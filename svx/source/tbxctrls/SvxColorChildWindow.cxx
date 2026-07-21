@@ -36,7 +36,7 @@ SvxColorChildWindow::SvxColorChildWindow(vcl::Window* _pParent, sal_uInt16 nId,
 
     SetAlignment(SfxChildAlignment::RIGHT);
 
-    pWin->Initialize(&rInfo);
+    pWin->Initialize(rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

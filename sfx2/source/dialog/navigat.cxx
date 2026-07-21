@@ -43,7 +43,7 @@ SfxNavigator::SfxNavigator(SfxBindings& rBindings, SfxChildWindow* pChildWin, vc
     SetText(SfxResId(STR_SID_NAVIGATOR));
     SetHelpId(HID_NAVIGATOR_WINDOW);
     SetOutputSizePixel(Size(270, 240));
-    Initialize(&rInfo);
+    Initialize(rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -55,7 +55,7 @@ SfxPartChildWnd_Impl::SfxPartChildWnd_Impl(vcl::Window* pParentWnd, sal_uInt16 n
     static_cast<SfxDockingWindow*>(GetWindow())->SetFloatingSize( Size( 175, 175 ) );
     GetWindow()->SetSizePixel( Size( 175, 175 ) );
 
-    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
+    static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
     SetHideNotDelete( true );
 }
 

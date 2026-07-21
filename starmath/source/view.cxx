@@ -1156,7 +1156,7 @@ SmCmdBoxWrapper::SmCmdBoxWrapper(vcl::Window* pParentWindow, sal_uInt16 nId, Sfx
     pDialog->setDeferredProperties();
     pDialog->set_border_width(CMD_BOX_PADDING);
     pDialog->set_margin_top(CMD_BOX_PADDING_TOP);
-    pDialog->Initialize(&rInfo);
+    pDialog->Initialize(rInfo);
 }
 
 SFX_IMPL_SUPERCLASS_INTERFACE(SmViewShell, SfxViewShell)

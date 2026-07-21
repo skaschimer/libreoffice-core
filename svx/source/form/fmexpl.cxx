@@ -479,7 +479,7 @@ namespace svxform
         : SfxChildWindow(_pParent, _nId)
     {
         SetWindow(VclPtr<NavigatorFrame>::Create(&rBindings, this, _pParent));
-        static_cast<SfxDockingWindow*>(GetWindow())->Initialize(&rInfo);
+        static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
     }
 }
 

@@ -31,7 +31,7 @@ SfxQuickFind::SfxQuickFind(SfxBindings& rBindings, SfxChildWindow* pChildWin, vc
     SetText(SfxResId(STR_SID_QUICKFIND));
     SetHelpId(HID_QUICKFIND_WINDOW);
     SetOutputSizePixel(Size(270, 240));
-    Initialize(&rInfo);
+    Initialize(rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
