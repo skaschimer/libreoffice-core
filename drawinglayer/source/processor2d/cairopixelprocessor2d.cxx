@@ -3555,21 +3555,26 @@ void CairoPixelProcessor2D::processPatternFillPrimitive2D(
 {
     if (!mpTargetOutputDevice)
         return;
+
     const basegfx::B2DRange& rReferenceRange = rPrimitive.getReferenceRange();
     if (rReferenceRange.isEmpty() || rReferenceRange.getWidth() <= 0.0
         || rReferenceRange.getHeight() <= 0.0)
         return;
+
     basegfx::B2DPolyPolygon aMask = rPrimitive.getMask();
     aMask.transform(getViewInformation2D().getObjectToViewTransformation());
     const basegfx::B2DRange aMaskRange(aMask.getB2DRange());
+
     if (aMaskRange.isEmpty() || aMaskRange.getWidth() <= 0.0 || aMaskRange.getHeight() <= 0.0)
         return;
+
     sal_uInt32 nTileWidth, nTileHeight;
     rPrimitive.getTileSize(nTileWidth, nTileHeight, getViewInformation2D());
     if (nTileWidth == 0 || nTileHeight == 0)
         return;
     Bitmap aTileImage = rPrimitive.createTileImage(nTileWidth, nTileHeight);
     tools::Rectangle aMaskRect = vcl::unotools::rectangleFromB2DRectangle(aMaskRange);
+
     // Unless smooth edges are needed, simply use clipping.
     if (basegfx::utils::isRectangle(aMask) || !getViewInformation2D().getUseAntiAliasing())
     {
@@ -3596,19 +3601,30 @@ void CairoPixelProcessor2D::processPatternFillPrimitive2D(
     }
 
     impBufferDevice aBufferDevice(*mpTargetOutputDevice, aMaskRect);
+
     if (!aBufferDevice.isVisible())
         return;
+
     // remember last OutDev and set to content
     OutputDevice* pLastOutputDevice = mpTargetOutputDevice;
     mpTargetOutputDevice = &aBufferDevice.getContent();
-    mpTargetOutputDevice->DrawWallpaper(aMaskRect, Wallpaper(aTileImage));
+
+    Wallpaper aWallpaper(aTileImage);
+    aWallpaper.SetColor(COL_TRANSPARENT);
+    Point aPaperPt(aMaskRect.getX() % nTileWidth, aMaskRect.getY() % nTileHeight);
+    tools::Rectangle aPaperRect(aPaperPt, aTileImage.GetSizePixel());
+    aWallpaper.SetRect(aPaperRect);
+    mpTargetOutputDevice->DrawWallpaper(aMaskRect, aWallpaper);
+
     // back to old OutDev
     mpTargetOutputDevice = pLastOutputDevice;
+
     // draw mask
     VirtualDevice& rMask = aBufferDevice.getTransparence();
     rMask.SetLineColor();
     rMask.SetFillColor(COL_BLACK);
     rMask.DrawPolyPolygon(aMask);
+
     // dump buffer to outdev
     aBufferDevice.paint();
 }
