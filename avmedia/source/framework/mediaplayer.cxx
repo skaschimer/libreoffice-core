@@ -37,7 +37,7 @@ MediaPlayer::MediaPlayer(vcl::Window* _pParent, sal_uInt16 nId, SfxBindings& rBi
                          SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    SetWindow(VclPtr<MediaFloater>::Create(&rBindings, this, _pParent));
+    SetWindow(VclPtr<MediaFloater>::Create(rBindings, this, _pParent));
     static_cast<MediaFloater*>(GetWindow())->Initialize(&rInfo);
 };
 
@@ -49,10 +49,10 @@ MediaPlayer::~MediaPlayer()
 
 SFX_IMPL_DOCKINGWINDOW_WITHID( MediaPlayer, SID_AVMEDIA_PLAYER )
 
-
-MediaFloater::MediaFloater( SfxBindings* _pBindings, SfxChildWindow* pCW, vcl::Window* pParent ) :
-    SfxDockingWindow( _pBindings, pCW, pParent, WB_CLOSEABLE | WB_MOVEABLE | WB_SIZEABLE | WB_DOCKABLE ),
-    mpMediaWindow( new MediaWindow( this, true ) )
+MediaFloater::MediaFloater(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
+    : SfxDockingWindow(&rBindings, pCW, pParent,
+                       WB_CLOSEABLE | WB_MOVEABLE | WB_SIZEABLE | WB_DOCKABLE)
+    , mpMediaWindow(new MediaWindow(this, true))
 {
     const Size aSize( mpMediaWindow->getPreferredSize() );
 

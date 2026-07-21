@@ -41,9 +41,8 @@ class MediaWindow;
 class AVMEDIA_DLLPUBLIC MediaFloater final : public SfxDockingWindow
 {
 public:
-
-                            MediaFloater( SfxBindings* pBindings, SfxChildWindow* pCW, vcl::Window* pParent );
-                            virtual ~MediaFloater() override;
+    MediaFloater(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent);
+    virtual ~MediaFloater() override;
     virtual void            dispose() override;
 
     void                    setURL( const OUString& rURL, const OUString& rReferer, bool bPlayImmediately );
