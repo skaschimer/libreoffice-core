@@ -1635,7 +1635,13 @@ const TranslateId ocREDUCE_ARY[] =
 // -=*# Resources for function SCAN #*=-
 const TranslateId ocSCAN_ARY[] =
 {
-    NC_("ocSCAN", "placeholder text"),
+    NC_("ocSCAN", "Progressively applies a LAMBDA function to each element in an array and returns an array of all intermediate values."),
+    NC_("ocSCAN", "Initial value"),
+    NC_("ocSCAN", "Optional initial value of the accumulator."),
+    NC_("ocSCAN", "Array"),
+    NC_("ocSCAN", "The array to be scanned."),
+    NC_("ocSCAN", "Formula"),
+    NC_("ocSCAN", "A LAMBDA function that will be called on each cell of the array.")
 };
 
 // -=*# Resource for function SUMPRODUCT #*=-
