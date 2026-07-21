@@ -83,9 +83,9 @@ namespace {
     }
 }
 
-Svx3DWin::Svx3DWin(SfxBindings* pInBindings, SfxChildWindow *pCW, vcl::Window* pParent)
-    : SfxDockingWindow(pInBindings, pCW, pParent,
-        u"Docking3DEffects"_ustr, u"svx/ui/docking3deffects.ui"_ustr)
+Svx3DWin::Svx3DWin(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent)
+    : SfxDockingWindow(&rBindings, pCW, pParent, u"Docking3DEffects"_ustr,
+                       u"svx/ui/docking3deffects.ui"_ustr)
 
     , m_xBtnGeo(m_xBuilder->weld_toggle_button(u"geometry"_ustr))
     , m_xBtnRepresentation(m_xBuilder->weld_toggle_button(u"representation"_ustr))
@@ -192,7 +192,7 @@ Svx3DWin::Svx3DWin(SfxBindings* pInBindings, SfxChildWindow *pCW, vcl::Window* p
 
     , bUpdate(false)
     , eViewType(ViewType3D::Geo)
-    , pBindings(pInBindings)
+    , pBindings(&rBindings)
     , mpImpl(new Svx3DWinImpl)
     , ePoolUnit(MapUnit::MapMM)
 {
@@ -210,7 +210,7 @@ Svx3DWin::Svx3DWin(SfxBindings* pInBindings, SfxChildWindow *pCW, vcl::Window* p
     mpImpl->pPool = nullptr;
 
     // Set Metric
-    eFUnit = pInBindings->GetDispatcher()->GetModule()->GetFieldUnit();
+    eFUnit = rBindings.GetDispatcher()->GetModule()->GetFieldUnit();
 
     m_xMtrDepth->set_unit( eFUnit );
     m_xMtrDistance->set_unit( eFUnit );
@@ -2502,7 +2502,7 @@ Svx3DChildWindow::Svx3DChildWindow(vcl::Window* _pParent, sal_uInt16 nId, SfxBin
                                    SfxChildWinInfo& rInfo)
     : SfxChildWindow(_pParent, nId)
 {
-    VclPtr<Svx3DWin> pWin = VclPtr<Svx3DWin>::Create(&rBindings, this, _pParent);
+    VclPtr<Svx3DWin> pWin = VclPtr<Svx3DWin>::Create(rBindings, this, _pParent);
     SetWindow(pWin);
 
     pWin->Initialize(rInfo);

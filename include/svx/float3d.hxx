@@ -257,9 +257,8 @@ private:
     virtual void    Resize() override;
 
 public:
-            Svx3DWin( SfxBindings* pBindings, SfxChildWindow *pCW,
-                        vcl::Window* pParent );
-            virtual ~Svx3DWin() override;
+    Svx3DWin(SfxBindings& rBindings, SfxChildWindow* pCW, vcl::Window* pParent);
+    virtual ~Svx3DWin() override;
     virtual void dispose() override;
 
     void    InitColorLB();
