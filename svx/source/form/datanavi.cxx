@@ -2023,10 +2023,10 @@ namespace svxform
         }
     }
 
-    DataNavigator::DataNavigator(SfxBindings* _pBindings, SfxChildWindow* _pMgr, vcl::Window* _pParent)
-        : SfxDockingWindow(_pBindings, _pMgr, _pParent, u"DataNavigator"_ustr, u"svx/ui/datanavigator.ui"_ustr)
-        , SfxControllerItem(SID_FM_DATANAVIGATOR_CONTROL, *_pBindings)
-        , m_xDataWin(new DataNavigatorWindow(this, *m_xBuilder, _pBindings))
+    DataNavigator::DataNavigator(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* _pParent)
+        : SfxDockingWindow(&rBindings, _pMgr, _pParent, u"DataNavigator"_ustr, u"svx/ui/datanavigator.ui"_ustr)
+        , SfxControllerItem(SID_FM_DATANAVIGATOR_CONTROL, rBindings)
+        , m_xDataWin(new DataNavigatorWindow(this, *m_xBuilder, &rBindings))
     {
         SetText( SvxResId( RID_STR_DATANAVIGATOR ) );
 
@@ -2082,7 +2082,7 @@ namespace svxform
         SfxChildWindow(_pParent, _nId)
 
     {
-        SetWindow(VclPtr<DataNavigator>::Create(&rBindings, this, _pParent));
+        SetWindow(VclPtr<DataNavigator>::Create(rBindings, this, _pParent));
         SetAlignment(SfxChildAlignment::RIGHT);
         GetWindow()->SetSizePixel( Size( 250, 400 ) );
         static_cast<SfxDockingWindow*>(GetWindow())->Initialize(rInfo);
