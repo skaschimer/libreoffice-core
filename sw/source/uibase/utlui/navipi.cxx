@@ -1304,7 +1304,7 @@ SwView*  SwNavigationPI::GetCreateView() const
 
 SwNavigatorWin::SwNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* pParent,
                                SfxChildWinInfo& rInfo)
-    : SfxNavigator(&rBindings, _pMgr, pParent, &rInfo)
+    : SfxNavigator(rBindings, _pMgr, pParent, rInfo)
     , m_xNavi(std::make_unique<SwNavigationPI>(m_xContainer.get(), rBindings.GetActiveFrame(),
                                                &rBindings, this))
 {

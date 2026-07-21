@@ -34,8 +34,8 @@ public:
 class SFX2_DLLPUBLIC SfxNavigator : public SfxDockingWindow
 {
 public:
-    SfxNavigator(SfxBindings* pBindings, SfxChildWindow* pChildWin,
-                 vcl::Window* pParent, SfxChildWinInfo* pInfo);
+    SfxNavigator(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
+                 SfxChildWinInfo& rInfo);
 };
 
 #endif

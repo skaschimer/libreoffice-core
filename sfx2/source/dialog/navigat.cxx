@@ -35,19 +35,15 @@ void SfxNavigatorWrapper::Initialize()
     SetHideNotDelete(true);
 }
 
-SfxNavigator::SfxNavigator(SfxBindings* pBind ,
-                           SfxChildWindow* pChildWin ,
-                           vcl::Window* pParent,
-                           SfxChildWinInfo* pInfo)
-                        : SfxDockingWindow(pBind ,
-                                           pChildWin ,
-                                           pParent ,
-                                           u"Navigator"_ustr, u"sfx/ui/navigator.ui"_ustr)
+SfxNavigator::SfxNavigator(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
+                           SfxChildWinInfo& rInfo)
+    : SfxDockingWindow(&rBindings, pChildWin, pParent, u"Navigator"_ustr,
+                       u"sfx/ui/navigator.ui"_ustr)
 {
     SetText(SfxResId(STR_SID_NAVIGATOR));
     SetHelpId(HID_NAVIGATOR_WINDOW);
     SetOutputSizePixel(Size(270, 240));
-    Initialize(pInfo);
+    Initialize(&rInfo);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

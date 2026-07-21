@@ -46,7 +46,7 @@ static void RequestNavigatorUpdate (SfxBindings const * pBindings)
 
 SdNavigatorFloat::SdNavigatorFloat(SfxBindings& rBindings, SfxChildWindow* _pMgr,
                                    vcl::Window* _pParent, SfxChildWinInfo& rInfo)
-    : SfxNavigator(&rBindings, _pMgr, _pParent, &rInfo)
+    : SfxNavigator(rBindings, _pMgr, _pParent, rInfo)
     , m_xNavWin(std::make_unique<SdNavigatorWin>(m_xContainer.get(), &rBindings, this))
     , m_bSetInitialFocusOnActivate(true)
 {

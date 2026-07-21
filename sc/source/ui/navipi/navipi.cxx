@@ -288,7 +288,7 @@ ScNavigatorSettings::ScNavigatorSettings()
 
 ScNavigatorWin::ScNavigatorWin(SfxBindings& rBindings, SfxChildWindow* _pMgr, vcl::Window* _pParent,
                                SfxChildWinInfo& rInfo)
-    : SfxNavigator(&rBindings, _pMgr, _pParent, &rInfo)
+    : SfxNavigator(rBindings, _pMgr, _pParent, rInfo)
 {
     m_xNavigator = std::make_unique<ScNavigatorDlg>(rBindings, m_xContainer.get(), this);
     SetMinOutputSizePixel(GetOptimalSize());
