@@ -132,13 +132,19 @@ void QtInstanceWindow::set_window_state(const vcl::WindowData& rState)
 
         if (eMask & vcl::WindowDataMask::State)
         {
+            Qt::WindowStates eWindowStates = getQWidget()->windowState();
+            eWindowStates &= ~(Qt::WindowState::WindowFullScreen | Qt::WindowState::WindowMaximized
+                               | Qt::WindowState::WindowMinimized);
+
             const vcl::WindowState eState = rState.state();
-            if (eState & vcl::WindowState::Normal)
-                getQWidget()->showNormal();
+            if (eState & vcl::WindowState::FullScreen)
+                eWindowStates |= Qt::WindowState::WindowFullScreen;
             else if (eState & vcl::WindowState::Maximized)
-                getQWidget()->showMaximized();
+                eWindowStates |= Qt::WindowState::WindowMaximized;
             else if (eState & vcl::WindowState::Minimized)
-                getQWidget()->showMinimized();
+                eWindowStates |= Qt::WindowState::WindowMinimized;
+
+            getQWidget()->setWindowState(eWindowStates);
         }
     });
 }
