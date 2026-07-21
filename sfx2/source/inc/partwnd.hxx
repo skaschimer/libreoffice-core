@@ -46,10 +46,8 @@ class SfxPartDockWnd_Impl final : public SfxDockingWindow
     virtual bool            EventNotify( NotifyEvent& rNEvt ) override;
 
 public:
-                            SfxPartDockWnd_Impl( SfxBindings* pBindings,
-                                  SfxChildWindow* pChildWin,
-                                  vcl::Window* pParent,
-                                  WinBits nBits );
+    SfxPartDockWnd_Impl(SfxBindings& rBindings, SfxChildWindow* pChildWin, vcl::Window* pParent,
+                        WinBits nBits);
 
     bool                    QueryClose();
     virtual void            FillInfo(SfxChildWinInfo&) const override;
