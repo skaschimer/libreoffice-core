@@ -13235,6 +13235,8 @@ if test \( "$ENABLE_SKIA" = TRUE -o "$ENABLE_PDFIUM" = TRUE \) -a "$COM_IS_CLANG
             AC_MSG_CHECKING([for clang-cl])
             if test -x "$VC_PRODUCT_DIR/Tools/Llvm/bin/clang-cl.exe"; then
                 LO_CLANG_CC=`win_short_path_for_make "$VC_PRODUCT_DIR/Tools/Llvm/bin/clang-cl.exe"`
+            elif test -x "$VC_PRODUCT_DIR/Tools/Llvm/$WIN_BUILD_ARCH/bin/clang-cl.exe"; then
+                LO_CLANG_CC=`win_short_path_for_make "$VC_PRODUCT_DIR/Tools/Llvm/$WIN_BUILD_ARCH/bin/clang-cl.exe"`
             elif test -n "$PROGRAMFILES" -a -x "$(cygpath -u "$PROGRAMFILES/LLVM/bin/clang-cl.exe")"; then
                 LO_CLANG_CC=`win_short_path_for_make "$PROGRAMFILES/LLVM/bin/clang-cl.exe"`
             elif test -x "$(cygpath -u "c:/Program Files/LLVM/bin/clang-cl.exe")"; then
