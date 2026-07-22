@@ -468,16 +468,24 @@ OUString GenerateVariableFontPSName(const PhysicalFontFace& rFace,
     }
     else
     {
-        for (const auto& rVariation : rVariations)
+        // Append non-default axes in a fixed (fvar) order so the name does not
+        // depend on the order the variation list happened to be built in.
+        unsigned int nAxes = hb_ot_var_get_axis_count(pHbFace);
+        std::vector<hb_ot_var_axis_info_t> aAxes(nAxes);
+        hb_ot_var_get_axis_infos(pHbFace, 0, &nAxes, aAxes.data());
+        for (const auto& rAxis : aAxes)
         {
-            hb_ot_var_axis_info_t info;
-            if (hb_ot_var_find_axis_info(pHbFace, rVariation.nTag, &info))
+            const vcl::font::Variation* pMatch = nullptr;
+            for (const auto& rVariation : rVariations)
             {
-                if (rVariation.fValue == info.default_value)
-                    continue;
+                if (rVariation.nTag == rAxis.tag)
+                    pMatch = &rVariation;
+            }
+            if (pMatch && pMatch->fValue != rAxis.default_value)
+            {
                 char aTag[5] = {};
-                hb_tag_to_string(rVariation.nTag, aTag);
-                aName.append("_" + OUString::number(rVariation.fValue)
+                hb_tag_to_string(rAxis.tag, aTag);
+                aName.append("_" + OUString::number(pMatch->fValue)
                              + o3tl::trim(OUString::createFromAscii(aTag)));
             }
         }

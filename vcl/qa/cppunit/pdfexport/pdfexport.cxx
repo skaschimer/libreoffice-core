@@ -1871,12 +1871,7 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testTdf66597_2)
                     = dynamic_cast<vcl::filter::PDFNameElement*>(pObject->Lookup("BaseFont"_ostr));
                 CPPUNIT_ASSERT(pName);
                 OString aFontName = pName->GetValue().copy(7); // skip the subset id
-#if defined _WIN32
-                CPPUNIT_ASSERT_EQUAL_MESSAGE("Unexpected font name", "ReemKufi-Regular"_ostr,
-                                             aFontName);
-#else
                 CPPUNIT_ASSERT_EQUAL_MESSAGE("Unexpected font name", "ReemKufi"_ostr, aFontName);
-#endif
                 auto pToUnicodeRef = dynamic_cast<vcl::filter::PDFReferenceElement*>(
                     pObject->Lookup("ToUnicode"_ostr));
                 CPPUNIT_ASSERT(pToUnicodeRef);
@@ -2101,20 +2096,12 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testVariableFontPSName1)
         }
     }
 
-#if !defined _WIN32
     std::set<OString> aExpected{ "STIXTwoText"_ostr,
                                  "STIXTwoTextRoman-Bold"_ostr,
                                  "STIXTwoText-Italic"_ostr,
                                  "STIXTwoTextItalic-BoldItalic"_ostr,
                                  "STIXTwoTextRoman-SemiBold"_ostr,
                                  "STIXTwoTextItalic-SemiBoldItalic"_ostr };
-#else
-    std::set<OString> aExpected{
-        "STIXTwoTextItalic-BoldItalic"_ostr,     "STIXTwoTextItalic-Italic"_ostr,
-        "STIXTwoTextItalic-SemiBoldItalic"_ostr, "STIXTwoTextRoman-Bold"_ostr,
-        "STIXTwoTextRoman-Regular"_ostr,         "STIXTwoTextRoman-SemiBold"_ostr
-    };
-#endif
 
     CPPUNIT_ASSERT_EQUAL(aExpected, aFontNames);
 }
@@ -2143,19 +2130,11 @@ CPPUNIT_TEST_FIXTURE(PdfExportTest, testVariableFontPSName2)
         }
     }
 
-#if !defined _WIN32
     std::set<OString> aExpected{
         "SourceCodePro-Regular"_ostr,  "SourceCodePro-Bold"_ostr,
         "SourceCodePro-Italic"_ostr,   "SourceCodePro-BoldItalic"_ostr,
         "SourceCodePro-SemiBold"_ostr, "SourceCodePro-SemiBoldItalic"_ostr
     };
-#else
-    std::set<OString> aExpected{
-        "SourceCodePro-Bold"_ostr,     "SourceCodePro-BoldItalic"_ostr,
-        "SourceCodePro-Italic"_ostr,   "SourceCodePro-Regular"_ostr,
-        "SourceCodePro-SemiBold"_ostr, "SourceCodePro-SemiBoldItalic"_ostr
-    };
-#endif
 
     CPPUNIT_ASSERT_EQUAL(aExpected, aFontNames);
 }

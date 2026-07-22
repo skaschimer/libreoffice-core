@@ -559,13 +559,31 @@ WinFontFace::GetVariations(const LogicalFontInstance& rFont) const
                               .QueryInterface<IDWriteFontFace5>());
         if (xDWFontFace5 && xDWFontFace5->HasVariations())
         {
+            // Skip axes at their default value, so the default instance reports no variations
+            // like the other platforms do (DirectWrite lists every axis even at its default).
+            std::vector<DWRITE_FONT_AXIS_VALUE> aDefaults;
+            sal::systools::COMReference<IDWriteFontResource> xResource;
+            if (SUCCEEDED(xDWFontFace5->GetFontResource(&xResource)))
+            {
+                aDefaults.resize(xResource->GetFontAxisCount());
+                if (FAILED(xResource->GetDefaultFontAxisValues(aDefaults.data(), aDefaults.size())))
+                    aDefaults.clear();
+            }
+
             std::vector<DWRITE_FONT_AXIS_VALUE> aAxisValues(xDWFontFace5->GetFontAxisValueCount());
             auto hr = xDWFontFace5->GetFontAxisValues(aAxisValues.data(), aAxisValues.size());
             if (SUCCEEDED(hr))
             {
                 mxVariations->reserve(aAxisValues.size());
                 for (auto& rAxisValue : aAxisValues)
+                {
+                    auto it = std::find_if(aDefaults.begin(), aDefaults.end(),
+                                           [&rAxisValue](const DWRITE_FONT_AXIS_VALUE& rDefault)
+                                           { return rDefault.axisTag == rAxisValue.axisTag; });
+                    if (it != aDefaults.end() && it->value == rAxisValue.value)
+                        continue;
                     mxVariations->push_back({ OSL_NETDWORD(rAxisValue.axisTag), rAxisValue.value });
+                }
             }
         }
     }
