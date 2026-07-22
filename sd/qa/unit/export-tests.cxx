@@ -1148,8 +1148,6 @@ CPPUNIT_TEST_FIXTURE(SdExportTest, testExplodedPdfFont)
         int nFontHeight = getXPath(pXml, "//font[2]", "height").toInt32();
         CPPUNIT_ASSERT_EQUAL(494, nFontHeight);
     }
-#if !defined _WIN32
-    //TODO, debug this
     {
         OUString sWeight = getXPath(pXml, "//font[3]", "weight");
         // was "normal" before
@@ -1158,9 +1156,8 @@ CPPUNIT_TEST_FIXTURE(SdExportTest, testExplodedPdfFont)
         OUString sFontName = getXPath(pXml, "//font[3]", "name");
         CPPUNIT_ASSERT_EQUAL(u"Liberation Sans"_ustr, sFontName);
         sal_Int32 nFontHeight = getXPath(pXml, "//font[3]", "height").toInt32();
-        CPPUNIT_ASSERT_EQUAL(564, nFontHeight);
+        CPPUNIT_ASSERT_EQUAL(sal_Int32(564), nFontHeight);
     }
-#endif
 }
 
 CPPUNIT_TEST_FIXTURE(SdExportTest, testExplodedPdfHindi)
