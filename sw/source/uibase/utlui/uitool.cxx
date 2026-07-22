@@ -759,6 +759,13 @@ void SfxToSwPageDescAttr( const SwWrtShell& rShell, SfxItemSet& rSet )
             bChanged = true;
             break;
         }
+        case SfxItemState::INVALID:
+        {
+            // needed for srchdlg.cxx. See note there about using SfxPoolItemHolder instead
+            rSet.ClearItem(SID_ATTR_PARA_MODEL);
+            rSet.InvalidateItem(RES_PAGEDESC);
+            break;
+        }
         default:
         {
             SfxItemSet aCoreSet(rShell.GetView().GetPool(), svl::Items<RES_PAGEDESC, RES_PAGEDESC>);
