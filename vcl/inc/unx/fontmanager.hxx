@@ -37,11 +37,6 @@
 #include <vector>
 #include <unordered_map>
 
-/*
- *  some words on metrics: every length returned by PrintFontManager and
- *  friends are PostScript afm style, that is they are 1/1000 font height
- */
-
 class FontConfigFontOptions;
 namespace vcl::font
 {
@@ -56,8 +51,6 @@ typedef int fontID;
 
 class VCL_PLUGIN_PUBLIC PrintFontManager
 {
-    friend struct PrintFont;
-
     struct SAL_DLLPRIVATE PrintFont
     {
         FontAttributes    m_aFontAttributes;
