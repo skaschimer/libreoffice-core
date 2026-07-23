@@ -24,10 +24,7 @@
 
 #include <sal/types.h>
 
-#include <i18nlangtag/mslangid.hxx>
 #include <jobdata.hxx>
-#include <vcl/settings.hxx>
-#include <vcl/svapp.hxx>
 #include <vcl/sysdata.hxx>
 #include <vcl/fontcharmap.hxx>
 #include <config_cairo_canvas.h>
@@ -36,7 +33,6 @@
 #include <unx/freetype_glyphcache.hxx>
 #include <unx/geninst.h>
 #include <unx/genpspgraphics.h>
-#include <langboost.hxx>
 #include <font/LogicalFontInstance.hxx>
 #include <fontattributes.hxx>
 #include <font/FontMetricData.hxx>
@@ -136,26 +132,6 @@ void GenPspGraphics::GetFontMetric(FontMetricDataRef& rxFontMetric, int nFallbac
 std::unique_ptr<GenericSalLayout> GenPspGraphics::GetTextLayout(int nFallbackLevel)
 {
     return m_aTextRenderImpl.GetTextLayout(nFallbackLevel);
-}
-
-namespace vcl
-{
-    const char* getLangBoost()
-    {
-        const char* pLangBoost;
-        const LanguageType eLang = Application::GetSettings().GetUILanguageTag().getLanguageType();
-        if (eLang == LANGUAGE_JAPANESE)
-            pLangBoost = "jan";
-        else if (MsLangId::isKorean(eLang))
-            pLangBoost = "kor";
-        else if (MsLangId::isSimplifiedChinese(eLang))
-            pLangBoost = "zhs";
-        else if (MsLangId::isTraditionalChinese(eLang))
-            pLangBoost = "zht";
-        else
-            pLangBoost = nullptr;
-        return pLangBoost;
-    }
 }
 
 SystemGraphicsData GenPspGraphics::GetGraphicsData() const

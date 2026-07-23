@@ -37,7 +37,10 @@
 #include <sal/log.hxx>
 #include <osl/module.h>
 
-#include <langboost.hxx>
+#include <i18nlangtag/mslangid.hxx>
+#include <vcl/settings.hxx>
+#include <vcl/svapp.hxx>
+
 #include <font/PhysicalFontCollection.hxx>
 
 #include <ft2build.h>
@@ -72,6 +75,23 @@ static FT_Library aLibFT = nullptr;
 // if (EB<AH) => do not autohint for monochrome
 static int nDefaultPrioAntiAlias   = 1;
 
+namespace
+{
+const char* getLangBoost()
+{
+    const LanguageType eLang = Application::GetSettings().GetUILanguageTag().getLanguageType();
+    if (eLang == LANGUAGE_JAPANESE)
+        return "jan";
+    if (MsLangId::isKorean(eLang))
+        return "kor";
+    if (MsLangId::isSimplifiedChinese(eLang))
+        return "zhs";
+    if (MsLangId::isTraditionalChinese(eLang))
+        return "zht";
+    return nullptr;
+}
+}
+
 FreetypeFontFile::FreetypeFontFile( OString aNativeFileName )
 :   maNativeFileName(std::move( aNativeFileName )),
     mpFileMap( nullptr ),
@@ -91,7 +111,7 @@ FreetypeFontFile::FreetypeFontFile( OString aNativeFileName )
         if( bOnce )
         {
             bOnce = false;
-            pLangBoost = vcl::getLangBoost();
+            pLangBoost = getLangBoost();
         }
 
         if( pLangBoost && !strncasecmp( pLangBoost, &maNativeFileName.getStr()[nPos+1], 3 ) )
