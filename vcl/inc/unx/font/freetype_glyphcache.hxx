@@ -53,54 +53,36 @@ private:
     intptr_t                mnHandle;
 };
 
-// FreetypeFontInfo corresponds to an unscaled font face
-class FreetypeFontInfo final
+// FreetypeFontFace corresponds to an unscaled font face
+class FreetypeFontFace final : public vcl::font::PhysicalFontFace
 {
 public:
-    ~FreetypeFontInfo();
+    FreetypeFontFace( const FontAttributes&, FreetypeFontFile* const pFontFile,
+                      int nFaceNum, int nFaceVariation, sal_IntPtr nFontId );
 
-    FT_FaceRec_*          GetFaceFT();
-    void                  ReleaseFaceFT();
+    FT_FaceRec_*          GetFaceFT() const;
+    void                  ReleaseFaceFT() const;
 
     FreetypeFontFile*     GetFontFile() const       { return mpFontFile; }
     const OString&        GetFontFileName() const   { return mpFontFile->GetFileName(); }
     int                   GetFontFaceIndex() const  { return mnFaceNum; }
     int                   GetFontFaceVariation() const  { return mnFaceVariation; }
-    sal_IntPtr            GetFontId() const         { return mnFontId; }
-    const FontAttributes& GetFontAttributes() const { return maDevFontAttributes; }
-
-    void                  AnnounceFont( vcl::font::PhysicalFontCollection* );
-
-private:
-    friend class FreetypeManager;
-    explicit FreetypeFontInfo(FontAttributes , FreetypeFontFile* const pFontFile,
-                              int nFaceNum, int nFaceVariation, sal_IntPtr nFontId);
-
-    FT_FaceRec_*    maFaceFT;
-    FreetypeFontFile* const mpFontFile;
-    const int       mnFaceNum;
-    const int       mnFaceVariation;
-    int             mnRefCount;
-    sal_IntPtr      mnFontId;
-    FontAttributes  maDevFontAttributes;
-
-};
-
-class FreetypeFontFace final : public vcl::font::PhysicalFontFace
-{
-private:
-    FreetypeFontInfo*             mpFreetypeFontInfo;
-
-public:
-                            FreetypeFontFace( FreetypeFontInfo*, const FontAttributes& );
 
     virtual rtl::Reference<LogicalFontInstance> CreateFontInstance(const vcl::font::FontSelectPattern&) const override;
-    virtual sal_IntPtr      GetFontId() const override { return mpFreetypeFontInfo->GetFontId(); }
+    virtual sal_IntPtr      GetFontId() const override { return mnFontId; }
 
     virtual hb_face_t* GetHbFace() const override;
     virtual hb_blob_t* GetHbTable(hb_tag_t nTag) const override;
 
     const std::vector<vcl::font::Variation>& GetVariations(const LogicalFontInstance&) const override;
+
+private:
+    mutable FT_FaceRec_*    maFaceFT;
+    FreetypeFontFile* const mpFontFile;
+    const int               mnFaceNum;
+    const int               mnFaceVariation;
+    mutable int             mnRefCount;
+    const sal_IntPtr        mnFontId;
 };
 
 class SAL_DLLPUBLIC_RTTI FreetypeFontInstance final : public LogicalFontInstance

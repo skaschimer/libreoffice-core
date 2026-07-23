@@ -40,7 +40,7 @@ FreetypeManager::~FreetypeManager()
 
 void FreetypeManager::ClearFontCache()
 {
-    m_aFontInfoList.clear();
+    m_aFontFaceList.clear();
 }
 
 FreetypeManager& FreetypeManager::get()
@@ -67,7 +67,7 @@ FreetypeFontFile* FreetypeManager::FindFontFile(const OString& rNativeFileName)
 
 FreetypeFontInstance::FreetypeFontInstance(const vcl::font::PhysicalFontFace& rPFF, const vcl::font::FontSelectPattern& rFSP)
     : LogicalFontInstance(rPFF, rFSP)
-    , mxFreetypeFont(FreetypeManager::get().CreateFont(*this))
+    , mxFreetypeFont(new FreetypeFont(*this, static_cast<const FreetypeFontFace&>(rPFF)))
 {
 }
 

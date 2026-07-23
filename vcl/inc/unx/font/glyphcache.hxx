@@ -26,6 +26,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#include <rtl/ref.hxx>
 #include <vcl/dllapi.h>
 #include <vcl/outdev.hxx>
 
@@ -36,9 +37,9 @@
 #include <unordered_map>
 
 class FreetypeFont;
+class FreetypeFontFace;
 class FreetypeFontFile;
 class FreetypeFontInstance;
-class FreetypeFontInfo;
 class FontConfigFontOptions;
 namespace vcl::font
 {
@@ -48,26 +49,16 @@ class PhysicalFontCollection;
 namespace basegfx { class B2DPolyPolygon; }
 
  /**
-  * The FreetypeManager caches various aspects of Freetype fonts
+  * The FreetypeManager holds the known Freetype fonts.
   *
-  * It mainly consists of two std::unordered_map lists, which hold the items of the cache.
+  * It maps a font id to the FreetypeFontFace for it, and keeps the mmapped font
+  * files those faces read from. The faces it hands to a PhysicalFontCollection
+  * are the very same objects, shared by every collection.
   *
-  * They form kind of a tree, with FreetypeFontFile as the roots, referenced by multiple FreetypeFontInfo
-  * entries, which are referenced by the FreetypeFont items.
-  *
-  * All of these items have reference counters, but these don't control the items life-cycle, but that of
-  * the managed resources.
-  *
-  * The respective resources are:
-  *   FreetypeFontFile = holds the mmapped font file, as long as it's used by any FreetypeFontInfo.
-  *   FreetypeFontInfo = holds the FT_FaceRec_ object, as long as it's used by any FreetypeFont.
-  *   FreetypeFont     = holds the FT_SizeRec_ and is owned by a FreetypeFontInstance
-  *
-  * FreetypeFontInfo therefore is embedded in the Freetype subclass of PhysicalFontFace.
-  * FreetypeFont is owned by FreetypeFontInstance, the Freetype subclass of LogicalFontInstance.
-  *
-  * Nowadays there is not really a reason to have separate files for the classes, as the FreetypeManager
-  * is just about handling of Freetype based fonts, not some abstract glyphs.
+  * The resources are:
+  *   FreetypeFontFile = holds the mmapped font file, as long as it's used by any face.
+  *   FreetypeFontFace = holds the FT_FaceRec_ object, as long as it's used by any FreetypeFont.
+  *   FreetypeFont     = holds the FT_SizeRec_ and is owned by a FreetypeFontInstance.
   **/
 class VCL_DLLPUBLIC FreetypeManager final
 {
@@ -89,8 +80,6 @@ public:
 
     void                    ClearFontCache();
 
-    SAL_DLLPRIVATE FreetypeFont* CreateFont(FreetypeFontInstance& rLogicalFont);
-
 private:
     // to access the constructor
     friend class GenericUnixSalData;
@@ -99,10 +88,10 @@ private:
     SAL_DLLPRIVATE static void InitFreetype();
     SAL_DLLPRIVATE FreetypeFontFile* FindFontFile(const OString& rNativeFileName);
 
-    typedef std::unordered_map<sal_IntPtr, std::shared_ptr<FreetypeFontInfo>> FontInfoList;
+    typedef std::unordered_map<sal_IntPtr, rtl::Reference<FreetypeFontFace>> FontFaceList;
     typedef std::unordered_map<const char*, std::unique_ptr<FreetypeFontFile>, rtl::CStringHash, rtl::CStringEqual> FontFileList;
 
-    FontInfoList            m_aFontInfoList;
+    FontFaceList            m_aFontFaceList;
 
     FontFileList            m_aFontFileList;
 };
@@ -112,9 +101,6 @@ class VCL_DLLPUBLIC FreetypeFont final
 public:
     SAL_DLLPRIVATE ~FreetypeFont();
 
-    SAL_DLLPRIVATE const OString&          GetFontFileName() const;
-    SAL_DLLPRIVATE int                     GetFontFaceIndex() const;
-    SAL_DLLPRIVATE int                     GetFontFaceVariation() const;
     bool                    TestFont() const { return mbFaceOk;}
     SAL_DLLPRIVATE FT_Face                 GetFtFace() const;
     const FontConfigFontOptions* GetFontOptions() const;
@@ -126,13 +112,13 @@ public:
 
 private:
     friend class FreetypeFontInstance;
-    friend class FreetypeManager;
 
-    SAL_DLLPRIVATE explicit FreetypeFont(FreetypeFontInstance&, std::shared_ptr<FreetypeFontInfo>  rFontInfo);
+    SAL_DLLPRIVATE explicit FreetypeFont(FreetypeFontInstance&, const FreetypeFontFace&);
 
     SAL_DLLPRIVATE void ApplyGlyphTransform(bool bVertical, FT_Glyph) const;
 
     FreetypeFontInstance& mrFontInstance;
+    const FreetypeFontFace& mrFontFace;
 
     // 16.16 fixed point values used for a rotated font
     tools::Long                    mnCos;
@@ -140,7 +126,6 @@ private:
 
     int                     mnWidth;
     int                     mnPrioAntiAlias;
-    std::shared_ptr<FreetypeFontInfo> mxFontInfo;
     double                  mfStretch;
     FT_FaceRec_*            maFaceFT;
     FT_SizeRec_*            maSizeFT;
