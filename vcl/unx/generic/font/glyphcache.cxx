@@ -65,22 +65,4 @@ FreetypeFontFile* FreetypeManager::FindFontFile(const OString& rNativeFileName)
     return pFontFile;
 }
 
-FreetypeFontInstance::FreetypeFontInstance(const vcl::font::PhysicalFontFace& rPFF, const vcl::font::FontSelectPattern& rFSP)
-    : LogicalFontInstance(rPFF, rFSP)
-    , mxFreetypeFont(new FreetypeFont(*this, static_cast<const FreetypeFontFace&>(rPFF)))
-{
-}
-
-FreetypeFontInstance::~FreetypeFontInstance()
-{
-}
-
-bool FreetypeFontInstance::GetGlyphOutline(sal_GlyphId nId, basegfx::B2DPolyPolygon& rPoly, bool bVertical) const
-{
-    assert(mxFreetypeFont);
-    if (!mxFreetypeFont)
-        return false;
-    return mxFreetypeFont->GetGlyphOutline(nId, rPoly, bVertical);
-}
-
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

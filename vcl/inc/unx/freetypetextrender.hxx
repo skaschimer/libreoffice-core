@@ -30,7 +30,7 @@
 class VCL_DLLPUBLIC FreeTypeTextRenderImpl : public TextRenderImpl
 {
 protected:
-    rtl::Reference<FreetypeFontInstance>
+    rtl::Reference<FreetypeFont>
                             mpFreetypeFont[ MAX_FALLBACK ];
 
     Color           mnTextColor;

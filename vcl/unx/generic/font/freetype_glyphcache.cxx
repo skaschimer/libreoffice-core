@@ -315,7 +315,7 @@ void FreetypeManager::AnnounceFonts( vcl::font::PhysicalFontCollection* pToAdd )
 
 rtl::Reference<LogicalFontInstance> FreetypeFontFace::CreateFontInstance(const vcl::font::FontSelectPattern& rFSD) const
 {
-    return new FreetypeFontInstance(*this, rFSD);
+    return new FreetypeFont(*this, rFSD);
 }
 
 namespace
@@ -389,9 +389,8 @@ const std::vector<vcl::font::Variation>& FreetypeFontFace::GetVariations(const L
 
 // FreetypeFont
 
-FreetypeFont::FreetypeFont(FreetypeFontInstance& rFontInstance, const FreetypeFontFace& rFontFace)
-:   mrFontInstance(rFontInstance),
-    mrFontFace(rFontFace),
+FreetypeFont::FreetypeFont(const FreetypeFontFace& rFontFace, const vcl::font::FontSelectPattern& rFSD)
+:   LogicalFontInstance(rFontFace, rFSD),
     mnCos( 0x10000),
     mnSin( 0 ),
     mnPrioAntiAlias(nDefaultPrioAntiAlias),
@@ -399,9 +398,7 @@ FreetypeFont::FreetypeFont(FreetypeFontInstance& rFontInstance, const FreetypeFo
     maSizeFT( nullptr ),
     mbFaceOk( false )
 {
-    maFaceFT = mrFontFace.GetFaceFT();
-
-    const vcl::font::FontSelectPattern& rFSD = rFontInstance.GetFontSelectPattern();
+    maFaceFT = rFontFace.GetFaceFT();
 
     if( rFSD.mnOrientation )
     {
@@ -454,10 +451,11 @@ const FontConfigFontOptions* FreetypeFont::GetFontOptions() const
 {
     if (!mxFontOptions)
     {
-        mxFontOptions = GetFCFontOptions(mrFontFace, mrFontInstance.GetFontSelectPattern().mnHeight);
-        mxFontOptions->SyncPattern(mrFontFace.GetFontFileName(), mrFontFace.GetFontFaceIndex(),
-                                   mrFontFace.GetFontFaceVariation(), mrFontInstance.NeedsArtificialBold(),
-                                   mrFontInstance.GetVariations());
+        const FreetypeFontFace* pFontFace = GetFontFace();
+        mxFontOptions = GetFCFontOptions(*pFontFace, GetFontSelectPattern().mnHeight);
+        mxFontOptions->SyncPattern(pFontFace->GetFontFileName(), pFontFace->GetFontFaceIndex(),
+                                   pFontFace->GetFontFaceVariation(), NeedsArtificialBold(),
+                                   GetVariations());
     }
     return mxFontOptions.get();
 }
@@ -467,19 +465,19 @@ FreetypeFont::~FreetypeFont()
     if( maSizeFT )
         FT_Done_Size( maSizeFT );
 
-    mrFontFace.ReleaseFaceFT();
+    GetFontFace()->ReleaseFaceFT();
 }
 
-void FreetypeFont::GetFontMetric(FontMetricDataRef const & rxTo) const
+void FreetypeFont::GetFontMetric(FontMetricDataRef const & rxTo)
 {
-    rxTo->FontAttributes::operator =(mrFontFace);
+    rxTo->FontAttributes::operator =(*GetFontFace());
 
-    rxTo->SetOrientation(mrFontInstance.GetFontSelectPattern().mnOrientation);
+    rxTo->SetOrientation(GetFontSelectPattern().mnOrientation);
 
     FT_Activate_Size( maSizeFT );
 
-    rxTo->ImplCalcLineSpacing(&mrFontInstance);
-    rxTo->ImplInitBaselines(&mrFontInstance);
+    rxTo->ImplCalcLineSpacing(this);
+    rxTo->ImplInitBaselines(this);
 
     rxTo->SetSlant( 0 );
     rxTo->SetWidth( mnWidth );
@@ -518,13 +516,13 @@ void FreetypeFont::GetFontMetric(FontMetricDataRef const & rxTo) const
     }
 
     // initialize kashida width
-    rxTo->SetMinKashida(mrFontInstance.GetKashidaWidth());
+    rxTo->SetMinKashida(GetKashidaWidth());
 }
 
 void FreetypeFont::ApplyGlyphTransform(bool bVertical, FT_Glyph pGlyphFT ) const
 {
     // shortcut most common case
-    if (!mrFontInstance.GetFontSelectPattern().mnOrientation && !bVertical)
+    if (!GetFontSelectPattern().mnOrientation && !bVertical)
         return;
 
     const FT_Size_Metrics& rMetrics = maFaceFT->size->metrics;
@@ -578,7 +576,7 @@ void FreetypeFont::ApplyGlyphTransform(bool bVertical, FT_Glyph pGlyphFT ) const
 bool FreetypeFont::GetAntialiasAdvice() const
 {
     // TODO: also use GASP info
-    return !mrFontInstance.GetFontSelectPattern().mbNonAntialiased && (mnPrioAntiAlias > 0);
+    return !GetFontSelectPattern().mbNonAntialiased && (mnPrioAntiAlias > 0);
 }
 
 // outline stuff
@@ -754,7 +752,7 @@ bool FreetypeFont::GetGlyphOutline(sal_GlyphId nId, basegfx::B2DPolyPolygon& rB2
     if( rc != FT_Err_Ok )
         return false;
 
-    if (mrFontInstance.NeedsArtificialBold())
+    if (NeedsArtificialBold())
         FT_GlyphSlot_Embolden(maFaceFT->glyph);
 
     FT_Glyph pGlyphFT;
@@ -768,7 +766,7 @@ bool FreetypeFont::GetGlyphOutline(sal_GlyphId nId, basegfx::B2DPolyPolygon& rB2
         return false;
     }
 
-    if (mrFontInstance.NeedsArtificialItalic())
+    if (NeedsArtificialItalic())
     {
         FT_Matrix aMatrix;
         aMatrix.xx = aMatrix.yy = ARTIFICIAL_ITALIC_MATRIX_XX;

@@ -36,17 +36,12 @@
 
 #include <unordered_map>
 
-class FreetypeFont;
 class FreetypeFontFace;
 class FreetypeFontFile;
-class FreetypeFontInstance;
-class FontConfigFontOptions;
 namespace vcl::font
 {
 class PhysicalFontCollection;
 }
-
-namespace basegfx { class B2DPolyPolygon; }
 
  /**
   * The FreetypeManager holds the known Freetype fonts.
@@ -58,7 +53,7 @@ namespace basegfx { class B2DPolyPolygon; }
   * The resources are:
   *   FreetypeFontFile = holds the mmapped font file, as long as it's used by any face.
   *   FreetypeFontFace = holds the FT_FaceRec_ object, as long as it's used by any FreetypeFont.
-  *   FreetypeFont     = holds the FT_SizeRec_ and is owned by a FreetypeFontInstance.
+  *   FreetypeFont     = holds the FT_SizeRec_; it is the Freetype LogicalFontInstance.
   **/
 class VCL_DLLPUBLIC FreetypeManager final
 {
@@ -94,45 +89,6 @@ private:
     FontFaceList            m_aFontFaceList;
 
     FontFileList            m_aFontFileList;
-};
-
-class VCL_DLLPUBLIC FreetypeFont final
-{
-public:
-    SAL_DLLPRIVATE ~FreetypeFont();
-
-    bool                    TestFont() const { return mbFaceOk;}
-    SAL_DLLPRIVATE FT_Face                 GetFtFace() const;
-    const FontConfigFontOptions* GetFontOptions() const;
-
-    SAL_DLLPRIVATE void                    GetFontMetric(FontMetricDataRef const &) const;
-
-    SAL_DLLPRIVATE bool                    GetGlyphOutline(sal_GlyphId, basegfx::B2DPolyPolygon&, bool) const;
-    bool                    GetAntialiasAdvice() const;
-
-private:
-    friend class FreetypeFontInstance;
-
-    SAL_DLLPRIVATE explicit FreetypeFont(FreetypeFontInstance&, const FreetypeFontFace&);
-
-    SAL_DLLPRIVATE void ApplyGlyphTransform(bool bVertical, FT_Glyph) const;
-
-    FreetypeFontInstance& mrFontInstance;
-    const FreetypeFontFace& mrFontFace;
-
-    // 16.16 fixed point values used for a rotated font
-    tools::Long                    mnCos;
-    tools::Long                    mnSin;
-
-    int                     mnWidth;
-    int                     mnPrioAntiAlias;
-    double                  mfStretch;
-    FT_FaceRec_*            maFaceFT;
-    FT_SizeRec_*            maSizeFT;
-
-    mutable std::unique_ptr<FontConfigFontOptions> mxFontOptions;
-
-    bool                    mbFaceOk;
 };
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -61,11 +61,11 @@ void FreeTypeTextRenderImpl::SetFont(LogicalFontInstance *pEntry, int nFallbackL
     if( !pEntry )
         return;
 
-    FreetypeFontInstance* pFreetypeFont = static_cast<FreetypeFontInstance*>(pEntry);
+    FreetypeFont* pFreetypeFont = static_cast<FreetypeFont*>(pEntry);
     mpFreetypeFont[ nFallbackLevel ] = pFreetypeFont;
 
     // ignore fonts with e.g. corrupted font files
-    if (!mpFreetypeFont[nFallbackLevel]->GetFreetypeFont().TestFont())
+    if (!mpFreetypeFont[nFallbackLevel]->TestFont())
         mpFreetypeFont[nFallbackLevel] = nullptr;
 }
 
@@ -186,7 +186,7 @@ void FreeTypeTextRenderImpl::GetFontMetric( FontMetricDataRef& rxFontMetric, int
         return;
 
     if (mpFreetypeFont[nFallbackLevel])
-        mpFreetypeFont[nFallbackLevel]->GetFreetypeFont().GetFontMetric(rxFontMetric);
+        mpFreetypeFont[nFallbackLevel]->GetFontMetric(rxFontMetric);
 }
 
 std::unique_ptr<GenericSalLayout> FreeTypeTextRenderImpl::GetTextLayout(int nFallbackLevel)
